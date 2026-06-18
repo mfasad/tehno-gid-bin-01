@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как работает программа SketchUp: принципы проектирования — Техно Гид</title>
+    <meta name="description" content="Подробный разбор того, как работает программа SketchUp. Архитектура движка, инструменты, плагины и особенности моделирования для новичков и профи.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/3d-pechat-i-modelirovanie/s/sk/sketchap-programma-dlya-proektirovaniya-kak-rabotaet.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как работает программа SketchUp: принципы проектирования">
+    <meta property="og:description" content="Подробный разбор того, как работает программа SketchUp. Архитектура движка, инструменты, плагины и особенности моделирования для новичков и профи.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/3d-pechat-i-modelirovanie/">3D Печать и Моделирование</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как работает программа SketchUp: принципы проектирования</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#архитектура-ядра-и-работа-с-геометрией">Архитектура ядра и работа с геометрией</a></li><li><a href="#система-компонентов-и-групп-оптимизация-памяти">Система компонентов и групп: оптимизация памяти</a></li><li><a href="#инструментарий-и-алгоритмы-модификации">Инструментарий и алгоритмы модификации</a></li><li><a href="#работа-с-материалами-и-освещением">Работа с материалами и освещением</a></li><li><a href="#расширяемость-через-ruby-api-и-плагины">Расширяемость через Ruby API и плагины</a></li><li><a href="#экспорт-данных-и-совместимость-с-другими-форматами">Экспорт данных и совместимость с другими форматами</a></li><li><a href="#частые-вопросы-о-работе-sketchup">Частые вопросы о работе SketchUp</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/3d-pechat-i-modelirovanie/n/na/nastrojka-pervogo-sloya-3d-printera.html">Настройка первого слоя 3D принтера: Идеальная адгезия и качество</a></li><li><a href="/3d-pechat-i-modelirovanie/3/3d/3d-pechat-dlya-doma.html">3D печать для дома: выбор принтера, материалов и советы новичкам</a></li><li><a href="/3d-pechat-i-modelirovanie/k/ka/kak-obrabotat-petg-posle-pechati.html">Как обработать PETG после 3D печати: шлифовка, химия и покраска</a></li><li><a href="/3d-pechat-i-modelirovanie/c/cr/creality-ender-3v3-plus.html">Creality Ender 3 V3 Plus: Обзор, характеристики и настройка</a></li><li><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-flyingbear-ghost-5.html">FlyingBear Ghost 5: Обзор, настройка и тест 3D принтера</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как работает программа SketchUp: от эскиза до 3D-модели</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#архитектура-ядра-и-работа-с-геометрией">Архитектура ядра и работа с геометрией</a></li><li><a href="#система-компонентов-и-групп-оптимизация-памяти">Система компонентов и групп: оптимизация памяти</a></li><li><a href="#инструментарий-и-алгоритмы-модификации">Инструментарий и алгоритмы модификации</a></li><li><a href="#работа-с-материалами-и-освещением">Работа с материалами и освещением</a></li><li><a href="#расширяемость-через-ruby-api-и-плагины">Расширяемость через Ruby API и плагины</a></li><li><a href="#экспорт-данных-и-совместимость-с-другими-форматами">Экспорт данных и совместимость с другими форматами</a></li><li><a href="#частые-вопросы-о-работе-sketchup">Частые вопросы о работе SketchUp</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>В мире трехмерного моделирования существует множество профессиональных инструментов, но <em>SketchUp</em> занимает уникальную нишу благодаря своему интуитивному интерфейсу и быстрому обучению. Многие пользователи воспринимают эту программу как простой «цифровой карандаш», не задумываясь о том, какие сложные математические процессы происходят под капотом при создании каждой линии и плоскости. Понимание внутренней архитектуры софта позволяет не просто рисовать, а создавать оптимизированные модели, которые не будут тормозить систему при рендеринге или 3D-печати.</p>
+
+<p>Работа программы строится на векторной графике, но в отличие от классических <strong>CAD-систем</strong>, таких как <em>AutoCAD</em>, здесь упор делается на скорость концептуального проектирования. Вы не просто чертите линии по координатам, а манипулируете геометрическими примитивами, объединяя их в сложные структуры. Это кардинально меняет подход к работе: вместо точных размеров на первом этапе вы оперируете объемами и формами, уточняя детали позже.</p>
+
+<p>Основная задача движка — мгновенно пересчитывать геометрию при любом вашем действии. Когда вы тянете за грань куба, программа в реальном времени обновляет координаты вершин, перестраивает полигональную сетку и перерисовывает сцену. Именно эта мгновенная обратная связь создает ощущение «лепки» из цифрового пластилина, что и сделало софт столь популярным среди архитекторов и дизайнеров интерьеров.</p>
+
+<h2 id="архитектура-ядра-и-работа-с-геометрией">Архитектура ядра и работа с геометрией</h2>
+
+<p>В основе <em>SketchUp</em> лежит собственное графическое ядро, которое обрабатывает данные о вершинах, ребрах и гранях. В отличие от параметрических моделлеров, где объекты связаны историей построения, здесь геометрия более гибкая и прямая. Вы работаете с <strong>полигональной сеткой</strong>, состоящей преимущественно из треугольников и четырехугольников. Программа автоматически следит за тем, чтобы поверхности оставались плоскими (planar), что критически важно для корректного отображения текстур.</p>
+
+<p>Каждый объект в сцене хранится как набор математических координат в трехмерном пространстве <code>X, Y, Z</code>. Когда вы используете инструмент <code>Push/Pull</code> (Выдавливание), алгоритм берет замкнутый контур на плоскости и экстрадирует его вдоль оси <code>Z</code>, создавая новые грани и ребра. Этот процесс называется булевой операцией в упрощенном виде, но выполняется он мгновенно благодаря оптимизации кода.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Геометрия в SketchUp не имеет физической толщины по умолчанию. Стена, нарисованная одним кликом, — это математическая плоскость с нулевой толщиной. Для 3D-печати или строительных чертежей такие объекты необходимо делать объемными, иначе принтер или смежный софт не смогут корректно интерпретировать модель.</p>
+</blockquote>
+
+<p>Особое место в архитектуре занимает система <strong>инференции</strong> (привязок). Движок постоянно анализирует положение курсора относительно существующей геометрии, предлагая привязки к концам линий, серединам ребер или перпендикулярам. Это позволяет строить сложные конструкции «на глаз», сохраняя при этом идеальную точность соединений без необходимости вводить цифры вручную.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте клавишу Shift для фиксации направления привязки (инференции). Это позволяет вытягивать линии в нужном направлении, даже если курсор случайно сместился в сторону.</p></aside>
+
+<h2 id="система-компонентов-и-групп-оптимизация-памяти">Система компонентов и групп: оптимизация памяти</h2>
+
+<p>Одним из главных преимуществ, объясняющих высокую производительность программы при работе с большими сценами, является система <strong>Компонентов</strong>. В отличие от обычного копирования геометрии, создание компонента означает, что все его копии в сцене ссылаются на одно и то же определение в памяти компьютера. Если вы измените один экземпляр компонента «окно», автоматически обновятся все тысячи таких окон в вашем проекте.</p>
+
+<p>Это фундаментальное отличие от простого выделения и копирования объектов. Когда вы копируете геометку без создания компонента или группы, программа дублирует все данные о вершинах и гранях, что экспоненциально увеличивает размер файла и нагрузку на <strong>видеокарту</strong>. Правильное использование иерархии объектов — залог стабильной работы даже на слабых ноутбуках.</p>
+
+<p>Группы служат для логического разделения объектов, предотвращая их «слипание» (sticky geometry). Если две плоскости соприкасаются гранями, SketchUp по умолчанию считает их единым целым. Создание группы изолирует геометрию внутри своего контейнера. Это позволяет перемещать, вращать и масштабировать объекты, не затрагивая окружающую среду.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Тип объекта</th>
+<th>Влияние на память</th>
+<th>Редактирование копий</th>
+<th>Назначение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Обычная геометрия</td>
+<td>Высокое (дублирование данных)</td>
+<td>Только индивидуально</td>
+<td>Уникальные формы, ландшафт</td>
+</tr>
+<tr>
+<td>Группа</td>
+<td>Среднее (контейнер)</td>
+<td>Только индивидуально</td>
+<td>Логическое разделение узлов</td>
+</tr>
+<tr>
+<td>Компонент</td>
+<td>Низкое (одна запись в базе)</td>
+<td>Массовое обновление</td>
+<td>Повторяющиеся элементы (мебель, окна)</td>
+</tr>
+</tbody>
+</table></div>
+
+<div class="pb-poll" id="poll-c959ddad"><div class="pb-poll-question">📊 Как вы чаще всего организуете сцену в SketchUp?</div><div class="pb-poll-option" data-poll="c959ddad" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Только группы</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c959ddad" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Только компоненты</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c959ddad" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Смешанный метод</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c959ddad" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Не использую ничего, работаю "всплошную"</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="инструментарий-и-алгоритмы-модификации">Инструментарий и алгоритмы модификации</h2>
+
+<p>Набор инструментов программы разработан так, чтобы минимизировать количество кликов для достижения результата. Алгоритмы модификации геометрии работают на основе топологического анализа. Например, инструмент <code>Follow Me</code> (Вдоль пути) анализирует профиль и траекторию, автоматически генерируя сложную поверхность вращения или экструзии по криволинейному пути.</p>
+
+<p>Инструмент <strong>Offset</strong> (Смещение) работает не просто как параллельный перенос линий, а как интеллектуальное создание новых граней с сохранением углов. При смещении сложного полигона программа автоматически рассчитывает точки пересечения новых ребер, чтобы контур оставался замкнутым. Это особенно важно при создании рам, карнизов и дорожек.</p>
+
+<ul>
+<li>🛠 <strong>Move</strong> (Перемещение): Позволяет не только двигать объекты, но и копировать их (с зажатой Ctrl), а также деформировать геометрию, перетаскивая отдельные точки или грани.</li>
+<li>📐 <strong>Tape Measure</strong> (Рулетка): Используется не только для замеров, но и для создания направляющих линий, которые служат временной сеткой для точного построения.</li>
+<li>🎨 <strong>Paint Bucket</strong> (Заливка): Накладывает текстуры, автоматически подстраивая координаты UV-развертки под форму объекта, что упрощает текстурирование сложных поверхностей.</li>
+</ul>
+
+<p>Важно отметить работу инструмента <code>Rotate</code> (Вращение). Он позволяет вращать объекты не только вокруг стандартных осей, но и вокруг произвольной точки, которую пользователь задает вручную. Это дает возможность строить спиральные лестницы или радиально расположенные объекты за считанные секунды, используя функцию массива (ввод количества копий через клавиатуру).</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Настройка рабочей среды</h4><label class="check-item"><input type="checkbox"><span>Включить отображение скрытой геометрии</span></label><label class="check-item"><input type="checkbox"><span>Настроить шаги автосохранения</span></label><label class="check-item"><input type="checkbox"><span>Установить единицы измерения (мм/см)</span></label><label class="check-item"><input type="checkbox"><span>Очистить неиспользуемые компоненты</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="работа-с-материалами-и-освещением">Работа с материалами и освещением</h2>
+
+<p>Система материалов в <em>SketchUp</em> базируется на наложении растровых изображений на полигональную сетку. Программа автоматически генерирует <strong>UV-координаты</strong> для стандартных примитивов, но для импортированных моделей может потребоваться ручная корректировка проекции. Материалы могут быть просто цветными, содержать текстуру изображения или быть процедурными (в продвинутых версиях и плагинах).</p>
+
+<p>Освещение в нативном вьюпорте программы является техническим и не предназначено для фотореалистичного рендеринга. Оно служит для того, чтобы пользователь мог различать объемы и формы. Тени рассчитываются на основе положения виртуального солнца, координаты которого привязаны к географическому местоположению модели и времени года.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Тяжелые растровые текстуры высокого разрешения (4K и выше) могут существенно замедлить работу вьюпорта. Для комфортного проектирования используйте оптимизированные текстуры, а качество повышайте только на этапе финального рендеринга во внешних движках.</p>
+</blockquote>
+
+<p>Для получения фотореалистичной картинки пользователи подключают внешние рендер-движки, такие как <em>V-Ray</em>, <em>Enscape</em> или <em>Lumion</em>. Эти плагины полностью заменяют стандартный метод отрисовки, используя алгоритмы трассировки лучей (Ray Tracing) или глобального освещения. Они считывают геометрию и материалы из базы данных SketchUp, интерпретируя их по своим физическим законам.</p>
+
+<h2 id="расширяемость-через-ruby-api-и-плагины">Расширяемость через Ruby API и плагины</h2>
+
+<p>Уникальной особенностью платформы является открытость её кода для модификации через язык скриптов <strong>Ruby</strong>. Практически любой инструмент, который вы видите на экране, написан на Ruby и может быть изменен или дополнен. Это породило огромную экосистему плагинов (расширений), которые закрывают любые пробелы в функционале.</p>
+
+<p>Существуют плагины для параметрического моделирования (<em>Profile Builder</em>), создания сложной органической формы (<em>Fredo6</em>), автоматической развертки чертежей и даже интеграции с базами данных производителей мебели. Пользователь может написать собственный скрипт для автоматизации рутинных задач, например, для переименования слоев или экспорта спецификаций.</p>
+
+<details class="pb-accordion"><summary>Где искать плагины?</summary><div class="pb-accordion-body"><p>Официальный репозиторий называется Extension Warehouse. Он встроен прямо в интерфейс программы (меню Extensions -> Extension Warehouse). Там можно искать инструменты по категориям и читать отзывы других пользователей перед установкой.</p></div></details>
+
+<p>Установка расширений происходит через встроенный менеджер. Скрипт внедряется в среду выполнения программы и получает доступ к API ядра. Это позволяет плагинам создавать новую геометрию, изменять свойства объектов и взаимодействовать с пользователем через собственные диалоговые окна.</p>
+
+<h2 id="экспорт-данных-и-совместимость-с-другими-форматами">Экспорт данных и совместимость с другими форматами</h2>
+
+<p>Несмотря на проприетарный формат файлов <code>.skp</code>, программа обладает мощными инструментами импорта и экспорта. Для передачи модели в производство или другие CAD-системы используются универсальные форматы, такие как <code>DXF</code>, <code>DWG</code>, <code>OBJ</code> или <code>FBX</code>. При экспорте происходит конвертация внутренней структуры данных в целевой формат, что иногда требует настройки масштаба и единиц измерения.</p>
+
+<p>При экспорте в <strong>форматы для 3D-печати</strong> (например, <code>STL</code>), программа разбивает все криволинейные поверхности на треугольники (триангуляция). Качество этой триангуляции можно настроить: чем выше разрешение, тем глаже будет круглое отверстие, но тем больше будет вес файла. Для ЧПУ-станков часто используют векторный экспорт контуров в <code>DXF</code>.</p>
+
+<p>Важно учитывать, что при импорте сложных моделей из других программ (например, из <em>3ds Max</em> или <em>Revit</em>) может нарушиться структура слоев и компонентов. Часто такие модели приходят «сплошняком», и их приходится вручную разбивать на группы для удобной работы. Обратный экспорт в BIM-системы также возможен, но требует тщательной проверки атрибутов объектов.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Грамотная подготовка модели перед экспортом (очистка от скрытой геометрии, взрыв сложных компонентов) спасет вас от ошибок в целевой программе и сэкономит часы на исправление файлов.</p></aside>
+
+<h2 id="частые-вопросы-о-работе-sketchup">Частые вопросы о работе SketchUp</h2>
+
+<details>
+<summary>Почему модель тормозит при большом количестве объектов?</summary>
+<p>Скорее всего, вы используете обычное копирование геометрии вместо Компонентов. Каждый лишний полигон нагружает видеокарту. Также проверьте, не включено ли отображение теней и сглаживания в режиме работы, так как это требует постоянных пересчетов.</p>
+</details>
+
+<details>
+<summary>Можно ли открыть файл SketchUp на телефоне или планшете?</summary>
+<p>Да, существует приложение <em>SketchUp Viewer</em> для iOS и Android. Оно позволяет просматривать модели, делать замеры и презентовать проект клиенту, но полноценное редактирование геометрии на мобильных устройствах невозможно.</p>
+</details>
+
+<details>
+<summary>В чем разница между бесплатной веб-версией и Pro?</summary>
+<p>Веб-версия работает в браузере и имеет ограниченный набор инструментов, не поддерживая установку Ruby-плагинов. Версия Pro (десктопная) предоставляет полный доступ к API, расширенным функциям экспорта/импорта и работе с большими массивами данных без зависимости от скорости интернета.</p>
+</details>
+
+<details>
+<summary>Как восстановить несохраненную модель после сбоя?</summary>
+<p>Программа автоматически создает резервные копии с расширением <code>.skb</code> в той же папке, где лежит основной файл. Также можно проверить папку автосохранения в настройках Preferences -> Files. Измените расширение файла с .skb на .skp и откройте его.</p>
+</details>
+
+<details>
+<summary>Поддерживает ли программа работу с VR (виртуальной реальностью)?</summary>
+<p>Нативная поддержка ограничена, но существуют плагины и интеграции (например, через <em>Enscape</em> или <em>VisionRez</em>), которые позволяют в реальном времени проецировать модель на шлемы виртуальной реальности для эффекта погружения.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/3d-pechat-i-modelirovanie/n/na/nastrojka-pervogo-sloya-3d-printera.html" class="pb-related-card">
+                <span class="pb-related-title">Настройка первого слоя 3D принтера: Идеальная адгезия и качество</span>
+                <span class="pb-related-desc">Пошаговая инструкция по калибровке первого слоя 3D принтера. Устранение отслоений, настройка Z-offse</span>
+            </a><a href="/3d-pechat-i-modelirovanie/3/3d/3d-pechat-dlya-doma.html" class="pb-related-card">
+                <span class="pb-related-title">3D печать для дома: выбор принтера, материалов и советы новичкам</span>
+                <span class="pb-related-desc">Полное руководство по домашней 3D печати. Как выбрать принтер, какой пластик использовать, настройка</span>
+            </a><a href="/3d-pechat-i-modelirovanie/k/ka/kak-obrabotat-petg-posle-pechati.html" class="pb-related-card">
+                <span class="pb-related-title">Как обработать PETG после 3D печати: шлифовка, химия и покраска</span>
+                <span class="pb-related-desc">Полное руководство по постобработке PETG. Узнайте, как убрать слои, отшлифовать, химически сгладить </span>
+            </a><a href="/3d-pechat-i-modelirovanie/c/cr/creality-ender-3v3-plus.html" class="pb-related-card">
+                <span class="pb-related-title">Creality Ender 3 V3 Plus: Обзор, характеристики и настройка</span>
+                <span class="pb-related-desc">Полный разбор 3D принтера Creality Ender 3 V3 Plus. Технические особенности, преимущества DirectDriv</span>
+            </a><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-flyingbear-ghost-5.html" class="pb-related-card">
+                <span class="pb-related-title">FlyingBear Ghost 5: Обзор, настройка и тест 3D принтера</span>
+                <span class="pb-related-desc">Полный разбор 3D принтера FlyingBear Ghost 5: характеристики, сборка, калибровка стола и сравнение с</span>
+            </a><a href="/3d-pechat-i-modelirovanie/p/pr/printer-tri-d-dlya-plastika.html" class="pb-related-card">
+                <span class="pb-related-title">Выбор 3D принтера для пластика: Рейтинг и характеристики</span>
+                <span class="pb-related-desc">Как выбрать 3D принтер для печати пластиком: FDM против SLA, типы экструдеров, обзоры материалов PLA</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

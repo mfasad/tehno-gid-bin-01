@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Marvell 91xx config: что это и как настроить контроллер — Техно Гид</title>
+    <meta name="description" content="Полный разбор Marvell 91xx config. Узнайте назначение файлов, режимы работы SATA и как настроить SSD для максимальной скорости.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/m/ma/marvell-91xx-config-chto-eto.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Marvell 91xx config: что это и как настроить контроллер">
+    <meta property="og:description" content="Полный разбор Marvell 91xx config. Узнайте назначение файлов, режимы работы SATA и как настроить SSD для максимальной скорости.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Marvell 91xx config: что это и как настроить контроллер</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#архитектура-и-назначение-контроллера-marvell">Архитектура и назначение контроллера Marvell</a></li><li><a href="#файлы-конфигурации-и-драйверы-где-искать-настройки">Файлы конфигурации и драйверы: где искать настройки</a></li><li><a href="#режимы-работы-sata-и-влияние-на-производительность">Режимы работы SATA и влияние на производительность</a></li><li><a href="#диагностика-проблем-и-коды-ошибок">Диагностика проблем и коды ошибок</a></li><li><a href="#оптимизация-для-твердотельных-накопителей-ssd">Оптимизация для твердотельных накопителей (SSD)</a></li><li><a href="#процедура-обновления-прошивки-и-драйверов">Процедура обновления прошивки и драйверов</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/s/sb/sborka-pk-za-40-tysyach.html">Сборка игрового ПК за 40 тысяч рублей: Полный гид по выбору комплектующих в 2026</a></li><li><a href="/kompyutery-i-noutbuki/v/vo/vosstanovlenie-otformatirovannoj-sd-karty.html">Восстановление отформатированной SD карты: подробная инструкция</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-na-makbuke-otkryt-fleshku-cherez-perekhodnik.html">Как открыть флешку на MacBook через переходник: Полное руководство</a></li><li><a href="/kompyutery-i-noutbuki/r/re/remont-kolesika-myshki-logitech-g102.html">Ремонт колесика мыши Logitech G102: замена энкодера своими руками</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kakoj-komp-mozhno-sobrat-za-40k.html">Сборка игрового ПК за 40 000 рублей: лучший выбор комплектующих 2026</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Marvell 91xx config: назначение и настройка контроллера</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#архитектура-и-назначение-контроллера-marvell">Архитектура и назначение контроллера Marvell</a></li><li><a href="#файлы-конфигурации-и-драйверы-где-искать-настройки">Файлы конфигурации и драйверы: где искать настройки</a></li><li><a href="#режимы-работы-sata-и-влияние-на-производительность">Режимы работы SATA и влияние на производительность</a></li><li><a href="#диагностика-проблем-и-коды-ошибок">Диагностика проблем и коды ошибок</a></li><li><a href="#оптимизация-для-твердотельных-накопителей-ssd">Оптимизация для твердотельных накопителей (SSD)</a></li><li><a href="#процедура-обновления-прошивки-и-драйверов">Процедура обновления прошивки и драйверов</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Пользователи, занимающиеся диагностикой или восстановлением компьютерных систем, часто сталкиваются с упоминанием <strong>Marvell 91xx config</strong>. Это технический термин, который пугает многих новичков, но на самом деле за ним скрывается важный компонент управления накопителями данных. Если вы обнаружили подобные файлы в системе или ищете методы оптимизации работы жесткого диска, то попали по адресу.</p>
+
+<p>В основе этого понятия лежит контроллер от компании <em>Marvell Technology Group</em>. Серия чипов <em>91xx</em> широко использовалась в материнских платах и внешних боксах для подключения устройств по интерфейсу SATA. Понимание того, как работает конфигурация этого контроллера, позволяет решать проблемы с подключением дисков, устранять ошибки загрузки и даже ускорять работу старых систем.</p>
+
+<p>В этой статье мы детально разберем, что представляет собой файл конфигурации, почему он может понадобиться при работе с <strong>SSD</strong> или <strong>HDD</strong>, и какие скрытые возможности открывает правильная настройка регистров контроллера для опытных пользователей.</p>
+
+<h2 id="архитектура-и-назначение-контроллера-marvell">Архитектура и назначение контроллера Marvell</h2>
+
+<p>Контроллеры серии <em>Marvell 91xx</em> представляют собой мост между процессором (или чипсетом материнской платы) и накопителями данных. Их главная задача — трансляция команд чтения и записи в понятный для физического диска формат. В отличие от интегрированных решений от Intel или AMD, дискретные контроллеры <em>Marvell</em> часто использовались для расширения количества портов SATA или реализации специфических функций, таких как поддержка RAID массивов начального уровня.</p>
+
+<p>Файл конфигурации, о котором идет речь, содержит набор параметров, определяющих поведение чипа при инициализации системы. В нем прописаны тайминги, режимы передачи данных и приоритеты прерываний. Если эти данные повреждены или настроены некорректно, система может не видеть подключенный диск, работать с ним крайне медленно или выдавать критические ошибки <strong>BSOD</strong> (синий экран смерти).</p>
+
+<p>Особое внимание стоит уделить совместимости. Различные ревизии чипов, например <em>88SE9128</em> или <em>88SE9172</em>, требуют специфических настроек в конфигурационном файле. Универсального решения «для всех» не существует, так как прошивка контроллера жестко привязана к аппаратной реализации конкретной материнской платы или адаптера.</p>
+
+<p>Для тех, кто занимается восстановлением данных, знание архитектуры контроллера критически важно. Иногда для доступа к информации на диске требуется принудительно изменить режим работы контроллера через редактор реестра или специализированный софт, редактирующий именно этот <strong>config</strong>.</p>
+
+<div class="pb-poll" id="poll-857c8043"><div class="pb-poll-question">📊 С какой целью вы ищете информацию о Marvell 91xx?</div><div class="pb-poll-option" data-poll="857c8043" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Диагностика ошибки</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="857c8043" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Ускорение работы SSD</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="857c8043" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Восстановление данных</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="857c8043" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Просто интересно</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="857c8043" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другое</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<p>Стоит отметить, что в современных системах роль этих контроллеров снижается, уступая место более быстрым интерфейсам NVMe, однако в парке существующей техники они все еще занимают значительную долю.</p>
+
+<h2 id="файлы-конфигурации-и-драйверы-где-искать-настройки">Файлы конфигурации и драйверы: где искать настройки</h2>
+
+<p>В операционной среде Windows настройки контроллера <em>Marvell</em> обычно хранятся в системном реестре, а не в виде отдельного текстового файла на рабочем столе. Пользовательский запрос «marvell 91xx config» часто возникает из-за необходимости найти конкретный INF-файл драйвера или отредактировать параметры в ветке <code>HKEY_LOCAL_MACHINE</code>. Драйверы выступают посредником, который считывает эти настройки и применяет их к «железу».</p>
+
+<p>При установке драйверов с официального сайта или диска с материнской платой, инсталлятор распаковывает ряд файлов, среди которых могут быть конфигурационные скрипты. Они отвечают за создание виртуальных устройств и настройку очередей команд <strong>NCQ</strong> (Native Command Queuing). Без правильной активации NCQ производительность твердотельных накопителей может падать в разы.</p>
+
+<p><blockquote>⚠️ Внимание: Ручное редактирование системного реестра или драйверных файлов без создания точки восстановления может привести к невозможности загрузки операционной системы. Действуйте предельно осторожно.</blockquote></p>
+
+<p>Если вы столкнулись с ошибкой кода 10 или 43 в диспетчере устройств, проблема часто кроется именно в несоответствии версии драйвера и параметров конфигурации. В таких случаях специалисты рекомендуют полностью удалить устройство из системы, очистить кэш драйверов и выполнить чистую установку ПО, предоставленного производителем платы.</p>
+
+<p>Иногда конфигурация сбрасывается после обновления BIOS. Это происходит потому, что новая версия микрокода материнской платы может менять способ инициализации сторонних контроллеров, делая старые настройки невалидными.</p>
+
+<h2 id="режимы-работы-sata-и-влияние-на-производительность">Режимы работы SATA и влияние на производительность</h2>
+
+<p>Одной из ключевых функций, управляемых через конфигурацию <em>Marvell 91xx</em>, является выбор режима работы порта SATA. Контроллер может функционировать в режиме IDE (эмуляция), AHCI (продвинутый хост-контроллер) или RAID. Для современных накопителей критически важен режим <strong>AHCI</strong>, который поддерживает горячую замену дисков и очередность команд.</p>
+
+<p>В режиме IDE контроллер эмулирует старый стандарт подключения, что severely ограничивает скорость и отключает многие функции оптимизации. Если ваш диск работает в этом режиме, вы не сможете раскрыть его потенциал. Переключение режима часто требует правки ключа <code>Start</code> в реестре перед изменением настроек в BIOS, иначе система не загрузится.</p>
+
+<p>Рассмотрим основные различия режимов в таблице ниже:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Режим работы</th>
+<th>Поддержка NCQ</th>
+<th>Горячая замена</th>
+<th>Рекомендуемое использование</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IDE (Legacy)</td>
+<td>Нет</td>
+<td>Нет</td>
+<td>Старые ОС (Windows XP)</td>
+</tr>
+<tr>
+<td>AHCI</td>
+<td>Да</td>
+<td>Да</td>
+<td>Современные HDD и SSD</td>
+</tr>
+<tr>
+<td>RAID</td>
+<td>Да</td>
+<td>Зависит от контроллера</td>
+<td>Массивы из нескольких дисков</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Для пользователей, использующих твердотельные накопители, включение режима AHCI через настройки контроллера <em>Marvell</em> является обязательным шагом. Это позволяет системе отправлять команды на запись и чтение в оптимальном порядке, снижая износ ячеек памяти и повышая отзывчивость интерфейса.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед переключением режима SATA в BIOS обязательно создайте точку восстановления системы или резервную копию важных данных, так как смена режима может потребовать переустановки Windows.</p></aside>
+
+<p>Некоторые продвинутые утилиты позволяют форсировать включение определенных функций AHCI даже в тех случаях, когда драйвер по умолчанию их блокирует. Однако это требует глубокого понимания структуры команд, передаваемых контроллеру.</p>
+
+<h2 id="диагностика-проблем-и-коды-ошибок">Диагностика проблем и коды ошибок</h2>
+
+<p>Сбои в работе контроллера <em>Marvell 91xx</em> часто проявляются специфическим образом. Система может долго определять диски при включении, издавать характерные щелчки (если проблема в питании, передаваемом через контроллер) или просто игнорировать подключенное устройство. В журнале событий Windows могут появляться записи от источника <strong>disk</strong> или <strong>storahci</strong>.</p>
+
+<p>Частой проблемой является конфликт прерываний (IRQ), особенно на старых системах. Конфигурация контроллера может быть настроена так, что он пытается использовать ресурс, уже занятый видеокартой или сетевым адаптером. В этом случае помогает ручное распределение ресурсов в BIOS или отключение неиспользуемых портов.</p>
+
+<p>Если вы видите сообщение об ошибке «Device not ready» или «I/O Device Error», проверьте физическое подключение кабелей SATA. Иногда проблема не в софте, а в окислившихся контактах или некачественном кабеле, который не может обеспечить стабильную передачу сигналов на высоких скоростях, поддерживаемых чипом <em>Marvell</em>.</p>
+
+<details class="pb-accordion"><summary>Скрытая функция сброса контроллера</summary><div class="pb-accordion-body"><p>В некоторых версиях драйверов существует скрытая команда для сброса состояния контроллера без перезагрузки. Она доступна через консольные утилиты командной строки с правами администратора, но требует точного знания синтаксиса конкретной версии ПО.</p></div></details>
+
+<p>Для диагностики также полезно использовать утилиты мониторинга SMART. Если контроллер некорректно интерпретирует данные от диска, показатели здоровья могут отображаться неверно. В таких случаях помогает обновление прошивки самого контроллера, если производитель предоставляет такие инструменты.</p>
+
+<h2 id="оптимизация-для-твердотельных-накопителей-ssd">Оптимизация для твердотельных накопителей (SSD)</h2>
+
+<p>Использование SSD в связке с контроллерами <em>Marvell</em> требует особого подхода к конфигурации. Главная цель — обеспечить поддержку команды <strong>TRIM</strong>. Эта команда позволяет операционной системе сообщать накопителю, какие блоки данных больше не используются и могут быть очищены. Без TRIM скорость записи на SSD со временем деградирует.</p>
+
+<p>В конфигурации драйвера должны быть активированы функции управления питанием, которые не будут агрессивно отключать диск, вызывая задержки при пробуждении. Параметр <code>Link Power Management</code> часто является причиной «фризов» системы на долю секунды, когда диск выходит из спящего режима.</p>
+
+<p>Список рекомендаций для владельцев SSD на контроллере Marvell:</p>
+<ul>
+<li>🚀 Убедитесь, что в диспетчере устройств в свойствах контроллера включена поддержка <strong>AHCI</strong>.</li>
+<li>🔋 Отключите агрессивное энергосбережение портов SATA в схеме электропитания Windows.</li>
+<li>🛠 Используйте фирменные утилиты от производителя SSD для проверки статуса TRIM.</li>
+<li>⚙️ Обновите драйвер контроллера до последней версии, доступной на сайте производителя материнской платы.</li>
+</ul>
+
+<p>Некоторые пользователи пытаются разгонять контроллер или менять тайминги через реестр в надежде получить прирост скорости. На практике это редко дает ощутимый результат и может привести к нестабильности работы. Гораздо эффективнее обеспечить корректную работу стандартных протоколов.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильная настройка контроллера Marvell для SSD важнее, чем попытки разгона: стабильность и поддержка TRIM гарантируют долгую жизнь накопителя.</p></aside>
+
+<p>Помните, что производительность связки «контроллер-диск» определяется самым слабым звеном. Если кабель SATA поврежден или порт загрязнен, никакие настройки конфигурации не помогут.</p>
+
+<h2 id="процедура-обновления-прошивки-и-драйверов">Процедура обновления прошивки и драйверов</h2>
+
+<p>Процесс обновления программного обеспечения для контроллера <em>Marvell 91xx</em> должен выполняться строго по инструкции. Неправильная прошивка может превратить рабочий контроллер в «кирпич», после чего порты SATA перестанут функционировать до перепрошивки через программатор.</p>
+
+<p>Сначала необходимо скачать актуальный пакет драйверов. Обратите внимание, что драйверы для чипсетов <em>Intel</em> не подходят для контроллеров <em>Marvell</em>, несмотря на то, что они могут управлять дисками в одной системе. Ищите раздел «SATA Controller» или «Storage Controller» на странице поддержки вашей материнской платы.</p>
+
+<p>Перед установкой рекомендуется выполнить следующие шаги:</p>
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к обновлению контроллера</h4><label class="check-item"><input type="checkbox"><span>Сохранить все открытые документы</span></label><label class="check-item"><input type="checkbox"><span>Отключить антивирус на время установки</span></label><label class="check-item"><input type="checkbox"><span>Скачать драйвер с официального сайта</span></label><label class="check-item"><input type="checkbox"><span>Перезагрузить компьютер после установки</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>В некоторых случаях, особенно при работе с серверным оборудованием или старыми рабочими станциями, может потребоваться обновление самой прошивки контроллера (Firmware). Это делается через загрузочную флешку с DOS-утилитой или через интерфейс BIOS. <blockquote>⚠️ Внимание: Никогда не прерывайте процесс обновления прошивки контроллера. Отключение питания в этот момент гарантированно выведет устройство из строя.</blockquote></p>
+
+<p>После обновления обязательно зайдите в диспетчер устройств и проверьте, что устройство определяется корректно, без восклицательных знаков. Также полезно запустить тест скорости чтения и записи, чтобы убедиться в отсутствии регресса производительности.</p>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли удалить драйвер Marvell и использовать стандартный драйвер Microsoft?</summary>
+<p>Да, в большинстве случаев Windows успешно работает со стандартным драйвером <code>storahci.sys</code>. Это может даже решить проблемы со стабильностью, если фирменный драйвер Marvell содержит ошибки. Однако вы можете потерять доступ к фирменным утилитам управления RAID или мониторинга.</p>
+</details>
+
+<details>
+<summary>Почему диспетчер устройств показывает «Standard SATA AHCI Controller» вместо Marvell?</summary>
+<p>Это означает, что установлен универсальный драйвер от Microsoft, а не специфический драйвер от производителя чипа. Если диски работают нормально, менять ничего не нужно. Если требуется специфический функционал, установите драйвер с сайта производителя платы.</p>
+</details>
+
+<details>
+<summary>Влияет ли конфиг Marvell 91xx на скорость интернета?</summary>
+<p>Нет, этот контроллер отвечает исключительно за дисковую подсистему (SATA). Скорость интернета зависит от сетевого адаптера (Ethernet или Wi-Fi) и настроек провайдера. Путать эти компоненты не стоит.</p>
+</details>
+
+<details>
+<summary>Как понять, что контроллер Marvell неисправен?</summary>
+<p>Признаками неисправности являются периодические пропадания дисков из системы, невозможность загрузиться с подключенного HDD/SSD, сильные нагрев чипа контроллера и появление ошибок ввода-вывода в журнале событий даже после замены кабелей.</p>
+</details>
+
+<details>
+<summary>Где найти файл marvell 91xx config для ручного редактирования?</summary>
+<p>Отдельного файла «config» для пользователя обычно не существует. Настройки хранятся в реестре Windows или в прошивке контроллера. Попытки найти и отредактировать системные файлы драйвера вручную крайне не рекомендуются без глубоких знаний архитектуры Windows.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/s/sb/sborka-pk-za-40-tysyach.html" class="pb-related-card">
+                <span class="pb-related-title">Сборка игрового ПК за 40 тысяч рублей: Полный гид по выбору комплектующих в 2026</span>
+                <span class="pb-related-desc">Пошаговая инструкция по сборке компьютера за 40к. Обзор лучших связок процессор+видеокарта, выбор ко</span>
+            </a><a href="/kompyutery-i-noutbuki/v/vo/vosstanovlenie-otformatirovannoj-sd-karty.html" class="pb-related-card">
+                <span class="pb-related-title">Восстановление отформатированной SD карты: подробная инструкция</span>
+                <span class="pb-related-desc">Как восстановить данные после форматирования SD карты. Эффективные методы, программы и советы для чи</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-na-makbuke-otkryt-fleshku-cherez-perekhodnik.html" class="pb-related-card">
+                <span class="pb-related-title">Как открыть флешку на MacBook через переходник: Полное руководство</span>
+                <span class="pb-related-desc">Пошаговая инструкция по подключению USB-флешки к MacBook Air и Pro. Выбор переходника, настройка Fin</span>
+            </a><a href="/kompyutery-i-noutbuki/r/re/remont-kolesika-myshki-logitech-g102.html" class="pb-related-card">
+                <span class="pb-related-title">Ремонт колесика мыши Logitech G102: замена энкодера своими руками</span>
+                <span class="pb-related-desc">Подробная инструкция по ремонту скролла Logitech G102. Замена энкодера, чистка контактов и устранени</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kakoj-komp-mozhno-sobrat-za-40k.html" class="pb-related-card">
+                <span class="pb-related-title">Сборка игрового ПК за 40 000 рублей: лучший выбор комплектующих 2026</span>
+                <span class="pb-related-desc">Подробный гид по сборке бюджетного компьютера за 40к. Обзоры процессоров, видеокарт, платы и ОЗУ. Ре</span>
+            </a><a href="/kompyutery-i-noutbuki/p/po/podklyuchenie-zhestkogo-diska-k-noutbuku.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить жесткий диск к ноутбуку: инструкции для любых интерфейсов</span>
+                <span class="pb-related-desc">Полное руководство по подключению HDD и SSD к ноутбуку через USB, SATA и Thunderbolt. Разбор переход</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

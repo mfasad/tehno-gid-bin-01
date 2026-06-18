@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Подключение к Home Assistant из внешней сети: безопасные методы — Техно Гид</title>
+    <meta name="description" content="Подробная инструкция по настройке удаленного доступа к Home Assistant. Сравнение методов: Nabu Casa, Tailscale, Cloudflare Tunnel, VPN и DuckDNS.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/k/ka/kak-podklyuchitsya-k-home-assistant-iz-vneshnej-seti.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Подключение к Home Assistant из внешней сети: безопасные методы">
+    <meta property="og:description" content="Подробная инструкция по настройке удаленного доступа к Home Assistant. Сравнение методов: Nabu Casa, Tailscale, Cloudflare Tunnel, VPN и DuckDNS.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Подключение к Home Assistant из внешней сети: безопасные методы</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#использование-официального-сервиса-nabu-casa">Использование официального сервиса Nabu Casa</a></li><li><a href="#организация-доступа-через-виртуальную-частную-сеть-vpn">Организация доступа через виртуальную частную сеть (VPN)</a></li><li><a href="#альтернативные-mesh-сети-tailscale-и-zerotier">Альтернативные Mesh-сети: Tailscale и ZeroTier</a></li><li><a href="#настройка-cloudflare-tunnel-для-безопасного-туннелирования">Настройка Cloudflare Tunnel для безопасного туннелирования</a></li><li><a href="#классический-проброс-портов-и-dyndns">Классический проброс портов и DynDNS</a></li><li><a href="#дополнительные-меры-безопасности-при-удаленном-доступе">Дополнительные меры безопасности при удаленном доступе</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/c/ch/chto-daet-umnaya-kolonka.html">Что дает умная колонка: функции, польза и управление домом</a></li><li><a href="/umnyj-dom/k/ko/kopir-klyuchej-dlya-domofona.html">Копир ключей для домофона: выбор, настройка и прошивка</a></li><li><a href="/umnyj-dom/k/ka/kak-podklyuchit-chajnik-k-yandeks-alise.html">Как подключить чайник к Яндекс Алисе: пошаговая настройка</a></li><li><a href="/umnyj-dom/u/um/umnyj-dom-s-alisoj-chto-umeet.html">Умный дом с Алисой: полный обзор возможностей и сценариев 2026</a></li><li><a href="/umnyj-dom/p/po/podklyuchenie-mini-smart-svitch.html">Подключение мини смарт свитч: инструкция и настройка</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как подключиться к Home Assistant из внешней сети</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#использование-официального-сервиса-nabu-casa">Использование официального сервиса Nabu Casa</a></li><li><a href="#организация-доступа-через-виртуальную-частную-сеть-vpn">Организация доступа через виртуальную частную сеть (VPN)</a></li><li><a href="#альтернативные-mesh-сети-tailscale-и-zerotier">Альтернативные Mesh-сети: Tailscale и ZeroTier</a></li><li><a href="#настройка-cloudflare-tunnel-для-безопасного-туннелирования">Настройка Cloudflare Tunnel для безопасного туннелирования</a></li><li><a href="#классический-проброс-портов-и-dyndns">Классический проброс портов и DynDNS</a></li><li><a href="#дополнительные-меры-безопасности-при-удаленном-доступе">Дополнительные меры безопасности при удаленном доступе</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Управление умным домом только из локальной сети часто становится серьезным ограничением для пользователей, которые хотят контролировать свои устройства вне дома. Когда вы находитесь на работе или в отпуске, доступ к <strong>Home Assistant</strong> позволяет не только мониторить состояние датчиков, но и оперативно реагировать на тревожные события. Современная экосистема умного дома требует гибкости, и возможность удаленного подключения является одной из ключевых функций для полноценной эксплуатации системы.</p>
+
+<p>Существует множество способов открыть доступ к вашему серверу, и каждый из них имеет свои особенности в плане безопасности и сложности настройки. Вы можете использовать как готовые облачные решения, не требующие глубоких знаний сети, так и развернуть собственный <strong>VPN</strong>-сервер или настроить туннелирование через обратный прокси. Выбор конкретного метода зависит от ваших технических навыков, наличия статического IP-адреса и требований к уровню защиты данных.</p>
+
+<p>В этой статье мы детально разберем наиболее популярные и актуальные методы организации внешнего доступа. Мы рассмотрим официальные интеграции, бесплатные альтернативы и специфические сценарии использования, чтобы вы могли выбрать оптимальный вариант для вашей инфраструктуры умного дома.</p>
+
+<h2 id="использование-официального-сервиса-nabu-casa">Использование официального сервиса Nabu Casa</h2>
+
+<p>Самым простым и безопасным способом получения внешнего доступа к <em>Home Assistant</em> является использование официального облачного сервиса <strong>Nabu Casa</strong>. Это решение поддерживает разработчики платформы, и оно работает «из коробки», не требуя настройки маршрутизатора или открытия портов. Подписка на этот сервис не только предоставляет вам безопасный канал связи, но и поддерживает финансово развитие проекта с открытым исходным кодом.</p>
+
+<p>Для активации достаточно перейти в настройки интеграции <code>Cloud</code> в интерфейсе системы. После регистрации учетной записи ваш инстанс получает уникальный URL-адрес, доступный из любой точки мира. Вся трафик шифруется, а архитектура сервиса исключает необходимость прямого соединения вашего роутера с внешним интернетом, что минимизирует риски атак.</p>
+
+<p>Единственным недостатком данного метода является его платная природа, однако стоимость подписки вполне оправдана уровнем предоставляемого сервиса и отсутствием необходимости тратить время на администрирование сети. Это идеальный выбор для тех, кто ценит свое время и хочет получить максимально надежное решение без лишних сложностей.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте Nabu Casa, если вам нужно быстрое решение без настройки роутера и вы готовы поддерживать проект финансово за небольшую ежемесячную плату.</p></aside>
+
+<h2 id="организация-доступа-через-виртуальную-частную-сеть-vpn">Организация доступа через виртуальную частную сеть (VPN)</h2>
+
+<p>Использование <strong>VPN</strong> считается золотым стандартом безопасности при организации удаленного доступа. В отличие от проброса портов, который делает ваш сервер видимым для всего интернета, VPN создает зашифрованный туннель, через который ваше устройство (смартфон или ноутбук) подключается к домашней сети так, будто находится физически рядом с роутером.</p>
+
+<p>Вы можете поднять VPN-сервер прямо на самом устройстве с <em>Home Assistant</em> (например, используя аддон WireGuard) или настроить его на вашем маршрутизаторе. Популярные протоколы, такие как <code>WireGuard</code> или <code>OpenVPN</code>, обеспечивают высокую скорость соединения и надежное шифрование трафика. После подключения к VPN вы просто вводите локальный IP-адрес вашего сервера в браузере.</p>
+
+<p>Стоит отметить, что настройка VPN требует определенных знаний в области сетевой безопасности. Вам потребуется сгенерировать ключи шифрования, настроить правила фаервола и правильно открыть порты на роутере только для VPN-сервиса, а не для самого Home Assistant.</p>
+
+<ul>
+<li>🔒 <strong>Высокий уровень безопасности</strong>: ваш сервер не виден в публичном интернете.</li>
+<li>📱 <strong>Доступ ко всей локальной сети</strong>: вы сможете управлять не только умным домом, но и сетевыми принтерами или NAS.</li>
+<li>⚙️ <strong>Сложность настройки</strong>: требует понимания работы сетевых протоколов и маршрутизации.</li>
+</ul>
+
+<div class="pb-poll" id="poll-230f387d"><div class="pb-poll-question">📊 Какой метод подключения вы планируете использовать?</div><div class="pb-poll-option" data-poll="230f387d" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Nabu Casa (официальный облачный сервис)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="230f387d" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">WireGuard / OpenVPN (свой VPN)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="230f387d" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Tailscale / ZeroTier (Mesh-сеть)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="230f387d" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Проброс портов (не рекомендуется)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="230f387d" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Cloudflare Tunnel</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="альтернативные-mesh-сети-tailscale-и-zerotier">Альтернативные Mesh-сети: Tailscale и ZeroTier</h2>
+
+<p>Если классическая настройка VPN кажется вам слишком сложной, отличным компромиссом станут решения на базе технологии <strong>Mesh-сетей</strong>, такие как <em>Tailscale</em> или <em>ZeroTier</em>. Эти сервисы используют протокол <code>WireGuard</code> под капотом, но автоматизируют процесс настройки, устраняя необходимость в статическом IP-адресе или сложной конфигурации роутера.</p>
+
+<p>Принцип работы прост: вы устанавливаете клиентское приложение на сервер с <em>Home Assistant</em> и на свои мобильные устройства, авторизуетесь через единый аккаунт (например, Google или Microsoft), и устройства автоматически находят друг друга через координационные серверы. Соединение между ними устанавливается напрямую (P2P), если это возможно, или через ретрансляторы сервиса.</p>
+
+<p>Это решение идеально подходит для пользователей с динамическим IP-адресом или тех, кто находится за симметричным NAT, где традиционные методы проброса портов не работают. Настройка занимает считанные минуты, а уровень безопасности остается на высоте, сравнимой с собственным VPN-сервером.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Настройка Tailscale для Home Assistant</h4><label class="check-item"><input type="checkbox"><span>Установить аддон Tailscale в Home Assistant</span></label><label class="check-item"><input type="checkbox"><span>Зарегистрироваться на сайте tailscale.com</span></label><label class="check-item"><input type="checkbox"><span>Получить ключ авторизации (Auth Key)</span></label><label class="check-item"><input type="checkbox"><span>Вставить ключ в настройки аддона</span></label><label class="check-item"><input type="checkbox"><span>Установить приложение Tailscale на телефон</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<blockquote>
+<p>⚠️ <strong>Внимание</strong>: При использовании бесплатных тарифов Mesh-сетей количество подключаемых устройств может быть ограничено. Убедитесь, что ваш план позволяет подключить все необходимые гаджеты для управления домом.</p>
+</blockquote>
+
+<h2 id="настройка-cloudflare-tunnel-для-безопасного-туннелирования">Настройка Cloudflare Tunnel для безопасного туннелирования</h2>
+
+<p><strong>Cloudflare Tunnel</strong> представляет собой современный и мощный инструмент для предоставления внешнего доступа без открытия портов на маршрутизаторе. Этот метод работает путем установки легковесного демона <code>cloudflared</code>, который создает исходящее соединение с глобальной сетью Cloudflare, делая ваш локальный сервис доступным через защищенный домен.</p>
+
+<p>Главное преимущество этого подхода заключается в том, что ваш домашний IP-адрес остается скрытым от посторонних глаз. Весь трафик проходит через сеть Cloudflare, где он может быть дополнительно защищен правилами брандмауэра (WAF) и проверками доступа. Это делает метод одним из самых безопасных среди бесплатных решений.</p>
+
+<p>Для реализации вам потребуется собственный домен (можно использовать бесплатный от некоторых регистраторов) и учетная запись в Cloudflare. Процесс настройки включает установку аддона, авторизацию через токен и создание публичного хостнейма, который будет перенаправлять запросы на локальный порт <code>8123</code>.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Nabu Casa</th>
+<th>Cloudflare Tunnel</th>
+<th>VPN (WireGuard)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Стоимость</td>
+<td>Ежемесячная подписка</td>
+<td>Бесплатно (нужен домен)</td>
+<td>Бесплатно</td>
+</tr>
+<tr>
+<td>Сложность</td>
+<td>Низкая</td>
+<td>Средняя</td>
+<td>Высокая</td>
+</tr>
+<tr>
+<td>Открытие портов</td>
+<td>Не требуется</td>
+<td>Не требуется</td>
+<td>Требуется (для VPN)</td>
+</tr>
+<tr>
+<td>Скрытие IP</td>
+<td>Да</td>
+<td>Да</td>
+<td>Нет (IP роутера виден)</td>
+</tr>
+</tbody>
+</table></div>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Cloudflare Tunnel скрывает ваш реальный IP-адрес и не требует открытия портов на роутере, что значительно снижает поверхность атаки.</p></aside>
+
+<h2 id="классический-проброс-портов-и-dyndns">Классический проброс портов и DynDNS</h2>
+
+<p>Традиционный метод организации доступа заключается в пробросе порта <code>8123</code> (или любого другого) на роутере непосредственно на IP-адрес сервера <em>Home Assistant</em>. Если у вас динамический IP-адрес от провайдера, дополнительно потребуется настройка службы <strong>DynDNS</strong> (например, DuckDNS), которая будет обновлять доменное имя при смене адреса.</p>
+
+<p>Этот способ технически прост в реализации, но несет в себе серьезные риски безопасности. Выставляя порт панели управления в открытый интернет, вы подвергаете систему потенциальным атакам перебора паролей и эксплойтам уязвимостей. Без дополнительной защиты, такой как Fail2Ban или строгие правила фаервола, использовать этот метод крайне не рекомендуется.</p>
+
+<p>Если вы все же вынуждены использовать проброс портов из-за ограничений оборудования, обязательно смените стандартный порт на нестандартный, используйте сложные пароли и включите двухфакторную аутентификацию (<strong>2FA</strong>). Также рекомендуется ограничить доступ по IP-адресу, если ваш провайдер предоставляет статический адрес или пул адресов.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание</strong>: Никогда не используйте HTTP-соединение при пробросе портов. Убедитесь, что в настройках Home Assistant включен принудительный <code>HTTPS</code> и установлен действительный SSL-сертификат.</p>
+</blockquote>
+
+<details class="pb-accordion"><summary>Почему проброс портов опасен?</summary><div class="pb-accordion-body"><p>Открытый порт — это прямая дверь в вашу домашнюю сеть. Сканирующие боты находят такие порты за считанные минуты после их открытия. Если в коде Home Assistant или одном из дополнений найдут уязвимость, злоумышленники получат полный контроль над вашей системой и всеми подключенными устройствами.</p></div></details>
+
+<h2 id="дополнительные-меры-безопасности-при-удаленном-доступе">Дополнительные меры безопасности при удаленном доступе</h2>
+
+<p>Независимо от выбранного метода подключения, критически важно соблюдать базовые принципы кибергигиены. Пароль администратора должен быть уникальным и сложным, а доступ к системе должен быть максимально ограничен. Регулярное обновление программного обеспечения помогает закрывать известные уязвимости безопасности.</p>
+
+<p>Особое внимание стоит уделить настройке пользователей. Создайте отдельного пользователя с ограниченными правами для повседневного использования и оставьте учетную запись <code>admin</code> только для экстренных случаев. Включение журнала аудита позволит вам отслеживать все попытки входа в систему и оперативно реагировать на подозрительную активность.</p>
+
+<p>Помните, что безопасность умного дома — это непрерывный процесс, а не разовое действие. Регулярно проверяйте настройки брандмауэра, обновляйте сертификаты шифрования и следите за новостями безопасности в сообществе <em>Home Assistant</em>.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Установите дополнение Fail2Ban, если вы используете методы с прямым доступом из интернета. Оно автоматически блокирует IP-адреса после нескольких неудачных попыток входа.</p></aside>
+
+<details>
+<summary>Нужен ли статический IP-адрес от провайдера для удаленного доступа?</summary>
+<p>Нет, статический IP не является обязательным условием. Сервисы вроде Nabu Casa, Tailscale, ZeroTier и Cloudflare Tunnel работают с динамическими адресами. Для классического проброса портов можно использовать бесплатные службы DynDNS (например, DuckDNS), которые обновляют доменное имя при изменении IP.</p>
+</details>
+
+<details>
+<summary>Безопасно ли использовать проброс портов без VPN?</summary>
+<p>Это наименее безопасный метод. Если вы вынуждены его использовать, обязательно смените стандартный порт, включите HTTPS, настройте двухфакторную аутентификацию и используйте сложные пароли. Настоятельно рекомендуется использовать VPN или туннели (Cloudflare/Tailscale) вместо прямого проброса.</p>
+</details>
+
+<details>
+<summary>Можно ли получить доступ к Home Assistant без домена?</summary>
+<p>Да, при использовании VPN (WireGuard, OpenVPN) или Mesh-сетей (Tailscale) вы подключаетесь по внутреннему IP-адресу устройства в виртуальной сети, и покупка домена не требуется. Для Cloudflare Tunnel и проброса портов доменное имя необходимо.</p>
+</details>
+
+<details>
+<summary>Замедлит ли удаленный доступ работу системы?</summary>
+<p>При использовании качественных VPN (WireGuard) или прямого P2P соединения в Tailscale задержка минимальна и незаметна. Скорость может снизиться при использовании бесплатных ретрансляторов или если канал интернета дома имеет низкую скорость отдачи (Upload).</p>
+</details>
+
+<blockquote>
+<p>⚠️ <strong>Внимание</strong>: Интерфейсы приложений и названия меню в Home Assistant могут меняться с выходом новых версий. Если вы не находите указанную опцию, воспользуйтесь поиском по настройкам или обратитесь к официальной документации проекта.</p>
+</blockquote></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/c/ch/chto-daet-umnaya-kolonka.html" class="pb-related-card">
+                <span class="pb-related-title">Что дает умная колонка: функции, польза и управление домом</span>
+                <span class="pb-related-desc">Узнайте, что дает умная колонка в быту. Обзор функций Алисы, Маруси и Siri: контроль техники, таймер</span>
+            </a><a href="/umnyj-dom/k/ko/kopir-klyuchej-dlya-domofona.html" class="pb-related-card">
+                <span class="pb-related-title">Копир ключей для домофона: выбор, настройка и прошивка</span>
+                <span class="pb-related-desc">Экспертный обзор копировщиков ключей для домофонов. Как выбрать, настроить и перепрошить устройство.</span>
+            </a><a href="/umnyj-dom/k/ka/kak-podklyuchit-chajnik-k-yandeks-alise.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить чайник к Яндекс Алисе: пошаговая настройка</span>
+                <span class="pb-related-desc">Инструкция по интеграции умного чайника с Яндекс Алисой. Настройка через приложение Яндекс, привязка</span>
+            </a><a href="/umnyj-dom/u/um/umnyj-dom-s-alisoj-chto-umeet.html" class="pb-related-card">
+                <span class="pb-related-title">Умный дом с Алисой: полный обзор возможностей и сценариев 2026</span>
+                <span class="pb-related-desc">Что умеет умный дом с Алисой? Голосовое управление светом, климатом, техникой и сценарии. Разбор сов</span>
+            </a><a href="/umnyj-dom/p/po/podklyuchenie-mini-smart-svitch.html" class="pb-related-card">
+                <span class="pb-related-title">Подключение мини смарт свитч: инструкция и настройка</span>
+                <span class="pb-related-desc">Полное руководство по установке мини смарт свитча в умный дом. Настройка Wi-Fi, подключение к прилож</span>
+            </a><a href="/umnyj-dom/s/sk/skachat-mi-khoum-ot-vevs.html" class="pb-related-card">
+                <span class="pb-related-title">Как скачать Mi Home от Vevs: кастомная прошивка и APK</span>
+                <span class="pb-related-desc">Полный гайд по установке модифицированного приложения Mi Home от Vevs. Как скачать, настроить регион</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

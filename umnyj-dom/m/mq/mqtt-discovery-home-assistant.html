@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>MQTT Discovery Home Assistant: настройка и примеры — Техно Гид</title>
+    <meta name="description" content="Полный гайд по MQTT Discovery для Home Assistant. Автоматическое добавление устройств, конфигурация YAML, решение проблем и примеры кода.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/m/mq/mqtt-discovery-home-assistant.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MQTT Discovery Home Assistant: настройка и примеры">
+    <meta property="og:description" content="Полный гайд по MQTT Discovery для Home Assistant. Автоматическое добавление устройств, конфигурация YAML, решение проблем и примеры кода.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">MQTT Discovery Home Assistant: настройка и примеры</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#принципы-работы-автоматического-обнаружения-устройств">Принципы работы автоматического обнаружения устройств</a></li><li><a href="#базовая-конфигурация-home-assistant-для-mqtt">Базовая конфигурация Home Assistant для MQTT</a></li><li><a href="#структура-сообщений-и-формат-json">Структура сообщений и формат JSON</a></li><li><a href="#примеры-настройки-для-популярных-типов-устройств">Примеры настройки для популярных типов устройств</a></li><li><a href="#отладка-и-мониторинг-mqtt-топиков">Отладка и мониторинг MQTT-топиков</a></li><li><a href="#расширенные-возможности-и-управление-версиями">Расширенные возможности и управление версиями</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/o/ot/otkrytie-vorot-s-telefona-prilozhenie.html">Как открыть ворота с телефона: приложения и умные системы</a></li><li><a href="/umnyj-dom/k/ka/kak-nastroit-umnyj-dom-s-alisoj.html">Как настроить умный дом с Алисой: полная инструкция</a></li><li><a href="/umnyj-dom/s/sh/shesterenka-dlya-robota-pylesosa.html">Шестеренка для робота-пылесоса: виды, ремонт и выбор</a></li><li><a href="/umnyj-dom/s/sk/skolko-trafika-potreblyaet-alisa.html">Сколько трафика потребляет Алиса: расход интернета на Яндекс Станции</a></li><li><a href="/umnyj-dom/p/po/pochemu-robot-pylesos-ne-edet-vpered.html">Робот-пылесос не едет вперед: причины и пошаговая диагностика</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Интеграция MQTT Discovery в Home Assistant: настройка и автоматизация</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#принципы-работы-автоматического-обнаружения-устройств">Принципы работы автоматического обнаружения устройств</a></li><li><a href="#базовая-конфигурация-home-assistant-для-mqtt">Базовая конфигурация Home Assistant для MQTT</a></li><li><a href="#структура-сообщений-и-формат-json">Структура сообщений и формат JSON</a></li><li><a href="#примеры-настройки-для-популярных-типов-устройств">Примеры настройки для популярных типов устройств</a></li><li><a href="#отладка-и-мониторинг-mqtt-топиков">Отладка и мониторинг MQTT-топиков</a></li><li><a href="#расширенные-возможности-и-управление-версиями">Расширенные возможности и управление версиями</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Современная экосистема умного дома строится на стабильности и простоте подключения новых устройств. Протокол <strong>MQTT</strong> (Message Queuing Telemetry Transport) давно стал стандартом де-факто для обмена данными между датчиками, контроллерами и управляющим сервером. Однако ручное добавление каждого устройства через файл конфигурации может стать рутинной задачей, особенно при масштабировании сети.</p>
+
+<p>Механизм <strong>MQTT Discovery</strong> решает эту проблему, позволяя устройствам самостоятельно сообщать о своем присутствии и характеристиках. В связке с платформой <em>Home Assistant</em> это превращает процесс интеграции в полностью автоматизированный поток. Вам больше не нужно прописывать каждый выключатель или датчик температуры вручную — достаточно отправить правильное сообщение в топик.</p>
+
+<p>В этом материале мы детально разберем, как работает автообнаружение, какие сообщения необходимы для корректной работы и как избежать распространенных ошибок при настройке. Понимание принципов работы <strong>MQTT Discovery</strong> откроет перед вами возможность легкого подключения кастомных устройств на базе ESP32, Arduino или любых других микроконтроллеров.</p>
+
+<h2 id="принципы-работы-автоматического-обнаружения-устройств">Принципы работы автоматического обнаружения устройств</h2>
+
+<p>В основе механизма лежит простая, но эффективная логика публикации сообщений в заранее определенный топик. Когда устройство подключается к брокеру, оно отправляет конфигурационную информацию в специальный раздел пространства имен, который <strong>Home Assistant</strong> постоянно мониторит.</p>
+
+<p>После получения такого сообщения сервер анализирует структуру JSON-объекта. Если данные соответствуют ожидаемому формату, система автоматически создает сущность (entity) с соответствующими атрибутами. Это значит, что датчик сразу появляется в интерфейсе, готовый к использованию в автоматизациях и на дашбордах.</p>
+
+<p>Ключевым моментом здесь является разделение конфигурации и состояния. Конфигурация отправляется один раз при старте устройства, тогда как данные о состоянии (температура, статус включения) публикуются в другой топик многократно по мере изменения значений.</p>
+
+<p>Такой подход снижает нагрузку на сеть и упрощает отладку. Если устройство перезагрузится, оно просто повторно отправит свои настройки, и <strong>Home Assistant</strong> восстановит связь без вмешательства пользователя.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Убедитесь, что ваш MQTT-брокер (например, <em>Mosquitto</em>) настроен на сохранение сообщений (retained messages). Если сообщение конфигурации не помечено как <code>retain</code>, Home Assistant может не увидеть устройство после перезагрузки сервера.</p>
+</blockquote>
+
+<h2 id="базовая-конфигурация-home-assistant-для-mqtt">Базовая конфигурация Home Assistant для MQTT</h2>
+
+<p>Прежде чем устройства начнут автоматически обнаруживаться, необходимо активировать соответствующую опцию в настройках интеграции MQTT. По умолчанию в современных версиях <em>Home Assistant</em> функция обнаружения включена, но требует проверки.</p>
+
+<p>Если вы используете ручную настройку через файл <code>configuration.yaml</code>, убедитесь, что параметр <code>discovery</code> установлен в значение <code>true</code>. Это критически важный шаг, без которого сервер будет игнорировать все входящие сообщения в топики обнаружения.</p>
+
+<pre><code>mqtt:
+<p>broker: 192.168.1.50</p>
+<p>username: user</p>
+<p>password: secret_password</p>
+<p>discovery: true</p>
+<p>discovery_prefix: homeassistant</code></pre></p>
+
+<p>Параметр <code>discovery_prefix</code> определяет префикс топика, по которому система ищет новые устройства. Стандартным значением является <code>homeassistant</code>, но его можно изменить для изоляции разных систем или тестирования.</p>
+
+<p>После изменения конфигурации обязательно перезагрузите сервер. Только после этого начнется прослушивание указанных топиков и регистрация новых сущностей.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка настроек MQTT</h4><label class="check-item"><input type="checkbox"><span>Включена опция discovery: true</span></label><label class="check-item"><input type="checkbox"><span>Указан верный префикс топика</span></label><label class="check-item"><input type="checkbox"><span>Брокер доступен по сети</span></label><label class="check-item"><input type="checkbox"><span>Пользователь имеет права на запись/чтение</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="структура-сообщений-и-формат-json">Структура сообщений и формат JSON</h2>
+
+<p>Для того чтобы <strong>Home Assistant</strong> корректно распознал устройство, сообщение должно содержать строго определенный набор полей. Минимально необходимый набор зависит от типа устройства: для выключателя нужны одни параметры, для сенсора температуры — другие.</p>
+
+<p>Каждое сообщение должно содержать уникальный <code>unique_id</code>. Этот идентификатор связывает физическое устройство с сущностью в системе. Если вы измените <code>unique_id</code>, система создаст новое устройство, а старое останется "осиротевшим" в базе данных.</p>
+
+<p>Также важно правильно указать топик состояния (<code>state_topic</code>). Именно оттуда сервер будет брать актуальные данные. Если топик указан неверно, устройство добавится, но будет отображать статус "недоступно".</p>
+
+<p>Рассмотрим пример структуры для умной лампочки. Обратите внимание на использование полей <code>name</code>, <code>command_topic</code> и <code>availability_topic</code>.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Описание</th>
+<th>Обязательно</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Человекочитаемое имя устройства</td>
+<td>Да</td>
+</tr>
+<tr>
+<td><code>unique_id</code></td>
+<td>Уникальный идентификатор (MAC или серийный номер)</td>
+<td>Да</td>
+</tr>
+<tr>
+<td><code>state_topic</code></td>
+<td>Топик для получения текущего состояния</td>
+<td>Да</td>
+</tr>
+<tr>
+<td><code>command_topic</code></td>
+<td>Топик для отправки команд управления</td>
+<td>Зависит от типа</td>
+</tr>
+<tr>
+<td><code>device</code></td>
+<td>Информация о самом устройстве (производитель, модель)</td>
+<td>Нет</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Группировка устройств осуществляется через объект <code>device</code>. Если несколько сенсоров указывают одинаковые данные в этом объекте (например, одинаковый <code>identifiers</code>), они будут сгруппированы в одну карточку устройства в интерфейсе.</p>
+
+<details class="pb-accordion"><summary>Формат payload для разных типов устройств</summary><div class="pb-accordion-body"><p>Для выключателей обычно используются строки "ON" и "OFF". Для датчиков температуры payload должен содержать только числовое значение, например "24.5". Использование JSON внутри payload состояния возможно, но требует настройки value_template.</p></div></details>
+
+<h2 id="примеры-настройки-для-популярных-типов-устройств">Примеры настройки для популярных типов устройств</h2>
+
+<p>Разберем конкретные примеры конфигурации для разных классов устройств. Это поможет вам понять разницу в подходах к настройке бинарных сенсоров, светильников и климатического оборудования.</p>
+
+<p>Для <strong>бинарного сенсора</strong> (например, датчик открытия двери) критически важно указать, какое значение соответствует открытому состоянию. По умолчанию система ожидает строку <code>ON</code>, но многие микроконтроллеры отправляют <code>1</code> или <code>true</code>.</p>
+
+<pre><code>{
+<p>"name": "Датчик Входной Двери",</p>
+<p>"unique_id": "door_sensor_001",</p>
+<p>"device_class": "door",</p>
+<p>"state_topic": "home/sensor/door/state",</p>
+<p>"payload_on": "1",</p>
+<p>"payload_off": "0",</p>
+<p>"device": {</p>
+<p>"identifiers": ["esp32_gateway_01"],</p>
+<p>"name": "Шлюз ESP32",</p>
+<p>"manufacturer": "Custom",</p>
+<p>"model": "ESP32-WROOM"</p>
+<p>}</p>
+<p>}</code></pre></p>
+
+<p>В случае с <em>светильниками</em> (light), добавляется поддержка яркости и цвета. Здесь используется более сложная структура, включающая <code>brightness_topic</code> и <code>rgb_topic</code>.</p>
+
+<p>Если вы используете кастомные прошивки типа <em>Tasmota</em> или <em>ESPhome</em>, они часто уже имеют встроенную поддержку discovery. Вам остается лишь включить соответствующую опцию в их веб-интерфейсе.</p>
+
+<ul>
+<li>🔌 <strong>Розетки:</strong> Требуют топиков для включения, выключения и потребления энергии.</li>
+<li>🌡️ <strong>Термостаты:</strong> Используют сложные топики для целевой и текущей температуры, а также режимов работы.</li>
+<li>💡 <strong>RGB-ленты:</strong> Необходима поддержка JSON-формата для передачи значений цвета.</li>
+<li>🔋 <strong>Датчики батареи:</strong> Отдельный класс сенсоров, отображающий процент заряда и статус низкого уровня.</li>
+</ul>
+
+<p>Правильная настройка типов устройств (<code>device_class</code>) улучшает визуальное отображение иконок в интерфейсе и позволяет использовать предопределенные автоматизации.</p>
+
+<div class="pb-poll" id="poll-bf7e5353"><div class="pb-poll-question">📊 Какое устройство вы планируете подключить первым?</div><div class="pb-poll-option" data-poll="bf7e5353" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Датчик температуры/влажности</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="bf7e5353" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Умная розетка 220В</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="bf7e5353" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">RGB-подсветка</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="bf7e5353" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Датчик протечки воды</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="bf7e5353" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Дверной контакт</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="отладка-и-мониторинг-mqtt-топиков">Отладка и мониторинг MQTT-топиков</h2>
+
+<p>Даже при правильной конфигурации могут возникать ошибки. Самым эффективным инструментом для диагностики является прослушивание топиков в реальном времени. Это позволяет увидеть, что именно отправляет устройство и как реагирует сервер.</p>
+
+<p>Вы можете использовать консольные утилиты, такие как <code>mosquitto_sub</code>, или встроенные инструменты в <em>Home Assistant</em>. В настройках интеграции MQTT есть раздел "Прослушивать топик", куда можно ввести <code>homeassistant/#</code> для захвата всех сообщений обнаружения.</p>
+
+<p>Частой проблемой является несоответствие формата данных. Например, устройство отправляет число <code>25</code>, а шаблон ожидает строку. В логах сервера это отражается как ошибка обработки сообщения.</p>
+
+<p>Также стоит обращать внимание на права доступа пользователя MQTT. Если аккаунт, от имени которого подключается устройство, не имеет прав на публикацию в топики <code>homeassistant/...</code>, обнаружение не сработает.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При отладке избегайте использования символов подстановки (wildcards) в топиках конфигурации для записи. Это может привести к циклическим сообщениям и перегрузке сети. Используйте конкретные пути.</p>
+</blockquote>
+
+<h2 id="расширенные-возможности-и-управление-версиями">Расширенные возможности и управление версиями</h2>
+
+<p>Протокол MQTT Discovery постоянно развивается. С выходом новых версий <strong>Home Assistant</strong> добавляются новые типы устройств и поля конфигурации. Важно следить за актуальностью документации, так как устаревшие параметры могут перестать поддерживаться.</p>
+
+<p>Одной из продвинутых функций является возможность обновления конфигурации "на лету". Если устройство изменит свои возможности (например, после обновления прошивки), оно может отправить новое сообщение discovery, и сервер обновит сущность без перезагрузки.</p>
+
+<p>Для управления сложными системами рекомендуется использовать префиксы, указывающие на локацию или функциональную зону. Это упрощает навигацию в списке сущностей, когда их количество превышает сотню.</p>
+
+<p>Использование <code>availability_topic</code> позволяет системе точно знать, когда устройство онлайн или офлайн. Это критично для создания надежных автоматизаций, которые не должны срабатывать, если датчик потерял связь.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте инструмент MQTT Explorer для визуального анализа дерева топиков. Он наглядно показывает структуру сообщений и помогает быстро найти ошибки в иерархии тем.</p></aside>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Уникальный ID (unique_id) — это якорь устройства в системе. Никогда не меняйте его без необходимости, иначе вы потеряете историю данных и привязанные автоматизации.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Почему устройство появляется в Home Assistant, но показывает статус "Недоступно"?</summary>
+<p>Чаще всего проблема заключается в топике состояния (<code>state_topic</code>). Устройство может успешно отправить конфигурацию, но не публиковать данные в указанный топик состояния. Проверьте логи устройства и убедитесь, что оно отправляет payload в правильный адрес.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать MQTT Discovery без интернета?</summary>
+<p>Да, абсолютно. MQTT Discovery работает исключительно в локальной сети между вашим брокером и сервером Home Assistant. Интернет требуется только для первоначальной установки ПО или загрузки обновлений, но не для работы протокола.</p>
+</details>
+
+<details>
+<summary>Как удалить устройство, которое было добавлено через Discovery?</summary>
+<p>Для удаления нужно отправить пустое сообщение (NULL payload) в тот же топик конфигурации, где было отправлено сообщение обнаружения. После этого устройство исчезнет из интерфейса. Просто удаление сущности в UI не предотвратит его повторное появление при следующем старте устройства.</p>
+</details>
+
+<details>
+<summary>Поддерживает ли Home Assistant старые версии MQTT Discovery?</summary>
+<p>Система стремится к обратной совместимости, но некоторые устаревшие форматы сообщений могут быть депрекейтированы. Рекомендуется обновлять прошивки устройств до версий, поддерживающих текущий стандарт Home Assistant MQTT API.</p>
+</details>
+
+<details>
+<summary>В чем разница между manual YAML и MQTT Discovery?</summary>
+<p>Ручная настройка в YAML дает полный контроль и стабильность, так как конфигурация хранится в файлах. Discovery удобен для динамически меняющихся сетей и устройств, которые могут часто переподключаться или менять адреса. Оптимальный вариант — гибрид: критические устройства в YAML, периферия в Discovery.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/o/ot/otkrytie-vorot-s-telefona-prilozhenie.html" class="pb-related-card">
+                <span class="pb-related-title">Как открыть ворота с телефона: приложения и умные системы</span>
+                <span class="pb-related-desc">Полное руководство по управлению воротами со смартфона. Обзор приложений, протоколов связи, настройк</span>
+            </a><a href="/umnyj-dom/k/ka/kak-nastroit-umnyj-dom-s-alisoj.html" class="pb-related-card">
+                <span class="pb-related-title">Как настроить умный дом с Алисой: полная инструкция</span>
+                <span class="pb-related-desc">Узнайте, как подключить и настроить Яндекс Станцию, добавить устройства и создать сценарии для умног</span>
+            </a><a href="/umnyj-dom/s/sh/shesterenka-dlya-robota-pylesosa.html" class="pb-related-card">
+                <span class="pb-related-title">Шестеренка для робота-пылесоса: виды, ремонт и выбор</span>
+                <span class="pb-related-desc">Как заменить шестеренку в роботе-пылесосе? Виды редукторов, причины поломок, таблица совместимости и</span>
+            </a><a href="/umnyj-dom/s/sk/skolko-trafika-potreblyaet-alisa.html" class="pb-related-card">
+                <span class="pb-related-title">Сколько трафика потребляет Алиса: расход интернета на Яндекс Станции</span>
+                <span class="pb-related-desc">Детальный разбор потребления трафика голосовым помощником Алиса. Таблицы расходов, режимы экономии и</span>
+            </a><a href="/umnyj-dom/p/po/pochemu-robot-pylesos-ne-edet-vpered.html" class="pb-related-card">
+                <span class="pb-related-title">Робот-пылесос не едет вперед: причины и пошаговая диагностика</span>
+                <span class="pb-related-desc">Основные причины, почему робот-пылесос останавливается или едет назад. Инструкция по диагностике кол</span>
+            </a><a href="/umnyj-dom/p/po/pochemu-ne-rabotaet-sensornyj-vyklyuchatel.html" class="pb-related-card">
+                <span class="pb-related-title">Почему не работает сенсорный выключатель: причины и ремонт</span>
+                <span class="pb-related-desc">Почему сенсорный выключатель не реагирует на касание? Разбор поломок, настройки и способы ремонта св</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

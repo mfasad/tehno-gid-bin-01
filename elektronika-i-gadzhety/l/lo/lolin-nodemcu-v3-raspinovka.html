@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>LoLin NodeMCU V3 распиновка и особенности платы — Техно Гид</title>
+    <meta name="description" content="Подробная распиновка LoLin NodeMCU V3, схема подключения GPIO, питание и особенности работы с ESP8266. Таблица выводов и советы по прошивке.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/elektronika-i-gadzhety/l/lo/lolin-nodemcu-v3-raspinovka.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="LoLin NodeMCU V3 распиновка и особенности платы">
+    <meta property="og:description" content="Подробная распиновка LoLin NodeMCU V3, схема подключения GPIO, питание и особенности работы с ESP8266. Таблица выводов и советы по прошивке.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/elektronika-i-gadzhety/">Электроника и Гаджеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">LoLin NodeMCU V3 распиновка и особенности платы</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#общая-архитектура-и-питание-платы">Общая архитектура и питание платы</a></li><li><a href="#детальная-расшифровка-gpio-выводов">Детальная расшифровка GPIO выводов</a></li><li><a href="#таблица-соответствия-пинов-и-их-функций">Таблица соответствия пинов и их функций</a></li><li><a href="#особенности-работы-с-шим-и-прерываниями">Особенности работы с ШИМ и прерываниями</a></li><li><a href="#проблемы-совместимости-и-прошивка">Проблемы совместимости и прошивка</a></li><li><a href="#практические-советы-по-монтажу-и-эксплуатации">Практические советы по монтажу и эксплуатации</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/elektronika-i-gadzhety/k/ka/kak-zagruzit-programmu-na-arduino.html">Как загрузить программу на Arduino: пошаговая инструкция</a></li><li><a href="/elektronika-i-gadzhety/g/ga/galamart-podstavka-dlya-telefona.html">Галамарт: подставка для телефона — обзор моделей и советы</a></li><li><a href="/elektronika-i-gadzhety/k/ka/kak-vyglyadit-nokia-3310.html">Как выглядит Nokia 3310: Внешний вид, дизайн и особенности модели</a></li><li><a href="/elektronika-i-gadzhety/k/ku/kupit-umnuyu-palochku-dlya-chistki-ushej.html">Купить умную палочку для чистки ушей: рейтинг 2026</a></li><li><a href="/elektronika-i-gadzhety/k/ka/kak-razobrat-airpods-2-naushnik.html">Как разобрать AirPods 2: пошаговая инструкция по замене аккумулятора</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>LoLin NodeMCU V3 распиновка: полное руководство по подключению</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#общая-архитектура-и-питание-платы">Общая архитектура и питание платы</a></li><li><a href="#детальная-расшифровка-gpio-выводов">Детальная расшифровка GPIO выводов</a></li><li><a href="#таблица-соответствия-пинов-и-их-функций">Таблица соответствия пинов и их функций</a></li><li><a href="#особенности-работы-с-шим-и-прерываниями">Особенности работы с ШИМ и прерываниями</a></li><li><a href="#проблемы-совместимости-и-прошивка">Проблемы совместимости и прошивка</a></li><li><a href="#практические-советы-по-монтажу-и-эксплуатации">Практические советы по монтажу и эксплуатации</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Плата <em>LoLin NodeMCU V3</em> стала одним из самых популярных инструментов в арсенале любителей электроники и IoT-разработчиков. Эта микрокомпьютерная плата, построенная на базе чипа <strong>ESP8266</strong>, сочетает в себе компактность, встроенный модуль Wi-Fi и простоту программирования. Для тех, кто только начинает знакомство с миром микроконтроллеров, правильное понимание назначения выводов является критически важным этапом перед написанием первого кода.</p>
+
+<p>В отличие от классического Arduino, где распиновка стандартизирована и понятна интуитивно, плата NodeMCU имеет свои уникальные особенности нумерации и функциональности портов. Здесь совмещаются логические номера GPIO и физические контакты на плате, что часто вызывает путаницу у новичков. Если вы планируете подключать датчики, реле или дисплеи, вам необходимо точно знать, какой пин за что отвечает, чтобы избежать короткого замыкания или нестабильной работы устройства.</p>
+
+<p>В данном материале мы детально разберем схему соединений этой платы, обратим внимание на ограничения конкретных портов и дадим практические рекомендации по организации питания. Понимание архитектуры <em>LoLin</em> позволит вам избежать распространенных ошибок и создать надежные проекты умного дома или автоматизации.</p>
+
+<h2 id="общая-архитектура-и-питание-платы">Общая архитектура и питание платы</h2>
+
+<p>Основой платы является процессор <strong>ESP8266</strong>, который работает с напряжением 3.3 вольта. Это фундаментальное отличие от многих других платформ, и оно диктует строгие правила подключения периферии. На плате установлен стабилизатор напряжения, который позволяет подавать питание через разъем <code>Micro-USB</code> или внешний источник на пин <code>VIN</code>. Однако важно учитывать ток потребления: встроенный стабилизатор может не потянуть мощные нагрузки, если вы запитываете плату от USB-порта компьютера с низким током отдачи.</p>
+
+<p>При использовании внешнего источника питания через пин <code>VIN</code> или <code>5V</code>, необходимо соблюдать полярность и диапазон напряжений. Обычно допустимый диапазон составляет от 4.5 до 10 вольт, но оптимальным считается значение около <strong>5 вольт</strong>. Превышение этого порога может привести к перегреву стабилизатора и выходу платы из строя. Если вы используете батарею, убедитесь, что она способна выдать достаточный ток в пиковые моменты, когда модуль Wi-Fi переходит в режим активной передачи данных.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Никогда не подавайте напряжение 5 вольт напрямую на пины GPIO или пин <code>3V3</code>. Логические уровни микроконтроллера строго 3.3 вольта, и подача 5 вольт на сигнальные линии гарантированно выжжет чип ESP8266 мгновенно.</p>
+</blockquote>
+
+<p>Для проектов, требующих стабильной работы в автономном режиме, рекомендуется использовать отдельный источник питания для мощных потребителей (моторов, ярких светодиодных лент), оставляя плату только для управления. В этом случае обязательно соедините земли (<code>GND</code>) источника питания и платы, чтобы обеспечить общую.reference точку для сигналов.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте качественный USB-кабель с толстыми жилами для питания NodeMCU. Дешевые кабели для зарядки телефонов часто имеют высокое сопротивление и не способны передать необходимый ток для стабильной работы Wi-Fi модуля.</p></aside>
+
+<h2 id="детальная-расшифровка-gpio-выводов">Детальная расшифровка GPIO выводов</h2>
+
+<p>На корпусе платы <em>LoLin NodeMCU V3</em> нанесена маркировка, которая указывает номера GPIO (General Purpose Input/Output). Именно эти номера вы используете в коде при программировании на <strong>Arduino IDE</strong> или <em>Micropython</em>. Однако физическое расположение пинов на плате не всегда соответствует их логическому номеру, что требует внимательного изучения схемы. Некоторые выводы имеют двойное назначение или ограничения по использованию.</p>
+
+<p>Например, пин <code>D0</code> соответствует GPIO16 и часто используется для управления пробуждением из глубокого сна. Выводы <code>D1</code> и <code>D2</code> (GPIO5 и GPIO4) по умолчанию настроены как линии шины <strong>I2C</strong>, что делает их идеальными для подключения OLED-дисплеев и различных сенсоров без дополнительной настройки в коде. Это упрощает разработку, так как стандартные библиотеки уже "знают", куда подключать устройства.</p>
+
+<ul>
+<li>🔌 <strong>D3 (GPIO0)</strong>: Критически важный пин, определяющий режим загрузки. Если при включении платы этот пин притянут к земле (GND), контроллер переходит в режим прошивки.</li>
+<li>💡 <strong>D4 (GPIO2)</strong>: Часто соединен с встроенным светодиодом на плате. Обратите внимание, что логика работы инвертирована: подача LOW зажигает светодиод, а HIGH гасит его.</li>
+<li>📡 <strong>RX/TX (GPIO3/1)</strong>: Выводы для последовательного обмена данными UART. Используются для отладки через монитор порта и связи с другими модулями по протоколу UART.</li>
+</ul>
+
+<p>Существует ряд выводов, которые не рекомендуется использовать в качестве обычных цифровых входов или выходов в пользовательских проектах. К ним относятся <code>GPIO6</code> – <code>GPIO11</code>, которые зарезервированы для связи с флеш-памятью внутри модуля. Попытка использовать их может привести к зависанию системы или повреждению данных в памяти.</p>
+
+<div class="pb-poll" id="poll-0a7afa78"><div class="pb-poll-question">📊 Какой язык программирования вы используете для NodeMCU?</div><div class="pb-poll-option" data-poll="0a7afa78" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">C++ (Arduino IDE)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0a7afa78" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Lua (NodeMCU Firmware)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0a7afa78" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Micropython</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0a7afa78" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">PlatformIO</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="таблица-соответствия-пинов-и-их-функций">Таблица соответствия пинов и их функций</h2>
+
+<p>Для удобства работы разработчиков была составлена таблица соответствия маркировки на плате, номеров GPIO и их особых функций. Эта справка поможет вам быстро сориентироваться при проектировании схемы подключения. Помните, что не все пины поддерживают функцию <strong>ШИМ</strong> (PWM) или прерывания, поэтому выбор порта зависит от конкретной задачи.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Маркировка на плате</th>
+<th>Номер GPIO</th>
+<th>Особые функции</th>
+<th>Рекомендация</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D0</td>
+<td>GPIO 16</td>
+<td>Wake (пробуждение)</td>
+<td>Только выход, нет прерываний</td>
+</tr>
+<tr>
+<td>D1</td>
+<td>GPIO 5</td>
+<td>I2C SCL</td>
+<td>Универсальный, подходит для датчиков</td>
+</tr>
+<tr>
+<td>D2</td>
+<td>GPIO 4</td>
+<td>I2C SDA</td>
+<td>Универсальный, подходит для датчиков</td>
+</tr>
+<tr>
+<td>D3</td>
+<td>GPIO 0</td>
+<td>Boot Mode</td>
+<td>Не использовать как выход (влияет на загрузку)</td>
+</tr>
+<tr>
+<td>D4</td>
+<td>GPIO 2</td>
+<td>Встроенный LED</td>
+<td>Может мигать при загрузке, инвертированная логика</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>При использовании аналогового входа следует быть предельно осторожным. На плате <em>LoLin NodeMCU V3</em> имеется только один аналоговый пин, обозначенный как <code>A0</code>. В отличие от Arduino, здесь нет множества аналоговых входов. Более того, диапазон измеряемого напряжения на этом пине ограничен значением от 0 до 1.0 вольта, хотя на некоторых ревизиях платы стоит делитель напряжения, позволяющий измерять до 3.3 вольт.</p>
+
+<p>Если ваш датчик выдает напряжение выше 1 вольта, прямое подключение к пину <code>A0</code> без делителя напряжения приведет к некорректным показаниям или повреждению АЦП микроконтроллера. Для измерения напряжения батарей или более высоких сигналов необходимо использовать резистивный делитель.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Пин A0 чувствителен к шумам. Если вы получаете нестабильные показания, попробуйте добавить конденсатор малой емкости между пином A0 и землей, а также усреднять значения в программном коде.</p>
+</blockquote>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед подключением датчиков</h4><label class="check-item"><input type="checkbox"><span>Узнать рабочее напряжение датчика</span></label><label class="check-item"><input type="checkbox"><span>Проверить наличие подтягивающих резисторов</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в совместимости уровней логики</span></label><label class="check-item"><input type="checkbox"><span>Проверить потребление тока датчиком</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="особенности-работы-с-шим-и-прерываниями">Особенности работы с ШИМ и прерываниями</h2>
+
+<p>Функция <strong>ШИМ</strong> (Pulse Width Modulation) позволяет эмулировать аналоговый сигнал, быстро включая и выключая цифровой выход. Это необходимо для управления яркостью светодиодов, скоростью моторов или генерации звуковых сигналов. На плате NodeMCU V3 программная реализация ШИМ доступна практически на всех цифровых выводах, за исключением некоторых зарезервированных линий.</p>
+
+<p>В коде Arduino это реализуется функцией <code>analogWrite(pin, value)</code>, где значение варьируется от 0 до 1023 (в некоторых библиотеках до 255). Частота ШИМ по умолчанию составляет около 1 кГц, но ее можно изменить программно, если требуется управление специфическими устройствами, такими как сервоприводы, которым нужна частота 50 Гц.</p>
+
+<p>Аппаратные прерывания позволяют микроконтроллеру мгновенно реагировать на изменение состояния пина, не дожидаясь прохождения основного цикла программы <code>loop()</code>. Это критически важно для обработки нажатий кнопок или считывания импульсов с энкодеров. Однако, как упоминалось ранее, пин <code>D0 (GPIO16)</code> не поддерживает функцию аппаратного прерывания в стандартном ядре ESP8266.</p>
+
+<details class="pb-accordion"><summary>Почему ШИМ работает нестабильно на некоторых частотах?</summary><div class="pb-accordion-body"><p>Аппаратная реализация ШИМ в ESP8266 имеет ограничения. При установке слишком высокой частоты или использовании большого количества каналов одновременно, процессор может не успевать обрабатывать таймеры, что приводит к мерцанию или сбоям в работе Wi-Fi стека.</p></div></details>
+
+<p>При проектировании схем с прерываниями рекомендуется использовать внешние подтягивающие резисторы, даже если микроконтроллер имеет внутренние. Это обеспечивает более надежную защиту от ложных срабатываний, вызванных электромагнитными наводками, особенно если провода к кнопке или датчику длинные.</p>
+
+<h2 id="проблемы-совместимости-и-прошивка">Проблемы совместимости и прошивка</h2>
+
+<p>Одной из частых проблем при начале работы с <em>LoLin NodeMCU V3</strong> является невозможность загрузки скетча. Компьютер может не видеть плату в диспетчере устройств, или процесс загрузки завершается ошибкой. Чаще всего причина кроется в отсутствии драйверов для USB-UART преобразователя, установленного на плате. В разных ревизиях могут использоваться чипы <code>CH340</code>, <code>CP2102</code> или <code>FT232</code>.</p>
+
+<p>Если драйверы установлены, но загрузка не идет, проверьте настройки в среде разработки. Необходимо выбрать правильную плату (обычно "NodeMCU 1.0 (ESP-12E Module)") и соответствующий порт. Также важно установить правильную скорость передачи данных (Baud Rate). Для ESP8266 стандартной скоростью загрузки является <code>115200</code> или <code>921600</code> бит/сек.</p>
+
+<pre><code>void setup() {
+<p>Serial.begin(115200);</p>
+<p>pinMode(LED_BUILTIN, OUTPUT);</p>
+<p>}</p>
+
+<p>void loop() {</p>
+<p>digitalWrite(LED_BUILTIN, LOW);</p>
+<p>delay(1000);</p>
+<p>digitalWrite(LED_BUILTIN, HIGH);</p>
+<p>delay(1000);</p>
+<p>}</code></pre></p>
+
+<p>Иногда вход в режим программирования требует ручного вмешательства. Если автоматический сброс не срабатывает, необходимо зажать кнопку <code>FLASH</code> (или подключить пин <code>D3</code> к земле), нажать и отпустить кнопку <code>RST</code> (или подать питание), а затем отпустить кнопку <code>FLASH</code>. После этого можно инициировать загрузку в IDE.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Успешная прошивка зависит от трех факторов: установленный драйвер конвертера, правильный выбор платы в IDE и корректный режим загрузки (GPIO0 должен быть низком уровне в момент старта).</p></aside>
+
+<h2 id="практические-советы-по-монтажу-и-эксплуатации">Практические советы по монтажу и эксплуатации</h2>
+
+<p>При сборке финального устройства не стоит полагаться только на макетную плату, если проект планируется к длительной эксплуатации. Контакты могут окисляться, а провода — отходить. Для надежных соединений лучше использовать пайку или качественные клеммники. Однако при пайке соблюдайте температурный режим: перегрев может отслоить дорожки или повредить сам чип ESP8266.</p>
+
+<p>Антенна на плате выполнена в виде дорожки на печатной плате. Для улучшения качества сигнала Wi-Fi старайтесь не закрывать эту область металлическими корпусами или экранирующими материалами без необходимости. Если вы помещаете плату в пластиковый корпус, убедитесь, что он не содержит металлических добавок, которые могут экранировать сигнал.</p>
+
+<ul>
+<li>🛡️ <strong>Защита от статики</strong>: ESP8266 чувствителен к электростатическому разряду. При работе в сухом помещении используйте антистатический браслет или касайтесь заземленного предмета перед касанием платы.</li>
+<li>🌡️ <strong>Тепловой режим</strong>: При активной передаче данных чип может ощутимо нагреваться. Обеспечьте минимальную вентиляцию в корпусе, особенно если плата работает в замкнутом пространстве.</li>
+<li>🔋 <strong>Энергосбережение</em>: Для батарейных проектов используйте режим глубокого сна (Deep Sleep), подключив пин <code>RST</code> к пину <code>D0 (GPIO16)</code>. Это позволит сократить потребление тока до микроампер.</li>
+</ul>
+
+<p>Помните, что характеристики и доступность определенных библиотек могут меняться с обновлением ядра ESP8266 в Arduino IDE. Всегда проверяйте документацию к используемым библиотекам на предмет совместимости с вашей версией прошивки.</p>
+
+<details>
+<summary>Можно ли использовать NodeMCU V3 с напряжением 5В на входах?</summary>
+<p>Нет, входы GPIO не толерантны к 5 вольтам. Максимальное допустимое напряжение на входах — 3.6В (номинально 3.3В). Для подключения датчиков с логикой 5В (например, некоторые модули Arduino) необходимо использовать делитель напряжения или преобразователь уровней.</p>
+</details>
+
+<details>
+<summary>Почему плата перезагружается при включении Wi-Fi?</summary>
+<p>Это классический признак недостаточного питания. Модуль Wi-Fi в момент подключения к сети потребляет пиковый ток до 300мА. Если USB-порт или блок питания не могут выдать такой ток, напряжение просаживается, и срабатывает защита или происходит сброс. Попробуйте другой кабель или источник питания.</p>
+</details>
+
+<details>
+<summary>Какой пин использовать для подключения реле?</summary>
+<p>Лучше всего использовать пины D1, D2, D5, D6, D7. Избегайте использования D0 (может мешать сну), D3 (влияет на загрузку) и D4 (встроенный светодиод может создавать паразитную нагрузку). Обязательно используйте транзисторный ключ или опторазвязку, так как пин не сможет напрямую запитать катушку реле.</p>
+</details>
+
+<details>
+<summary>В чем разница между NodeMCU V2 и V3?</summary>
+<p>Основное отличие заключается в габаритах и расположении некоторых компонентов. Версия V3 обычно немного уже и имеет измененную разводку антенны. Распиновка GPIO у них идентична, но физическое расстояние между рядами пинов может отличаться, что важно при использовании готовых щитов расширения (shields).</p>
+</details>
+
+<details>
+<summary>Как узнать, какой драйвер установлен на моей плате?</summary>
+<p>Подключите плату к ПК и откройте Диспетчер устройств в разделе "Порты (COM и LPT)". Если вы видите "Silicon Labs CP210x", значит у вас чип CP2102. Если "USB-SERIAL CH340", то соответственно CH340. Драйверы нужно скачивать с официальных сайтов производителей этих чипов.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/elektronika-i-gadzhety/k/ka/kak-zagruzit-programmu-na-arduino.html" class="pb-related-card">
+                <span class="pb-related-title">Как загрузить программу на Arduino: пошаговая инструкция</span>
+                <span class="pb-related-desc">Полный гайд по прошивке Arduino. Настройка IDE, выбор платы, драйверы и решение ошибок при загрузке </span>
+            </a><a href="/elektronika-i-gadzhety/g/ga/galamart-podstavka-dlya-telefona.html" class="pb-related-card">
+                <span class="pb-related-title">Галамарт: подставка для телефона — обзор моделей и советы</span>
+                <span class="pb-related-desc">Анализ ассортимента подставок для смартфонов в Галамарте. Выбираем надежный держатель для авто, офис</span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kak-vyglyadit-nokia-3310.html" class="pb-related-card">
+                <span class="pb-related-title">Как выглядит Nokia 3310: Внешний вид, дизайн и особенности модели</span>
+                <span class="pb-related-desc">Подробный обзор внешнего вида легендарного телефона Nokia 3310. Характеристики корпуса, дисплея, кла</span>
+            </a><a href="/elektronika-i-gadzhety/k/ku/kupit-umnuyu-palochku-dlya-chistki-ushej.html" class="pb-related-card">
+                <span class="pb-related-title">Купить умную палочку для чистки ушей: рейтинг 2026</span>
+                <span class="pb-related-desc">Как купить умную палочку для чистки ушей безопасно. Рейтинг моделей с камерами, выбор присадок, срав</span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kak-razobrat-airpods-2-naushnik.html" class="pb-related-card">
+                <span class="pb-related-title">Как разобрать AirPods 2: пошаговая инструкция по замене аккумулятора</span>
+                <span class="pb-related-desc">Пошаговое руководство по разборке наушников AirPods 2 поколения. Узнайте, как заменить аккумулятор и</span>
+            </a><a href="/elektronika-i-gadzhety/p/po/pochemu-odinakovye-chisla-na-chasakh.html" class="pb-related-card">
+                <span class="pb-related-title">Почему одинаковые числа на часах: значение ангельских чисел</span>
+                <span class="pb-related-desc">Узнайте, что значат одинаковые цифры на часах. Разбор значений 11:11, 22:22 и мистических совпадений</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

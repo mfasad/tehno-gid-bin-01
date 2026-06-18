@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Эмуляция выреза экрана Android (Cutout): Гайд для разработчиков — Техно Гид</title>
+    <meta name="description" content="Подробный разбор com.android.internal.display.cutout.emulation.corner. Настройка симуляции выреза для тестирования приложений в Android Studio.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/smartfony-i-planshety/c/co/com-android-internal-display-cutout-emulation-corner.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Эмуляция выреза экрана Android (Cutout): Гайд для разработчиков">
+    <meta property="og:description" content="Подробный разбор com.android.internal.display.cutout.emulation.corner. Настройка симуляции выреза для тестирования приложений в Android Studio.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-nav-active">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/smartfony-i-planshety/">Смартфоны и Планшеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Эмуляция выреза экрана Android (Cutout): Гайд для разработчиков</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#что-такое-display-cutout-и-зачем-нужна-эмуляция">Что такое Display Cutout и зачем нужна эмуляция</a></li><li><a href="#типы-эмуляции-вырезов-в-настройках-разработчика">Типы эмуляции вырезов в настройках разработчика</a></li><li><a href="#использование-adb-для-управления-эмуляцией">Использование ADB для управления эмуляцией</a></li><li><a href="#программная-обработка-вырезов-в-коде-приложения">Программная обработка вырезов в коде приложения</a></li><li><a href="#сравнение-режимов-эмуляции-и-реальных-устройств">Сравнение режимов эмуляции и реальных устройств</a></li><li><a href="#частые-ошибки-при-тестировании-интерфейсов">Частые ошибки при тестировании интерфейсов</a></li><li><a href="#faq-вопросы-и-ответы-по-эмуляции-выреза">FAQ: Вопросы и ответы по эмуляции выреза</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/smartfony-i-planshety/k/ka/kak-uznat-proslushivaetsya-li-moj-telefon-android.html">Как узнать прослушивается ли телефон Андроид: 7 признаков</a></li><li><a href="/smartfony-i-planshety/p/pl/plokho-slyshno-v-telefone-pri-razgovore-xiaomi.html">Плохо слышно в телефоне при разговоре Xiaomi: причины и решение</a></li><li><a href="/smartfony-i-planshety/c/ch/chekhol-na-telefon-svoimi-rukami-iz-kozhi.html">Чехол на телефон своими руками из кожи: пошаговая инструкция</a></li><li><a href="/smartfony-i-planshety/p/pr/programma-dlya-opredeleniya-koordinat-na-mestnosti-dlya-android.html">Топ программ для GPS координат на Андроид: обзор и сравнение</a></li><li><a href="/smartfony-i-planshety/k/ka/kak-razblokirovat-ajfon-esli-zabyl-parol-blokirovki-ekrana-4.html">Как разблокировать iPhone 4 при забытом пароле: полное руководство</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Эмуляция выреза экрана в Android: com.android.internal.display.cutout.emulation.corner</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#что-такое-display-cutout-и-зачем-нужна-эмуляция">Что такое Display Cutout и зачем нужна эмуляция</a></li><li><a href="#типы-эмуляции-вырезов-в-настройках-разработчика">Типы эмуляции вырезов в настройках разработчика</a></li><li><a href="#использование-adb-для-управления-эмуляцией">Использование ADB для управления эмуляцией</a></li><li><a href="#программная-обработка-вырезов-в-коде-приложения">Программная обработка вырезов в коде приложения</a></li><li><a href="#сравнение-режимов-эмуляции-и-реальных-устройств">Сравнение режимов эмуляции и реальных устройств</a></li><li><a href="#частые-ошибки-при-тестировании-интерфейсов">Частые ошибки при тестировании интерфейсов</a></li><li><a href="#faq-вопросы-и-ответы-по-эмуляции-выреза">FAQ: Вопросы и ответы по эмуляции выреза</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Современный рынок мобильных устройств диктует свои правила дизайна интерфейсов, где безрамочные экраны и нестандартные формы дисплеев стали нормой. Разработчикам приложений приходится сталкиваться с вызовами, связанными с отображением контента в условиях, когда часть экрана занята камерой, датчиками или имеет скругленные углы. Одним из ключевых инструментов для решения этой задачи является системная функция эмуляции вырезов, доступная через настройки отладки.</p>
+
+<p>Параметр <code>com.android.internal.display.cutout.emulation.corner</code> представляет собой специфическую команду или опцию, позволяющую имитировать поведение системы при наличии скругленных углов или специфических вырезов в верхней части дисплея. Это критически важный этап тестирования, который помогает избежать ситуаций, когда текст или кнопки оказываются перекрыты аппаратными элементами смартфона. Понимание работы этого механизма необходимо каждому, кто создает качественный софт под платформу <em>Android</em>.</p>
+
+<p>В этой статье мы детально разберем, как работает внутренняя эмуляция выреза, какие типы симуляции доступны в среде разработчика и как правильно использовать эти инструменты для проверки верстки вашего приложения. Мы рассмотрим технические аспекты реализации через ADB и графический интерфейс, а также обсудим распространенные ошибки, возникающие при игнорировании зон отступа (cutout margins).</p>
+
+<h2 id="что-такое-display-cutout-и-зачем-нужна-эмуляция">Что такое Display Cutout и зачем нужна эмуляция</h2>
+
+<p><strong>Display Cutout</strong> (вырез экрана) — это область дисплея, которая не может использоваться для отображения контента приложения из-за физических ограничений устройства. Обычно в этой зоне располагаются фронтальная камера, динамик, датчики приближения и освещенности. Система <em>Android</em> начиная с версии 9 (Pie) предоставляет API для работы с этими зонами, позволяя приложениям корректно размещать элементы интерфейса.</p>
+
+<p>Однако физическое наличие выреза есть не у всех тестовых устройств. Именно здесь на сцену выходит функция эмуляции. Она позволяет программно «нарисовать» вырез на экране обычного монитора или планшета, чтобы проверить, как ведет себя ваш код. Использование команды <code>com.android.internal.display.cutout.emulation.corner</code> или аналогичных строк симуляции помогает увидеть проблему до того, как приложение попадет к пользователю.</p>
+
+<p>Без правильной обработки вырезов интерфейс может выглядеть сломанным: важные кнопки могут уйти за край видимой области, а статус-бар может наложиться на контент. Эмуляция дает возможность протестировать сценарии для разных форм-факторов, включая устройства с «челкой», отверстиями в экране (hole-punch) и сильно скругленными углами корпуса.</p>
+
+<blockquote>⚠️ Внимание: Эмуляция выреза влияет только на отображение в текущей сессии отладки. Перезагрузка устройства или эмулятора может сбросить эти настройки, если они не зафиксированы в конфигурации образа системы.</blockquote>
+
+<h2 id="типы-эмуляции-вырезов-в-настройках-разработчика">Типы эмуляции вырезов в настройках разработчика</h2>
+
+<p>В меню «Для разработчиков» (Developer Options) современных версий Android_hidden скрыт раздел, посвященный симуляции выреза экрана. Здесь пользователь может выбрать один из нескольких (preset) режимов. Каждый режим имитирует конкретный стиль аппаратного исполнения экрана популярными вендорами.</p>
+
+<p>Система предлагает различные варианты, от классической «челки» до минималистичных отверстий. Выбор конкретного типа зависит от того, под какие устройства вы оптимизируете свое приложение. Например, режим <em>Corner</em> часто используется для проверки поведения интерфейса на устройствах, где важны именно угловые зоны отображения, хотя термин может варьироваться в зависимости от локализации и версии прошивки.</p>
+
+<p>Основные типы эмуляции, доступные в стандартном наборе:</p>
+<ul>
+<li>📱 <strong>Double</strong>: Имитирует широкий вырез по центру верхней части, характерный для ранних моделей с «челкой».</li>
+<li>🕳️ <strong>Hole</strong>: Симулирует небольшое круглое отверстие для камеры, популярное в современных смартфонах среднего и флагманского сегмента.</li>
+<li>🔳 <strong>Punchhole</strong>: Вариант с отверстием, смещенным в угол экрана, что требует особой проверки расположения виджетов.</li>
+<li>🛑 <strong>Tall</strong>: Высокий и узкий вырез, встречающийся в некоторых моделях, где датчики расположены вертикально.</li>
+</ul>
+
+<p>Активация любого из этих режимов мгновенно перерисовывает системные окна, добавляя черную область (или область с затемнением), которую приложение должно обходить. Это позволяет визуально оценить работу <code>WindowInsets</code> — механизма, сообщающего приложению о безопасных зонах экрана.</p>
+
+<div class="pb-poll" id="poll-2296dfa5"><div class="pb-poll-question">📊 Какой тип выреза чаще всего встречается в ваших тестах?</div><div class="pb-poll-option" data-poll="2296dfa5" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Двойная челка</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="2296dfa5" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Отверстие по центру</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="2296dfa5" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Отверстие в углу</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="2296dfa5" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Без выреза (полный экран)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="использование-adb-для-управления-эмуляцией">Использование ADB для управления эмуляцией</h2>
+
+<p>Для автоматизации тестов и работы без графического интерфейса идеально подходит утилита <strong>Android Debug Bridge (ADB)</strong>. С ее помощью можно принудительно включить эмуляцию выреза, указав конкретный тип через командную строку. Это особенно полезно при написании скриптов для CI/CD пайплайнов, где нужно быстро прогнать тесты на разных конфигурациях экрана.</p>
+
+<p>Команда для установки типа выреза выглядит следующим образом. Вам необходимо передать строковое значение, соответствующее нужному типу эмуляции. Хотя в запросе упоминается <code>corner</code>, стандартные значения в ADB чаще всего соответствуют названиям пресетов (double, hole, punchhole, tall). Однако в некоторых кастомных сборках или специфических эмуляторах могут встречаться уникальные идентификаторы.</p>
+
+<pre><code>adb shell settings put global display_cutout_emulation corner</code></pre>
+
+<p>Если вы хотите сбросить эмуляцию и вернуть экран в исходное состояние, используйте команду со значением <code>none</code>. Это отключит все программные наложения вырезов.</p>
+
+<pre><code>adb shell settings put global display_cutout_emulation none</code></pre>
+
+<p> В некоторых корпоративных средах или на устройствах с заблокированным загрузчиком выполнение этих команд может быть ограничено политиками безопасности.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к тестированию через ADB</h4><label class="check-item"><input type="checkbox"><span>Включить отладку по USB на устройстве</span></label><label class="check-item"><input type="checkbox"><span>Установить драйверы ADB на ПК</span></label><label class="check-item"><input type="checkbox"><span>Подключить устройство кабелем</span></label><label class="check-item"><input type="checkbox"><span>Проверить соединение командой adb devices</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="программная-обработка-вырезов-в-коде-приложения">Программная обработка вырезов в коде приложения</h2>
+
+<p>Просто увидеть вырез недостаточно — приложение должно уметь реагировать на его наличие. Для этого в Android используется класс <code>WindowInsets</code> и метод <code>getDisplayCutout</code>. Разработчик должен запросить систему предоставить информацию о безопасных зонах, чтобы разместить контент внутри них или обойти их.</p>
+
+<p>Начиная с Android 10 и выше, рекомендуется использовать новые API для более точного контроля. Вы можете установить флаг <code>LAYOUT_IN_DISPLAY_CUTOUT_MODE</code> в параметрах окна активности. Это позволяет контенту заходить за пределы выреза (например, для полноэкранного видео) или строго ограничиваться безопасной областью.</p>
+
+<p>Пример кода для получения отступов выреза:</p>
+<pre><code>WindowInsets insets = view.getRootWindowInsets;
+<p>if (insets!= null) {</p>
+<p>DisplayCutout cutout = insets.getDisplayCutout;</p>
+<p>if (cutout!= null) {</p>
+<p>int safeInsetTop = cutout.getSafeInsetTop;</p>
+<p>// Использование safeInsetTop для отступа контента</p>
+<p>}</p>
+<p>}</p>
+</code></pre>
+
+<p>Игнорирование этих отступов приводит к тому, что пользователь не видит часть интерфейса. Например, кнопка «Закрыть» может оказаться прямо под камерой, что делает ее невидимой и некликабельной. Тестирование с включенной эмуляцией <code>corner</code> или другими типами помогает выявить такие баги на ранней стадии.</p>
+
+<details class="pb-accordion"><summary>Как работает флаг LAYOUT_IN_DISPLAY_CUTOUT_MODE?</summary><div class="pb-accordion-body"><p>Этот флаг сообщает системе, насколько агрессивно приложение хочет использовать пространство экрана. Значение SHORT_EDGES позволяет контенту заходить за вырез только если он находится на короткой стороне экрана (обычно сверху), а NEVER запрещает любой контент в области выреза.</p></div></details>
+
+<h2 id="сравнение-режимов-эмуляции-и-реальных-устройств">Сравнение режимов эмуляции и реальных устройств</h2>
+
+<p>Хотя эмуляция является мощным инструментом, она не всегда на 100% соответствует поведению реального железа. Различия могут касаться не только формы выреза, но и поведения системы при повороте экрана, работы с несколькими окнами и специфических жестов навигации.</p>
+
+<p>В таблице ниже приведено сравнение основных характеристик эмуляции и реальных сценариев использования:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Характеристика</th>
+<th>Эмуляция (Settings/ADB)</th>
+<th>Реальное устройство</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Форма выреза</td>
+<td>Стандартизированные пресеты (Rect, Circle)</td>
+<td>Уникальная геометрия каждого вендора</td>
+</tr>
+<tr>
+<td>Производительность</td>
+<td>Минимальное влияние на FPS</td>
+<td>Возможное влияние рендеринга в зоне выреза</td>
+</tr>
+<tr>
+<td>Поворот экрана</td>
+<td>Идеальная симметрия</td>
+<td>Зависит от ориентации датчиков и прошивки</td>
+</tr>
+<tr>
+<td>Темная тема</td>
+<td>Черный цвет выреза</td>
+<td>Может сливаться с рамкой корпуса</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Особое внимание стоит уделить скругленным углам. Параметр, связанный с <em>corner</em>, часто пытается имитировать не просто вырез сверху, а общую форму видимой области. На реальных устройствах скругления могут «съедать» пиксели по всему периметру, что требует проверки угловых элементов интерфейса, таких как плавающие кнопки действия (FAB).</p>
+
+<blockquote>⚠️ Внимание: Интерфейс настроек разработчика и доступные команды ADB могут изменяться с выходом новых версий Android. Всегда сверяйте актуальные значения параметров в официальной документации Google для вашей целевой версии API.</blockquote>
+
+<h2 id="частые-ошибки-при-тестировании-интерфейсов">Частые ошибки при тестировании интерфейсов</h2>
+
+<p>Одной из самых распространенных ошибок является жесткая привязка элементов интерфейса к верхнему краю экрана без учета <code>systemBarPadding</code>. Когда включается эмуляция выреза, такие элементы мгновенно перекрываются черной областью. Правильный подход — использовать <code>ConstraintLayout</code> с привязкой к направляющим (Guidelines) или учитывать отступы окна.</p>
+
+<p>Другая проблема возникает при использовании полноэкранных изображений или видео. Если не настроить режим отображения выреза правильно, система может автоматически добавить черные полосы по бокам или сверху, нарушаяность (immersion) опыта. Для медиа-контента часто требуется режим <code>LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES</code>.</p>
+
+<p>Также разработчики часто забывают тестировать ландшафтную ориентацию. В горизонтальном режиме вырез может оказаться сбоку, и если логика приложения не учитывает смену ориентации отступов, интерфейс «поедет». Эмуляция позволяет быстро переключать ориентацию и проверять адаптивность верстки.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте инструмент Layout Inspector в Android Studio в реальном времени. Он показывает текущие отступы (padding) и размеры выреза прямо на макете, что упрощает отладку без постоянного запуска приложения на устройстве.</p></aside>
+
+<h2 id="faq-вопросы-и-ответы-по-эмуляции-выреза">FAQ: Вопросы и ответы по эмуляции выреза</h2>
+
+<details>
+<summary>Как убрать черную полосу выреза после тестов?</summary>
+<p>Чтобы отключить эмуляцию, зайдите в «Настройки» → «Для разработчиков» → «Эмуляция выреза экрана» и выберите значение «Нет» (None). Либо выполните команду ADB: <code>adb shell settings put global display_cutout_emulation none</code>.</p>
+</details>
+
+<details>
+<summary>Почему эмуляция не работает на моем эмуляторе Android Studio?</summary>
+<p>Убедитесь, что вы используете образ системы (System Image) с уровнем API 28 (Android 9) или выше. Также проверьте, что в конфигурации эмулятора (Advanced Settings) выбрана опция «Enable Window > Display cutout» или аналогичная настройка скина устройства.</p>
+</details>
+
+<details>
+<summary>Можно ли эмулировать вырез на физическом устройстве без root-прав?</summary>
+<p>Да, на большинстве устройств эта функция доступна через меню «Для разработчиков», которое активируется стандартным способом (нажатием на номер сборки). Root-права требуются только для глубокой модификации системных файлов, но не для стандартной эмуляции через settings.</p>
+</details>
+
+<details>
+<summary>Что означает ошибка"Unknown value" при вводе команды ADB?</summary>
+<p>Это значит, что введенное значение (например, <code>corner</code>) не поддерживается конкретной версией прошивки вашего устройства. Попробуйте использовать стандартные значения: <code>double</code>, <code>hole</code>, <code>punchhole</code>, <code>tall</code>.</p>
+</details>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Корректная обработка Display Cutout — это не просто визуальное исправление, а требование гайдлайнов Material Design для обеспечения доступности и удобства использования приложения на любых современных смартфонах.</p></aside></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/smartfony-i-planshety/k/ka/kak-uznat-proslushivaetsya-li-moj-telefon-android.html" class="pb-related-card">
+                <span class="pb-related-title">Как узнать прослушивается ли телефон Андроид: 7 признаков</span>
+                <span class="pb-related-desc">Проверьте свой смартфон на прослушку. Инструкция, как найти шпионские программы, удалить вирусы и за</span>
+            </a><a href="/smartfony-i-planshety/p/pl/plokho-slyshno-v-telefone-pri-razgovore-xiaomi.html" class="pb-related-card">
+                <span class="pb-related-title">Плохо слышно в телефоне при разговоре Xiaomi: причины и решение</span>
+                <span class="pb-related-desc">Разбираем, почему плохо слышно в Xiaomi: динамик, гарнитура или сеть. Полный гайд по устранению шума</span>
+            </a><a href="/smartfony-i-planshety/c/ch/chekhol-na-telefon-svoimi-rukami-iz-kozhi.html" class="pb-related-card">
+                <span class="pb-related-title">Чехол на телефон своими руками из кожи: пошаговая инструкция</span>
+                <span class="pb-related-desc">Как сделать кожаный чехол для смартфона самостоятельно. Выбор кожи, инструменты, выкройка и пошив. М</span>
+            </a><a href="/smartfony-i-planshety/p/pr/programma-dlya-opredeleniya-koordinat-na-mestnosti-dlya-android.html" class="pb-related-card">
+                <span class="pb-related-title">Топ программ для GPS координат на Андроид: обзор и сравнение</span>
+                <span class="pb-related-desc">Лучшие приложения для определения точных координат на местности для Android. Сравнение функций, точн</span>
+            </a><a href="/smartfony-i-planshety/k/ka/kak-razblokirovat-ajfon-esli-zabyl-parol-blokirovki-ekrana-4.html" class="pb-related-card">
+                <span class="pb-related-title">Как разблокировать iPhone 4 при забытом пароле: полное руководство</span>
+                <span class="pb-related-desc">Узнайте, как разблокировать айфон 4 если забыл пароль блокировки экрана. Пошаговая инструкция по сбр</span>
+            </a><a href="/smartfony-i-planshety/k/ka/kak-na-ajfone-vosstanovit-udalennye-kontakty.html" class="pb-related-card">
+                <span class="pb-related-title">Как восстановить удаленные контакты на iPhone: 4 рабочих способа</span>
+                <span class="pb-related-desc">Удалили контакты с айфона? Узнайте, как вернуть номера из iCloud, iTunes, SIM-карты или папки «Недав</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

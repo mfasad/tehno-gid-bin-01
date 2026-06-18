@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Arduino Nano: выбор программатора в Arduino IDE — Техно Гид</title>
+    <meta name="description" content="Какой программатор выбрать для Arduino Nano в настройках IDE? Разбор CH340 и FT232, драйверы и решение ошибок загрузки.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/elektronika-i-gadzhety/a/ar/arduino-nano-kakoj-programmator-vybrat-v-nastrojkakh-ide.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Arduino Nano: выбор программатора в Arduino IDE">
+    <meta property="og:description" content="Какой программатор выбрать для Arduino Nano в настройках IDE? Разбор CH340 и FT232, драйверы и решение ошибок загрузки.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/elektronika-i-gadzhety/">Электроника и Гаджеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Arduino Nano: выбор программатора в Arduino IDE</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#архитектура-платы-и-роль-usb-интерфейса">Архитектура платы и роль USB-интерфейса</a></li><li><a href="#настройка-среды-arduino-ide-для-разных-версий">Настройка среды Arduino IDE для разных версий</a></li><li><a href="#проблема-old-bootloader-и-объем-памяти">Проблема «Old Bootloader» и объем памяти</a></li><li><a href="#установка-драйверов-для-чипов-ch340-и-ch341">Установка драйверов для чипов CH340 и CH341</a></li><li><a href="#решение-типичных-ошибок-загрузки-скетча">Решение типичных ошибок загрузки скетча</a></li><li><a href="#сравнение-программаторов-и-альтернативные-методы">Сравнение программаторов и альтернативные методы</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/elektronika-i-gadzhety/r/ra/razborka-robota-pylesosa-xiaomi-vacuum-mop-essential.html">Разборка робота-пылесоса Xiaomi Vacuum Mop Essential: Инструкция по чистке</a></li><li><a href="/elektronika-i-gadzhety/m/mo/modul-dlya-besprovodnoj-zaryadki.html">Модуль для беспроводной зарядки: выбор, подключение и ремонт</a></li><li><a href="/elektronika-i-gadzhety/k/ka/kak-otkryt-spor-na-aliekspress-esli-tovar-ne-prishel.html">Как открыть спор на Алиэкспресс, если товар не пришел: пошаговая инструкция</a></li><li><a href="/elektronika-i-gadzhety/c/ch/chem-bashnya-otlichaetsya-ot-machty.html">Чем башня отличается от мачты: разбор конструкций и применения</a></li><li><a href="/elektronika-i-gadzhety/a/ai/air-tag-apple-kak-rabotaet.html">Как работает AirTag: полный разбор технологии Apple</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Arduino Nano: выбор программатора в настройках Arduino IDE</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#архитектура-платы-и-роль-usb-интерфейса">Архитектура платы и роль USB-интерфейса</a></li><li><a href="#настройка-среды-arduino-ide-для-разных-версий">Настройка среды Arduino IDE для разных версий</a></li><li><a href="#проблема-old-bootloader-и-объем-памяти">Проблема «Old Bootloader» и объем памяти</a></li><li><a href="#установка-драйверов-для-чипов-ch340-и-ch341">Установка драйверов для чипов CH340 и CH341</a></li><li><a href="#решение-типичных-ошибок-загрузки-скетча">Решение типичных ошибок загрузки скетча</a></li><li><a href="#сравнение-программаторов-и-альтернативные-методы">Сравнение программаторов и альтернативные методы</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Работа с микроконтроллерными платформами часто начинается с первых технических трудностей, которые могут надолго отбить желание экспериментировать. Одной из самых распространенных проблем при старте работы с платой <em>Arduino Nano</em> является ошибка компиляции или загрузки скетча, возникающая из-за неверно выбранного программного обеспечения. Новички часто путаются в многообразии настроек, не понимая, почему код, который идеально работает на одной плате, отказывается загружаться на другую, даже если они выглядят идентично.</p>
+
+<p>Ключ к решению этой загадки кроется в правильной конфигурации среды разработки <em>Arduino IDE</em>. В меню инструментов необходимо выбрать не только порт, к которому подключено устройство, но и конкретный тип программатора, отвечающего за связь между компьютером и чипом. Ошибка в этом пункте приводит к тому, что загрузчик не получает корректных сигналов, и процесс прошивки прерывается на самом старте.</p>
+
+<p>В этой статье мы детально разберем, как определить тип чипа преобразователя на вашей плате и какие настройки необходимо применить для стабильной работы. Мы рассмотрим два самых популярных варианта интерфейсных микросхем, научимся устанавливать недостающие драйверы и составим чек-лист действий при возникновении проблем с подключением.</p>
+
+<h2 id="архитектура-платы-и-роль-usb-интерфейса">Архитектура платы и роль USB-интерфейса</h2>
+
+<p>Для того чтобы компьютер мог «увидеть» микроконтроллер <strong>ATmega328P</strong>, установленный на плате, необходим посредник. Сам по себе микроконтроллер не имеет встроенного USB-интерфейса, поэтому на плате расположен отдельный чип-конвертер, преобразующий сигналы USB в последовательный интерфейс UART. Именно этот компонент определяет, какой программатор нужно выбрать в настройках.</p>
+
+<p>Существует два основных типа чипов, которые используются в клонам и оригинальных версиях <em>Arduino Nano</em>. Первый — это классический <em>FT232RL</em> от компании FTDI, который исторически использовался в ранних версиях плат. Второй, более современный и дешевый вариант — <em>CH340G</em> или <em>CH341</em>, который сейчас устанавливается на подавляющее большинство китайских аналогов. Визуально отличить их можно только по маркировке на черном квадратном корпусе рядом с USB-разъемом.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Попытка загрузить скетч без установленного драйвера для конкретного чипа (например, драйвера CH340 для китайской платы) приведет к тому, что порт вообще не появится в списке доступных устройств в диспетчере задач.</p>
+</blockquote>
+
+<p>Неправильный выбор типа процессора или платы в меню инструментов также может привести к конфликту адресов памяти. Если вы выберете настройку для старого загрузчика, а на плате установлен новый (или наоборот), объем доступной памяти для программы может измениться, что вызовет ошибку переполнения при компиляции даже простого кода.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Внимательно осмотрите плату под ярким светом: маркировка чипа конвертера часто нанесена очень мелко, и ее легко перепутать с соседними компонентами.</p></aside>
+
+<h2 id="настройка-среды-arduino-ide-для-разных-версий">Настройка среды Arduino IDE для разных версий</h2>
+
+<p>Процесс настройки начинается с открытия меню <code>Инструменты</code> в верхней панели программы. Здесь пользователю предстоит сделать выбор из нескольких выпадающих списков. Самым важным параметром является пункт <strong>Процессор</strong>, где в зависимости от версии платы нужно выбрать вариант с пометкой «Old Bootloader» или стандартный вариант без дополнительных слов.</p>
+
+<p>Для плат на базе чипа <em>FT232</em> обычно не требуется дополнительных манипуляций с драйверами в современных операционных системах, так как поддержка FTDI встроена в ядро Windows, macOS и Linux. Однако для чипов <em>CH340</em> ситуация иная: система может определить устройство как «Неизвестное устройство», пока вы вручную не установите специализированный драйвер с официального сайта производителя или из репозитория Arduino.</p>
+
+<p>Если вы используете новую версию <em>Arduino IDE 2.0</em> или выше, интерфейс стал более интуитивным, но логика выбора осталась прежней. В некоторых случаях может потребоваться установка дополнительных пакетов плат через менеджер плат, особенно если вы работаете с нестандартными клонаами, которые не определяются автоматически.</p>
+
+<ul>
+<li>🔌 Подключите плату к USB-порту и проверьте появление нового COM-порта в диспетчере устройств.</li>
+<li>⚙️ В меню <code>Инструменты</code> выберите плату <em>Arduino Nano</em>.</li>
+<li>🧠 Выберите процессор: <em>ATmega328P</em> или <em>ATmega328P (Old Bootloader)</em>.</li>
+<li>🚀 Убедитесь, что выбран правильный порт (например, <code>COM3</code>).</li>
+</ul>
+
+<div class="pb-poll" id="poll-95b796d8"><div class="pb-poll-question">📊 Какой чип-конвертер установлен на вашей плате?</div><div class="pb-poll-option" data-poll="95b796d8" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">FT232RL</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="95b796d8" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">CH340G</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="95b796d8" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">CH341</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="95b796d8" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Не знаю / Не смотрел</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="проблема-old-bootloader-и-объем-памяти">Проблема «Old Bootloader» и объем памяти</h2>
+
+<p>Одной из самых коварных ошибок является выбор неправильной версии загрузчика в настройках процессора. Разница между стандартным загрузчиком и версией <strong>Old Bootloader</strong> заключается в размере сектора, отведенного под программу загрузки. В старых версиях этот сектор был больше, что уменьшало доступное пространство для пользовательского кода.</p>
+
+<p>Если вы выберете настройку <em>Old Bootloader</em> для современной платы, вы просто потеряете часть доступной памяти, но скетч загрузится. Однако обратная ситуация более критична: попытка загрузить большой скетч на плату с новым загрузчиком, выбрав в настройках старый, приведет к ошибке <code>error: section.text will not fit in region text</code>. Это означает, что скомпилированный код превышает доступный лимит.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр настройки</th>
+<th>Стандартный загрузчик</th>
+<th>Old Bootloader</th>
+<th>Рекомендация</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Размер загрузчика</td>
+<td>0.5 КБ</td>
+<td>2 КБ</td>
+<td>Зависит от года выпуска платы</td>
+</tr>
+<tr>
+<td>Доступная память</td>
+<td>~32.5 КБ</td>
+<td>~30.5 КБ</td>
+<td>Для больших проектов важен каждый байт</td>
+</tr>
+<tr>
+<td>Скорость загрузки</td>
+<td>Высокая (115200)</td>
+<td>Низкая (57600)</td>
+<td>Стандартный вариант быстрее</td>
+</tr>
+<tr>
+<td>Вероятность ошибки</td>
+<td>Низкая</td>
+<td>Средняя (при больших скетчах)</td>
+<td>Пробовать стандартный первым</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Как определить, какой загрузчик у вас? Самый надежный способ — метод проб и ошибок. Попробуйте загрузить простой тестовый скетч (например, <code>Blink</code>) с настройками по умолчанию. Если загрузка проходит успешно, значит, у вас современный загрузчик. Если вы получаете странные ошибки тайм-аута, переключите настройку процессора на вариант со словом <em>Old Bootloader</em>.</p>
+
+<details class="pb-accordion"><summary>Технические детали работы загрузчика</summary><div class="pb-accordion-body"><p>Загрузчик ожидает последовательности сигналов от IDE. Если скорость обмена (baud rate) в настройках не совпадает с той, на которую «заточен» загрузчик в чипе, диалог не состоится, и IDE выдаст ошибку протокола.</p></div></details>
+
+<h2 id="установка-драйверов-для-чипов-ch340-и-ch341">Установка драйверов для чипов CH340 и CH341</h2>
+
+<p>Владельцы плат с чипами <em>CH340</em> часто сталкиваются с ситуацией, когда Arduino IDE просто не видит подключенное устройство. В диспетчере устройств Windows такая плата может отображаться с желтым восклицательным знаком или вообще отсутствовать в разделе «Порты (COM и LPT)». Это верный признак отсутствия программного обеспечения для интерфейсного преобразователя.</p>
+
+<p>Процесс установки драйвера достаточно прост, но требует внимательности. Необходимо скачать актуальную версию драйвера с официального сайта производителя WCH или воспользоваться встроенным установщиком, если вы используете некоторые сборки IDE. После запуска установщика и перезагрузки компьютера устройство должно определиться как <em>USB-SERIAL CH340</em>.</p>
+
+<blockquote>
+<p>⚠️ Внимание: На компьютерах с Windows 10 и 11 с включенной проверкой подписи драйверов установка старых версий драйверов CH340 может быть заблокирована системой. В таком случае может потребоваться временное отключение проверки подписи или поиск драйверов с цифровой подписью Microsoft.</p>
+</blockquote>
+
+<p>Для пользователей macOS ситуация осложняется тем, что начиная с определенных версий операционной системы, драйверы для последовательных портов требуют дополнительных разрешений в разделе «Защита и безопасность». Если порт не появляется, проверьте настройки приватности системы.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Диагностика подключения</h4><label class="check-item"><input type="checkbox"><span>Подключить кабель к другому USB-порту</span></label><label class="check-item"><input type="checkbox"><span>Проверить диспетчер устройств</span></label><label class="check-item"><input type="checkbox"><span>Установить драйвер CH340</span></label><label class="check-item"><input type="checkbox"><span>Перезагрузить компьютер</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="решение-типичных-ошибок-загрузки-скетча">Решение типичных ошибок загрузки скетча</h2>
+
+<p>Даже при правильном выборе программатора пользователи могут столкнуться с ошибкой <code>avrdude: stk500_recv: programmer is not responding</code>. Эта фраза означает, что компьютер отправляет данные, но плата не отвечает. Чаще всего причина кроется в физическом контакте или состоянии кнопки сброса.</p>
+
+<p>На некоторых версиях <em>Arduino Nano</em> кнопка <strong>RESET</strong> может быть слишком тугой или, наоборот, залипшей. Если кнопка находится в нажатом состоянии во время подключения кабеля, плата войдет в режим ожидания прошивки, но может некорректно реагировать на команды IDE. Также стоит проверить качество USB-кабеля: многие кабели предназначены только для зарядки и не имеют линий передачи данных.</p>
+
+<p>Иногда помогает ручной метод синхронизации. Сразу после нажатия кнопки «Загрузить» в IDE нужно быстро нажать и отпустить кнопку сброса на самой плате. Это действие принудительно переводит микроконтроллер в режим загрузчика именно в тот момент, когда IDE начинает отправку данных.</p>
+
+<ul>
+<li>🔄 Попробуйте заменить USB-кабель на заведомо исправный (желательно короткий).</li>
+<li>🔌 Подключите плату напрямую к материнской плате, минуя USB-хабы.</li>
+<li>🗑️ Очистите временные файлы компиляции через меню <code>Файл → Настройки</code>.</li>
+<li>🛠️ Проверьте, не выбран ли случайно другой порт в меню инструментов.</li>
+</ul>
+
+<p>Если ничего не помогает, возможно, поврежден сам загрузчик в микроконтроллере. В этом случае потребуется внешний программатор (например, <em>USBASP</em>), чтобы «перепрошить» загрузчик заново, но это уже процедура для продвинутых пользователей.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>90% ошибок загрузки решаются правильной установкой драйвера CH340 или переключением настройки процессора на Old Bootloader.</p></aside>
+
+<h2 id="сравнение-программаторов-и-альтернативные-методы">Сравнение программаторов и альтернативные методы</h2>
+
+<p>Встроенный программатор, который эмулируется через USB-интерфейс платы, удобен для повседневной разработки, но имеет свои ограничения. Он занимает часть памяти и зависит от стабильности работы чипа-конвертера. Для профессиональной разработки или восстановления «окирпиченных» плат используются внешние аппаратные программаторы.</p>
+
+<p>Самым популярным внешним решением является <em>USBASP</em>. Это дешевое устройство, которое подключается напрямую к контактам <strong>MISO, MOSI, SCK, RESET</strong> на плате, минуя USB-порт и загрузчик. Такой метод позволяет загружать код даже в том случае, если чип конвертера сгорел или загрузчик в микроконтроллере поврежден.</p>
+
+<p>Еще одним вариантом является использование другой платы Arduino (например, <em>Uno</em>) в качестве программатора (метод ArduinoISP). Это позволяет превратить любую плату с микроконтроллером ATmega в инструмент для прошивки других чипов. Однако для стандартной загрузки скетчей на Nano встроенных средств IDE вполне достаточно.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При использовании внешнего программатора необходимо убедиться, что напряжения логики совпадают. Большинство Arduino Nano работают от 5В, но существуют версии на 3.3В, подключение которых к 5-вольтовому программатору может вывести плату из строя.</p>
+</blockquote>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Почему Arduino IDE не видит мой порт COM?</summary>
+<p>Скорее всего, не установлен драйвер для чипа-конвертера (чаще всего CH340). Зайдите в диспетчер устройств, найдите устройство с восклицательным знаком и установите для него драйвер. Также проверьте целостность USB-кабеля.</p>
+</details>
+
+<details>
+<summary>В чем разница между ATmega328P и ATmega328P (Old Bootloader)?</summary>
+<p>Разница в размере участка памяти, отведенного под загрузчик. Old Bootloader занимает больше места (2 КБ против 0.5 КБ), оставляя меньше места для вашего кода, и работает на меньшей скорости обмена данными.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать Arduino Nano без драйверов?</summary>
+<p>Нет, операционная система не сможет создать виртуальный COM-порт для общения с платой без соответствующего драйвера для чипа FT232 или CH340. Исключение составляют некоторые специфические Linux-дистрибутивы, где драйверы встроены в ядро.</p>
+</details>
+
+<details>
+<summary>Что делать, если скетч не влезает в память?</summary>
+<p>Попробуйте переключить процессор в меню <code>Инструменты</code> с <em>Old Bootloader</em> на стандартный <em>ATmega328P</em>. Это освободит дополнительные 1.5 КБ памяти. Также можно оптимизировать код, удалив лишние библиотеки.</p>
+</details>
+
+<details>
+<summary>Горит красный светодиод на плате, но загрузка не идет. Это нормально?</summary>
+<p>Да, светодиод <em>ON</em> (обычно красный) указывает на наличие питания и должен гореть постоянно. Светодиод <em>L</em> (обычно желтый или зеленый) должен мигать при передаче данных. Если горит только красный, проверьте драйверы и выбор порта.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/elektronika-i-gadzhety/r/ra/razborka-robota-pylesosa-xiaomi-vacuum-mop-essential.html" class="pb-related-card">
+                <span class="pb-related-title">Разборка робота-пылесоса Xiaomi Vacuum Mop Essential: Инструкция по чистке</span>
+                <span class="pb-related-desc">Пошаговое руководство по разборке Xiaomi Vacuum Mop Essential. Замена аккумулятора, чистка датчиков,</span>
+            </a><a href="/elektronika-i-gadzhety/m/mo/modul-dlya-besprovodnoj-zaryadki.html" class="pb-related-card">
+                <span class="pb-related-title">Модуль для беспроводной зарядки: выбор, подключение и ремонт</span>
+                <span class="pb-related-desc">Как выбрать и подключить модуль беспроводной зарядки Qi. Ремонт своими руками, схемы, совместимость </span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kak-otkryt-spor-na-aliekspress-esli-tovar-ne-prishel.html" class="pb-related-card">
+                <span class="pb-related-title">Как открыть спор на Алиэкспресс, если товар не пришел: пошаговая инструкция</span>
+                <span class="pb-related-desc">Не получили заказ? Узнайте, как открыть спор на Алиэкспресс при неполучении товара. Сроки защиты, пр</span>
+            </a><a href="/elektronika-i-gadzhety/c/ch/chem-bashnya-otlichaetsya-ot-machty.html" class="pb-related-card">
+                <span class="pb-related-title">Чем башня отличается от мачты: разбор конструкций и применения</span>
+                <span class="pb-related-desc">Подробный разбор отличий башни от мачты. Конструкция, типы креплений, сферы применения и выбор для м</span>
+            </a><a href="/elektronika-i-gadzhety/a/ai/air-tag-apple-kak-rabotaet.html" class="pb-related-card">
+                <span class="pb-related-title">Как работает AirTag: полный разбор технологии Apple</span>
+                <span class="pb-related-desc">Подробный гид: как работает AirTag Apple, поиск через сеть Find My, точное определение, защита от сл</span>
+            </a><a href="/elektronika-i-gadzhety/v/v-/v-dns-originalnaya-produktsiya-ili-net.html" class="pb-related-card">
+                <span class="pb-related-title">DNS оригинал или подделка: как проверить технику в магазине</span>
+                <span class="pb-related-desc">Проверяем, является ли продукция в DNS оригинальной. Разбираем схемы продаж, гарантии, отличия рефаб</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

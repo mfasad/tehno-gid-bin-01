@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как подключить ST-Link к STM32: Полное руководство по настройке и отладке — Техно Гид</title>
+    <meta name="description" content="Подробная инструкция по подключению программатора ST-Link к микроконтроллерам STM32. Схема подключения, настройка IDE, отладка и устранение ошибок.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/elektronika-i-gadzhety/s/st/st-link-podklyuchenie-k-stm32.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как подключить ST-Link к STM32: Полное руководство по настройке и отладке">
+    <meta property="og:description" content="Подробная инструкция по подключению программатора ST-Link к микроконтроллерам STM32. Схема подключения, настройка IDE, отладка и устранение ошибок.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/elektronika-i-gadzhety/">Электроника и Гаджеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как подключить ST-Link к STM32: Полное руководство по настройке и отладке</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#аппаратная-часть-и-совместимость-интерфейсов">Аппаратная часть и совместимость интерфейсов</a></li><li><a href="#физическая-схема-подключения-проводов">Физическая схема подключения проводов</a></li><li><a href="#настройка-среды-разработки-и-драйверов">Настройка среды разработки и драйверов</a></li><li><a href="#устранение-частых-проблем-при-подключении">Устранение частых проблем при подключении</a></li><li><a href="#использование-расширения-uart-для-отладки">Использование расширения UART для отладки</a></li><li><a href="#сравнение-режимов-работы-и-скоростей">Сравнение режимов работы и скоростей</a></li><li><a href="#faq">faq</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/elektronika-i-gadzhety/k/ka/karty-glive-dlya-ekholota-lowrance.html">Карты Lake Insight HD для эхолота Lowrance: установка и обзор</a></li><li><a href="/elektronika-i-gadzhety/k/ka/kak-zamerit-detsibely-v-domashnikh-usloviyakh.html">Как замерить децибелы в домашних условиях: точные методы и приложения</a></li><li><a href="/elektronika-i-gadzhety/c/ca/casio-edifice-chto-eto.html">Casio Edifice: что это за часы и их особенности</a></li><li><a href="/elektronika-i-gadzhety/w/wi/wifi-endoscope-hd-1200p-prilozhenie.html">WiFi эндоскоп 1200P: выбор приложения и настройка HD камеры</a></li><li><a href="/elektronika-i-gadzhety/b/by/byvaet-li-vremya-24-00.html">Бывает ли время 24:00? Объяснение стандартов времени и форматов</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Полное руководство: Подключение ST-Link к микроконтроллерам STM32</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#аппаратная-часть-и-совместимость-интерфейсов">Аппаратная часть и совместимость интерфейсов</a></li><li><a href="#физическая-схема-подключения-проводов">Физическая схема подключения проводов</a></li><li><a href="#настройка-среды-разработки-и-драйверов">Настройка среды разработки и драйверов</a></li><li><a href="#устранение-частых-проблем-при-подключении">Устранение частых проблем при подключении</a></li><li><a href="#использование-расширения-uart-для-отладки">Использование расширения UART для отладки</a></li><li><a href="#сравнение-режимов-работы-и-скоростей">Сравнение режимов работы и скоростей</a></li><li><a href="#faq">faq</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Разработка встраиваемых систем на базе <strong>STM32</strong> требует надежного инструмента для загрузки кода и отладки. Программатор <em>ST-Link/V2</em> является стандартом де-факто для большинства разрабатываемых проектов, обеспечивая быструю связь между компьютером и микроконтроллером. Правильная организация взаимодействия между этими устройствами — фундамент успешной работы.</p>
+
+<p>Многие разработчики сталкиваются с трудностями на этапе первого запуска, когда среда разработки не видит целевое устройство. Проблема часто кроется не в программном обеспечении, а в физической конфигурации цепи связи или настройке драйверов. <strong>ST-Link</strong> выступает мостом, передающим сигналы от USB-порта ПК к интерфейсу SWD на плате микроконтроллера.</p>
+
+<p>Необходимо учитывать, что схемы подключения могут варьироваться в зависимости от версии адаптера и типа платы разработки. В некоторых случаях требуется внешнее питание, в других — питание подается через линию <code>VTREF</code>. Ошибки в выборе напряжения или перепутанные провода могут привести к некорректной работе или повреждению оборудования.</p>
+
+<h2 id="аппаратная-часть-и-совместимость-интерфейсов">Аппаратная часть и совместимость интерфейсов</h2>
+
+<p>Инструмент <em>ST-Link</em> существует в нескольких форм-факторах, каждый из которых имеет свои особенности подключения. Классическая версия <code>ST-Link/V2</code> представляет собой отдельный адаптер с разъемом 2.54 мм, в то время как <code>ST-Link/V2-1</code> часто интегрируется непосредственно в отладочные платы, такие как <em>Nucleo</em> или <em>Discovery</em>.</p>
+
+<p>Для подключения к целевому микроконтроллеру используется интерфейс <strong>SWD</strong> (Serial Wire Debug), который требует всего четыре провода для работы. Это значительно упрощает разводку печатной платы по сравнению со старым интерфейсом JTAG, требующим больше линий. Ключевыми линиями являются <code>SWCLK</code> (тактовый сигнал) и <code>SWDIO</code> (линия данных), которые обеспечивают двусторонний обмен информацией.</p>
+
+<p>Важным аспектом является линия <code>NRST</code>, которая позволяет программатору выполнять аппаратный сброс микроконтроллера для входа в режим отладки. Без правильного подключения этой линии загрузка прошивки может проходить нестабильно, особенно на устройствах с высоким тактовым частотами. Также не стоит забывать о линии <code>VTREF</code>, которая сообщает адаптеру напряжение питания целевого устройства.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание!</strong> Неправильное подключение линии <code>VTREF</code> на адаптере ST-Link может привести к сгоранию порта USB на вашем компьютере, если напряжение на целевой плате будет выше допустимого. Всегда проверяйте уровень напряжения перед первым запуском.</p>
+</blockquote>
+
+<p>Современные адаптеры ST-Link часто оснащены перемычками для выбора режима работы, например, между стандартным SWD и режимом <code>VCOM</code> (виртуальный COM-порт). Это позволяет использовать одно устройство и для отладки, и для отправки отладочной информации через <code>UART</code>. Однако при использовании встроенного ST-Link на платах Nucleo перемычки обычно установлены заводу-изготовителем и менять их не требуется.</p>
+
+<div class="pb-poll" id="poll-0862a429"><div class="pb-poll-question">📊 Какую версию ST-Link вы используете чаще всего?</div><div class="pb-poll-option" data-poll="0862a429" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">ST-Link/V2 (отдельный адаптер)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0862a429" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">ST-Link/V2-1 (встроенный на плате)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0862a429" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">ST-Link/V3 (современный стандарт)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0862a429" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Другой/Не знаю</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="физическая-схема-подключения-проводов">Физическая схема подключения проводов</h2>
+
+<p>Наиболее распространенная ошибка при сборке схемы — перепутывание контактов на разъеме. Стандартный разъем для подключения к STM32 имеет 20 пинов, но для работы достаточно использовать только четыре основных провода. Правильная распиновка критична для успеха операции загрузки кода.</p>
+
+<p>Соединение должно выполняться в строгом соответствии с таблицей сигналов. Линия <code>3.3V</code> от программатора подается на питание микроконтроллера, если вы не используете внешний источник. Линия <code>GND</code> является общей землей (земляной шиной), и без ее соединения цепь не будет замкнута.</p>
+
+<p>Для корректной работы обязательно соедините контакты <code>SWCLK</code> и <code>SWDIO</code>. Эти линии работают на высоких скоростях, поэтому длина проводов должна быть минимальной для избежания паразитных емкостей. Длинный «косичка» проводов может вызвать нестабильность связи и ошибки при чтении памяти устройства.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Контакт ST-Link</th>
+<th>Контакт STM32</th>
+<th>Описание сигнала</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>3.3V</code></td>
+<td><code>3.3V</code> (или VIN)</td>
+<td>Питание микроконтроллера</td>
+</tr>
+<tr>
+<td><code>GND</code></td>
+<td><code>GND</code></td>
+<td>Общая земля</td>
+</tr>
+<tr>
+<td><code>SWCLK</code> (CLK)</td>
+<td><code>PA14</code></td>
+<td>Сигнал тактирования (Clock)</td>
+</tr>
+<tr>
+<td><code>SWDIO</code> (DATA)</td>
+<td><code>PA13</code></td>
+<td>Линия передачи данных</td>
+</tr>
+<tr>
+<td><code>NRST</code></td>
+<td><code>NRST</code></td>
+<td>Сигнал аппаратного сброса</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Иногда возникает необходимость подключить линию <code>NRST</code> для программатора, чтобы он мог принудительно сбрасывать микроконтроллер. Это особенно полезно, если программа на STM32 вызывает жесткий сбой и не позволяет интерфейсу SWD инициализироваться. Подключение <code>NRST</code> обеспечивает надежный вход в режим отладки.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к подключению ST-Link</h4><label class="check-item"><input type="checkbox"><span>Подготовить макетную плату и провода</span></label><label class="check-item"><input type="checkbox"><span>Проверить наличие перемычек</span></label><label class="check-item"><input type="checkbox"><span>Подключить линии питания (3.3V/GND)</span></label><label class="check-item"><input type="checkbox"><span>Соединить сигнальные линии SWCLK/SWDIO</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="настройка-среды-разработки-и-драйверов">Настройка среды разработки и драйверов</h2>
+
+<p>После успешного физического подключения необходимо обеспечить программное взаимодействие между компьютером и адаптером. Операционная система должна корректно определить устройство <em>ST-Link</em>. В Windows это происходит автоматически при установке дистрибутива IDE, но иногда требуется ручная установка драйверов.</p>
+
+<p>Для работы с микроконтроллерами <strong>STM32</strong> чаще всего используется среда <em>STM32CubeIDE</em> или <em>Keil MDK</em>. В настройках проекта необходимо указать тип подключения — <code>SWD</code>, а не JTAG. Если адаптер не определяется, проверьте диспетчер устройств на наличие неизвестных устройств с желтым восклицательным знаком.</p>
+
+<p>Важно проверить, что скорость связи (SWD Clock) установлена в разумных пределах. По умолчанию она может быть установлена слишком высоко для длинных проводов, что приводит к ошибкам. Снижение частоты до <code>1 МГц</code> или даже <code>400 кГц</code> часто решает проблемы со стабильностью соединения на плохих контактах.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание!</strong> Если вы используете кустарно собранный адаптер ST-Link на базе чипов CH341 или клонов, стандартные драйверы могут не подходить. В таком случае необходимо искать специфические драйверы для вашей версии прошивки клона.</p>
+</blockquote>
+
+<p>В среде <em>STM32CubeIDE</em> для активации отладчика перейдите в <code>Run → Debug Configurations</code>. Выберите ваш проект, перейдите на вкладку <code>Debugger</code> и убедитесь, что в поле <code>Interface</code> выбрано значение <code>SWD</code>. Также проверьте, что отмечена опция <code>Connect under Reset</code>, если возникают проблемы с входом в отладчик.</p>
+
+<details class="pb-accordion"><summary>Как проверить драйвер в диспетчере устройств?Откройте диспетчер устройств, найдите раздел «Порты (COM и LPT)» или «Контроллеры USB». Устройство должно называться «ST-LINK (STM32)» или «STLINK-V2 in MS». Если вы видите «Неизвестное устройство», драйвер установлен неверно.-->
+
+<h2 id="устранение-частых-проблем-при-подключении">Устранение частых проблем при подключении</h2>
+
+<p>Самая распространенная ошибка — отсутствие реакции на попытку подключения. В этом случае первым делом проверьте целостность проводов и наличие напряжения питания на целевой плате. Микроконтроллер <strong>STM32</strong> не будет отвечать на запросы, если он не запитан, даже если линии SWD подключены верно.</p>
+
+<p>Частой причиной отказа в подключении является конфликт версий прошивки самого программатора. Адаптер <em>ST-Link</em> имеет собственную прошивку, которую можно обновить через утилиту <code>ST-Link Utility</code> или <code>STM32CubeProgrammer</code>. Устаревшая версия прошивки может не поддерживать новые семейства микроконтроллеров.</p>
+
+<p>Если устройство определяется, но код не загружается, возможно, сработала защита от чтения (Readout Protection). Это встроенный механизм безопасности STM32, запрещающий чтение памяти. Для снятия защиты потребуется выполнить процедуру полного стиранияа, что приведет к потере всей прошивки.</p>
+
+<p>Иногда проблема кроется в том, что микроконтроллер находится в режиме ожидания или глубокого сна. В этом случае линия <code>NRST</code> становится критически важной для принудительного выхода из спящего режима. Убедитесь, что кнопка сброса на плате нажимается, или программатор подает сигнал сброса корректно.</p>
+
+<!--WIDGET</summary><div class="pb-accordion-body"><p>tip:Если программа не загружается, попробуйте отключить питание от платы, нажать кнопку сброса (если есть), и только после этого подключить питание. Это гарантирует чистое состояние микроконтроллера перед загрузкой.</p></div></details>
+
+<h2 id="использование-расширения-uart-для-отладки">Использование расширения UART для отладки</h2>
+
+<p>Кроме загрузки кода, многие адаптеры ST-Link обладают функцией <code>VCOM</code> (Virtual COM Port), которая преобразует линию UART микроконтроллера в виртуальный COM-порт на ПК. Это позволяет выводить отладочную информацию через <code>printf</code> без необходимости подключать отдельный USB-Serial переходник.</p>
+
+<p>Для активации этой функции на адаптере нужно замкнуть перемычки <code>SWO</code> и <code>UART</code> (или <code>SWO</code> и <code>TX/RX</code> в зависимости от версии). В плате Nucleo эти перемычки обычно замкнуты по умолчанию, и виртуальный порт появляется сразу после подключения адаптера к USB.</p>
+
+<p>Настройка скорости передачи данных в среде разработки должна совпадать с настройками в коде микроконтроллера. Обычно используется стандартная скорость <code>115200</code> бод. Для просмотра данных используйте любой терминал, например, <code>Putty</code> или встроенный терминал STM32CubeIDE.</p>
+
+<p>Этот метод отладки крайне удобен для сбора логов в реальном времени, особенно при отработке прерываний или временных циклов. Однако помните, что использование UART-трансляции увеличивает задержку в работе интерфейса и может замедлить выполнение программы, если оптимизация не настроена правильно.</p>
+
+<h2 id="сравнение-режимов-работы-и-скоростей">Сравнение режимов работы и скоростей</h2>
+
+<p>Выбор режима подключения влияет на скорость загрузки и стабильность работы. Интерфейс <strong>JTAG</strong> теоретически быстрее и надежнее, но требует больше выводов. Практически все современные проекты на STM32 используют <strong>SWD</strong>, так как он экономит пины и обеспечивает достаточную скорость для большинства задач.</p>
+
+<p>Скорость тактирования SWD может варьироваться от десятков килогерц до десятков мегагерц. Высокая скорость (<code>4 МГц</code> и выше) возможна только при коротких проводах и качественной разводке платы. Для макетных плат и экспериментов рекомендуется устанавливать скорость в районе <code>1 МГц</code>.</p>
+
+<p>Ниже приведена таблица сравнения основных параметров интерфейсов, используемых с ST-Link:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>SWD</th>
+<th>JTAG</th>
+<th>UART (VCOM)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Количество проводов</td>
+<td>2 (сигнал) + питание</td>
+<td>5 (сигнал) + питание</td>
+<td>2 (TX/RX) + земля</td>
+</tr>
+<tr>
+<td>Макс. скорость</td>
+<td>~10-20 МГц</td>
+<td>~20 МГц</td>
+<td>до 921600 бод</td>
+</tr>
+<tr>
+<td>Вход в отладку</td>
+<td>Гарантированный (с NRST)</td>
+<td>Гарантированный</td>
+<td>Не применимо</td>
+</tr>
+<tr>
+<td>Экономия пинов</td>
+<td>Высокая</td>
+<td>Низкая</td>
+<td>Средняя</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Использование режима <code>SWD</code> является <mark>обязательным стандартом</mark> для всех современных отладочных сессий на микроконтроллерах STM32, так как он обеспечивает баланс между скоростью и минимальным количеством проводов. Переход на JTAG оправдан только в специфических случаях, требующих одновременного подключения нескольких ядр.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Интерфейс SWD — это золотой стандарт для отладки STM32, позволяющий экономить пины и обеспечивать высокую скорость загрузки кода при минимальном количестве проводов.</p></aside>
+
+<h2 id="faq">faq</h2>
+
+<details>
+<summary>Почему ST-Link не определяется в диспетчере устройств?</summary>
+<p><p>Причин может быть несколько: неисправный USB-кабель, отсутствие драйверов или поврежденное устройство. Попробуйте заменить кабель, обновить драйверы через утилиту <code>ST-Link Driver</code> или проверить адаптер на другом компьютере. Также убедитесь, что на плате питания подается напряжение.</p></p>
+</details>
+
+<details>
+<summary>Как сбросить защиту от чтения (Readout Protection) на STM32?</summary>
+<p><p>Для снятия защиты необходимо выполнить полную операцию стирания памяти через утилиту <code>STM32CubeProgrammer</code> или <code>ST-Link Utility</code>. Выберите режим «Connect under Reset» и нажмите кнопку «Erase Chip». Обратите внимание, что это действие необратимо удалит всю прошивку с устройства.</p></p>
+</details>
+
+<details>
+<summary>Можно ли использовать дешевые клоны ST-Link?</summary>
+<p><p>Дешевые клоны часто работают некорректно с новыми версиями IDE и могут иметь проблемы с драйверами. Они могут не поддерживать режим <code>VCOM</code> или работать нестабильно на высоких скоростях. Для коммерческих проектов лучше использовать оригинальные адаптеры или сертифицированные версии.</p></p>
+</details>
+
+<details>
+<summary>Что делать, если микроконтроллер не входит в режим отладки?</summary>
+<p><p>Попробуйте использовать режим <code>Connect under Reset</code> в настройках отладчика. Также проверьте, не находится ли микроконтроллер в режиме глубокого сна, не отключивший линии SWD. В крайнем случае, нажмите кнопку сброса на плате вручную в момент загрузки.</p></p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/elektronika-i-gadzhety/k/ka/karty-glive-dlya-ekholota-lowrance.html" class="pb-related-card">
+                <span class="pb-related-title">Карты Lake Insight HD для эхолота Lowrance: установка и обзор</span>
+                <span class="pb-related-desc">Полный гид по картам Lowrance Lake Insight HD. Установка на флешку, совместимость с эхолотами, настр</span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kak-zamerit-detsibely-v-domashnikh-usloviyakh.html" class="pb-related-card">
+                <span class="pb-related-title">Как замерить децибелы в домашних условиях: точные методы и приложения</span>
+                <span class="pb-related-desc">Узнайте, как измерить уровень шума в децибелах дома. Обзор мобильных приложений, шумомеров и таблиц </span>
+            </a><a href="/elektronika-i-gadzhety/c/ca/casio-edifice-chto-eto.html" class="pb-related-card">
+                <span class="pb-related-title">Casio Edifice: что это за часы и их особенности</span>
+                <span class="pb-related-desc">Полный обзор линейки Casio Edifice: технологии, материалы, отличия от других серий и советы по выбор</span>
+            </a><a href="/elektronika-i-gadzhety/w/wi/wifi-endoscope-hd-1200p-prilozhenie.html" class="pb-related-card">
+                <span class="pb-related-title">WiFi эндоскоп 1200P: выбор приложения и настройка HD камеры</span>
+                <span class="pb-related-desc">Обзор лучших приложений для WiFi эндоскопа 1200P. Настройка подключения, устранение задержек и совет</span>
+            </a><a href="/elektronika-i-gadzhety/b/by/byvaet-li-vremya-24-00.html" class="pb-related-card">
+                <span class="pb-related-title">Бывает ли время 24:00? Объяснение стандартов времени и форматов</span>
+                <span class="pb-related-desc">Разбор формата 24:00 и 00:00. Почему существует путаница, как работают часы в компьютерах, стандарты</span>
+            </a><a href="/elektronika-i-gadzhety/b/ba/baofeng-uv-5r-soft-dlya-programmirovaniya.html" class="pb-related-card">
+                <span class="pb-related-title">Baofeng UV-5R: софт для программирования и прошивки</span>
+                <span class="pb-related-desc">Обзор программ CHIRP и BF-Utility для настройки Baofeng UV-5R. Как прошить рацию, создать каналы и и</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Zyxel Keenetic 4G II на OpenWrt: полная инструкция — Техно Гид</title>
+    <meta name="description" content="Установка OpenWrt на Zyxel Keenetic 4G II (KN-1210). Как снять блокировку, установить CLI и настроить 4G модем. Руководство для продвинутых пользователей.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/z/zy/zyxel-keenetic-4g-ii-proshivka-openwrt.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Zyxel Keenetic 4G II на OpenWrt: полная инструкция">
+    <meta property="og:description" content="Установка OpenWrt на Zyxel Keenetic 4G II (KN-1210). Как снять блокировку, установить CLI и настроить 4G модем. Руководство для продвинутых пользователей.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Zyxel Keenetic 4G II на OpenWrt: полная инструкция</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-оборудования-и-снятие-блокировок">Подготовка оборудования и снятие блокировок</a></li><li><a href="#установка-загрузчика-u-boot">Установка загрузчика U-Boot</a></li><li><a href="#процесс-установки-openwrt">Процесс установки OpenWrt</a></li><li><a href="#настройка-интерфейсов-и-4g-модема">Настройка интерфейсов и 4G модема</a></li><li><a href="#работа-с-wi-fi-и-драйверами">Работа с Wi-Fi и драйверами</a></li><li><a href="#расширение-функционала-и-пакеты">Расширение функционала и пакеты</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/r/ro/router-vklyuchaetsya-i-vyklyuchaetsya-chto-delat.html">Роутер включается и выключается: причины и способы исправления</a></li><li><a href="/set-i-internet/r/ra/razdacha-interneta-s-telefona-na-noutbuk-bez-ogranichenij.html">Как раздать интернет с телефона на ноутбук без лимитов трафика</a></li><li><a href="/set-i-internet/r/ro/router-tp-link-ne-vidit-internet.html">Почему роутер TP-Link не видит интернет: быстрый ремонт</a></li><li><a href="/set-i-internet/k/ka/kak-peredat-fajl-po-scp.html">Как передать файл по SCP: полная инструкция и команды</a></li><li><a href="/set-i-internet/m/mo/moshchnyj-repiter-wifi-signala.html">Мощный репитер WiFi сигнала: как усилить сеть в доме</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Zyxel Keenetic 4G II: установка OpenWrt и настройка</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-оборудования-и-снятие-блокировок">Подготовка оборудования и снятие блокировок</a></li><li><a href="#установка-загрузчика-u-boot">Установка загрузчика U-Boot</a></li><li><a href="#процесс-установки-openwrt">Процесс установки OpenWrt</a></li><li><a href="#настройка-интерфейсов-и-4g-модема">Настройка интерфейсов и 4G модема</a></li><li><a href="#работа-с-wi-fi-и-драйверами">Работа с Wi-Fi и драйверами</a></li><li><a href="#расширение-функционала-и-пакеты">Расширение функционала и пакеты</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Маршрутизатор <em>Zyxel Keenetic 4G II</em> (модель KN-1210) долгое время считался одним из лучших решений для доступа в интернет через мобильные сети благодаря своей стабильности и поддержке внешних антенн. Однако стоковая прошивка KeeneticOS, при всех своих достоинствах, имеет ограничения в гибкости настройки и потреблении ресурсов. Для энтузиастов и системных администраторов альтернативой становится операционная система <strong>OpenWrt</strong>, которая открывает полный доступ к аппаратным возможностям устройства.</p>
+
+<p>Переход на стороннее ПО позволяет реализовать сложные сетевые сценарии, такие как балансировка нагрузки между несколькими каналами связи, тонкая настройка firewall и использование специализированных пакетов для работы с LTE-модемами. Процесс этот не тривиален, так как требует предварительной подготовки загрузчика и снятия программных ограничений, наложенных производителем. В этой статье мы подробно разберем этапы миграции с KeeneticOS на OpenWrt.</p>
+
+<p>Стоит сразу отметить, что процедура установки несет в себе риски. Неправильные действия могут привести к тому, что роутер превратится в «кирпич», требующий восстановления через UART или программатор. Тем не менее, при соблюдении последовательности шагов, описанных ниже, вы получите мощный инструмент для управления вашей сетью с открытым исходным кодом.</p>
+
+<h2 id="подготовка-оборудования-и-снятие-блокировок">Подготовка оборудования и снятие блокировок</h2>
+
+<p>Прежде чем приступать к манипуляциям с программным обеспечением, необходимо убедиться в наличии требуемого оборудования и инструментов. Для работы вам понадобится компьютер с сетевой картой, патч-корд и доступ к консоли роутера. Критически важным этапом является получение прав суперпользователя (root) в стоковой системе, так как без этого загрузка альтернативного образа невозможна.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Операция снятия блокировки загрузчика (unlock bootloader) аннулирует официальную гарантию на устройство. Все дальнейшие действия вы выполняете на свой страх и риск.</p>
+</blockquote>
+
+<p>Для начала необходимо активировать компонент <code>System Monitor</code> или аналогичный модуль в веб-интерфейсе KeeneticOS, если он доступен в вашей версии. Это позволит получить доступ к командной строке через Telnet или SSH. Если стандартные методы не работают, потребуется воспользоваться уязвимостями конкретных версий прошивки или сервисными командами. После получения доступа к shell, нужно изменить переменные окружения загрузчика U-Boot.</p>
+
+<p>Ввод команд осуществляется через терминал. Сначала проверьте текущие настройки, а затем измените флаг блокировки. Команда для разблокировки обычно выглядит как изменение переменной <code>bootdelay</code> или специального флага <code>zyxel_unlock</code>. Убедитесь, что вы используете актуальные команды для вашей ревизии платы, так как синтаксис может отличаться.</p>
+
+<ul>
+<li>🔌 Подключите роутер к ПК кабелем в порт LAN 1.</li>
+<li>💻 Настройте статический IP на компьютере в подсети 192.168.1.x.</li>
+<li>🔑 Получите доступ к CLI через Telnet (порт 23) или SSH (порт 22).</li>
+<li>📥 Скачайте образ загрузчика U-Boot для KN-1210 из проверенного репозитория.</li>
+</ul>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к перепрошивке</h4><label class="check-item"><input type="checkbox"><span>Получить root-доступ</span></label><label class="check-item"><input type="checkbox"><span>Скачать U-Boot и OpenWrt</span></label><label class="check-item"><input type="checkbox"><span>Подготовить TFTP-сервер</span></label><label class="check-item"><input type="checkbox"><span>Проверить целостность кабелей</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="установка-загрузчика-u-boot">Установка загрузчика U-Boot</h2>
+
+<p>Штатный загрузчик Zyxel подписан цифровой подписью производителя и не позволит запустить неподписанный код, коим является ядро OpenWrt. Поэтому первым шагом является замена или модификация загрузчика на универсальный U-Boot. Этот процесс часто называют «прошивкой загрузчика».</p>
+
+<p>Существует два основных метода установки: через веб-интерфейс (если есть доступ к скрытым страницам обновления) или через TFTP в режиме восстановления. Второй метод более надежен, но требует настройки TFTP-сервера на компьютере. Файл прошивки загрузчика обычно имеет имя вида <code>u-boot.bin</code> и должен быть помещен в корневую директорию TFTP-сервера.</p>
+
+<pre><code>tftp 192.168.1.1 u-boot.bin</code></pre>
+
+<p>После загрузки файла в память роутера необходимо выполнить команду записи во флеш-память. Здесь крайне важно не ошибиться с адресом раздела. Запись поверх неверного адреса может повредить калибровочные данные Wi-Fi или MAC-адреса, что сделает устройство частично неработоспособным. Используйте команду <code>sf write</code> или аналогичную для вашей архитектуры MIPS.</p>
+
+<details class="pb-accordion"><summary>Что делать, если роутер не видит TFTP?</summary><div class="pb-accordion-body"><p>Убедитесь, что брандмауэр Windows разрешает входящие подключения на порт 69. Попробуйте временно отключить антивирус. Также проверьте, что имя файла совпадает с тем, которое ожидает загрузчик (иногда требуется переименовать в zyxel.bin).</p></div></details>
+
+<p>После успешной записи перезагрузите устройство. Если вы видите новое меню загрузчика при подключении через консольный кабель или в логах, значит, этап пройден успешно. Теперь устройство готово к приему основного образа операционной системы.</p>
+
+<h2 id="процесс-установки-openwrt">Процесс установки OpenWrt</h2>
+
+<p>Когда U-Boot установлен и активен, процедура установки самой ОС значительно упрощается. В новом загрузчике обычно присутствует поддержка загрузки образов по сети или с USB-накопителя. Для Zyxel Keenetic 4G II наиболее распространенным методом остается загрузка через TFTP в режиме fail-safe.</p>
+
+<p>Вам потребуется скачать правильный образ OpenWrt. Для данной модели обычно используется образ типа <code>sysupgrade</code> или специальный <code>factory</code> образ, адаптированный под структуру разделов Zyxel. Обратите внимание на архитектуру процессора — это <strong>mips_24kc</strong>. Ошибка в выборе архитектуры приведет к тому, что система просто не стартует.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Значение для KN-1210</th>
+<th>Примечание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Архитектура</td>
+<td>MIPS 24Kc</td>
+<td>Ядро процессора MediaTek</td>
+</tr>
+<tr>
+<td>Flash память</td>
+<td>128 МБ</td>
+<td>Ограничивает размер прошивки</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>256 МБ</td>
+<td>Достаточно для базовых пакетов</td>
+</tr>
+<tr>
+<td>Wi-Fi чип</td>
+<td>MediaTek MT7620A / MT7612E</td>
+<td>Требует проприетарных драйверов</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Запустите TFTP-сервер на компьютере, укажите IP-адрес роутера (обычно 192.168.1.1) и IP компьютера (например, 192.168.1.254). Включите роутер с зажатой кнопкой Reset (или согласно инструкции для входа в режим восстановления U-Boot). Загрузчик автоматически запросит файл прошивки. Процесс записи может занять несколько минут, в это время индикаторы могут мигать в необычном режиме.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте утилиту Wireshark для мониторинга сетевого трафика во время прошивки. Это поможет увидеть, отправляет ли роутер TFTP-запросы и получает ли он пакеты с вашего компьютера.</p></aside>
+
+<p>После завершения записи роутер автоматически перезагрузится. Первый запуск OpenWrt может быть длительным, так как система инициализирует файловую систему и генерирует ключи. По умолчанию устройство будет доступно по адресу 192.168.1.1 без пароля.</p>
+
+<h2 id="настройка-интерфейсов-и-4g-модема">Настройка интерфейсов и 4G модема</h2>
+
+<p>Одной из главных причин установки OpenWrt на <em>Keenetic 4G II</em> является желание получить расширенные возможности работы с USB-модемами. В стоковой прошивке список поддерживаемых модемов ограничен, тогда как в OpenWrt вы можете установить пакеты для практически любого устройства.</p>
+
+<p>Для начала необходимо установить пакеты, отвечающие за работу с сотовыми сетями. В репозитории OpenWrt это обычно набор пакетов <code>kmod-usb-net-qmi-wwan</code>, <code>kmod-usb-serial-option</code> и утилиты <code>comgt</code> или <code>umbim</code>. Выбор утилиты зависит от протокола, который поддерживает ваш модем (QMI, MBIM или классический AT).</p>
+
+<p>Настройка осуществляется через редактирование конфигов в папке <code>/etc/config/</code> или через веб-интерфейс LuCI, если вы установили его. Вам нужно создать новый интерфейс типа WWAN, указать APCN (для QMI) или точку доступа оператора. Важно правильно определить устройство в системе, обычно это <code>/dev/cdc-wdm0</code> или <code>/dev/ttyUSB0</code>.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Некоторые операторы связи используют специфические настройки DNS или требуют регистрацию IMEI. При проблемах с подключением проверьте логи системы через команду <code>logread</code>.</p>
+</blockquote>
+
+<p>Также стоит настроить правила фаервола. По умолчанию зона WAN должна включать в себя новый 4G интерфейс. Это обеспечит маршрутизацию трафика из локальной сети в интернет через мобильное соединение. Не забудьте включить NAT (Masquerading) для этой зоны.</p>
+
+<h2 id="работа-с-wi-fi-и-драйверами">Работа с Wi-Fi и драйверами</h2>
+
+<p>Аппаратная платформа <em>Zyxel KN-1210</em> базируется на чипсете MediaTek, что в целом хорошо поддерживается в Linux. Однако работа беспроводных модулей в OpenWrt может требовать дополнительной настройки по сравнению со стоковой прошивкой, где все параметры оптимизированы производителем.</p>
+
+<p>Драйверы для Wi-Fi в OpenWrt для этой модели обычно входят в состав ядра (<code>mt76</code>). Тем не менее, производительность может отличаться. В некоторых случаях требуется вручную указать регион работы wireless-адаптера для соблюдения законодательных норм и выбора свободных каналов. Это делается в конфигурации wireless.</p>
+
+<p>Если вы столкнулись с низкой скоростью или нестабильным соединением, попробуйте изменить режим работы радио. Например, переключение с <code>HT40</code> на <code>HT20</code> в диапазоне 2.4 ГГц может повысить стабильность в условиях зашумленного эфира. Для диапазона 5 ГГц убедитесь, что выбран канал, не занятый соседями.</p>
+
+<ul>
+<li>📡 Проверьте уровень сигнала командой <code>iwinfo</code>.</li>
+<li>🔒 Используйте шифрование WPA2-PSK или WPA3 для безопасности.</li>
+<li>🇷🇺 Установите код страны <code>RU</code> в настройках беспроводной сети.</li>
+</ul>
+
+<div class="pb-poll" id="poll-8ccc38ed"><div class="pb-poll-question">📊 Какой диапазон Wi-Fi вы используете чаще?</div><div class="pb-poll-option" data-poll="8ccc38ed" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Только 2.4 ГГц</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="8ccc38ed" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Только 5 ГГц</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="8ccc38ed" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Оба диапазона</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="8ccc38ed" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Только кабель</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="расширение-функционала-и-пакеты">Расширение функционала и пакеты</h2>
+
+<p>Главное преимущество <strong>OpenWrt</strong> — это возможность установки дополнительного программного обеспечения через менеджер пакетов <code>opkg</code>. Вы можете превратить роутер в полноценный сетевой комбайн. Доступны пакеты для блокировки рекламы (AdGuard Home, Pi-hole), организации VPN-серверов (WireGuard, OpenVPN) и систем мониторинга.</p>
+
+<p>Учитывая объем флеш-памяти в 128 МБ, следует подходить к установке пакетов разумно. Не стоит загружать систему лишними зависимостями. Рекомендуется использовать легковесные альтернативы тяжелым программам. Например, для DNS-фильтрации можно использовать <code>dnsmasq</code> с дополнительными списками блокировки, вместо запуска тяжелого контейнера.</p>
+
+<p>Для настройки сложных правил маршрутизации (например, разделение трафика: торренты через 4G, веб-серфинг через кабель) удобно использовать пакет <code>mwan3</code>. Он позволяет создавать политики балансировки нагрузки и резервирования каналов, что идеально подходит для гибридных сетей.</p>
+
+<pre><code>opkg update
+<p>opkg install mwan3 luci-app-mwan3</code></pre></p>
+
+<p>После установки не забудьте настроить правила в веб-интерфейсе или соответствующих конфигах. Тестирование отказоустойчивости — обязательный этап. Попробуйте отключить основной кабель и убедитесь, что трафик автоматически переключился на LTE без разрыва сессий, если это критично для ваших задач.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Модульная структура OpenWrt позволяет установить только необходимый минимум пакетов, экономя место во флеш-памяти и оперативной памяти устройства.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли вернуться на стоковую прошивку KeeneticOS?</summary>
+<p>Да, это возможно, но процедура сложнее, чем установка OpenWrt. Вам потребуется восстановить оригинальный загрузчик Zyxel (если он был перезаписан) и затем прошить оригинальный образ через веб-интерфейс или TFTP. Рекомендуется заранее сделать дамп оригинальных разделов перед установкой OpenWrt.</p>
+</details>
+
+<details>
+<summary>Почему не работает 5 ГГц Wi-Fi после установки?</summary>
+<p>Чаще всего проблема кроется в отсутствии региональных настроек или неверном драйвере. Проверьте, загружен ли модуль ядра для второго радиомодуля (MT7612E). Также убедитесь, что в настройках wireless выбран правильный регион, разрешающий использование нужных каналов.</p>
+</details>
+
+<details>
+<summary>Безопасно ли использовать OpenWrt для домашнего банка?</summary>
+<p>OpenWrt является безопасной системой при условии своевременного обновления. Однако, в отличие от коммерческих прошивок, здесь нет автоматических обновлений «из коробки» для всех пакетов. Вы должны самостоятельно следить за безопасностью и обновлять систему через репозиторий.</p>
+</details>
+
+<details>
+<summary>Как узнать, какая версия U-Boot у меня стоит?</summary>
+<p>Подключитесь к роутеру через последовательный порт (UART) или посмотрите логи загрузки (<code>dmesg</code>). В начале загрузки обычно выводится версия загрузчика и его возможности. Также можно проверить переменные окружения командой <code>fw_printenv</code>.</p>
+</details>
+
+<details>
+<summary>Снизится ли скорость интернета на OpenWrt?</summary>
+<p>При правильной настройке скорость должна быть сопоставима со стоковой. Однако программный NAT (без аппаратного ускорения) может ограничивать скорость на гигабитных каналах. Для 4G модемов, где скорость редко превышает 100 Мбит/с, производительность процессора Keenetic 4G II вполне достаточна.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/r/ro/router-vklyuchaetsya-i-vyklyuchaetsya-chto-delat.html" class="pb-related-card">
+                <span class="pb-related-title">Роутер включается и выключается: причины и способы исправления</span>
+                <span class="pb-related-desc">Роутер постоянно перезагружается? Узнайте основные причины нестабильной работы, методы диагностики и</span>
+            </a><a href="/set-i-internet/r/ra/razdacha-interneta-s-telefona-na-noutbuk-bez-ogranichenij.html" class="pb-related-card">
+                <span class="pb-related-title">Как раздать интернет с телефона на ноутбук без лимитов трафика</span>
+                <span class="pb-related-desc">Пошаговая инструкция по настройке репитера и точки доступа. Убираем ограничения оператора, повышаем </span>
+            </a><a href="/set-i-internet/r/ro/router-tp-link-ne-vidit-internet.html" class="pb-related-card">
+                <span class="pb-related-title">Почему роутер TP-Link не видит интернет: быстрый ремонт</span>
+                <span class="pb-related-desc">Полное руководство: роутер TP-Link не видит интернет. Проверка кабеля, сброс настроек, ошибки DNS и </span>
+            </a><a href="/set-i-internet/k/ka/kak-peredat-fajl-po-scp.html" class="pb-related-card">
+                <span class="pb-related-title">Как передать файл по SCP: полная инструкция и команды</span>
+                <span class="pb-related-desc">Узнайте, как быстро передать файл по scp между серверами. Синтаксис команд, примеры использования, к</span>
+            </a><a href="/set-i-internet/m/mo/moshchnyj-repiter-wifi-signala.html" class="pb-related-card">
+                <span class="pb-related-title">Мощный репитер WiFi сигнала: как усилить сеть в доме</span>
+                <span class="pb-related-desc">Выбор мощного репитера WiFi сигнала для частного дома. Обзор характеристик, советы по установке и на</span>
+            </a><a href="/set-i-internet/u/us/usilitel-sotovoj-svyazi-dlya-doma-tele2.html" class="pb-related-card">
+                <span class="pb-related-title">Усилитель сотовой связи для дома Теле2: выбор и установка</span>
+                <span class="pb-related-desc">Как усилить сигнал Теле2 на даче или в доме. Обзор репитеров, антенн и правила установки оборудовани</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

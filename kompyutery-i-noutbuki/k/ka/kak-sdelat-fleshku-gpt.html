@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как сделать флешку GPT: полная инструкция для UEFI и Windows — Техно Гид</title>
+    <meta name="description" content="Подробный гайд по конвертации USB-накопителя в формат GPT для загрузки в режиме UEFI. Инструменты Diskpart, MBR2GPT и Rufus.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/k/ka/kak-sdelat-fleshku-gpt.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как сделать флешку GPT: полная инструкция для UEFI и Windows">
+    <meta property="og:description" content="Подробный гайд по конвертации USB-накопителя в формат GPT для загрузки в режиме UEFI. Инструменты Diskpart, MBR2GPT и Rufus.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как сделать флешку GPT: полная инструкция для UEFI и Windows</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#почему-важен-формат-gpt-для-современных-систем">Почему важен формат GPT для современных систем</a></li><li><a href="#подготовка-накопителя-и-выбор-инструментов">Подготовка накопителя и выбор инструментов</a></li><li><a href="#конвертация-через-утилиту-diskpart">Конвертация через утилиту Diskpart</a></li><li><a href="#использование-программы-rufus-для-записи-образа">Использование программы Rufus для записи образа</a></li><li><a href="#сравнение-методов-создания-загрузочного-носителя">Сравнение методов создания загрузочного носителя</a></li><li><a href="#решение-распространенных-проблем-при-загрузке">Решение распространенных проблем при загрузке</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/k/ka/kak-podklyuchit-komp-k-vajfayu.html">Как подключить компьютер к Wi-Fi: пошаговая инструкция</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-na-kompyutere-napisat-sobaku-na-klaviature.html">Как написать собаку на клавиатуре: символы, эмодзи и альтернативы</a></li><li><a href="/kompyutery-i-noutbuki/p/pe/perekhodnik-ot-monitora-na-hdmi.html">Как выбрать переходник от монитора на HDMI: типы, характеристики и подключение</a></li><li><a href="/kompyutery-i-noutbuki/i/in/intel-core-i5-3210m-apgrejd.html">Апгрейд ноутбука с Intel Core i5-3210M: стоит ли менять процессор и что лучше?</a></li><li><a href="/kompyutery-i-noutbuki/p/pr/progrev-videochipa-na-noutbuke.html">Прогрев видеочипа ноутбука: методы, риски и реальная польза</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как сделать флешку GPT для загрузки в режиме UEFI</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#почему-важен-формат-gpt-для-современных-систем">Почему важен формат GPT для современных систем</a></li><li><a href="#подготовка-накопителя-и-выбор-инструментов">Подготовка накопителя и выбор инструментов</a></li><li><a href="#конвертация-через-утилиту-diskpart">Конвертация через утилиту Diskpart</a></li><li><a href="#использование-программы-rufus-для-записи-образа">Использование программы Rufus для записи образа</a></li><li><a href="#сравнение-методов-создания-загрузочного-носителя">Сравнение методов создания загрузочного носителя</a></li><li><a href="#решение-распространенных-проблем-при-загрузке">Решение распространенных проблем при загрузке</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Переход на современные стандарты загрузки компьютеров требует от пользователей понимания различий между устаревшим BIOS и новым интерфейсом <em>UEFI</em>. Одной из ключевых особенностей работы в среде UEFI является обязательное использование таблицы разделов <strong>GPT</strong> (GUID Partition Table) для загрузочных носителей. Если вы попытаетесь запустить установку Windows 10 или 11 на компьютере с включенным режимом Secure Boot, используя обычную флешку с разметкой MBR, система просто не увидит установочный накопитель.</p>
+
+<p>Процесс преобразования накопителя в формат GPT не является сложным, но требует внимательности, так как большинство методов предполагают полное удаление данных. В этой статье мы рассмотрим все актуальные способы подготовки <strong>USB-накопителя</strong> к работе с современными материнскими платами. Мы разберем использование встроенных утилит Windows, стороннего софта и даже командной строки для тех, кто предпочитает полный контроль над процессом.</p>
+
+<p>Правильная структура разделов гарантирует не только успешную загрузку, но и стабильную работу операционной системы в дальнейшем. Ошибки на этом этапе могут привести к невозможности установки ОС или потере данных на самом накопителе. Поэтому перед началом любых манипуляций убедитесь, что вы выбрали верный диск и сохранили важные файлы в другом месте.</p>
+
+<h2 id="почему-важен-формат-gpt-для-современных-систем">Почему важен формат GPT для современных систем</h2>
+
+<p>Стандарт <strong>MBR</strong> (Master Boot Record), который использовался десятилетиями, имеет ряд критических ограничений, ставших препятствием для развития вычислительной техники. Он поддерживает диски объемом не более 2 ТБ и позволяет создавать максимум 4 основных раздела. Для современных SSD и флешек эти ограничения становятся узким горлышком, мешающим эффективному использованию пространства.</p>
+
+<p>Технология <em>GPT</em> лишена этих недостатков и является обязательным требованием для работы с интерфейсом <strong>UEFI</strong>. Она позволяет адресовать диски колоссального объема и создавать практически неограниченное количество разделов. Кроме того, GPT хранит несколько копий таблицы разделов по всему диску, что повышает надежность данных и позволяет восстанавливать структуру в случае повреждения заголовка.</p>
+
+<p>Особенно критичным использование GPT становится при установке Windows 11. Microsoft жестко ограничила возможность установки этой ОС на компьютеры с legacy-загрузкой. Если ваш накопитель не отформатирован правильно, установщик выдаст ошибку о невозможности установки системы на выбранный диск. Это связано с требованиями безопасности <em>Secure Boot</em>, которые тесно интегрированы с архитектурой GPT.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Конвертация системного диска с MBR на GPT возможна без потери данных только с помощью утилиты MBR2GPT в Windows 10/11. Однако для <strong>флеш-накопителей</strong> процедура почти всегда подразумевает полное форматирование и потерю всех файлов.</p>
+</blockquote>
+
+<div class="pb-poll" id="poll-47467686"><div class="pb-poll-question">📊 Какой объем вашей флешки для установки Windows?</div><div class="pb-poll-option" data-poll="47467686" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">8-16 ГБ</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="47467686" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">32-64 ГБ</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="47467686" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">128 ГБ и более</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="47467686" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Использую внешний SSD</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="подготовка-накопителя-и-выбор-инструментов">Подготовка накопителя и выбор инструментов</h2>
+
+<p>Перед тем как приступить к созданию разделов, необходимо выбрать подходящий программный инструмент. В арсенале системного администратора есть как встроенные средства операционной системы, так и мощный сторонний софт. Выбор зависит от ваших навыков работы с командной строкой и желаемой скорости выполнения задачи.</p>
+
+<p>Самым популярным решением для рядового пользователя является утилита <em>Rufus</em>. Она автоматически определяет тип целевой системы и предлагает оптимальные настройки форматирования. Для более продвинутых пользователей, которым нужен полный контроль над размерами разделов и метками томов, идеально подойдет встроенная консольная утилита <strong>Diskpart</strong>.</p>
+
+<p>Также стоит упомянуть стандартное средство управления дисками Windows, доступное через графический интерфейс. Оно интуитивно понятно, но иногда имеет ограничения при работе со съемными носителями, не позволяя создать загрузочный раздел EFI корректно без дополнительных манипуляций. Поэтому выбор инструмента диктуется конкретной ситуацией.</p>
+
+<ul>
+<li>🛠️ <strong>Rufus</strong> — лучший выбор для быстрого создания загрузочной флешки с автоматической настройкой GPT.</li>
+<li>💻 <strong>Diskpart</strong> — мощный инструмент командной строки для ручной разметки и полного контроля.</li>
+<li>🖥️ <strong>Управление дисками</strong> — графическая утилита Windows, подходящая для базового форматирования.</li>
+<li>🔧 <strong>Media Creation Tool</strong> — официальное средство Microsoft, которое само подготавливает носитель.</li>
+</ul>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если вы используете флешку объемом более 32 ГБ для установки Windows, файловая система по умолчанию может быть предложена как NTFS. Для UEFI лучше использовать FAT32, но Rufus умеет обходить ограничение на размер файла 4 ГБ, разбивая образ.</p></aside>
+
+<h2 id="конвертация-через-утилиту-diskpart">Конвертация через утилиту Diskpart</h2>
+
+<p>Использование командной строки дает максимальную гибкость и позволяет выполнить задачу даже в среде восстановления, когда графический интерфейс недоступен. Утилита <strong>Diskpart</strong> является стандартным компонентом Windows и не требует установки дополнительного ПО. Процесс начинается с запуска консоли от имени администратора.</p>
+
+<p>Первым шагом необходимо запустить командную строку. Это можно сделать через поиск в меню Пуск, введя <code>cmd</code>, и выбрав пункт «Запуск от имени администратора». После открытия окна введите команду <code>diskpart</code> и нажмите Enter. Вы перейдете в специализированную оболочку для работы с дисками.</p>
+
+<p>Далее нужно отобразить список всех подключенных накопителей командой <code>list disk</code>. Внимательно изучите вывод, чтобы идентифицировать вашу флешку по объему. Ошибка в выборе диска может привести к системного жесткого диска и потере всех данных на компьютере.</p>
+
+<pre><code>list disk
+<p>select disk X</p>
+<p>clean</p>
+<p>convert gpt</p>
+<p>create partition efi size=100</p>
+<p>format quick fs=fat32 label="System"</p>
+<p>create partition primary</p>
+<p>format quick fs=ntfs label="Windows"</p>
+<p>assign letter=Z</p>
+<p>exit</code></pre></p>
+
+<p>В приведенном выше скрипте замените <code>X</code> на номер вашего диска. Команда <code>clean</code> полностью удаляет все разделы, а <code>convert gpt</code> меняет стиль разметки. Затем мы создаем системный раздел EFI размером 100 МБ в файловой системе FAT32, что критически важно для загрузки UEFI, и основной раздел для файлов установки.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Алгоритм работы в Diskpart</h4><label class="check-item"><input type="checkbox"><span>Запустить cmd от администратора</span></label><label class="check-item"><input type="checkbox"><span>Ввести diskpart</span></label><label class="check-item"><input type="checkbox"><span>Выбрать правильный диск (list disk)</span></label><label class="check-item"><input type="checkbox"><span>Очистить диск (clean)</span></label><label class="check-item"><input type="checkbox"><span>Конвертировать в GPT</span></label><label class="check-item"><input type="checkbox"><span>Создать разделы</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 6</div></div>
+
+<h2 id="использование-программы-rufus-для-записи-образа">Использование программы Rufus для записи образа</h2>
+
+<p>Для большинства пользователей процесс ручной разметки может показаться излишне сложным. Программа <em>Rufus</em> автоматизирует создание загрузочного носителя, включая правильную конвертацию в <strong>GPT</strong>. Это особенно удобно, когда у вас уже есть ISO-образ операционной системы и нужно просто записать его на флешку.</p>
+
+<p>После запуска утилиты выберите ваше устройство в верхнем выпадающем списке. Затем нажмите кнопку «Выбрать» и укажите путь к ISO-файлу Windows. Как только образ будет загружен, Rufus автоматически подставит оптимальные настройки схемы разделов.</p>
+
+<p>В поле «Схема раздела» убедитесь, что выбрана опция <strong>GPT</strong>. В поле «Целевая система» должно стоять <em>UEFI (не CSM)</em>. Если вы видите предупреждение о том, что все данные на устройстве будут уничтожены, это нормально — подтвердите действие кнопкой «Старт».</p>
+
+<blockquote>
+<p>⚠️ Внимание: Если в списке схем раздела недоступен вариант GPT, проверьте, не выбран ли образ старой версии Windows или Linux, который не поддерживает эту технологию, либо попробуйте переподключить флешку в другой порт USB 3.0.</p>
+</blockquote>
+
+<p>Особенностью последних версий Rufus является возможность настройки дополнительных параметров установки Windows 11, таких как отключение проверки TPM 2.0 и Secure Boot. Это делает инструмент незаменимым для установки современной ОС на относительно старое железо, которое формально не поддерживается производителем.</p>
+
+<details class="pb-accordion"><summary>Что делать, если Rufus не видит флешку?</summary><div class="pb-accordion-body"><p>Если программа не отображает ваш накопитель в списке устройств, попробуйте изменить режим записи USB. В настройках Rufus есть опция изменения режима USB. Также проверьте диспетчер устройств — возможно, драйвер контроллера работает некорректно или флешка физически неисправна. Попробуйте отформатировать её стандартными средствами Windows перед запуском Rufus.</p></div></details>
+
+<h2 id="сравнение-методов-создания-загрузочного-носителя">Сравнение методов создания загрузочного носителя</h2>
+
+<p>Различные подходы к решению задачи имеют свои преимущества и недостатки. Выбор метода зависит от того, есть ли у вас готовый ISO-образ, нужно ли сохранять данные на флешке (что невозможно при смене стиля разделов) и насколько глубоко вы хотите погрузиться в технические детали.</p>
+
+<p>Графические утилиты удобны для разовых задач, тогда как консольные команды незаменимы при массовом развертывании систем или работе в аварийных средах. Понимание различий поможет сэкономить время и избежать ошибок при подготовке к установке операционной системы.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Метод</th>
+<th>Сложность</th>
+<th>Скорость</th>
+<th>Гибкость настройки</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Diskpart</strong></td>
+<td>Высокая</td>
+<td>Высокая</td>
+<td>Максимальная</td>
+</tr>
+<tr>
+<td><em>Rufus</em></td>
+<td>Низкая</td>
+<td>Средняя</td>
+<td>Средняя</td>
+</tr>
+<tr>
+<td>Управление дисками</td>
+<td>Средняя</td>
+<td>Низкая</td>
+<td>Ограниченная</td>
+</tr>
+<tr>
+<td>Media Creation Tool</td>
+<td>Минимальная</td>
+<td>Зависит от сети</td>
+<td>Отсутствует</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Как видно из таблицы, инструмент <strong>Diskpart</strong> предоставляет наибольший контроль, но требует знания команд. <em>Rufus</em> является золотой серединой, сочетая простоту использования с достаточным количеством настроек для большинства сценариев. Официальный инструмент Microsoft хорош тем, что сам скачивает актуальный образ, но не дает выбора файловой системы.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для 95% пользователей оптимальным выбором является программа Rufus: она исключает человеческий фактор при вводе команд и гарантирует создание корректной структуры разделов EFI.</p></aside>
+
+<h2 id="решение-распространенных-проблем-при-загрузке">Решение распространенных проблем при загрузке</h2>
+
+<p>Даже при правильно выполненной конвертации в <strong>GPT</strong> пользователи могут столкнуться с тем, что компьютер не загружается с флешки. Чаще всего проблема кроется в настройках BIOS/UEFI материнской платы, а не в самом накопителе. Необходимо проверить приоритет загрузки и режим работы контроллера.</p>
+
+<p>Зайдите в BIOS нажатием клавиш Del, F2 или F10 при включении компьютера. Найдите раздел <em>Boot</em> или <strong>Startup</strong>. Убедитесь, что режим загрузки установлен в <code>UEFI</code>, а не <code>Legacy</code> или <code>CSM</code>. Если включен режим совместимости (CSM), система может игнорировать GPT-разметку.</p>
+
+<p>Также стоит проверить настройку <strong>Secure Boot</strong>. Для установки Windows 10 и 11 она должна быть включена (Enabled). Однако, если вы устанавливаете Linux или модифицированную сборку Windows, возможно, потребуется временно отключить эту функцию. После установки системы рекомендуется вернуть настройку в исходное состояние.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Интерфейс BIOS/UEFI отличается у разных производителей материнских плат (ASUS, Gigabyte, MSI, ASRock). Названия пунктов меню могут варьироваться, но логика настройки режима загрузки остается единой для всех.</p>
+</blockquote>
+
+<p>Если флешка определяется в BIOS, но установка не начинается, проверьте порт подключения. Некоторые материнские платы требуют подключения загрузочных USB-накопителей к конкретным портам, обычно обозначенным цветом или подписью <code>USB_BOOT</code>. Попробуйте переставить флешку в разъем USB 2.0, если с USB 3.0 возникают проблемы.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>При проблемах с определением флешки в UEFI, попробуйте отключить функцию"Fast Boot" в BIOS. Это позволит системе провести полную инициализацию USB-контроллеров перед загрузкой, что часто решает проблему невидимости накопителя.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли конвертировать флешку из MBR в GPT без потери данных?</summary>
+<p>К сожалению, для съемных USB-накопителей стандартные средства Windows не поддерживают конвертацию без потери данных. Команда <code>convert gpt</code> в Diskpart работает только если диск уже очищен. Вам придется скопировать файлы на компьютер, отформатировать флешку в GPT, а затем вернуть данные обратно. Для жестких дисков внутри ПК существует утилита MBR2GPT, но она не предназначена для флешек.</p>
+</details>
+
+<details>
+<summary>В чем разница между GPT и MBR при установке Windows?</summary>
+<p>Основное различие заключается в способе загрузки. MBR используетlegacy-код загрузчика в первом секторе диска и совместим со старыми BIOS. GPT использует специальный раздел EFI с файлами загрузчика и требует поддержки UEFI. GPT надежнее, поддерживает диски больше 2 ТБ и является обязательным стандартом для Windows 11.</p>
+</details>
+
+<details>
+<summary>Почему моя флешка не видна в списке дисков Diskpart?</summary>
+<p>Это может происходить по нескольким причинам: неисправный USB-порт, отсутствие драйверов контроллера (редко в Windows 10/11), или физическая поломка флешки. Попробуйте подключить накопитель к другому порту, желательно напрямую к материнской плате, а не через переднюю панель корпуса или USB-хаб.</p>
+</details>
+
+<details>
+<summary>Нужно ли форматировать флешку в NTFS или FAT32 для GPT?</summary>
+<p>Для загрузочного раздела EFI (ESP) обязательно используется файловая система <strong>FAT32</strong>, так как прошивка UEFI умеет читать только её. Основной раздел с файлами установки Windows может быть отформатирован в NTFS. Программы вроде Rufus автоматически создают нужную структуру с двумя разделами, если образ не помещается в ограничения FAT32.</p>
+</details>
+
+<details>
+<summary>Поддерживает ли мой компьютер загрузку с GPT?</summary>
+<p>Практически все компьютеры, выпущенные после 2012 года, поддерживают UEFI и загрузку с GPT. Если вашему ПК более 10 лет, скорее всего, он использует только legacy BIOS и MBR. Проверить это можно в документации к материнской плате или зайдя в настройки BIOS и поискав опции UEFI.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/k/ka/kak-podklyuchit-komp-k-vajfayu.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить компьютер к Wi-Fi: пошаговая инструкция</span>
+                <span class="pb-related-desc">Подробный гид по подключению ПК к беспроводной сети. Решение проблем с драйверами, настройка маршрут</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-na-kompyutere-napisat-sobaku-na-klaviature.html" class="pb-related-card">
+                <span class="pb-related-title">Как написать собаку на клавиатуре: символы, эмодзи и альтернативы</span>
+                <span class="pb-related-desc">Узнайте, как быстро отобразить символ собаки на клавиатуре ПК. Инструкция по вводу эмодзи, спецсимво</span>
+            </a><a href="/kompyutery-i-noutbuki/p/pe/perekhodnik-ot-monitora-na-hdmi.html" class="pb-related-card">
+                <span class="pb-related-title">Как выбрать переходник от монитора на HDMI: типы, характеристики и подключение</span>
+                <span class="pb-related-desc">Полный гид по выбору адаптеров для мониторов. Разбор интерфейсов DisplayPort, DVI, VGA и HDMI. Инстр</span>
+            </a><a href="/kompyutery-i-noutbuki/i/in/intel-core-i5-3210m-apgrejd.html" class="pb-related-card">
+                <span class="pb-related-title">Апгрейд ноутбука с Intel Core i5-3210M: стоит ли менять процессор и что лучше?</span>
+                <span class="pb-related-desc">Подробный разбор возможности замены процессора Intel Core i5-3210M. Узнайте о совместимости, лучших </span>
+            </a><a href="/kompyutery-i-noutbuki/p/pr/progrev-videochipa-na-noutbuke.html" class="pb-related-card">
+                <span class="pb-related-title">Прогрев видеочипа ноутбука: методы, риски и реальная польза</span>
+                <span class="pb-related-desc">Разбор метода прогрева BGA-чипов. Как работает паяльная станция, почему это опасно и в каких случаях</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ku/kuda-vstavlyat-hdmi-kabel-v-kompyuter-v-videokartu-ili-materinskuyu-platu.html" class="pb-related-card">
+                <span class="pb-related-title">Куда подключать HDMI: в видеокарту или материнскую плату</span>
+                <span class="pb-related-desc">Правильное подключение кабеля HDMI. В чем разница между портом видеокарты и материнской платы? Почем</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

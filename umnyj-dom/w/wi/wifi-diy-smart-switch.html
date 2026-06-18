@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Wifi DIY Smart Switch: Сборка умного выключателя своими руками — Техно Гид</title>
+    <meta name="description" content="Как превратить обычный выключатель в умный. Выбор ESP8266, прошивка Tasmota, схемы подключения и настройка Home Assistant для полного контроля над освещением.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/w/wi/wifi-diy-smart-switch.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Wifi DIY Smart Switch: Сборка умного выключателя своими руками">
+    <meta property="og:description" content="Как превратить обычный выключатель в умный. Выбор ESP8266, прошивка Tasmota, схемы подключения и настройка Home Assistant для полного контроля над освещением.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Wifi DIY Smart Switch: Сборка умного выключателя своими руками</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-аппаратной-платформы-и-компонентов">Выбор аппаратной платформы и компонентов</a></li><li><a href="#прошивка-устройства-tasmota-и-esphome">Прошивка устройства: Tasmota и ESPHome</a></li><li><a href="#схемы-подключения-и-монтаж-в-подрозетник">Схемы подключения и монтаж в подрозетник</a></li><li><a href="#настройка-интеграции-с-home-assistant">Настройка интеграции с Home Assistant</a></li><li><a href="#безопасность-и-оптимизация-сети-wi-fi">Безопасность и оптимизация сети Wi-Fi</a></li><li><a href="#расширение-функционала-и-автоматизация">Расширение функционала и автоматизация</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/k/ka/kak-rabotaet-termostat-kotla.html">Как работает термостат котла: устройство, принцип и настройка</a></li><li><a href="/umnyj-dom/x/xi/xiaomi-robot-vacuum-s10-obzor.html">Xiaomi Robot Vacuum S10: обзор, характеристики и тест уборки</a></li><li><a href="/umnyj-dom/d/dl/dlya-chego-kondensator-v-sensornom-vyklyuchatele-sveta.html">Роль конденсатора в сенсорном выключателе: принцип работы и нюансы</a></li><li><a href="/umnyj-dom/u/us/ustanovka-home-assistant-na-raspberry-pi-4.html">Установка Home Assistant на Raspberry Pi 4: Полное руководство</a></li><li><a href="/umnyj-dom/k/ka/kak-vyvesti-izobrazhenie-s-kamery-videonablyudeniya-na-televizor.html">Как вывести изображение с камеры видеонаблюдения на телевизор: полные инструкции</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Wifi DIY Smart Switch: Полный гид по созданию умного выключателя</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-аппаратной-платформы-и-компонентов">Выбор аппаратной платформы и компонентов</a></li><li><a href="#прошивка-устройства-tasmota-и-esphome">Прошивка устройства: Tasmota и ESPHome</a></li><li><a href="#схемы-подключения-и-монтаж-в-подрозетник">Схемы подключения и монтаж в подрозетник</a></li><li><a href="#настройка-интеграции-с-home-assistant">Настройка интеграции с Home Assistant</a></li><li><a href="#безопасность-и-оптимизация-сети-wi-fi">Безопасность и оптимизация сети Wi-Fi</a></li><li><a href="#расширение-функционала-и-автоматизация">Расширение функционала и автоматизация</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Современный рынок переполнен готовыми решениями для автоматизации освещения, однако стоимость брендовых устройств часто неоправданно высока, а функционал ограничен экосистемой производителя. Создание собственного <strong>wifi diy smart switch</strong> позволяет не только сэкономить значительные средства, но и получить полный контроль над прошивкой, исключив зависимость от облачных серверов китайских корпораций. Это идеальный шаг для тех, кто хочет построить локальную, безопасную и отказоустойчивую систему умного дома.</p>
+
+<p>В основе большинства самодельных решений лежит микроконтроллер <em>ESP8266</em> или его более мощный наследник <em>ESP32</em>. Эти чипы обладают встроенным модулем Wi-Fi, достаточной вычислительной мощностью и низкой ценой, что делает их стандартом де-факто в сообществе мейкеров. Вы сможете управлять светом через смартфон, голосовые ассистенты или сложные сценарии автоматизации, используя открытое программное обеспечение.</p>
+
+<p>Процесс создания такого устройства требует базовых навыков пайки и понимания принципов работы электрических цепей переменного тока. Не стоит пугаться сложности: современные модули, такие как <em>Sonoff Basic</em> или <em>Shelly 1</em>, уже имеют готовую аппаратную базу, которую нужно лишь перепрошить. В этой статье мы разберем все этапы: от выбора железа до интеграции с Home Assistant.</p>
+
+<h2 id="выбор-аппаратной-платформы-и-компонентов">Выбор аппаратной платформы и компонентов</h2>
+
+<p>Первым шагом является выбор «сердца» вашего будущего выключателя. Для задач управления освещением наиболее популярным и доступным вариантом остается чип <em>ESP8266</em> (модели ESP-01, ESP-12F). Он отлично справляется с передачей команд по Wi-Fi и управлением реле. Если вы планируете более сложные сценарии, например, диммирование или подключение датчиков температуры, стоит присмотреться к <em>ESP32</em>, который имеет больше GPIO-пинов и двухъядерный процессор.</p>
+
+<p>Готовые платы часто представляют собой лучший старт для новичка, так как они уже содержат необходимый обвес: блок питания, реле и корпус. Среди лидеров рынка DIY-решений выделяется продукция компании <em>ITEAD</em> (серия Sonoff) и <em>Allterco</em> (серия Shelly). Платы <em>Shelly 1</em> особенно ценятся за компактность, позволяющую спрятать устройство прямо в подрозетник за стандартным выключателем, сохраняя возможность ручного управления.</p>
+
+<p>При самостоятельной сборке с нуля вам потребуется приобрести реле на 10А или 16А, оптрон для гальванической развязки (для безопасности) и модуль стабилизации напряжения. Важно убедиться, что выбранное реле способно коммутировать индуктивную нагрузку, если вы управляете трансформаторами или моторами, а не только активными LED-лампами.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Работа с сетевым напряжением 220В смертельно опасна. Все манипуляции по подключению проводов к плате проводите только при полностью обесточенной линии. Используйте изолированный инструмент и проверяйте отсутствие напряжения индикаторной отверткой перед каждым касанием контактов.</p>
+</blockquote>
+
+<div class="pb-poll" id="poll-fdb7da47"><div class="pb-poll-question">📊 Какой микроконтроллер вы планируете использовать?</div><div class="pb-poll-option" data-poll="fdb7da47" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">ESP8266 (NodeMCU/ESP-12)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="fdb7da47" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">ESP32</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="fdb7da47" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Готовая плата (Sonoff/Shelly)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="fdb7da47" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Arduino с Wi-Fi модулем</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="прошивка-устройства-tasmota-и-esphome">Прошивка устройства: Tasmota и ESPHome</h2>
+
+<p>Заводское ПО бюджетных устройств часто отправляет данные на сторонние сервера, что создает задержки и риски утечки приватности. Замена прошивки на открытую — ключевой этап превращения обычного гаджета в настоящий <strong>diy smart switch</strong>. Двумя наиболее популярными вариантами являются <em>Tasmota</em> и <em>ESPHome</em>. Первая предлагает готовый веб-интерфейс и богатый функционал «из коробки», вторая же тесно интегрирована с Home Assistant и конфигурируется через YAML-файлы.</p>
+
+<p>Для первоначальной загрузки прошивки вам понадобится USB-TTL адаптер (конвертер UART-USB). Подключение осуществляется по схеме: TX адаптера к RX платы, RX к TX, GND к GND и 3.3V к VCC. Критически важно не перепутать полярность, так как подача 5В на вход 3.3В может мгновенно вывести микроконтроллер из строя. Перед прошивкой необходимо замкнуть контакты GPIO0 и GND, чтобы перевести чип в режим загрузчика.</p>
+
+<p>Процесс прошивки можно выполнить через утилиту <code>esptool.py</code> или удобный веб-интерфейс <em>Tasmotizer</em>. После успешной записи устройство создаст собственную Wi-Fi сеть, к которой нужно подключиться для первоначальной настройки. В веб-интерфейсе вы сможете задать статический IP-адрес, что крайне рекомендуется для стабильной работы умного дома, и настроить шаблоны GPIO для корректной работы кнопки и реле.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к прошивке</h4><label class="check-item"><input type="checkbox"><span>Скачать файл прошивки (.bin)</span></label><label class="check-item"><input type="checkbox"><span>Подготовить USB-TTL адаптер</span></label><label class="check-item"><input type="checkbox"><span>Соединить пины GPIO0 и GND</span></label><label class="check-item"><input type="checkbox"><span>Подключить адаптер к ПК</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="схемы-подключения-и-монтаж-в-подрозетник">Схемы подключения и монтаж в подрозетник</h2>
+
+<p>Физическая установка выключателя зависит от типа вашей проводки. В классической схеме с разрывом фазы устройство включается в разрыв провода, идущего от распредкоробки к светильнику. Для модулей типа <em>Shelly 1</em> или <em>Sonoff Mini</em> это означает подключение входа L к фазе приходящей, а выхода L1 — к фазе уходящей на лампу. Нейтраль (N) также обязательна для питания самого модуля, поэтому наличие нулевого провода в подрозетнике является критическим требованием.</p>
+
+<p>Если в вашем подрозетнике отсутствует нейтраль (что часто бывает в старых домах), ситуация усложняется. Некоторые модули поддерживают работу без нуля, используя ток утечки через лампу, но это может приводить к мерцанию светодиодных светильников. Решением может стать установка конденсатора параллельно лампе или использование специальных схем с симисторами, хотя это требует глубоких знаний электроники.</p>
+
+<p>Для реализации схемы «проходной выключатель» (управление светом из двух мест) в DIY-решениях используется программная логика. Вы подключаете обе кнопки к разным входам GPIO микроконтроллера и настраиваете прошивку так, чтобы любое нажатие меняло состояние реле. Это избавляет от необходимости тянуть сложные перекидные провода между подрозетниками.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Перед установкой платы в подрозетник убедитесь, что провода надежно зафиксированы в клеммах и не имеют оголенных участков. Вибрация или тепловое расширение могут со временем ослабить контакт, что приведет к искрению и нагреву.</p>
+</blockquote>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Тип модуля</th>
+<th>Макс. ток</th>
+<th>Нужен ноль (N)</th>
+<th>Габариты</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sonoff Basic</td>
+<td>10А</td>
+<td>Да</td>
+<td>Крупные (отдельный корпус)</td>
+</tr>
+<tr>
+<td>Shelly 1</td>
+<td>16А</td>
+<td>Да</td>
+<td>Компактные (в подрозетник)</td>
+</tr>
+<tr>
+<td>Sonoff Mini (R2)</td>
+<td>10А</td>
+<td>Да/Нет (режимы)</td>
+<td>Миниатюрные</td>
+</tr>
+<tr>
+<td>ESP-01 + Реле</td>
+<td>Зависит от реле</td>
+<td>Да</td>
+<td>Зависит от сборки</td>
+</tr>
+</tbody>
+</table></div>
+
+<details class="pb-accordion"><summary>Особенности монтажа в металлические подрозетники</summary><div class="pb-accordion-body"><p>Если вы устанавливаете устройство в металлический подрозетник (часто встречается в домах старой постройки), убедитесь, что плата не касается стенок металла. Используйте дополнительную изоляцию или пластиковый корпус, так как замыкание фазы на корпус может привести к короткому замыканию и срабатыванию автомата.</p></div></details>
+
+<h2 id="настройка-интеграции-с-home-assistant">Настройка интеграции с Home Assistant</h2>
+
+<p>После прошивки и подключения устройство становится видимым в сети, но настоящая магия начинается при интеграции с центром управления умным домом. <em>Home Assistant</em> автоматически обнаруживает устройства с прошивкой <em>ESPHome</em> или <em>Tasmota</em> (через MQTT или нативную интеграцию). Для Tasmota потребуется настройка MQTT-брокера, такого как <em>Mosquitto</em>, который будет выступать посредником между выключателем и сервером.</p>
+
+<p>В конфигурационном файле <code>configuration.yaml</code> или через графический интерфейс вы можете задать уникальные имена, иконки и привязать выключатель к конкретным комнатам. Преимущество локальной интеграции заключается в мгновенной реакции: задержка между нажатием кнопки в приложении и включением света составляет миллисекунды, в отличие от облачных решений, где лаги могут достигать нескольких секунд.</p>
+
+<p>Вы также можете настроить телеметрию. Модули могут передавать данные о потреблении энергии (если установлен датчик тока, например, <em>BL0937</em> или <em>HJL-01</em>), температуре чипа и качестве Wi-Fi сигнала. Это позволяет создавать автоматизации, которые отключают свет при превышении лимита мощности или предупреждают о перегреве устройства.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте статические IP-адреса (DHCP Reservation) на вашем роутере для всех умных устройств. Это гарантирует, что адресация в Home Assistant не собьется после перезагрузки роутера или обновления аренды DHCP.</p></aside>
+
+<h2 id="безопасность-и-оптимизация-сети-wi-fi">Безопасность и оптимизация сети Wi-Fi</h2>
+
+<p>Устройства на базе <em>ESP8266</em> поддерживают только диапазон 2.4 ГГц. В условиях современных квартир, перенасыщенных соседскими роутерами, это может приводить к потере пакетов и нестабильной работе. Рекомендуется выделить отдельный SSID для устройств умного дома или настроить гостевую сеть, чтобы разгрузить основной канал и изолировать IoT-устройства от ваших личных компьютеров и смартфонов.</p>
+
+<p>Еще одной проблемой является «вещание» устройств. По умолчанию многие прошивки отправляют статусы слишком часто, забивая эфир. В настройках <em>Tasmota</em> параметр <code>TelePeriod</code> позволяет задать интервал отправки телеметрии. Увеличение этого значения до 300 или 600 секунд значительно снижает нагрузку на сеть без потери функциональности управления.</p>
+
+<p>Безопасность прошивки также важна. Обязательно смените стандартные пароли по умолчанию, особенно для доступа к веб-интерфейсу и MQTT-брокеру. Использование MQTT поверх SSL/TLS шифрования защитит ваши команды от перехвата в локальной сети, хотя для домашнего использования это часто считается избыточным, если сеть надежно защищена паролем WPA3.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Микроконтроллеры ESP8266 чувствительны к качеству питания. Если вы собираете устройство с нуля, используйте стабилизатор напряжения с запасом по току. Просадки напряжения при срабатывании реле могут вызывать перезагрузку чипа и потерю связи с сетью.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Локальное управление через MQTT или Native API обеспечивает работу выключателя даже при отсутствии доступа в интернет, в отличие от облачных решений типа Tuya или Xiaomi Cloud.</p></aside>
+
+<h2 id="расширение-функционала-и-автоматизация">Расширение функционала и автоматизация</h2>
+
+<p>DIY-подход открывает возможности, недоступные для коммерческих продуктов. Вы можете подключить к свободным пинам микроконтроллера датчики движения, освещенности или температуры. Например, выключатель может автоматически включать свет при обнаружении движения в коридоре ночью, но только если датчик освещенности фиксирует темноту.</p>
+
+<p>С помощью программного обеспечения можно реализовать логику «имитации присутствия». Когда вы в отпуске, выключатель может случайным образом включать и выключать свет в разное время, создавая видимость того, что дома кто-то есть. Также доступна функция защиты от залипания реле: устройство может периодически самопроверяться и перезагружаться при зависании.</p>
+
+<p>Для продвинутых пользователей доступна интеграция с голосовыми ассистентами через локальные шлюзы, такие как <em>Rhasspy</em> или <em>Piper</em>, что позволяет управлять светом голосом без отправки запросов в облака Google или Amazon. Это завершает цикл создания полностью приватной и независимой системы управления жильем.</p>
+
+<details class="pb-accordion"><summary>Как добавить датчик температуры DS18B20</summary><div class="pb-accordion-body"><p>Для подключения цифрового датчика температуры достаточно одного свободного GPIO пина. Подключите VCC датчика к 3.3V, GND к земле, а сигнальный провод к пину (например, GPIO4). Не забудьте установить подтягивающий резистор 4.7кОм между VCC и сигнальным проводом. В прошивке Tasmota активируйте модуль датчиков.</p></div></details>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли использовать wifi diy smart switch с лампами без нулевого провода?</summary>
+<p>Да, это возможно, но с оговорками. Некоторые модули (например, Sonoff Mini R2) имеют специальный режим работы без нейтрали, используя ток утечки через лампу для питания. Однако это работает только с мощными лампами накаливания или специальными драйверами светодиодов. Для обычных LED-ламп может потребоваться установка конденсатора параллельно источнику света, чтобы избежать мерцания и обеспечить стабильное питание модуля.</p>
+</details>
+
+<details>
+<summary>Что делать, если устройство постоянно отваливается от Wi-Fi?</summary>
+<p>Наиболее частая причина — слабый сигнал в месте установки (подрозетник часто экранирует сигнал) или перегрузка канала 2.4 ГГц. Попробуйте переместить роутер ближе, использовать Wi-Fi репитер или перейти на менее загруженный канал. Также проверьте настройки энергосбережения в прошивке и увеличьте мощность передатчика, если такая опция доступна.</p>
+</details>
+
+<details>
+<summary>Безопасно ли оставлять самодельное устройство включенным в сеть 24/7?</summary>
+<p>При условии правильной сборки, использования качественных компонентов и надежной изоляции — да. Промышленные модули типа Shelly или Sonoff проходят сертификацию и тесты на длительную работу. Самодельные платы на основе ESP-01 требуют аккуратного монтажа и размещения в негорючем корпусе, так как открытые контакты под напряжением недопустимы.</p>
+</details>
+
+<details>
+<summary>Смогу ли я вернуть заводскую прошивку, если мне не понравится Tasmota?</summary>
+<p>В большинстве случаев да. Для устройств на базе ESP8266/ESP32 процесс прошивки обратим. Вы можете снова подключить устройство к программатору и записать оригинальный бинарный файл (если вы сделали его бэкап перед перепрошивкой) или попробовать восстановить через режим восстановления некоторых производителей. Однако гарантия на устройство при вскрытии и перепрошивке обычно аннулируется.</p>
+</details>
+
+<details>
+<summary>Какой протокол лучше: MQTT или HTTP?</summary>
+<p>Для умного дома предпочтительнее MQTT. Это легковесный протокол, работающий по принципу издатель-подписчик, который создает меньшую нагрузку на сеть и позволяет мгновенно получать статусы устройств. HTTP запросы более тяжеловесны и могут создавать задержки при опросе большого количества устройств, хотя для единичных выключателей разница может быть незаметна.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/k/ka/kak-rabotaet-termostat-kotla.html" class="pb-related-card">
+                <span class="pb-related-title">Как работает термостат котла: устройство, принцип и настройка</span>
+                <span class="pb-related-desc">Подробный разбор того, как работает термостат котла отопления. Виды, схемы подключения и советы по т</span>
+            </a><a href="/umnyj-dom/x/xi/xiaomi-robot-vacuum-s10-obzor.html" class="pb-related-card">
+                <span class="pb-related-title">Xiaomi Robot Vacuum S10: обзор, характеристики и тест уборки</span>
+                <span class="pb-related-desc">Полный обзор робота-пылесоса Xiaomi Robot Vacuum S10. Тест навигации LDS, анализ мощности всасывания</span>
+            </a><a href="/umnyj-dom/d/dl/dlya-chego-kondensator-v-sensornom-vyklyuchatele-sveta.html" class="pb-related-card">
+                <span class="pb-related-title">Роль конденсатора в сенсорном выключателе: принцип работы и нюансы</span>
+                <span class="pb-related-desc">Разбираем функцию конденсатора в сенсорных выключателях света. Узнайте, как он стабилизирует питание</span>
+            </a><a href="/umnyj-dom/u/us/ustanovka-home-assistant-na-raspberry-pi-4.html" class="pb-related-card">
+                <span class="pb-related-title">Установка Home Assistant на Raspberry Pi 4: Полное руководство</span>
+                <span class="pb-related-desc">Подробная инструкция по установке Home Assistant OS на Raspberry Pi 4. Настройка SD-карты, прошивка,</span>
+            </a><a href="/umnyj-dom/k/ka/kak-vyvesti-izobrazhenie-s-kamery-videonablyudeniya-na-televizor.html" class="pb-related-card">
+                <span class="pb-related-title">Как вывести изображение с камеры видеонаблюдения на телевизор: полные инструкции</span>
+                <span class="pb-related-desc">Пошаговая инструкция: как подключить камеры видеонаблюдения к телевизору через HDMI, сетевой роутер </span>
+            </a><a href="/umnyj-dom/d/do/domofon-v-home-assistant.html" class="pb-related-card">
+                <span class="pb-related-title">Интеграция домофона в Home Assistant: управление, видео и автооткрытие</span>
+                <span class="pb-related-desc">Полное руководство по подключению домофона к Home Assistant. Обзор протоколов, интеграция IP-камер, </span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

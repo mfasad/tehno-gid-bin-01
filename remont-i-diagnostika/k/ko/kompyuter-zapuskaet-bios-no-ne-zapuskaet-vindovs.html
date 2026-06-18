@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Компьютер запускает BIOS, но не грузит Windows: решение — Техно Гид</title>
+    <meta name="description" content="Подробный разбор причин сбоя загрузки ОС. Диагностика HDD, проверка MBR/GPT, настройки UEFI и восстановление загрузчика Windows.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/remont-i-diagnostika/k/ko/kompyuter-zapuskaet-bios-no-ne-zapuskaet-vindovs.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Компьютер запускает BIOS, но не грузит Windows: решение">
+    <meta property="og:description" content="Подробный разбор причин сбоя загрузки ОС. Диагностика HDD, проверка MBR/GPT, настройки UEFI и восстановление загрузчика Windows.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/remont-i-diagnostika/">Ремонт и Диагностика</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Компьютер запускает BIOS, но не грузит Windows: решение</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#первичная-диагностика-в-biosuefi">Первичная диагностика в BIOS/UEFI</a></li><li><a href="#приоритет-загрузки-и-режимы-uefilegacy">Приоритет загрузки и режимы UEFI/Legacy</a></li><li><a href="#анализ-ошибок-загрузчика-и-кодов-post">Анализ ошибок загрузчика и кодов POST</a></li><li><a href="#восстановление-загрузчика-через-командную-строку">Восстановление загрузчика через командную строку</a></li><li><a href="#проверка-физического-состояния-накопителя">Проверка физического состояния накопителя</a></li><li><a href="#сброс-настроек-bios-и-обновление-прошивки">Сброс настроек BIOS и обновление прошивки</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/remont-i-diagnostika/k/ka/kak-vytashchit-materinskuyu-platu-iz-kompyutera.html">Как вытащить материнскую плату из компьютера: пошаговая инструкция</a></li><li><a href="/remont-i-diagnostika/k/ka/kak-sobrat-klaviaturu-na-noutbuke.html">Как собрать клавиатуру ноутбука: пошаговая инструкция по установке</a></li><li><a href="/remont-i-diagnostika/s/st/stiralnaya-mashina-samsung-diamond-6-kg-oshibka-3e.html">Ошибка 3E стиральной машины Samsung Diamond: расшифровка и ремонт</a></li><li><a href="/remont-i-diagnostika/d/di/disk-0-ne-proinitsializirovan-chto-delat.html">Диск 0 не проинициализирован: как исправить ошибку и не потерять данные</a></li><li><a href="/remont-i-diagnostika/k/ka/kak-uvelichit-tok-bloka-pitaniya.html">Как увеличить ток блока питания: методы модификации и замены</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Компьютер запускает BIOS, но не запускает Windows: Полное руководство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#первичная-диагностика-в-biosuefi">Первичная диагностика в BIOS/UEFI</a></li><li><a href="#приоритет-загрузки-и-режимы-uefilegacy">Приоритет загрузки и режимы UEFI/Legacy</a></li><li><a href="#анализ-ошибок-загрузчика-и-кодов-post">Анализ ошибок загрузчика и кодов POST</a></li><li><a href="#восстановление-загрузчика-через-командную-строку">Восстановление загрузчика через командную строку</a></li><li><a href="#проверка-физического-состояния-накопителя">Проверка физического состояния накопителя</a></li><li><a href="#сброс-настроек-bios-и-обновление-прошивки">Сброс настроек BIOS и обновление прошивки</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Ситуация, когда при включении питания экран загорается, появляется логотип материнской платы или список оборудования, но дальше загрузки операционной системы дело не доходит, является одной из самых распространенных проблем в сервисной практике. Пользователь видит курсор в углу экрана, черное мигающее поле или сообщение об ошибке вроде <code>Operating System not found</code>. Это означает, что аппаратная часть (процессор, оперативная память, видеокарта) прошла первичную самодиагностику (POST), но процесс передачи управления загрузчику <em>Windows Boot Manager</em> прервался. </p>
+
+<p>Причины такого поведения могут варьироваться от банального сбоя настроек BIOS после скачка напряжения до физической смерти жесткого диска. Часто проблема кроется в повреждении загрузочной записи (MBR) или таблицы разделов (GPT), что делает диск невидимым для системы, хотя он физически исправен. В других случаях виновником становится сбой режима работы контроллера SATA или неверный приоритет загрузки. </p>
+
+<p>Не стоит паниковать и сразу нести системный блок в сервис. В большинстве случаев диагностику и восстановление можно провести самостоятельно, если действовать последовательно и понимать логику работы загрузочных секторов. Данная статья поможет вам выявить корень проблемы, проверить состояние накопителей и вернуть систему к жизни без потери данных или с минимальными потерями. </p>
+
+<blockquote>
+<p>⚠️ Внимание: Если при включении вы слышите ритмичные щелчки, скрежет или писк из системного блока, немедленно обесточьте компьютер. Эти звуки указывают на механическое разрушение блока магнитных головок жесткого диска. Дальнейшие попытки включения могут привести к необратимой потере данных.</p>
+</blockquote>
+
+<h2 id="первичная-диагностика-в-biosuefi">Первичная диагностика в BIOS/UEFI</h2>
+
+<p>Первым и самым важным шагом является вход в интерфейс базовой системы ввода-вывода. Для этого при включении компьютера необходимо многократно нажимать клавишу <code>Del</code>, <code>F2</code> или <code>F10</code> (зависит от производителя материнской платы). Ваша цель — убедиться, что система вообще "видит" накопитель, на который установлена Windows. </p>
+
+<p>Найдите раздел, отвечающий за подключенные устройства. В старых BIOS это может быть пункт <code>Standard CMOS Features</code> или <code>IDE Configuration</code>, в современных UEFI — раздел <code>Boot</code> или <code>SATA Configuration</code>. Если в списке устройств ваш жесткий диск или SSD отсутствует (отображается как <code>None</code> или <code>Not Detected</code>), проблема носит аппаратный характер. </p>
+
+<p>Проверьте плотность подключения кабелей. Откройте крышку корпуса и переподключите SATA-кабель и кабель питания к диску. Попробуйте использовать другой порт SATA на материнской плате, желательно тот, который маркируется как <code>SATA_0</code> или <code>SATA_1</code>. Также стоит заменить сам SATA-кабель, так как они часто выходят из строя из-за перегибов. </p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Диагностика подключения диска</h4><label class="check-item"><input type="checkbox"><span>Проверить наличие диска в списке BIOS</span></label><label class="check-item"><input type="checkbox"><span>Переподключить SATA кабель</span></label><label class="check-item"><input type="checkbox"><span>Попробовать другой порт SATA</span></label><label class="check-item"><input type="checkbox"><span>Сбросить настройки BIOS на дефолтные</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>Если диск определяется, но система не грузится, обратите внимание на режим работы контроллера. Параметр <code>SATA Mode</code> должен соответствовать тому, как была установлена система. Обычно это режим <code>AHCI</code>. Если там стоит <code>IDE</code> или <code>RAID</code>, а система устанавливалась в другом режиме, Windows не сможет загрузиться, выдав синий экран или зависание. </p>
+
+<h2 id="приоритет-загрузки-и-режимы-uefilegacy">Приоритет загрузки и режимы UEFI/Legacy</h2>
+
+<p>Частой причиной сбоя является конфликт между режимом загрузки и структурой разделов на диске. Современные системы используют стандарт <em>UEFI</em> и таблицу разделов <em>GPT</em>, тогда как старые компьютеры работали в режиме <em>Legacy (CSM)</em> с таблицей <em>MBR</em>. Если в BIOS включен режим <code>UEFI Only</code>, а ваш диск размечен в MBR, загрузчик просто не будет найден. </p>
+
+<p>Зайдите в раздел <code>Boot</code> и найдите параметр <code>Boot Mode</code> или <code>CSM Support</code>. Попробуйте изменить его значение. Если стоит <code>UEFI</code>, переключите на <code>Legacy</code> (или включите CSM). Если стоит <code>Legacy</code>, попробуйте <code>UEFI</code>. После каждого изменения сохраняйте настройки клавишей <code>F10</code> и перезагружайтесь для проверки. </p>
+
+<p>Также проверьте порядок загрузки (<code>Boot Priority</code>). Убедитесь, что ваш системный диск стоит на первом месте. В UEFI-системах это может выглядеть как <code>Windows Boot Manager</code>. Иногда после сброса настроек на первое место встает сетевая загрузка (<code>Network Boot</code>) или USB-флешка, если они подключены. </p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если у вас установлен SSD и старый жесткий диск, убедитесь, что в приоритете загрузки стоит именно SSD. Иногда BIOS сбрасывает приоритет на самый первый по счету SATA-порт, где может быть подключен пустой диск.</p></aside>
+
+<blockquote>
+<p>⚠️ Внимание: Переключение режима Legacy/UEFI на уже установленной системе может привести к тому, что Windows перестанет загружаться вовсе. Если изменение не помогло, верните исходное значение параметра.</p>
+</blockquote>
+
+<h2 id="анализ-ошибок-загрузчика-и-кодов-post">Анализ ошибок загрузчика и кодов POST</h2>
+
+<p>Если BIOS видит диск, но при попытке загрузки появляется черный экран с белым текстом, внимательно прочитайте сообщение об ошибке. Коды ошибок дают прямую подсказку о характере проблемы. Например, сообщение <code>BOOTMGR is missing</code> указывает на повреждение загрузочного сектора, а <code>INACCESSIBLE_BOOT_DEVICE</code> чаще говорит о проблемах с драйверами контроллера или режиме SATA. </p>
+
+<p>На некоторых материнских платах есть светодиоды отладки (<code>Debug LED</code>) или двухзначный цифровой индикатор POST-кодов. Если такой индикатор есть, запишите код, на котором происходит остановка, и сверьте его с инструкцией к материнской плате. Коды в диапазоне <code>00-55</code> обычно относятся к инициализации процессора и памяти, а коды выше <code>60</code> часто указывают на проблемы с подключением периферии и дисков. </p>
+
+<p>В таблице ниже приведены расшифровки наиболее частых сообщений об ошибке, возникающих на этапе между BIOS и загрузкой Windows: </p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Сообщение об ошибке</th>
+<th>Вероятная причина</th>
+<th>Метод решения</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Operating System not found</code></td>
+<td>Диск не определен или пуст MBR</td>
+<td>Проверка кабелей, восстановление MBR</td>
+</tr>
+<tr>
+<td><code>BOOTMGR is missing</code></td>
+<td>Поврежден загрузчик Windows</td>
+<td>Восстановление через установочную флешку</td>
+</tr>
+<tr>
+<td><code>NTLDR is missing</code></td>
+<td>Ошибка загрузчика (чаще Win XP/7)</td>
+<td>Восстановление загрузочной записи</td>
+</tr>
+<tr>
+<td><code>Reboot and Select proper Boot device</code></td>
+<td>Неверный приоритет загрузки</td>
+<td>Настройка Boot Priority в BIOS</td>
+</tr>
+</tbody>
+</table></div>
+
+<div class="pb-poll" id="poll-83f6eccf"><div class="pb-poll-question">📊 Какое сообщение об ошибке вы видите?</div><div class="pb-poll-option" data-poll="83f6eccf" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">BOOTMGR is missing</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="83f6eccf" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Operating System not found</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="83f6eccf" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Черный экран с курсором</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="83f6eccf" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Синий экран (BSOD)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="83f6eccf" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Ошибок нет, просто висит логотип</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="восстановление-загрузчика-через-командную-строку">Восстановление загрузчика через командную строку</h2>
+
+<p>Если настройки BIOS в порядке, но система не стартует, потребуется восстановительный носитель. Вам понадобится загрузочная флешка с образом Windows той же версии, что установлена на компьютере (или новее). Загрузитесь с флешки, выберите язык и на экране установки нажмите комбинацию клавиш <code>Shift + F10</code>. Это откроет окно командной строки. </p>
+
+<p>Для автоматического исправления проблем с загрузкой введите команду <code>bootrec /fixboot</code>. Если система ответит, что доступ запрещен, может потребоваться более глубокая работа с разделами. Сначала проверьте структуру дисков командой <code>diskpart</code>, затем <code>list vol</code>. Найдите том с установленной Windows (по размеру) и зарезервированный системный раздел (обычно 100-500 Мб). </p>
+
+<p>Выйдите из утилиты diskpart командой <code>exit</code>. Далее назначьте букву системному разделу, если её нет, используя команду <code>assign letter=Z</code>. После этого выполните команду <code>bcdboot C:\windows /s Z: /f ALL</code>, где <code>C:</code> — буква диска с системой, а <code>Z:</code> — буква системного раздела. Эта команда заново создаст файлы загрузчика. </p>
+
+<pre><code>diskpart
+<p>list vol</p>
+<p>exit</p>
+<p>bcdboot C:\windows /s Z: /f ALL</code></pre></p>
+
+<details class="pb-accordion"><summary>Что делать, если команда bootrec не видит систему?</summary><div class="pb-accordion-body"><p>Иногда загрузчик поврежден настолько, что утилиты не могут найти установку Windows. В таком случае помогает полная пересоздание таблицы разделов EFI вручную через diskpart, но это требует уверенных знаний и может привести к потере данных, если ошибиться с выбором диска.</p></div></details>
+
+<h2 id="проверка-физического-состояния-накопителя">Проверка физического состояния накопителя</h2>
+
+<p>Программные методы бессильны, если накопитель имеет физические дефекты. Если диск определяется в BIOS, но исчезает в процессе работы или сильно тормозит, возможно, он "сыплется". Для диагностики можно использовать загрузочные версии утилит, например, <em>HDDScan</em> или <em>Vic</em>, записанные на флешку. Они позволяют проверить поверхность диска на наличие <em>bad blocks</em> (битых секторов). </p>
+
+<p>Обратите внимание на SMART-статус диска. В том же <code>diskpart</code> или специализированных утилитах можно увидеть атрибуты здоровья. Критическими являются параметры <code>Reallocated Sectors Count</code> и <code>Current Pending Sector Count</code>. Если их значение отлично от нуля, диск необходимо срочно заменить, так как он может отказать в любой момент. </p>
+
+<p><mark>Критическим признаком скорой смерти SSD является статус "Read Only" или невозможность записи данных при работающей системе.</mark> Контроллер SSD при обнаружении критических ошибок блокирует запись, чтобы сохранить остатки информации, но загрузка системы при этом становится невозможной. </p>
+
+<blockquote>
+<p>⚠️ Внимание: Интерфейсы и названия пунктов в BIOS/UEFI могут отличаться в зависимости от версии прошивки и производителя (ASUS, Gigabyte, MSI, ASRock). Если вы не нашли указанный параметр, ищите аналогичный по смыслу в руководстве пользователя вашей материнской платы.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Физическая исправность диска — фундамент работы системы. Никакие настройки BIOS не помогут, если накопитель имеет механические повреждения или выработал ресурс записи.</p></aside>
+
+<h2 id="сброс-настроек-bios-и-обновление-прошивки">Сброс настроек BIOS и обновление прошивки</h2>
+
+<p>Иногда проблема кроется в некорректных настройках энергосбережения или разгоне. Попробуйте выполнить полный сброс BIOS. Выключите компьютер, отключите кабель питания и выньте круглую батарейку <em>CR2032</em> на материнской плате на 5-10 минут. Это обнулит CMOS-память и вернет настройки к заводским. </p>
+
+<p>Если сброс не помог, проверьте наличие обновлений BIOS на сайте производителя материнской платы. Устаревшая микропрограмма может некорректно работать с новыми моделями SSD (особенно NVMe) или иметь баги в модуле загрузки. Обновление BIOS — процедура рискованная, поэтому выполняйте её только при стабильном питании и строго следуя инструкции. </p>
+
+<p>В некоторых случаях помогает отключение лишних периферийных устройств. Оставьте подключенными только монитор, клавиатуру и системный диск. Отключите принтеры, внешние жесткие диски, карты расширения. Иногда конфликт прерываний или сбойный USB-порт мешает пройти этап инициализации загрузки. </p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>При сбросе BIOS через вынимание батарейки не касайтесь других компонентов материнской платы руками, чтобы избежать статического электричества. Лучше использовать антистатический браслет или предварительно коснуться заземленного металлического предмета.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Почему компьютер загружается со второго или третьего раза?</summary>
+<p>Это может указывать на износ блока питания, который не выдает нужное напряжение при первом старте, либо на проблему с конденсаторами на материнской плате. Также возможно, что SSD уходит в глубокий сон и не успевает инициализироваться при быстром включении. Попробуйте отключить функцию "Fast Boot" в BIOS.</p>
+</details>
+
+<details>
+<summary>Можно ли восстановить данные, если Windows не загружается?</summary>
+<p>Да, если жесткий диск исправен физически. Подключите его как второй диск к другому рабочему компьютеру или загрузитесь с LiveCD (например, на базе Linux или WinPE). Это позволит скопировать важные файлы на внешний носитель перед переустановкой системы.</p>
+</details>
+
+<details>
+<summary>Поможет ли переустановка Windows, если проблема в BIOS?</summary>
+<p>Нет. Если проблема в настройках режима SATA, повреждении таблицы разделов или неисправности самого диска, простая переустановка не решит проблему, либо установка прервется на этапе выбора диска. Сначала нужно устранить аппаратную или конфигурационную причину.</p>
+</details>
+
+<details>
+<summary>Что такое "Active Partition" и как это влияет на загрузку?</summary>
+<p>В режиме Legacy (MBR) раздел, с которого происходит загрузка, должен иметь флаг "Active" (Активный). Если этот флаг слетел, BIOS не будет знать, с какого раздела начинать чтение загрузчика. Установить флаг можно через утилиту diskpart командой <code>active</code>.</p>
+</details>
+
+<details>
+<summary>Почему после обновления BIOS перестала грузиться Windows?</summary>
+<p>Обновление BIOS часто сбрасывает настройки на дефолтные. Мог измениться режим работы SATA (с AHCI на RAID или наоборот) или приоритет загрузки (с UEFI на Legacy). Зайдите в BIOS и восстановите параметры, соответствующие вашей установке Windows.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/remont-i-diagnostika/k/ka/kak-vytashchit-materinskuyu-platu-iz-kompyutera.html" class="pb-related-card">
+                <span class="pb-related-title">Как вытащить материнскую плату из компьютера: пошаговая инструкция</span>
+                <span class="pb-related-desc">Детальное руководство по демонтажу материнской платы. Подготовка, отключение кабелей, снятие кулера </span>
+            </a><a href="/remont-i-diagnostika/k/ka/kak-sobrat-klaviaturu-na-noutbuke.html" class="pb-related-card">
+                <span class="pb-related-title">Как собрать клавиатуру ноутбука: пошаговая инструкция по установке</span>
+                <span class="pb-related-desc">Пошаговое руководство: как правильно установить клавиатуру на ноутбук, подключить шлейф и закрепить </span>
+            </a><a href="/remont-i-diagnostika/s/st/stiralnaya-mashina-samsung-diamond-6-kg-oshibka-3e.html" class="pb-related-card">
+                <span class="pb-related-title">Ошибка 3E стиральной машины Samsung Diamond: расшифровка и ремонт</span>
+                <span class="pb-related-desc">Подробный разбор ошибки 3E в стиральных машинах Samsung Diamond 6 кг. Диагностика таходатчика, прове</span>
+            </a><a href="/remont-i-diagnostika/d/di/disk-0-ne-proinitsializirovan-chto-delat.html" class="pb-related-card">
+                <span class="pb-related-title">Диск 0 не проинициализирован: как исправить ошибку и не потерять данные</span>
+                <span class="pb-related-desc">Узнайте, что делать, если система показывает диск 0 не проинициализирован. Пошаговая инструкция по и</span>
+            </a><a href="/remont-i-diagnostika/k/ka/kak-uvelichit-tok-bloka-pitaniya.html" class="pb-related-card">
+                <span class="pb-related-title">Как увеличить ток блока питания: методы модификации и замены</span>
+                <span class="pb-related-desc">Подробный гайд по увеличению силы тока БП. Обзор методов перенастройки ШИМ-контроллера, замены компо</span>
+            </a><a href="/remont-i-diagnostika/t/tr/tri-korotkikh-i-odin-dlinnyj-signal-pri-zapuske-kompyutera.html" class="pb-related-card">
+                <span class="pb-related-title">3 коротких и 1 длинный сигнал при включении ПК: что это значит и как исправить</span>
+                <span class="pb-related-desc">Подробный разбор звуковых сигналов BIOS. Почему компьютер издает 3 коротких и 1 длинный гудок? Диагн</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

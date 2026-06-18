@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Arduino как ISP программатор: полная инструкция поги прошивки — Техно Гид</title>
+    <meta name="description" content="Узнайте, как превратить Arduino в универсальный ISP программатор для AVR-микроконтроллеров. Пошаговая настройка, схема подключения и загрузка загрузчика.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/elektronika-i-gadzhety/a/ar/arduino-as-isp-programmator.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Arduino как ISP программатор: полная инструкция поги прошивки">
+    <meta property="og:description" content="Узнайте, как превратить Arduino в универсальный ISP программатор для AVR-микроконтроллеров. Пошаговая настройка, схема подключения и загрузка загрузчика.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/elektronika-i-gadzhety/">Электроника и Гаджеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Arduino как ISP программатор: полная инструкция поги прошивки</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-мир-программирования-avr">Введение в мир программирования AVR</a></li><li><a href="#суть-технологии-и-принцип-работы">Суть технологии и принцип работы</a></li><li><a href="#необходимые-компоненты-и-схема-подключения">Необходимые компоненты и схема подключения</a></li><li><a href="#прошивка-платы-программатора">Прошивка платы-программатора</a></li><li><a href="#настройка-среды-разработки-и-выбор-программатора">Настройка среды разработки и выбор программатора</a></li><li><a href="#сравнение-методов-прошивки">Сравнение методов прошивки</a></li><li><a href="#решение-типичных-проблем">Решение типичных проблем</a></li><li><a href="#продвинутые-сценарии-использования">Продвинутые сценарии использования</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/elektronika-i-gadzhety/k/ka/kak-obmotat-shnur-ot-zaryadki-nitkami-chtob-ne-peregibalsya.html">Как обмотать шнур зарядки нитками: ремонт и защита</a></li><li><a href="/elektronika-i-gadzhety/k/ka/kak-zavyazyvat-galstuk-poetapno.html">Как завязывать галстук: пошаговая инструкция по узлам для мужчин</a></li><li><a href="/elektronika-i-gadzhety/t/te/telefony-banditov-90-kh.html">Телефоны бандитов 90-х: какие модели использовались и почему</a></li><li><a href="/elektronika-i-gadzhety/v/v-/v-kakikh-elektrichkakh-est-zaryadki.html">В каких электричках есть розетки и зарядки: полный гид</a></li><li><a href="/elektronika-i-gadzhety/p/py/pylesos-samsung-kak-otkryt-kontejner-dlya-musora.html">Как открыть контейнер для мусора в пылесосе Samsung: полная инструкция</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Превращаем Arduino в ISP-программатор: полное руководство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-мир-программирования-avr">Введение в мир программирования AVR</a></li><li><a href="#суть-технологии-и-принцип-работы">Суть технологии и принцип работы</a></li><li><a href="#необходимые-компоненты-и-схема-подключения">Необходимые компоненты и схема подключения</a></li><li><a href="#прошивка-платы-программатора">Прошивка платы-программатора</a></li><li><a href="#настройка-среды-разработки-и-выбор-программатора">Настройка среды разработки и выбор программатора</a></li><li><a href="#сравнение-методов-прошивки">Сравнение методов прошивки</a></li><li><a href="#решение-типичных-проблем">Решение типичных проблем</a></li><li><a href="#продвинутые-сценарии-использования">Продвинутые сценарии использования</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-мир-программирования-avr">Введение в мир программирования AVR</h2>
+
+<p>Вы когда-нибудь задумывались, как заставить микроконтроллер работать без дорогого оборудования? Ответ кроется в использовании плат <em>Arduino</em> в качестве универсального инструмента. <strong>Arduino as ISP</strong> — это технология, позволяющая использовать одну плату для прошивки другой, превращая бюджетный набор компонентов в мощную станцию для разработки.</p>
+
+<p>Этот метод стал стандартом де-факто среди инженеров и энтузиастов, позволяя обновлять <strong>загрузчик</strong> или записывать собственное <strong>приложение</strong> прямо на чип. Вам не нужно покупать специализированный программатор вроде <em>AVRISP mkII</em>, если у вас уже есть <em>Arduino Uno</em> или <em>Nano</em> под рукой.</p>
+
+<p>Процесс требует внимательности к деталям, но результаты того стоят. Вы получаете полный контроль над <strong>фьюзами</strong> и способ создавать устройства, которые загружаются быстрее и работают надежнее стандартных решений. Давайте разберем, как это работает.</p>
+
+<h2 id="суть-технологии-и-принцип-работы">Суть технологии и принцип работы</h2>
+
+<p>В основе метода лежит протокол SPI (Serial Peripheral Interface), который позволяет передавать данные между устройствами с высокой скоростью. Плата-программатор, подключенная к компьютеру, выступает в роли мастер-устройства, а целевой микроконтроллер становится слейвом. Команды из среды <strong>Arduino IDE</strong> передаются через USB-порт, преобразуются в сигнал SPI и записываются в память целевого чипа.</p>
+
+<p>Ключевым моментом является использование библиотеки <code>ArduinoISP</code>. Эта прошивка трансформирует стандартную плату в устройство, способное считывать и записывать байты в <strong>Flash-память</strong> и <strong>EEPROM</strong>. Важно понимать, что процессор платы-программатора не выполняет полезную функцию, он лишь транслирует команды.</p>
+
+<p>Многие новички ошибочно полагают, что <strong>ISP</strong> требует сложной настройки драйверов. На самом деле, всё сводится к правильной схеме подключения и выбору порта в меню <code>Инструменты</code>. После выбора <code>Programmer: Arduino as ISP</code> среда разработки автоматически переключается в режим прошивки через внешний интерфейс.</p>
+
+<h2 id="необходимые-компоненты-и-схема-подключения">Необходимые компоненты и схема подключения</h2>
+
+<p>Для успешной реализации проекта вам потребуется минимальный набор деталей. Основной элемент — это плата на базе <em>ATmega328P</em> или аналогичная, которая будет работать программатором. В качестве цели выступает любой совместимый <strong>AVR-чип</strong>, будь то встроенный в <em>Arduino Nano</em> или отдельный корпус DIP.</p>
+
+<p>Соединение осуществляется через шлейф из шести проводов. Критически важно соблюсти распиновку, иначе вы рискуете повредить обе платы. Основные линии связи включают <strong>MOSI</strong>, <strong>MISO</strong>, <strong>SCK</strong> и <strong>RST</strong>, а также питание и землю. Не забудьте про конденсатор между Reset и GND на плате программатора — это стабилизирует работу.</p>
+
+<p>Вот базовая схема соединений для совместимости с <em>Arduino Uno</em> и <em>Nano</em>:</p>
+
+<ul>
+<li>💡 <strong>VCC</strong> — подключается к пину 5V программатора и питанию целевой платы</li>
+<li>⚡ <strong>GND</strong> — общая земля, соединяет оба устройства</li>
+<li>🔌 <strong>MOSI</strong> — пин 11 на программаторе соединяется с пин 17 (MOSI) цели</li>
+<li>🔄 <strong>MISO</strong> — пин 12 программатора идет к пину 18 (MISO) цели</li>
+<li>⏩ <strong>SCK</strong> — пин 13 программатора подключается к пину 19 (SCK) цели</li>
+<li>🛑 <strong>RESET</strong> — пин 10 программатора идет к пину Reset цели</li>
+</ul>
+
+<blockquote>
+<p>⚠️ <strong>Внимание!</strong> Перед подачей питания обязательно проверьте замыкание между линиями питания и землей. Кратковременное короткое замыкание может сжечь контроллер программатора, сделав дальнейшую работу невозможной.</p>
+</blockquote>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка кги</h4><label class="check-item"><input type="checkbox"><span>Проверить схему подключения</span></label><label class="check-item"><input type="checkbox"><span>Установить драйверы</span></label><label class="check-item"><input type="checkbox"><span>Выбрать плату в IDE</span></label><label class="check-item"><input type="checkbox"><span>Загрузить прошивку ArduinoISP</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="прошивка-платы-программатора">Прошивка платы-программатора</h2>
+
+<p>Сама плата-программатор не готова к работе"из коробки". Её необходимо превратить в устройство, управляемое протоколом ISP. Для этого в среде разработки <strong>Arduino IDE</strong> нужно открыть пример <code>ArduinoISP</code>, который находится в меню <code>Файл → Примеры → ArduinoISP</code>.</p>
+
+<p>После загрузки кода убедитесь, что выбрана правильная плата. Для большинства задач подойдет <em>Arduino Uno</em> или <em>Nano</em>. Нажмите кнопку загрузки, чтобы прошить этот код в микроконтроллер вашего устройства. Теперь ваша плата готова к роли интерфейса.</p>
+
+<p>Если процесс загрузки завершается ошибкой, проверьте, не заблокирован ли <strong>загрузчик</strong> на самой плате программатора. Иногда требуется полная перепрошивка, если чип был ранее модифицирован. Используйте <code>Tools → Burn Bootloader</code> только если вы уверены в своих действиях.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед началом работы убедитесь, что на плате программатора горит светодиод LED13 — это индикатор активности, подтверждающий, что прошивка загружена корректно.</p></aside>
+
+<h2 id="настройка-среды-разработки-и-выбор-программатора">Настройка среды разработки и выбор программатора</h2>
+
+<p>Самый частый источник ошибок кроется в настройках <strong>Arduino IDE</strong>. Даже при идеальной схеме, если программа не знает, через какой интерфейс писать, она выдаст ошибку"stk500_getsync". Вам нужно явно указать системе использовать внешний программатор.</p>
+
+<p>Перейдите в меню <code>Инструменты → Программатор</code> и выберите пункт <code>Arduino as ISP</code>. Это критически важный шаг, который активирует протокол <strong>AVR109</strong> или <strong>AVRISP</strong> в зависимости от версии драйверов. Без этого выбора IDE будет пытаться писать через стандартный загрузчик.</p>
+
+<p>Также проверьте тип платы и тактовую частоту. Если вы работаете с <em>ATmega328P</em> на частоте <code>16 МГц</code>, убедитесь, что в меню <code>Инструменты → Частота</code> стоит соответствующее значение. Несоответствие частот может привести к невозможности считывания <strong>фьюзов</strong>.</p>
+
+<div class="pb-poll" id="poll-64db1ac6"><div class="pb-poll-question">📊 Какой программатор вы используете чаще всего?</div><div class="pb-poll-option" data-poll="64db1ac6" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Arduino Uno</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="64db1ac6" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Arduino Nano</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="64db1ac6" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">USBASP</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="64db1ac6" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Другой</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="сравнение-методов-прошивки">Сравнение методов прошивки</h2>
+
+<p>Использование <strong>Arduino as ISP</strong> имеет свои преимущества и недостатки по сравнению с другими методами. Оно отлично подходит для обучения и отладки, так как позволяет видеть процесс работы в реальном времени. Однако для массового производства этот метод может быть слишком медленным.</p>
+
+<p>Ниже приведена таблица сравнения популярных способов программирования AVR-микроконтроллеров:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Метод</th>
+<th>Скорость</th>
+<th>Сложность</th>
+<th>Стоимость</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>Arduino as ISP</em></td>
+<td>Средняя</td>
+<td>Низкая</td>
+<td>Бесплатно (если есть плата)</td>
+</tr>
+<tr>
+<td><em>USBASP</em></td>
+<td>Высокая</td>
+<td>Средняя</td>
+<td>Низкая</td>
+</tr>
+<tr>
+<td><em>AVRISP mkII</em></td>
+<td>Очень высокая</td>
+<td>Высокая</td>
+<td>Высокая</td>
+</tr>
+<tr>
+<td><em>Жженый загрузчик</em></td>
+<td>Медленная</td>
+<td>Высокая</td>
+<td>Бесплатно</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Выбор зависит от ваших целей. Для разовых проектов или обучения <em>Arduino as ISP</em> является идеальным решением. Для серийного производства лучше инвестировать в специализированные устройства, такие как <em>AVRISP mkII</em>, которые обеспечивают большую стабильность.</p>
+
+<details class="pb-accordion"><summary>В чем отличие ISP от UART?|Протокол ISP использует 4 линии связи (MOSI, MISO, SCK, RESET) для прямого доступа к памяти, тогда как UART (Serial) требует наличия загрузчика и работает через последовательный порт, что ограничивает возможности записи в фьюзы.-->
+
+<h2 id="решение-типичных-проблем">Решение типичных проблем</h2>
+
+<p>Даже опытные пользователи сталкиваются с ошибками при работе с <strong>ISP</strong>. Одна из самых частых — ошибка"avrdude</summary><div class="pb-accordion-body"><p> stk500_getsync". Это обычно означает, что связь с целевым устройством разорвана или напряжение питания нестабильно.</p>
+
+<p>Проверьте, не перепутаны ли провода <strong>MOSI</strong> и <strong>MISO</strong>. Часто ошибка возникает из-за того, что программатор пытается читать с пина, куда записывает, или наоборот. Также убедитесь, что <strong>Reset</strong> на целевой плате не удерживается в низком уровне.</p>
+
+<p>Иногда проблема кроется в том, что на целевой плате установлен внешний кварцевый резонатор, а <strong>фьюзы</strong> настроены на использование внутреннего генератора. В таких случаях программатор не может синхронизироваться с тактовой частотой.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание!</strong> Если при попытке чтения фьюзов возникает ошибка, немедленно прекратите эксперименты. Неправильная настройка фьюзов может сделать микроконтроллер полностью неработоспособным без использования высоковольтного программатора.</p>
+</blockquote>
+
+
+
+<h2 id="продвинутые-сценарии-использования">Продвинутые сценарии использования</h2>
+
+<p>Возможности <strong>Arduino as ISP</strong> не ограничиваются стандартной прошивкой. Вы можете использовать его для настройки <strong>фьюзов</strong>, изменения частоты работы или полного удаления кода из памяти. Это открывает путь к созданию кастомных устройств с оптимизированным <strong>кодом</strong>.</p>
+
+<p>Существуют скетчи, которые позволяют программатору работать в режиме"Bootloader Burner", записывая загрузчик сразу после сборки платы. Это полезно, если вы планируете продавать свои устройства или использовать их в проектах, где требуется загрузка через USB.</p>
+
+<p>Также можно настроить программатор для работы с <em>ATtiny</em> сериями, которые имеют меньше пинов. Для этого потребуется изменить конфигурационные файлы в IDE или использовать сторонние библиотеки, поддерживающие расширенный набор микроконтроллеров.</p>
+
+<details class="pb-accordion"><summary>Как сбросить фьюзы?|Для сброса фьюзов используйте команду <code>avrdude -c arduino -p m328p -P /dev/ttyUSB0 -b 19200 -U lfuse</summary><div class="pb-accordion-body"><p>w:0xFF:m</code> в командной строке, но будьте предельно осторожны с параметрами.</p></div></details>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Можно ли использовать Arduino Mega в качестве ISP?</summary>
+<p>Да, можно. Плата <em>Arduino Mega</em> также поддерживает прошивку <code>ArduinoISP</code>. Однако распиновка будет отличаться от <em>Uno</em> и <em>Nano</em>. Обратите внимание на номера пинов для SPI (50, 51, 52, 53) при составлении схемы подключения.</p>
+</details>
+
+<details>
+<summary>Нужен ли внешний источник питания для целевой платы?</summary>
+<p>Необязательно. Плата программатора может питать целевой микроконтроллер через линию 5V, если потребление не превышает допустимые токи (обычно около 500 мА для USB). Однако для стабильной работы при больших нагрузках лучше использовать отдельный блок питания.</p>
+</details>
+
+<details>
+<summary>Что делать, если загрузчик на целевой плате сгорел?</summary>
+<p>Если загрузчик поврежден, стандартная загрузка через USB невозможна. Используйте <strong>Arduino as ISP</strong>, чтобы записать новый загрузчик. Это восстановит возможность программирования через USB-порт в будущем.</p>
+</details>
+
+<details>
+<summary>Можно ли прошивать чипы с частотой ниже 1 МГц?</summary>
+<p>Технически да, но скорость передачи данных через ISP будет очень низкой. Протокол <strong>AVR109</strong> может работать нестабильно на низких частотах. Рекомендуется использовать внешние кварцевые резонаторы для повышения стабильности связи.</p>
+</details>
+
+<blockquote>
+<p>⚠️ <strong>Внимание!</strong> При работе с фьюзами всегда сохраняйте исходные значения. Если вы измените их неправильно, восстановление может потребовать специального оборудования, недоступного в домашних условиях.</p>
+</blockquote></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/elektronika-i-gadzhety/k/ka/kak-obmotat-shnur-ot-zaryadki-nitkami-chtob-ne-peregibalsya.html" class="pb-related-card">
+                <span class="pb-related-title">Как обмотать шнур зарядки нитками: ремонт и защита</span>
+                <span class="pb-related-desc">Пошаговая инструкция, как обмотать провод зарядки нитками, чтобы он не перегибался. Выбор материалов</span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kak-zavyazyvat-galstuk-poetapno.html" class="pb-related-card">
+                <span class="pb-related-title">Как завязывать галстук: пошаговая инструкция по узлам для мужчин</span>
+                <span class="pb-related-desc">Узнайте, как правильно завязать галстук в 4 основных стилях. Подробные схемы узлов Виндзор, Пратт и </span>
+            </a><a href="/elektronika-i-gadzhety/t/te/telefony-banditov-90-kh.html" class="pb-related-card">
+                <span class="pb-related-title">Телефоны бандитов 90-х: какие модели использовались и почему</span>
+                <span class="pb-related-desc">Обзор мобильных телефонов криминальных авторитетов 90-х. История Motorola StarTAC, Nokia, скрытые во</span>
+            </a><a href="/elektronika-i-gadzhety/v/v-/v-kakikh-elektrichkakh-est-zaryadki.html" class="pb-related-card">
+                <span class="pb-related-title">В каких электричках есть розетки и зарядки: полный гид</span>
+                <span class="pb-related-desc">Узнайте, в каких моделях электричек (Ласточка, Иволга) доступны розетки для зарядки. Обновляемые мат</span>
+            </a><a href="/elektronika-i-gadzhety/p/py/pylesos-samsung-kak-otkryt-kontejner-dlya-musora.html" class="pb-related-card">
+                <span class="pb-related-title">Как открыть контейнер для мусора в пылесосе Samsung: полная инструкция</span>
+                <span class="pb-related-desc">Пошаговая инструкция по открытию и очистке контейнера для пыли в роботах-пылесосах Samsung. Разбор м</span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kak-razobrat-power-bank-xiaomi-10000.html" class="pb-related-card">
+                <span class="pb-related-title">Как разобрать Power Bank Xiaomi 10000mAh: пошаговая инструкция</span>
+                <span class="pb-related-desc">Подробный гайд по разборке внешнего аккумулятора Xiaomi 10000. Узнайте, как снять корпус, проверить </span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

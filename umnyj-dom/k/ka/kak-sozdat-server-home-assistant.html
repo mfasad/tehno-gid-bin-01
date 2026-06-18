@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как создать сервер Home Assistant: руководство для новичков — Техно Гид</title>
+    <meta name="description" content="Подробная инструкция по установке Home Assistant на Raspberry Pi. Настройка умного дома, выбор оборудования и базовая конфигурация системы.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/k/ka/kak-sozdat-server-home-assistant.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как создать сервер Home Assistant: руководство для новичков">
+    <meta property="og:description" content="Подробная инструкция по установке Home Assistant на Raspberry Pi. Настройка умного дома, выбор оборудования и базовая конфигурация системы.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как создать сервер Home Assistant: руководство для новичков</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-аппаратной-платформы-для-сервера">Выбор аппаратной платформы для сервера</a></li><li><a href="#подготовка-образа-системы-и-запись-на-носитель">Подготовка образа системы и запись на носитель</a></li><li><a href="#первичный-запуск-и-настройка-сети">Первичный запуск и настройка сети</a></li><li><a href="#базовая-конфигурация-и-интеграции">Базовая конфигурация и интеграции</a></li><li><a href="#установка-дополнений-и-управление-пакетами">Установка дополнений и управление пакетами</a></li><li><a href="#создание-первых-автоматизаций-и-сценариев">Создание первых автоматизаций и сценариев</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/k/ka/kak-podklyuchit-besprovodnoj-vyklyuchatel-sveta-skhema-podklyucheniya.html">Подключение беспроводного выключателя света: схемы и инструкции</a></li><li><a href="/umnyj-dom/n/ne/ne-rabotaet-domofon-dom-ru-kuda-obrashchatsya.html">Не работает домофон Дом.Ру: куда обращаться, причины и ремонт</a></li><li><a href="/umnyj-dom/c/ch/chto-mozhno-delat-iz-plastikovykh-butylok.html">Вторая жизнь пластика: 50+ идей для поделок из бутылок дома</a></li><li><a href="/umnyj-dom/u/um/umnyj-dom-individualnyj-proekt.html">Индивидуальный проект умного дома: этапы, цена и выбор</a></li><li><a href="/umnyj-dom/p/pr/prilozhenie-dlya-upravleniya-rgb-lentoj-s-telefona.html">Приложение для управления RGB лентой с телефона: выбор и настройка</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как создать сервер Home Assistant своими руками</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-аппаратной-платформы-для-сервера">Выбор аппаратной платформы для сервера</a></li><li><a href="#подготовка-образа-системы-и-запись-на-носитель">Подготовка образа системы и запись на носитель</a></li><li><a href="#первичный-запуск-и-настройка-сети">Первичный запуск и настройка сети</a></li><li><a href="#базовая-конфигурация-и-интеграции">Базовая конфигурация и интеграции</a></li><li><a href="#установка-дополнений-и-управление-пакетами">Установка дополнений и управление пакетами</a></li><li><a href="#создание-первых-автоматизаций-и-сценариев">Создание первых автоматизаций и сценариев</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Создание собственной экосистемы умного дома часто упирается в вопрос приватности данных и зависимости от облачных сервисов крупных корпораций. Многие пользователи сталкиваются с задержками команд или полной неработоспособностью устройств при отсутствии интернета. Именно здесь на сцену выходит <strong>Home Assistant</strong> — платформа с открытым исходным кодом, которая возвращает полный контроль над домашней автоматизацией в ваши руки.</p>
+
+<p>Эта система работает локально, обрабатывая все сценарии прямо на вашем оборудовании без отправки информации на сторонние сервера. Развертывание собственного сервера может показаться сложной задачей для неподготовленного пользователя, но современные методы установки значительно упростили этот процесс. В этой статье мы разберем, какое железо потребуется, как выбрать метод установки и первично настроить систему для комфортной жизни.</p>
+
+<p>Вам не обязательно быть программистом или системным администратором, чтобы запустить этот <em>хаб</em>. Достаточно следовать пошаговым инструкциям и понимать базовые принципы работы сетей. Результатом станет стабильная платформа, объединяющая устройства разных производителей в единый интерфейс, доступный из любой точки мира через безопасное соединение.</p>
+
+<h2 id="выбор-аппаратной-платформы-для-сервера">Выбор аппаратной платформы для сервера</h2>
+
+<p>Первым шагом является определение железа, на котором будет работать ваша автоматизация. Самым популярным и доступным вариантом остается одноплатный компьютер <em>Raspberry Pi</em>. Модели с 4 ГБ или 8 ГБ оперативной памяти обеспечивают достаточную производительность для большинства сценариев, включая работу с камерами и сложной логикой.</p>
+
+<p>Однако не стоит ограничиваться только «малиной». Старый ноутбук, мини-ПК на базе процессоров Intel NUC или даже виртуальная машина на существующем сервере могут стать отличной базой. Главное требование — наличие стабильного проводного подключения к сети Ethernet, так как Wi-Fi может внести нестабильность в работу критически важных узлов.</p>
+
+<p>Особое внимание уделите накопителю. Использование обычной microSD карты для постоянной записи логов и баз данных быстро выведет её из строя.</p>
+
+<ul>
+<li>🖥️ <strong>SSD накопитель</strong>: настоятельно рекомендуется использовать SSD диск через USB 3.0 для долговечности системы.</li>
+<li>🔌 <strong>Блок питания</strong>: выбирайте качественный адаптер с запасом мощности, чтобы избежать случайных перезагрузок под нагрузкой.</li>
+<li>❄️ <strong>Охлаждение</strong>: активный кулер или массивный радиатор необходимы для предотвращения троттлинга процессора в летний период.</li>
+</ul>
+
+<blockquote>⚠️ Внимание: При использовании Raspberry Pi 4 или 5 обязательно проверьте совместимость вашего блока питания с требованиями конкретной ревизии платы, иначе система может работать нестабильно при подключении периферии.</blockquote>
+
+<div class="pb-poll" id="poll-5f30b9ac"><div class="pb-poll-question">📊 Какое оборудование вы планируете использовать для Home Assistant?</div><div class="pb-poll-option" data-poll="5f30b9ac" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Raspberry Pi 4/5</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="5f30b9ac" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Старый ноутбук/ПК</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="5f30b9ac" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Мини-ПК (Intel NUC)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="5f30b9ac" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Виртуальная машина</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="5f30b9ac" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другое</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="подготовка-образа-системы-и-запись-на-носитель">Подготовка образа системы и запись на носитель</h2>
+
+<p>Наиболее надежным способом установки является использование специализированного образа <em>Home Assistant OS</em>. Этот вариант представляет собой полноценную операционную систему, оптимизированную исключительно для задач умного дома, что избавляет пользователя от необходимости настраивать окружение вручную.</p>
+
+<p>Для записи образа вам потребуется компьютер с кардридером и программа <code>balenaEtcher</code> или <em>Raspberry Pi Imager</em>. Процесс максимально упрощен: вы скачиваете актуальный образ для вашей архитектуры процессора (обычно это aarch64 для Raspberry Pi или amd64 для ПК) и записываете его на SSD или карту памяти.</p>
+
+<p>Важно отметить, что при первом запуске система автоматически расширит файловую систему на весь доступный объем диска. Это означает, что вам не нужно заниматься ручной разметкой разделов перед началом работы.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если вы используете Raspberry Pi 4 или 5, перед записью образа можно сразу настроить загрузку с SSD через конфигуратор EEPROM, что значительно ускорит работу системы по сравнению с microSD картой.</p></aside>
+
+<p>После завершения записи извлеките накопитель и подключите его к вашему будущему серверу. Убедитесь, что все кабели подключены надежно, особенно сетевой, прежде чем подавать питание.</p>
+
+<h2 id="первичный-запуск-и-настройка-сети">Первичный запуск и настройка сети</h2>
+
+<p>После подключения питания индикаторы на плате начнут мигать, сигнализируя о начале загрузки. Первый запуск может занять от 5 до 15 минут, так как система проводит первоначальную инициализацию компонентов и создание базы данных.</p>
+
+<p>Вам не нужно подключать монитор к серверу. Вся настройка происходит через веб-интерфейс с любого устройства в той же локальной сети. Откройте браузер на компьютере или смартфоне и введите адрес <code>http://homeassistant.local:8123</code>.</p>
+
+<p>Если ваш компьютер не поддерживает разрешение имени через mDNS, вам потребуется узнать IP-адрес устройства через роутер или использовать сканер сети. Введите найденный адрес в формате <code>http://192.168.1.XX:8123</code> в адресную строку.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Значение по умолчанию</th>
+<th>Рекомендация</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Порт доступа</td>
+<td>8123</td>
+<td>Оставить без изменений</td>
+</tr>
+<tr>
+<td>Протокол</td>
+<td>HTTP</td>
+<td>Настроить HTTPS позже</td>
+</tr>
+<tr>
+<td>Имя пользователя</td>
+<td>Запрос при первом входе</td>
+<td>Использовать сложное имя</td>
+</tr>
+<tr>
+<td>Пароль</td>
+<td>Запрос при первом входе</td>
+<td>Минимум 12 символов</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Система предложит создать учетную запись администратора. Придумайте надежный пароль, так как именно он будет использоваться для доступа к панели управления и подтверждения критических изменений в конфигурации.</p>
+
+<h2 id="базовая-конфигурация-и-интеграции">Базовая конфигурация и интеграции</h2>
+
+<p>После успешного входа вы попадете в панель управления <strong>Overview</strong>. На этом этапе система уже автоматически обнаружила некоторые устройства в вашей сети, такие как роутеры, умные лампочки или медиаплееры. Однако для полноценной работы требуется ручная настройка ключевых интеграций.</p>
+
+<p>Перейдите в раздел <code>Настройки → Устройства и службы</code>. Здесь вы увидите список обнаруженных устройств. Для добавления новых платформ, например, Zigbee координатора или облачных сервисов, нажмите кнопку «Добавить интеграцию».</p>
+
+<p>Одной из самых важных задач является настройка протокола автоматизации. Если вы планируете использовать устройства Zigbee, вам потребуется установить аддон <em>Zigbee2MQTT</em> или использовать встроенный интеграцию <code>ZHA</code>. Это позволит подключать дешевые датчики и выключатели напрямую к вашему серверу.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Первичная настройка интеграций</h4><label class="check-item"><input type="checkbox"><span>Подключить Zigbee стик</span></label><label class="check-item"><input type="checkbox"><span>Настроить MQTT брокер</span></label><label class="check-item"><input type="checkbox"><span>Добавить облачные сервисы (опционально)</span></label><label class="check-item"><input type="checkbox"><span>Создать первую автоматизацию</span></label><label class="check-item"><input type="checkbox"><span>Проверить работу датчиков</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<p>Не пытайтесь добавить все устройства сразу. Начните с базовых элементов: освещения, розеток и датчиков движения. Это поможет понять логику работы системы без риска запутаться в десятках сущностей.</p>
+
+<h2 id="установка-дополнений-и-управление-пакетами">Установка дополнений и управление пакетами</h2>
+
+<p>Мощь платформы раскрывается благодаря системе дополнений (Add-ons). Это изолированные приложения, которые работают в связке с основным ядром, расширяя его функционал. Для доступа к магазину дополнений необходимо включить режим «Расширенный» в профиле пользователя.</p>
+
+<p>Среди самых полезных дополнений можно выделить <em>File editor</em> или <em>Visual Studio Code</em> для прямого редактирования конфигурационных файлов, а также <em>Mosquitto broker</em> для работы с протоколом MQTT. Также популярны инструменты для создания резервных копий и мониторинга ресурсов системы.</p>
+
+<p>Установка происходит в пару кликов: выберите нужный аддон в магазине, нажмите «Установить», дождитесь завершения и затем «Запустить». Не забудьте включить опцию «Запуск при загрузке» для критически важных сервисов.</p>
+
+<blockquote>⚠️ Внимание: Интерфейс и доступные дополнения могут меняться с выходом новых версий ядра. Всегда проверяйте требования к версии Home Assistant перед установкой специфических аддонов в официальном репозитории.</blockquote>
+
+<details class="pb-accordion"><summary>Что делать, если аддон не запускается?</summary><div class="pb-accordion-body"><p>Чаще всего проблема кроется в конфликте портов или отсутствии необходимых прав доступа к оборудованию. Проверьте логи аддона в нижней части страницы настроек — там будет указана конкретная ошибка, например, отсутствие доступа к USB-порту для Zigbee стика.</p></div></details>
+
+<h2 id="создание-первых-автоматизаций-и-сценариев">Создание первых автоматизаций и сценариев</h2>
+
+<p>Главная цель создания сервера — автоматизация рутинных действий. В Home Assistant для этого используется визуальный редактор, который позволяет строить логические цепочки без написания кода. Принцип работы строится на триаде: Триггер, Условие и Действие.</p>
+
+<p>Триггером может служить любое событие: нажатие кнопки, изменение температуры, восход солнца или конкретное время. Условия позволяют сузить срабатывание, например, включить свет только если на улице уже темно. Действия — это команды устройствам: включить свет, отправить уведомление или запустить музыку.</p>
+
+<p>Рассмотрим простой пример: включение света в коридоре при движении. Вам нужно выбрать триггер <code>Состояние</code> датчика движения на <code>Включено</code>. В действиях выберите сервис <code>light.turn_on</code> и укажите целевую лампу.</p>
+
+<pre><code>alias: "Включение света в коридоре"
+<p>description: ""</p>
+<p>trigger:</p>
+<p>- platform: state</p>
+<p>entity_id: binary_sensor.corridor_motion</p>
+<p>to: "on"</p>
+<p>condition: []</p>
+<p>action:</p>
+<p>- service: light.turn_on</p>
+<p>target:</p>
+<p>entity_id: light.corridor_bulb</p>
+<p>mode: single</code></pre></p>
+
+<p>Такой подход позволяет гибко настраивать поведение дома. Вы можете создавать сложные сценарии, где одно событие запускает цепочку действий в разных комнатах, синхронизируя работу климата, освещения и безопасности.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Визуальный редактор автоматизаций позволяет создавать сложные сценарии без знания языка программирования YAML, что делает систему доступной для новичков, но при этом сохраняет возможность ручного редактирования кода для продвинутых пользователей.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Нужно ли платить за использование Home Assistant?</summary>
+<p>Нет, само программное обеспечение полностью бесплатно и имеет открытый исходный код. Вы платите только за оборудование (сервер, датчики, исполнительные устройства), на котором будет развернута система. Некоторые облачные интеграции могут иметь свои тарифы, но локальная работа не требует подписок.</p>
+</details>
+
+<details>
+<summary>Можно ли управлять домом извне без «белого» IP-адреса?</summary>
+<p>Да, это возможно. Самый простой и безопасный способ — использовать сервис Home Assistant Cloud (Nabu Casa), который предоставляет доступ за небольшую ежемесячную плату. Альтернативный бесплатный вариант — настройка туннеля через WireGuard или использование динамиического DNS в связке с безопасным прокси.</p>
+</details>
+
+<details>
+<summary>Что будет, если сервер выключится или сломается?</summary>
+<p>При отключении сервера автоматизации перестанут работать, но локальные устройства (например, обычные выключатели света) продолжат функционировать вручную. Для защиты от сбоев рекомендуется настроить регулярное создание резервных копий и хранить их на внешнем носителе или в облаке.</p>
+</details>
+
+<details>
+<summary>Сложно ли перейти с другой системы, например, Mi Home или Tuya?</summary>
+<p>Процесс миграции требует времени, так как устройства нужно заново добавлять в новую экосистему. Однако многие устройства поддерживают прямую интеграцию или могут быть перепрошиты для работы через Zigbee/Wi-Fi напрямую. В долгосрочной перспективе переход оправдан повышением надежности и скорости отклика.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/k/ka/kak-podklyuchit-besprovodnoj-vyklyuchatel-sveta-skhema-podklyucheniya.html" class="pb-related-card">
+                <span class="pb-related-title">Подключение беспроводного выключателя света: схемы и инструкции</span>
+                <span class="pb-related-desc">Полное руководство по установке беспроводных выключателей. Схемы подключения, выбор реле, настройка </span>
+            </a><a href="/umnyj-dom/n/ne/ne-rabotaet-domofon-dom-ru-kuda-obrashchatsya.html" class="pb-related-card">
+                <span class="pb-related-title">Не работает домофон Дом.Ру: куда обращаться, причины и ремонт</span>
+                <span class="pb-related-desc">Домофон Дом.Ру не работает? Инструкция по диагностике, контакты поддержки и аварийных служб. Узнайте</span>
+            </a><a href="/umnyj-dom/c/ch/chto-mozhno-delat-iz-plastikovykh-butylok.html" class="pb-related-card">
+                <span class="pb-related-title">Вторая жизнь пластика: 50+ идей для поделок из бутылок дома</span>
+                <span class="pb-related-desc">Узнайте, что можно делать из пластиковых бутылок: от полезных самоделок до дизайнерского декора. Пош</span>
+            </a><a href="/umnyj-dom/u/um/umnyj-dom-individualnyj-proekt.html" class="pb-related-card">
+                <span class="pb-related-title">Индивидуальный проект умного дома: этапы, цена и выбор</span>
+                <span class="pb-related-desc">Как создать индивидуальный проект умного дома с нуля. Полный гайд по выбору оборудования, схемам про</span>
+            </a><a href="/umnyj-dom/p/pr/prilozhenie-dlya-upravleniya-rgb-lentoj-s-telefona.html" class="pb-related-card">
+                <span class="pb-related-title">Приложение для управления RGB лентой с телефона: выбор и настройка</span>
+                <span class="pb-related-desc">Какое приложение выбрать для управления RGB лентой через телефон. Обзор контроллеров, протоколов Wi-</span>
+            </a><a href="/umnyj-dom/k/ka/kak-polzovatsya-umnym-domom-s-alisoj.html" class="pb-related-card">
+                <span class="pb-related-title">Как пользоваться умным домом с Алисой: полное руководство</span>
+                <span class="pb-related-desc">Пошаговая инструкция по настройке умного дома с Яндекс Алисой. Сценарии, команды, совместимость устр</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

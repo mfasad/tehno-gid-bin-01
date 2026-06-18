@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Подключение Bluetooth к Arduino Uno: HC-05, HC-06, схема — Техно Гид</title>
+    <meta name="description" content="Подробная инструкция по подключению модуля HC-05 к Arduino Uno. Настройка AT-команд, схема соединений и пример кода для управления.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/elektronika-i-gadzhety/p/po/podklyuchenie-blyutuz-modulya-k-arduino-uno.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Подключение Bluetooth к Arduino Uno: HC-05, HC-06, схема">
+    <meta property="og:description" content="Подробная инструкция по подключению модуля HC-05 к Arduino Uno. Настройка AT-команд, схема соединений и пример кода для управления.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/elektronika-i-gadzhety/">Электроника и Гаджеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Подключение Bluetooth к Arduino Uno: HC-05, HC-06, схема</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-подходящего-оборудования-и-интерфейсов">Выбор подходящего оборудования и интерфейсов</a></li><li><a href="#схема-электрического-подключения-к-плате">Схема электрического подключения к плате</a></li><li><a href="#настройка-режима-работы-через-at-команды">Настройка режима работы через AT-команды</a></li><li><a href="#программная-реализация-на-arduino-ide">Программная реализация на Arduino IDE</a></li><li><a href="#сопряжение-со-смартфоном-и-тестирование">Сопряжение со смартфоном и тестирование</a></li><li><a href="#решение-типичных-проблем-и-отладка">Решение типичных проблем и отладка</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/elektronika-i-gadzhety/s/sk/skolko-udlinitelej-mozhno-podklyuchit-k-odnoj-rozetke.html">Сколько удлинителей можно подключать к одной розетке: безопасность</a></li><li><a href="/elektronika-i-gadzhety/t/te/telefony-banditov-90-kh.html">Телефоны бандитов 90-х: какие модели использовались и почему</a></li><li><a href="/elektronika-i-gadzhety/m/mo/mozhno-li-proshit-smart-chasy.html">Прошивка смарт-часов: можно ли, как и стоит ли это делать</a></li><li><a href="/elektronika-i-gadzhety/k/ka/kak-pishetsya-tepsi-zaryadka.html">Как пишется TPSI зарядка: Разбор терминологии и технологии</a></li><li><a href="/elektronika-i-gadzhety/k/ka/kakie-chasy-huawei-luchshe.html">Какие часы Huawei лучше: сравнение моделей 2026-2026 для здоровья и спорта</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Подключение Bluetooth модуля HC-05 к Arduino Uno</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-подходящего-оборудования-и-интерфейсов">Выбор подходящего оборудования и интерфейсов</a></li><li><a href="#схема-электрического-подключения-к-плате">Схема электрического подключения к плате</a></li><li><a href="#настройка-режима-работы-через-at-команды">Настройка режима работы через AT-команды</a></li><li><a href="#программная-реализация-на-arduino-ide">Программная реализация на Arduino IDE</a></li><li><a href="#сопряжение-со-смартфоном-и-тестирование">Сопряжение со смартфоном и тестирование</a></li><li><a href="#решение-типичных-проблем-и-отладка">Решение типичных проблем и отладка</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Создание беспроводных устройств на базе популярного микроконтроллера открывает широкие возможности для автоматизации и робототехники. Подключение Bluetooth модуля к Arduino Uno является одним из самых доступных способов реализации дистанционного управления вашим проектом. Это позволяет передавать данные, управлять сервоприводами или светодиодами прямо со смартфона без использования сложных радиочастотных приемников.</p>
+
+<p>В данной статье мы детально разберем процесс создания беспроводного канала связи. Вы узнаете, как правильно соединить пины платы и модуля, какие существуют различия между популярными чипами и как настроить соединение. Результатом станет готовая система, способная принимать команды из мобильного приложения.</p>
+
+<h2 id="выбор-подходящего-оборудования-и-интерфейсов">Выбор подходящего оборудования и интерфейсов</h2>
+
+<p>Для начала работы вам потребуется сама плата Arduino Uno и беспроводной трансивер. На рынке наиболее распространены модули на базе чипов <em>CSR BC04</em> или <em>Texas Instruments CC2540</em>. Визуально они часто выглядят одинаково — синие прямоугольные платы с контактами, но их внутренняя логика работы может существенно отличаться.</p>
+
+<p>Самой популярной моделью для энтузиастов является <strong>HC-05</strong>. Его главное преимущество заключается в возможности работы в двух режимах: Master (ведущий) и Slave (ведомый). Это позволяет устройству не только принимать команды от телефона, но и самостоятельно подключаться к другим модулям. Если же вам нужно только пассивно получать данные, можно использовать более дешевый <em>HC-06</em>, который работает исключительно в режиме Slave.</p>
+
+<div class="pb-poll" id="poll-22c7e05c"><div class="pb-poll-question">📊 Какой Bluetooth модуль вы планируете использовать?</div><div class="pb-poll-option" data-poll="22c7e05c" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">HC-05 (Master/Slave)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="22c7e05c" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">HC-06 (только Slave)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="22c7e05c" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">HC-08 (с низким энергопотреблением)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="22c7e05c" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Другой</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="22c7e05c" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">У меня уже есть готовый</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<p>Обратите внимание на количество пинов на плате модуля. Некоторые версии HC-05 имеют 6 контактов, включая вывод состояния <code>STATE</code>, в то время как упрощенные версии или HC-06 часто имеют только 4 основных контакта. Количество пинов напрямую влияет на схему подключения и возможность изменения настроек через AT-команды.</p>
+
+<h2 id="схема-электрического-подключения-к-плате">Схема электрического подключения к плате</h2>
+
+<p>Физическое соединение компонентов требует внимательности, так как логические уровни напряжения у Arduino и Bluetooth модуля не совпадают. Плата Arduino Uno оперирует напряжением 5 вольт, тогда как большинство Bluetooth чипов рассчитаны на 3.3 вольта. Прямое подключение линии передачи данных может привести к перегреву или выходу из строя приемника.</p>
+
+<p>Для надежной работы необходимо использовать делитель напряжения на резисторах или специальный преобразователь уровней. Линия <code>RX</code> модуля (прием данных) должна получать пониженное напряжение от пина <code>TX</code> Ардуино. В то же время линия <code>TX</code> модуля может быть подключена напрямую к пину <code>RX</code> микроконтроллера, так как 3.3 вольта распознаются как логическая единица.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Никогда не подавайте 5 вольт на пин <code>VCC</code> модуля напрямую от платы Arduino, если на плате нет встроенного стабилизатора. Используйте пин <code>3.3V</code> для питания, иначе вы рискуете сжечь чип за несколько секунд работы.</p>
+</blockquote>
+
+<p>Ниже приведена таблица с правильной распиновкой для стандартного подключения. Следование этой схеме гарантирует стабильный обмен данными без ошибок.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Пин Arduino Uno</th>
+<th>Пин Bluetooth Модуля</th>
+<th>Назначение</th>
+<th>Примечание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5V</td>
+<td>VCC</td>
+<td>Питание</td>
+<td>Только если модуль имеет стабилизатор</td>
+</tr>
+<tr>
+<td>GND</td>
+<td>GND</td>
+<td>Земля</td>
+<td>Общий провод обязателен</td>
+</tr>
+<tr>
+<td>Pin 2 (Soft RX)</td>
+<td>TX</td>
+<td>Прием данных</td>
+<td>Подключается напрямую</td>
+</tr>
+<tr>
+<td>Pin 3 (Soft TX)</td>
+<td>RX</td>
+<td>Передача данных</td>
+<td>Через делитель напряжения (1кОм + 2кОм)</td>
+</tr>
+<tr>
+<td>3.3V</td>
+<td>VCC</td>
+<td>Питание (альтернатива)</td>
+<td>Безопасный вариант питания</td>
+</tr>
+</tbody>
+</table></div>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте макетную плату (breadboard) для первых тестов. Это позволит быстро изменить схему подключения, если соединение не устанавливается с первого раза, не расплавляя провода паяльником.</p></aside>
+
+<p>После сборки схемы проверьте надежность контактов. Плохой контакт в цепи заземления часто становится причиной хаотичного поведения устройства и перезагрузок модуля связи.</p>
+
+<h2 id="настройка-режима-работы-через-at-команды">Настройка режима работы через AT-команды</h2>
+
+<p>Прежде чем загружать основной код проекта, необходимо настроить сам модуль. Заводские настройки могут не подходить под ваши задачи, например, имя устройства по умолчанию может быть занято или скорость передачи данных (Baud Rate) отличаться от ожидаемой. Для конфигурации используется режим AT-команд.</p>
+
+<p>Чтобы перевести модуль HC-05 в режим конфигурирования, необходимо удерживать кнопку на плате (если она есть) в момент подачи питания. Индикатор должен начать мигать медленно, примерно раз в две секунды, что сигнализирует о готовности принимать инструкции. Если кнопки нет, нужно замкнуть пин <code>KEY</code> или <code>EN</code> на питание 3.3В перед включением.</p>
+
+<p>Для отправки команд можно использовать стандартный монитор порта IDE Arduino или сторонние терминалы. Важно установить правильную скорость соединения, обычно это <code>38400</code> или <code>9600</code> бод, и выбрать режим <code>Both NL & CR</code> в настройках монитора порта.</p>
+
+<details class="pb-accordion"><summary>Список популярных AT-команд</summary><div class="pb-accordion-body"><p>AT — проверка связи (ответ OK)|AT+NAME? — запрос имени устройства|AT+PSWD? — запрос пин-кода (по умолчанию 1234)|AT+UART? — запрос скорости передачи данных|AT+ROLE? — запрос режима (0-Slave, 1-Master)|AT+RESET — перезагрузка модуля</p></div></details>
+
+<p>С помощью этих команд вы можете изменить имя, которое будет видеть ваш телефон при сканировании, установить уникальный пин-код для защиты от несанкционированного доступа и зафиксировать скорость обмена данными. После изменения параметров обязательно отправьте команду сохранения, если модуль требует этого явно, хотя многие современные версии сохраняют настройки автоматически.</p>
+
+<h2 id="программная-реализация-на-arduino-ide">Программная реализация на Arduino IDE</h2>
+
+<p>Для организации программной связи мы будем использовать библиотеку <em>SoftwareSerial</em>. Она позволяет превратить любые цифровые пины Arduino в последовательный порт, освобождая аппаратный UART (пины 0 и 1) для отладки или загрузки прошивки. Это критически важно, так как использование пинов 0 и 1 для Bluetooth помешает загрузке кода в плату.</p>
+
+<p>В скетче необходимо инициализировать объект последовательного порта, указав пины, к которым подключен модуль. Далее в цикле <code>loop</code> организуется постоянная проверка буфера входящих данных. Если данные поступают от Bluetooth, они пересылаются в компьютер, и наоборот.</p>
+
+<pre><code>#include &lt;SoftwareSerial.h&gt;
+
+<p>// Определение пинов для связи</p>
+<p>#define RX_PIN 2</p>
+<p>#define TX_PIN 3</p>
+
+<p>SoftwareSerial BT(RX_PIN, TX_PIN);</p>
+
+<p>void setup() {</p>
+<p>Serial.begin(9600); // Связь с ПК</p>
+<p>BT.begin(9600);     // Связь с модулем (должна совпадать с настройкой модуля)</p>
+<p>}</p>
+
+<p>void loop() {</p>
+<p>if (BT.available()) {</p>
+<p>Serial.write(BT.read());</p>
+<p>}</p>
+<p>if (Serial.available()) {</p>
+<p>BT.write(Serial.read());</p>
+<p>}</p>
+<p>}</p>
+</code></pre>
+
+<p>Этот код создает прозрачный мост между компьютером и Bluetooth устройством. Вы можете отправлять символы с компьютера, и они будут уходить по радиоканалу, либо вводить данные в терминале на телефоне, и видеть их на экране ПК. Это отличный способ отладки перед написанием сложной логики управления.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед запуском скетча</h4><label class="check-item"><input type="checkbox"><span>Убедиться, что пины 2 и 3 свободны</span></label><label class="check-item"><input type="checkbox"><span>Проверить скорость 9600 в настройках модуля</span></label><label class="check-item"><input type="checkbox"><span>Отключить модуль на время загрузки прошивки</span></label><label class="check-item"><input type="checkbox"><span>Подключить модуль после загрузки</span></label><label class="check-item"><input type="checkbox"><span>Открыть монитор порта</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="сопряжение-со-смартфоном-и-тестирование">Сопряжение со смартфоном и тестирование</h2>
+
+<p>После загрузки прошивки и проверки схемы можно переходить к финальному этапу — сопряжению с мобильным устройством. На смартфонах под управлением Android процесс обычно происходит через стандартное меню настроек Bluetooth. Найдите в списке доступных устройств имя, которое вы задали ранее через AT-команды.</p>
+
+<p>При запросе пароля введите стандартный код <code>1234</code> или <code>0000</code>, если вы не меняли его в настройках модуля. Успешное сопряжение подтвердится появлением устройства в списке "Сопряженные устройства" и изменением характера мигания светодиода на модуле (он начнет мигать реже, раз в несколько секунд).</p>
+
+<p>Для управления вам потребуется специальное приложение. Существует множество готовых решений в Google Play, таких как <em>Arduino Bluetooth Controller</em> или <em>BlueTerm</em>. В этих приложениях можно создать виртуальный терминал или настроить кнопки, которые будут отправлять конкретные символы (например, '1' для включения и '0' для выключения) на микроконтроллер.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Пользователям iOS (iPhone/iPad) следует знать, что стандартный стек Bluetooth в iOS не поддерживает классические модули типа HC-05/HC-06 напрямую через обычные приложения терминалы. Для Apple устройств требуются модули с поддержкой BLE (например, HM-10) или специфические приложения с поддержкой SPP через сторонние библиотеки.</p>
+</blockquote>
+
+<p>Если соединение установлено, но данные не передаются, проверьте соответствие скоростей (Baud Rate) в коде Arduino и в настройках самого модуля. Рассинхронизация скоростей приведет к появлению "мусорных" символов вместо читаемого текста.</p>
+
+<h2 id="решение-типичных-проблем-и-отладка">Решение типичных проблем и отладка</h2>
+
+<p>В процессе настройки новички часто сталкиваются с рядом типовых ошибок. Самая распространенная из них — перепутанные линии RX и TX. Запомните простое правило: передатчик одного устройства должен быть соединен с приемником другого. То есть TX Arduino идет на RX модуля, а TX модуля — на RX Arduino.</p>
+
+<p>Еще одной частой проблемой является недостаточное питание. Bluetooth модули в момент установления соединения потребляют пиковый ток, который может просаживать напряжение на плате Arduino, вызывая ее перезагрузку. Если вы наблюдаете циклические перезагрузки при попытке подключения, попробуйте запитать модуль от внешнего источника 3.3В или использовать конденсатор большой емкости параллельно питанию модуля.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Стабильность связи на 90% зависит от качества пайки и надежности источника питания. Используйте экранированные провода и качественные разъемы для минимизации помех.</p></aside>
+
+<p>Также стоит обратить внимание на помехи от других беспроводных устройств. Если рядом работает мощный Wi-Fi роутер или микроволновая печь, дальность связи может существенно снизиться. В таких случаях попробуйте изменить частоту или просто переместить устройство.</p>
+
+<details>
+<summary>Почему модуль не входит в режим AT?</summary>
+<p>Чаще всего проблема в неправильном моменте подачи питания. Кнопку нужно нажать ДО подключения питания и удерживать до появления медленного мигания. Также проверьте, не замкнут ли пин KEY на землю, это может блокировать вход в режим настройки.</p>
+</details>
+
+<details>
+<summary>Телефон видит устройство, но не подключается?</summary>
+<p>Убедитесь, что вы вводите правильный PIN-код. По умолчанию это 1234. Если код был изменен и забыт, модуль придется сбрасывать до заводских настроек, подав высокое напряжение на пин KEY (не рекомендуется без опыта) или перепрошить.</p>
+</details>
+
+<details>
+<summary>Можно ли управлять несколькими модулями одновременно?</summary>
+<p>Да, Arduino Uno может общаться с несколькими Bluetooth модулями, если использовать разные пары пинов для SoftwareSerial. Однако помните об ограничении ресурсов микроконтроллера: слишком много программных портов могут замедлить выполнение основного кода.</p>
+</details>
+
+<details>
+<summary>Какая максимальная дальность связи у HC-05?</summary>
+<p>В открытом пространстве без препятствий классический HC-05 обеспечивает связь до 10 метров. Модули с внешней антенной (Class 1) могут достигать 100 метров, но стандартные платы (Class 2) ограничены комнатным диапазоном.</p>
+</details>
+
+<details>
+<summary>Как изменить скорость передачи данных навсегда?</summary>
+<p>Используйте команду <code>AT+UART=9600,0,0</code> (где 9600 — скорость). После отправки этой команды модуль сохранит параметр в энергонезависимую память. Не забудьте изменить скорость в скетче Arduino на соответствующую.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/elektronika-i-gadzhety/s/sk/skolko-udlinitelej-mozhno-podklyuchit-k-odnoj-rozetke.html" class="pb-related-card">
+                <span class="pb-related-title">Сколько удлинителей можно подключать к одной розетке: безопасность</span>
+                <span class="pb-related-desc">Узнайте, сколько удлинителей можно безопасно подключить к одной розетке. Расчет нагрузки, риски пере</span>
+            </a><a href="/elektronika-i-gadzhety/t/te/telefony-banditov-90-kh.html" class="pb-related-card">
+                <span class="pb-related-title">Телефоны бандитов 90-х: какие модели использовались и почему</span>
+                <span class="pb-related-desc">Обзор мобильных телефонов криминальных авторитетов 90-х. История Motorola StarTAC, Nokia, скрытые во</span>
+            </a><a href="/elektronika-i-gadzhety/m/mo/mozhno-li-proshit-smart-chasy.html" class="pb-related-card">
+                <span class="pb-related-title">Прошивка смарт-часов: можно ли, как и стоит ли это делать</span>
+                <span class="pb-related-desc">Можно ли прошить смарт-часы? Полный разбор рисков, методов перепрошивки для Android Watch и Wear OS,</span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kak-pishetsya-tepsi-zaryadka.html" class="pb-related-card">
+                <span class="pb-related-title">Как пишется TPSI зарядка: Разбор терминологии и технологии</span>
+                <span class="pb-related-desc">Правильное написание и расшифровка термина TPSI. Разбор технологии быстрой зарядки Samsung, отличия </span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kakie-chasy-huawei-luchshe.html" class="pb-related-card">
+                <span class="pb-related-title">Какие часы Huawei лучше: сравнение моделей 2026-2026 для здоровья и спорта</span>
+                <span class="pb-related-desc">Полный разбор линейки умных часов Huawei. Узнайте, какую модель выбрать для спорта, бизнеса или повс</span>
+            </a><a href="/elektronika-i-gadzhety/h/ha/hantek-2d72-instruktsiya-na-russkom.html" class="pb-related-card">
+                <span class="pb-related-title">Hantek 2D72 Инструкция на русском: Настройка и Обзор</span>
+                <span class="pb-related-desc">Подробная инструкция Hantek 2D72 на русском языке. Руководство по подключению, настройке осциллограф</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

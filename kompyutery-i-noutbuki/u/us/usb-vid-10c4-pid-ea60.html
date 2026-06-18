@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>USB VID 10C4 PID EA60: CP2102 драйверы и настройка — Техно Гид</title>
+    <meta name="description" content="Полный гайд по USB устройству с VID 10C4 PID EA60. Драйверы Silicon Labs CP210x, диагностика ошибок, настройка COM-порта и прошивка ESP32.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/u/us/usb-vid-10c4-pid-ea60.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="USB VID 10C4 PID EA60: CP2102 драйверы и настройка">
+    <meta property="og:description" content="Полный гайд по USB устройству с VID 10C4 PID EA60. Драйверы Silicon Labs CP210x, диагностика ошибок, настройка COM-порта и прошивка ESP32.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">USB VID 10C4 PID EA60: CP2102 драйверы и настройка</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#техническая-расшифровка-идентификаторов-usb">Техническая расшифровка идентификаторов USB</a></li><li><a href="#установка-и-обновление-драйверов-silicon-labs">Установка и обновление драйверов Silicon Labs</a></li><li><a href="#настройка-параметров-com-порта-и-скорости-обмена">Настройка параметров COM-порта и скорости обмена</a></li><li><a href="#диагностика-проблем-и-конфликтующих-устройств">Диагностика проблем и конфликтующих устройств</a></li><li><a href="#использование-в-проектах-с-esp32-и-arduino">Использование в проектах с ESP32 и Arduino</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/t/to/top-kulerov-dlya-korpusa-pk.html">Топ кулеров для корпуса ПК: лучшие модели, сравнение и выбор в 2026</a></li><li><a href="/kompyutery-i-noutbuki/u/us/ustrojstvo-samsung-nvm-express-ne-podklyucheno.html">Ошибка Samsung NVMe не подключен: Как исправить и проверить диск</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-iz-nouta-sdelat-monitor.html">Как использовать ноутбук как монитор для ПК: 3 рабочих способа</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-pomenyat-podsvetku-na-klaviature-asus.html">Как сменить подсветку на клавиатуре ASUS: полная инструкция</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-rabotaet-adapter-wifi-dlya-kompyutera-cherez-usb.html">Как работает USB Wi-Fi адаптер для ПК: принцип, выбор и настройка</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Разбор USB VID 10C4 PID EA60: Драйверы и Конфигурация</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#техническая-расшифровка-идентификаторов-usb">Техническая расшифровка идентификаторов USB</a></li><li><a href="#установка-и-обновление-драйверов-silicon-labs">Установка и обновление драйверов Silicon Labs</a></li><li><a href="#настройка-параметров-com-порта-и-скорости-обмена">Настройка параметров COM-порта и скорости обмена</a></li><li><a href="#диагностика-проблем-и-конфликтующих-устройств">Диагностика проблем и конфликтующих устройств</a></li><li><a href="#использование-в-проектах-с-esp32-и-arduino">Использование в проектах с ESP32 и Arduino</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>При подключении к компьютеру различных электронных устройств, от программируемых контроллеров до промышленного оборудования, пользователи часто сталкиваются с необходимостью идентификации конкретного чипа, отвечающего за коммуникацию. В диспетчере устройств Windows или в логах Linux вы можете увидеть строку <code>USB VID 10C4 PID EA60</code>, которая указывает на конкретный мост между последовательным интерфейсом и шиной USB. Эта комбинация идентификаторов является стандартной для контроллеров серии CP210x производства компании <em>Silicon Labs</em>, которые повсеместно используются в платах разработки ESP32, ESP8266, Arduino и различных измерительных приборах.</p>
+
+<p>Понимание того, что скрывается за этими шестнадцатеричными кодами, критически важно для правильной установки программного обеспечения и устранения проблем со связью. Многие начинающие инженеры и радиолюбители ошибочно полагают, что это уникальное устройство, требующее специфического софта, тогда как на самом деле речь идет о массовом и хорошо задокументированном решении. <strong>Идентификатор VID 10C4</strong> закреплен за компанией Silicon Laboratories, а <strong>PID EA60</strong> соответствует конкретной модели виртуального COM-порта CP2102 или CP2104. Если система не распознала устройство автоматически, вам придется вручную подобрать драйвер, игнорируя стандартные средства Windows Update, которые часто предлагают некорректные версии.</p>
+
+<blockquote>⚠️ Внимание: При установке драйверов для VID 10C4 PID EA60 обязательно отключите цифровую подпись драйверов в Windows, если устанавливаемая версия не имеет сертификата Microsoft, иначе система заблокирует установку.</blockquote>
+
+<h2 id="техническая-расшифровка-идентификаторов-usb">Техническая расшифровка идентификаторов USB</h2>
+
+<p>Каждое USB-устройство при подключении отправляет хосту (компьютеру) пакет данных, содержащий информацию о производителе и самой модели. В случае с кодом <code>10C4</code> мы имеем дело с вендором Silicon Labs, который является одним из лидеров в производстве микросхем для встраиваемых систем. Значение <code>EA60</code> указывает на то, что устройство эмулирует последовательный порт, используя протокол CDC (Communication Device Class). Это позволяет операционной системе обращаться к микроконтроллеру так, как будто это старый добрый COM-порт, что обеспечивает совместимость с огромным количеством legacy-софта.</p>
+
+<p>Важно различать физические чипы, так как Silicon Labs выпускает несколько модификаций под одним и тем же продуктовым идентификатором. Наиболее распространенными являются <em>CP2102</em> и <em>CP2104</em>. Несмотря на то, что они могут иметь разные корпуса и количество выводов, для операционной системы они выглядят практически идентично благодаря единому <strong>Product ID</strong>. Однако, при глубокой настройке через утилиты конфигурации, вы можете обнаружить различия в поддерживаемых скоростях обмена данными и напряжениях питания логических уровней.</p>
+
+<p>Некоторые китайские клоны чипов могут также использовать эти идентификаторы, что иногда приводит к нестабильной работе на высоких скоростях передачи. Если вы приобрели дешевую плату разработки и видите VID 10C4 PID EA60, но связь постоянно обрывается, стоит проверить качество пайки и наличие конденсаторов фильтрации по питанию USB линии. <em>Драйвер</em> здесь может быть ни при чем, проблема часто кроется в аппаратной реализации самого устройства.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте утилиту USBDeview от NirSoft, чтобы быстро найти устройство по VID/PID и посмотреть текущий статус драйвера без захода в диспетчер устройств.</p></aside>
+
+<h2 id="установка-и-обновление-драйверов-silicon-labs">Установка и обновление драйверов Silicon Labs</h2>
+
+<p>Процесс установки программного обеспечения для работы с чипами серии CP210x достаточно прост, но требует внимательности при выборе архитектуры системы. Официальный пакет драйверов от <em>Silicon Labs</em> поддерживает все актуальные версии Windows, начиная с XP и заканчивая Windows 11, а также дистрибутивы Linux и macOS. Ключевым моментом является скачивание файла именно с официального сайта производителя, так как сторонние сборщики драйверов часто включают в пакеты устаревшие версии или рекламное ПО.</p>
+
+<p>После загрузки установщика <code>CP210x_Windows_Drivers.exe</code> необходимо запустить его от имени администратора. Мастер установки автоматически определит наличие подключенных устройств с идентификатором <code>VID_10C4&PID_EA60</code> и предложит установить виртуальный COM-порт. В процессе установки вы можете увидеть предупреждение системы безопасности Windows о том, что издатель драйвера не проверен — это стандартная ситуация для многих промышленных компонентов, и в данном контексте такое предупреждение можно игнорировать при условии скачивания файла из доверенного источника.</p>
+
+<ul>
+<li>🔌 Отключите устройство от USB-порта перед началом установки драйверов, чтобы избежать конфликтов перечисления.</li>
+<li>💾 Скачивайте драйверы только с официального портала Silicon Labs, избегая сайтов-агрегаторов.</li>
+<li>🔄 После установки обязательно перезагрузите компьютер для корректной регистрации системных библиотек.</li>
+<li>🔍 Проверьте диспетчер устройств на наличие желтых восклицательных знаков в разделе"Порты (COM и LPT)".</li>
+</ul>
+
+<p>Если автоматическая установка не сработала, можно воспользоваться ручным методом через диспетчер устройств. Найдите устройство с пометкой"Неизвестное устройство" или"CP2102 USB to UART Bridge Controller", нажмите правой кнопкой мыши и выберите"Обновить драйвер". Укажите путь к распакованной папке с драйверами, где система найдет файл <code>silabser.inf</code>. Этот метод часто помогает, когда автоматический инсталлятор не видит подключенное оборудование из-за ошибок реестра.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Диагностика подключения</h4><label class="check-item"><input type="checkbox"><span>Проверить кабель USB</span></label><label class="check-item"><input type="checkbox"><span>Попробовать другой порт</span></label><label class="check-item"><input type="checkbox"><span>Установить драйвер вручную</span></label><label class="check-item"><input type="checkbox"><span>Перезагрузить ПК</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="настройка-параметров-com-порта-и-скорости-обмена">Настройка параметров COM-порта и скорости обмена</h2>
+
+<p>После успешной установки драйверов устройство появится в системе как виртуальный COM-порт, например, <code>COM3</code> или <code>COM14</code>. Стандартные настройки по умолчанию обычно подходят для большинства задач, но для специфических задач прошивки микроконтроллеров или работы с промышленными датчиками может потребоваться ручная корректировка параметров. Особое внимание следует уделить скорости обмена (Baud Rate), так как несоответствие этого параметра между ПК и микроконтроллером приведет к передаче"мусорных" данных.</p>
+
+<p>Для изменения настроек перейдите в диспетчер устройств, откройте свойства найденного порта и выберите вкладку"Дополнительно". Здесь вы можете изменить номер порта, если он конфликтует с другим оборудованием, или настроить размер буфера приема и передачи. Увеличение буфера может существенно повысить стабильность связи при передаче больших объемов данных, например, при логировании показаний сенсоров в реальном времени. Однако слишком большие значения буфера могут увеличить задержку (латентность), что критично для систем управления в реальном времени.</p>
+
+<p>Многие пользователи сталкиваются с проблемой, когда порт определяется, но данные не передаются. В этом случае стоит проверить настройки четности (Parity) и стоповых битов (Stop Bits). Для микроконтроллеров, таких как <em>ESP32</em> или <em>Arduino</em>, стандартной конфигурацией является 8 бит данных, отсутствие четности и 1 стоповый бит (8-N-1). Изменение этих параметров без необходимости может привести к полной потере связи с устройством.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Рекомендуемое значение</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Baud Rate</td>
+<td>115200</td>
+<td>Стандартная скорость для отладки и прошивки</td>
+</tr>
+<tr>
+<td>Data Bits</td>
+<td>8</td>
+<td>Количество бит данных в байте</td>
+</tr>
+<tr>
+<td>Parity</td>
+<td>None</td>
+<td>Отсутствие контроля четности</td>
+</tr>
+<tr>
+<td>Stop Bits</td>
+<td>1</td>
+<td>Количество стоповых бит</td>
+</tr>
+<tr>
+<td>Flow Control</td>
+<td>None</td>
+<td>Управление потоком обычно не требуется</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Стоит отметить, что максимальная поддерживаемая скорость для чипов с PID EA60 может достигать 1 Мбит/с и выше, но стабильность на таких скоростях сильно зависит от качества USB-кабеля и длины линии. Для повседневных задач скорости 9600 или 115200 бод более чем достаточно и обеспечивают высокую надежность соединения даже в условиях электромагнитных помех.</p>
+
+<div class="pb-poll" id="poll-983c1791"><div class="pb-poll-question">📊 С какой скоростью вы чаще всего работаете?</div><div class="pb-poll-option" data-poll="983c1791" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">9600 бод</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="983c1791" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">115200 бод</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="983c1791" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">921600 бод</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="983c1791" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">1 Мбит/с и выше</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="диагностика-проблем-и-конфликтующих-устройств">Диагностика проблем и конфликтующих устройств</h2>
+
+<p>Наиболее частой проблемой при работе с устройствами VID 10C4 PID EA60 является ошибка"Code 10" или"Code 43" в диспетчере устройств, указывающая на то, что устройство не может запуститься. Это часто происходит из-за того, что Windows пытается использовать стандартный драйвер USB Serial вместо специализированного драйвера <em>Silicon Labs</em>. В таких случаях необходимо принудительно обновить драйвер, указав конкретную модель из списка или путь к INF-файлу.</p>
+
+<p>Еще одной распространенной ситуацией является конфликт портов, когда два одинаковых устройства получают одинаковый номер COM-порта или система присваивает номер, который уже занят виртуальным модемом или другим оборудованием. Решением является ручное изменение номера порта в расширенных настройках свойств устройства. Выберите свободный номер с большим значением, например, <code>COM20</code>, чтобы избежать пересечений с системными резервированиями.</p>
+
+<blockquote>⚠️ Внимание: Если устройство исчезает из диспетчера устройств при попытке прошивки, возможно, оно переходит в режим загрузчика (Bootloader), который имеет другой PID. Не отключайте питание в этот момент.</blockquote>
+
+<p>Для глубокой диагностики можно использовать утилиту <code>CP210xManufacturing.dll</code> или сторонние программы мониторинга USB-трафика, такие как <em>USBlyzer</em>. Они позволяют увидеть детальный дескриптор устройства, версию прошивки самого моста USB-UART и текущее состояние линий управления потоком (RTS/CTS, DTR/DSR). Это особенно полезно при разработке собственных устройств на базе CP2102, когда нужно проверить, правильно ли настроены сигналы сброса микроконтроллера.</p>
+
+<details class="pb-accordion"><summary>Секретный режим отладки</summary><div class="pb-accordion-body"><p>Некоторые версии чипов CP210x поддерживают режим отладки через GPIO пины, который активируется специальной последовательностью сигналов на линиях управления, позволяя читать внутреннюю память моста.</p></div></details>
+
+<h2 id="использование-в-проектах-с-esp32-и-arduino">Использование в проектах с ESP32 и Arduino</h2>
+
+<p>В экосистеме IoT-разработки комбинация VID 10C4 PID EA60 встречается практически на каждой второй плате. Популярные платы вроде <em>NodeMCU</em>, <em>Wemos D1 Mini</em> (некоторые ревизии) и большинство плат на базе <em>ESP32</em> используют этот чип для связи с ПК. При прошивке через Arduino IDE или PlatformIO важно правильно выбрать порт в меню инструментов, иначе компилятор выдаст ошибку соединения.</p>
+
+<p>Особенностью работы с ESP32 является необходимость перевода платы в режим загрузчика перед прошивкой. Это часто делается автоматически через линию DTR/RTS, которую драйвер CP210x управляет программно. Если автоматический вход в режим прошивки не срабатывает, вам придется вручную зажать кнопку BOOT на плате, нажать RESET, отпустить BOOT и только потом начинать загрузку скетча. Драйвер при этом должен корректно обрабатывать сигналы управления потоком.</p>
+
+<p>При работе с Linux (Ubuntu, Raspberry Pi OS) права доступа к последовательному порту могут быть ограничены. Пользователь должен быть добавлен в группу <code>dialout</code> или <code>tty</code>, чтобы иметь возможность открывать устройство <code>/dev/ttyUSB0</code> без прав суперпользователя. Команда <code>sudo usermod -a -G dialout $USER</code> решает эту проблему, но требует перелогинивания в системе для применения изменений.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для стабильной работы с ESP32 убедитесь, что в настройках Arduino IDE выбран правильный порт и скорость 115200 или выше для быстрой загрузки.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Почему Windows пишет"Код 10" для устройства CP2102?</summary>
+<p>Ошибка"Код 10" чаще всего означает конфликт драйверов или повреждение системных файлов реестра. Попробуйте полностью удалить устройство из диспетчера устройств (правая кнопка -> Удалить устройство), отключить USB-кабель, перезагрузить ПК и установить официальный драйвер заново. Также проверьте, не блокирует ли антивирус установку драйверов.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать этот чип для питания микроконтроллера?</summary>
+<p>Да, чипы серии CP210x имеют встроенный регулятор напряжения 3.3V, который может выдавать ток до 100 мА (для CP2102) или 500 мА (для CP2104, в зависимости от корпуса). Этого достаточно для питания самого микроконтроллера и периферии с низким потреблением, но не рекомендуется подключать мощные нагрузки вроде реле или моторов.</p>
+</details>
+
+<details>
+<summary>Как изменить VID и PID самого чипа CP2102?</summary>
+<p>Изменение идентификаторов возможно только с помощью специальной утилиты <em>CP210xSetIDs</em> и требует наличия устройства с правами на запись конфигурации. Обычные пользовательские драйверы не позволяют менять эти значения. Это может понадобиться, если вы производитель устройств и хотите зарегистрировать свои собственные VID/PID.</p>
+</details>
+
+<details>
+<summary>Устройство работает медленно, данные приходят с задержкой. В чем причина?</summary>
+<p>Задержки часто связаны с большими буферами USB или настройками энергосбережения USB-концентратора. Попробуйте отключить опцию"Разрешить отключение этого устройства для экономии энергии" в свойствах USB-контроллера в диспетчере устройств. Также уменьшите размер буфера приема/передачи в настройках COM-порта.</p>
+</details>
+
+<details>
+<summary>Поддерживает ли VID 10C4 PID EA60 macOS и Linux?</summary>
+<p>Да, современные ядра Linux (начиная с версии 2.6) и macOS имеют встроенную поддержку драйверов для CP210x. В большинстве случаев установка дополнительных драйверов не требуется, устройство определяется автоматически как <code>/dev/ttyUSBx</code> или <code>/dev/cu.SLAB_USBtoUART</code>.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/t/to/top-kulerov-dlya-korpusa-pk.html" class="pb-related-card">
+                <span class="pb-related-title">Топ кулеров для корпуса ПК: лучшие модели, сравнение и выбор в 2026</span>
+                <span class="pb-related-desc">Обзор лучших корпусных кулеров для ПК. Рейтинг моделей, сравнение производительности, уровни шума и </span>
+            </a><a href="/kompyutery-i-noutbuki/u/us/ustrojstvo-samsung-nvm-express-ne-podklyucheno.html" class="pb-related-card">
+                <span class="pb-related-title">Ошибка Samsung NVMe не подключен: Как исправить и проверить диск</span>
+                <span class="pb-related-desc">Почему Samsung NVM Express не подключен? Разбор ошибок 0x80070057, драйверов, BIOS и способы восстан</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-iz-nouta-sdelat-monitor.html" class="pb-related-card">
+                <span class="pb-related-title">Как использовать ноутбук как монитор для ПК: 3 рабочих способа</span>
+                <span class="pb-related-desc">Подробная инструкция: как подключить ноутбук к компьютеру в качестве второго экрана через HDMI, Wi-F</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-pomenyat-podsvetku-na-klaviature-asus.html" class="pb-related-card">
+                <span class="pb-related-title">Как сменить подсветку на клавиатуре ASUS: полная инструкция</span>
+                <span class="pb-related-desc">Узнайте, как изменить цвет и режим подсветки на ноутбуке ASUS. Настройка через горячие клавиши, утил</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-rabotaet-adapter-wifi-dlya-kompyutera-cherez-usb.html" class="pb-related-card">
+                <span class="pb-related-title">Как работает USB Wi-Fi адаптер для ПК: принцип, выбор и настройка</span>
+                <span class="pb-related-desc">Подробный разбор работы USB Wi-Fi адаптеров. Принцип действия, отличия стандартов, выбор антенн и по</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ko/kompyuter-dlya-igr-nedorogoj.html" class="pb-related-card">
+                <span class="pb-related-title">Недорогой компьютер для игр: как собрать в 2026 году</span>
+                <span class="pb-related-desc">Полный гид по сборке бюджетного игрового ПК. Выбор процессора, видеокарты и комплектующих для комфор</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

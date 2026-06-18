@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>SCP Remote to Local: Копирование файлов в Linux за 5 минут — Техно Гид</title>
+    <meta name="description" content="Подробный гайд по команде scp from remote to local. Синтаксис, примеры, передача папок, работа с SSH-ключами и устранение ошибок подключения.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/s/sc/scp-from-remote-to-local.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SCP Remote to Local: Копирование файлов в Linux за 5 минут">
+    <meta property="og:description" content="Подробный гайд по команде scp from remote to local. Синтаксис, примеры, передача папок, работа с SSH-ключами и устранение ошибок подключения.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">SCP Remote to Local: Копирование файлов в Linux за 5 минут</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#базовый-синтаксис-и-структура-команды">Базовый синтаксис и структура команды</a></li><li><a href="#практические-примеры-копирования-файлов">Практические примеры копирования файлов</a></li><li><a href="#рекурсивное-копирование-целых-директорий">Рекурсивное копирование целых директорий</a></li><li><a href="#продвинутые-настройки-порты-и-сжатие">Продвинутые настройки: порты и сжатие</a></li><li><a href="#аутентификация-через-ssh-ключи">Аутентификация через SSH-ключи</a></li><li><a href="#диагностика-ошибок-и-альтернативы">Диагностика ошибок и альтернативы</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/k/ka/kak-pomenyat-svyaz-ne-menyaya-nomer-telefona.html">Как сменить оператора связи, сохранив старый номер телефона? Полный гайд</a></li><li><a href="/set-i-internet/k/ka/kak-uvelichit-skorost-interneta-pri-razdache-s-telefona-na-kompyuter.html">Как увеличить скорость интернета при раздаче с телефона на ПК</a></li><li><a href="/set-i-internet/m/mo/mozhno-li-podklyuchit-internet-k-kompyuteru-cherez-vaj-faj.html">Как подключить интернет к компьютеру через Wi-Fi: полное руководство</a></li><li><a href="/set-i-internet/m/me/megafon-navyazyvaet-bez-soglasiya-uslugi-chto-delat.html">Мегафон навязывает услуги без согласия: как отключить и вернуть деньги</a></li><li><a href="/set-i-internet/a/ai/airtime-fairness-vklyuchat-ili-net.html">Airtime Fairness: включать или отключить? Экспертный разбор</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Копирование файлов с удаленного сервера: SCP Remote to Local</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#базовый-синтаксис-и-структура-команды">Базовый синтаксис и структура команды</a></li><li><a href="#практические-примеры-копирования-файлов">Практические примеры копирования файлов</a></li><li><a href="#рекурсивное-копирование-целых-директорий">Рекурсивное копирование целых директорий</a></li><li><a href="#продвинутые-настройки-порты-и-сжатие">Продвинутые настройки: порты и сжатие</a></li><li><a href="#аутентификация-через-ssh-ключи">Аутентификация через SSH-ключи</a></li><li><a href="#диагностика-ошибок-и-альтернативы">Диагностика ошибок и альтернативы</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Работа с удаленными серверами неизбежно требует перемещения данных между локальной машиной и хостом в сети. Хотя существует множество графических интерфейсов и протоколов, <strong>командная строка</strong> остается самым надежным инструментом для администраторов. Среди всех утилит команда <code>scp</code> (Secure Copy Protocol) занимает лидирующее положение благодаря своей простоте и безопасности.</p>
+
+<p>В отличие от FTP, этот протокол использует зашифрованное соединение SSH, что гарантирует целостность и конфиденциальность передаваемых данных. Вам не нужно настраивать дополнительные демоны или открывать новые порты на сервере. Достаточно стандартного доступа по SSH, чтобы инициировать процесс <em>scp from remote to local</em>.</p>
+
+<p>В этой статье мы разберем все нюансы синтаксиса, рассмотрим типичные ошибки при копировании больших объемов данных и объясним, как автоматизировать процесс с помощью SSH-ключей. <strong>Безопасность</strong> и скорость — два кита, на которых держится эффективная работа системного инженера.</p>
+
+<h2 id="базовый-синтаксис-и-структура-команды">Базовый синтаксис и структура команды</h2>
+
+<p>Понимание правильного порядка аргументов является фундаментом успешного выполнения задачи. Команда <code>scp</code> требует четкого указания источника и назначения. Если вы хотите скачать файл, то удаленный путь должен стоять первым, а локальный — вторым. Это фундаментальное отличие от привычного копирования внутри файловой системы.</p>
+
+<pre><code>scp [опции] [пользователь]@[хост]:[путь_к_файлу] [локальный_путь]</code></pre>
+
+<p>Обратите внимание на двоеточие <code>:</code> после имени хоста. Этот разделитель критически важен: он сообщает утилите, что следующий за ним путь относится к удаленной файловой системе, а не к локальной директории с похожим именем. Без этого символа команда попытается скопировать файл локально, что приведет к ошибке или созданию неверной структуры папок.</p>
+
+<p>Для аутентификации обычно используется пароль пользователя удаленной системы. Однако в сценариях автоматизации или при частой работе с сервером ввод пароля каждый раз становится неэффективным. В таких случаях лучше настроить <strong>беспарольный вход</strong> через SSH-ключи заранее. Это не только ускорит процесс, но и позволит использовать скрипты для резервного копирования без вмешательства человека.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Всегда указывайте полный путь к локальной папке назначения, чтобы избежать сохранения файлов в неожиданном месте, например, в корневой директории текущего пользователя.</p></aside>
+
+<h2 id="практические-примеры-копирования-файлов">Практические примеры копирования файлов</h2>
+
+<p>Рассмотрим реальные сценарии использования, которые встречаются в ежедневной практике системного администрирования. Чаще всего требуется скачать конфигурационный файл, лог или архив с данными. Допустим, вам нужно получить файл <code>backup.sql</code> с сервера <em>192.168.1.50</em> под пользователем <code>admin</code>.</p>
+
+<p>Выполните следующую команду в терминале вашей локальной машины:</p>
+
+<pre><code>scp admin@192.168.1.50:/var/www/backup.sql ~/Downloads/</code></pre>
+
+<p>В этом примере файл будет сохранен в папку <code>Downloads</code> вашей домашней директории. Если вы хотите сохранить файл с другим именем, просто добавьте новое имя после локального пути. Это удобно для версионирования резервных копий, когда вы скачиваете несколько файлов с одинаковым именем с разных серверов.</p>
+
+<p>Иногда возникает необходимость скопировать несколько файлов по маске. Синтаксис позволяет использовать звездочку <code>*</code> для выбора группы объектов. Например, команда ниже загрузит все лог-файлы с расширением <code>.log</code> из удаленной директории:</p>
+
+<pre><code>scp admin@server.com:/var/log/*.log./local_logs/</code></pre>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к передаче данных</h4><label class="check-item"><input type="checkbox"><span>Проверить доступность сервера по ping</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в наличии свободного места на диске</span></label><label class="check-item"><input type="checkbox"><span>Проверить права на чтение удаленных файлов</span></label><label class="check-item"><input type="checkbox"><span>Уточнить точный путь к файлам</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p> Экспериментируйте с кавычками, если команда возвращает неожиданные результаты или сообщает об отсутствии файлов.</p>
+
+<h2 id="рекурсивное-копирование-целых-директорий">Рекурсивное копирование целых директорий</h2>
+
+<p>Одной из самых востребованных функций является возможность переноса целых каталогов со всей их внутренней структурой. Для этого в команду <code>scp</code> необходимо добавить флаг <code>-r</code> (recursive). Без этого флага утилита откажется копировать директории, сообщив об ошибке, что объект является папкой, а не файлом.</p>
+
+<p>Представьте ситуацию, когда вам нужно полностью скачать проект веб-сайта с удаленного хостинга для локальной отладки. Команда будет выглядеть следующим образом:</p>
+
+<pre><code>scp -r user@remote.host:/home/user/project_folder./local_backup/</code></pre>
+
+<p>Этот процесс сохранит все вложенные папки, скрытые файлы (начинающиеся с точки) и символические ссылки. Однако стоит учитывать, что при рекурсивном копировании <strong>символические ссылки</strong> могут быть обработаны двояко: либо как сами ссылки, либо как файлы, на которые они указывают. Поведение зависит от версии <code>scp</code> и флагов.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При копировании больших директорий с тысячами мелких файлов процесс может занять значительное время из-за накладных расходов на установление соединения для каждого объекта. В таких случаях эффективнее сначала создать архив на сервере (tar), а затем скачать один файл.</p>
+</blockquote>
+
+<div class="pb-poll" id="poll-5a0a17ae"><div class="pb-poll-question">📊 Что вы чаще всего копируете с сервера?</div><div class="pb-poll-option" data-poll="5a0a17ae" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Конфигурационные файлы</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="5a0a17ae" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Логи и дампы</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="5a0a17ae" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Целые проекты</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="5a0a17ae" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Медиа-контент</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="5a0a17ae" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Базы данных</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<p>Использование архивации перед передачей также позволяет сжать данные, что существенно экономит трафик, особенно если канал связи узкий или лимитированный. Это особенно актуально при работе с облачными провайдерами, где исходящий трафик может тарифицироваться.</p>
+
+<h2 id="продвинутые-настройки-порты-и-сжатие">Продвинутые настройки: порты и сжатие</h2>
+
+<p>Стандартный порт для SSH-соединения — 22, но в целях безопасности администраторы часто меняют его на нестандартное значение. Если ваш сервер слушает другой порт, обычная команда <code>scp</code> завершится ошибкой соединения. Для решения этой проблемы используется опция <code>-P</code> (обратите внимание на заглавную букву, в отличие от строчной <code>-p</code> в ssh).</p>
+
+<p>Пример подключения к серверу на порту 2222:</p>
+
+<pre><code>scp -P 2222 user@host:/path/to/file./local/</code></pre>
+
+<p>Еще одним мощным инструментом оптимизации является флаг <code>-C</code>, который включает сжатие данных на лету. Это полезно при передаче текстовых файлов, логов или исходного кода через медленные каналы связи. Процессорное время тратится на сжатие и распаковку, но общее время передачи сокращается.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Опция</th>
+<th>Описание</th>
+<th>Когда использовать</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-P</code></td>
+<td>Указание порта SSH</td>
+<td>Если порт сервера отличается от 22</td>
+</tr>
+<tr>
+<td><code>-C</code></td>
+<td>Включение сжатия</td>
+<td>При медленном интернете и текстовых данных</td>
+</tr>
+<tr>
+<td><code>-p</code></td>
+<td>Сохранение времени и прав</td>
+<td>Для бэкапов, где важны метаданные файлов</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td>Подробный режим (Verbose)</td>
+<td>Для диагностики ошибок подключения</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Опция <code>-p</code> заслуживает отдельного упоминания. Она сохраняет время модификации и права доступа к файлам. Это критически важно при восстановлении резервных копий, так как некоторые приложения могут зависеть от временных меток файлов для корректной работы или кэширования.</p>
+
+<details class="pb-accordion"><summary>Разница между -r и -p</summary><div class="pb-accordion-body"><p>Флаг -r отвечает за рекурсивность (копирование папок), а -p сохраняет атрибуты файлов (время изменения, права доступа). Их можно и нужно комбинировать: scp -rp user@host:dir.</p></div></details>
+
+<h2 id="аутентификация-через-ssh-ключи">Аутентификация через SSH-ключи</h2>
+
+<p>Ввод пароля при каждом запуске команды неудобен и небезопасен в скриптах. Механизм <strong>SSH-ключей</strong> решает эту проблему элегантно. Вам нужно сгенерировать пару ключей на локальной машине и добавить публичный ключ в файл <code>~/.ssh/authorized_keys</code> на удаленном сервере.</p>
+
+<p>После настройки вы сможете выполнять команду <code>scp from remote to local</code> мгновенно, без запроса пароля. Это открывает возможности для автоматизации через <em>cron</em> или другие планировщики задач. Например, можно настроить ежедневное скачивание логов в определенное время ночи.</p>
+
+<p>Если ваш приватный ключ имеет нестандартное имя или расположение, используйте флаг <code>-i</code> для его указания:</p>
+
+<pre><code>scp -i ~/.ssh/id_rsa_custom user@host:file.txt.</code></pre>
+
+<blockquote>
+<p>⚠️ Внимание: Никогда не передавайте приватный ключ (<code>id_rsa</code>) другим людям и не храните его на общедоступных ресурсах. Потеря контроля над приватным ключом равносильна передаче полного доступа к вашему серверу злоумышленнику.</p>
+</blockquote>
+
+<p>Для повышения безопасности рекомендуется защищать приватный ключ паролем (passphrase). В этом случае при запуске <code>scp</code> система запросит пароль от ключа, а не от пользователя сервера. Для полной автоматизации с защищенным ключом можно использовать агент <code>ssh-agent</code>.</p>
+
+<h2 id="диагностика-ошибок-и-альтернативы">Диагностика ошибок и альтернативы</h2>
+
+<p>Несмотря на надежность, процесс копирования может прерваться. Самая частая ошибка — <code>Permission denied</code>. Она возникает, если у пользователя нет прав на чтение файла на сервере или на запись в локальную директорию. Проверьте права доступа командой <code>ls -l</code> перед началом операции.</p>
+
+<p>Другая распространенная проблема — обрыв соединения при передаче больших файлов. <code>scp</code> не умеет возобновлять прерванную загрузку "с места остановки". Вам придется начинать процесс заново. В таких ситуациях на помощь приходит утилита <em>rsync</em>.</p>
+
+<p><strong>Rsync</strong> работает поверх SSH, но обладает интеллектуальным алгоритмом.delta-algorithm, который передает только измененные части файлов. Кроме того, он поддерживает флаг <code>--partial</code> для сохранения частично загруженных файлов и <code>--progress</code> для отображения прогресса в реальном времени.</p>
+
+<pre><code>rsync -avz -e ssh user@host:/remote/path/./local/path/</code></pre>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для разовых операций и простых файлов scp идеален. Для синхронизации больших объемов данных или нестабильного канала связи используйте rsync.</p></aside>
+
+<p>Если вы видите ошибку <code>connection timed out</code>, проверьте настройки брандмауэра (firewall) на сервере и локальном компьютере. Возможно, порт SSH заблокирован или соединение разрывается из-за таймаута простоя. Использование опции <code>-v</code> поможет увидеть, на каком этапе происходит сбой.</p>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли копировать файлы между двумя удаленными серверами через мой локальный ПК?</summary>
+<p>Да, это возможно. Вы можете указать оба пути как удаленные: <code>scp user1@host1:file user2@host2:dir</code>. Однако в этом случае трафик пойдет через ваш локальный компьютер (через него), что может быть медленно. Лучше зайти на первый сервер и скопировать файл напрямую на второй.</p>
+</details>
+
+<details>
+<summary>Как узнать прогресс копирования в scp?</summary>
+<p>По умолчанию прогресс не отображается. Добавьте флаг <code>-v</code> (verbose) для детальной информации о процессе или используйте <code>-progress</code> (в некоторых версиях), но лучше всего для визуализации прогресса подходит утилита <em>rsync</em> с флагом <code>--progress</code>.</p>
+</details>
+
+<details>
+<summary>Что делать, если имя файла содержит пробелы?</summary>
+<p>Необходимо экранировать пробелы обратным слэшем <code>\</code> или заключить весь путь в кавычки. Например: <code>scp user@host:"my file.txt".</code> или <code>scp user@host:my\ file.txt.</code>.</p>
+</details>
+
+<details>
+<summary>Безопасно ли использовать scp через публичный Wi-Fi?</summary>
+<p>Да, протокол SCP шифрует весь трафик, включая пароли и содержимое файлов, используя туннель SSH. Перехватить данные в незашифрованном виде через сниффер в публичной сети практически невозможно при правильной настройке SSH.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/k/ka/kak-pomenyat-svyaz-ne-menyaya-nomer-telefona.html" class="pb-related-card">
+                <span class="pb-related-title">Как сменить оператора связи, сохранив старый номер телефона? Полный гайд</span>
+                <span class="pb-related-desc">Пошаговая инструкция по переходу на другого мобильного оператора с сохранением номера (MNP). Тарифы,</span>
+            </a><a href="/set-i-internet/k/ka/kak-uvelichit-skorost-interneta-pri-razdache-s-telefona-na-kompyuter.html" class="pb-related-card">
+                <span class="pb-related-title">Как увеличить скорость интернета при раздаче с телефона на ПК</span>
+                <span class="pb-related-desc">Практические способы ускорить мобильный интернет: настройки APN, выбор частот 5 ГГц, отключение экон</span>
+            </a><a href="/set-i-internet/m/mo/mozhno-li-podklyuchit-internet-k-kompyuteru-cherez-vaj-faj.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить интернет к компьютеру через Wi-Fi: полное руководство</span>
+                <span class="pb-related-desc">Пошаговая инструкция: как подключить ПК к Wi-Fi, настроить адаптер, исправить частые ошибки. Советы </span>
+            </a><a href="/set-i-internet/m/me/megafon-navyazyvaet-bez-soglasiya-uslugi-chto-delat.html" class="pb-related-card">
+                <span class="pb-related-title">Мегафон навязывает услуги без согласия: как отключить и вернуть деньги</span>
+                <span class="pb-related-desc">Что делать, если Мобильный оператор Мегафон подключил платные услуги без вашего ведома? Пошаговая ин</span>
+            </a><a href="/set-i-internet/a/ai/airtime-fairness-vklyuchat-ili-net.html" class="pb-related-card">
+                <span class="pb-related-title">Airtime Fairness: включать или отключить? Экспертный разбор</span>
+                <span class="pb-related-desc">Стоит ли включать Airtime Fairness на роутере? Узнайте, как эта функция влияет на скорость Wi-Fi и п</span>
+            </a><a href="/set-i-internet/w/ww/www-l-a-ru.html" class="pb-related-card">
+                <span class="pb-related-title">Домен www.la.ru: анализ, покупка и перспективы развития</span>
+                <span class="pb-related-desc">Полный гид по домену www.la.ru. Анализ стоимости, юридические аспекты торговли доменными именами и с</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

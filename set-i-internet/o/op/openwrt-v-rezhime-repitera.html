@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>OpenWrt в режиме репитера: Полное руководство по расширению Wi-Fi сети — Техно Гид</title>
+    <meta name="description" content="Узнайте, как настроить OpenWrt в режиме репитера (WDS или Client+AP). Пошаговая инструкция, сравнение методов, устранение ошибок и советы по оптимизации беспроводного моста.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/o/op/openwrt-v-rezhime-repitera.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="OpenWrt в режиме репитера: Полное руководство по расширению Wi-Fi сети">
+    <meta property="og:description" content="Узнайте, как настроить OpenWrt в режиме репитера (WDS или Client+AP). Пошаговая инструкция, сравнение методов, устранение ошибок и советы по оптимизации беспроводного моста.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">OpenWrt в режиме репитера: Полное руководство по расширению Wi-Fi сети</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-метода-подключения-wds-или-clientap">Выбор метода подключения: WDS или Client+AP</a></li><li><a href="#базовая-подготовка-и-настройка-беспроводного-интерфейса">Базовая подготовка и настройка беспроводного интерфейса</a></li><li><a href="#настройка-ip-адресации-и-режима-моста">Настройка IP-адресации и режима моста</a></li><li><a href="#оптимизация-каналов-и-мощности-сигнала">Оптимизация каналов и мощности сигнала</a></li><li><a href="#устранение-распространенных-проблем">Устранение распространенных проблем</a></li><li><a href="#безопасность-и-дополнительные-настройки">Безопасность и дополнительные настройки</a></li><li><a href="#итоги-настройки">Итоги настройки</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/c/ch/chto-delat-esli-vaj-faj-podklyuchaetsya-bez-dostupa-v-internet.html">Wi-Fi подключается, но нет доступа в интернет: причины и решение</a></li><li><a href="/set-i-internet/k/ka/kak-zvonit-na-sputnikovyj-telefon.html">Как звонить на спутниковый телефон: полное руководство</a></li><li><a href="/set-i-internet/m/mo/mozhno-li-abonentu-rostelekoma-podklyuchit-uslugu-garantiya-plyus-na-oborudovanie-ne-ot-rostelekoma.html">Гарантия Плюс Ростелеком на чужое оборудование: можно ли подключить</a></li><li><a href="/set-i-internet/n/na/nanostation-m2-kak-podklyuchit.html">Как подключить Ubiquiti NanoStation M2: настройка и маршрутизация</a></li><li><a href="/set-i-internet/i/in/internet-na-dache-varianty-podklyucheniya.html">Интернет на даче: лучшие варианты подключения 2026</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Настройка OpenWrt в режиме репитера для расширения зоны покрытия Wi-Fi</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-метода-подключения-wds-или-clientap">Выбор метода подключения: WDS или Client+AP</a></li><li><a href="#базовая-подготовка-и-настройка-беспроводного-интерфейса">Базовая подготовка и настройка беспроводного интерфейса</a></li><li><a href="#настройка-ip-адресации-и-режима-моста">Настройка IP-адресации и режима моста</a></li><li><a href="#оптимизация-каналов-и-мощности-сигнала">Оптимизация каналов и мощности сигнала</a></li><li><a href="#устранение-распространенных-проблем">Устранение распространенных проблем</a></li><li><a href="#безопасность-и-дополнительные-настройки">Безопасность и дополнительные настройки</a></li><li><a href="#итоги-настройки">Итоги настройки</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Расширение зоны действия беспроводной сети — одна из самых частых задач для владельцев фрилансерских и домашних серверов. Если ваш основной маршрутизатор не справляется с покрытием всего помещения, установка второго устройства с прошивкой <strong>OpenWrt</strong> может стать идеальным решением.</p>
+<p>В отличие от стандартных прошивок, <em>OpenWrt</em> предоставляет гибкие инструменты для превращения роутера в полноценный <strong>беспроводной мост</strong>. Это позволяет не просто принимать сигнал, но и перераспределять его, создавая единую инфраструктуру без потери скорости и стабильности соединения.</p>
+
+<h2 id="выбор-метода-подключения-wds-или-clientap">Выбор метода подключения: WDS или Client+AP</h2>
+
+<p>Прежде чем приступать к настройке, необходимо определить, какой способ ретрансляции подойдет вашей ситуации. Существует два основных подхода: использование протокола <strong>WDS</strong> (Wireless Distribution System) или режим <strong>Client+AP</strong> (Клиент + Точка доступа). Каждый из них имеет свои архитектурные особенности и сферы применения.</p>
+<p>Режим <em>WDS</em> позволяет объединять устройства на уровне канального слоя, сохраняя MAC-адреса клиентов. Это идеальный вариант, если вы хотите, чтобы все устройства находились в одной подсети и могли видеть друг друга без сложной маршрутизации. Однако этот метод требует поддержки WDS со стороны основного роутера, что часто ограничивает выбор оборудования.</p>
+<p>Второй вариант — <strong>Client+AP</strong>, где роутер с <em>OpenWrt</em> подключается к внешней сети как обычный клиент, а затем раздает свой сигнал. Здесь используется NAT (трансляция сетевых адресов), что создает две разные подсети. Этот метод универсален, так как работает с любым основным маршрутизатором, даже если он не поддерживает WDS, но требует дополнительной настройки маршрутизации.</p>
+<p>Если вы планируете использовать <em>OpenWrt</em> для создания простого расширителя сети, режим <strong>Client+AP</strong> часто оказывается более стабильным и предсказуемым. Он менее чувствителен к типам шифрования и настройкам безопасности основного узла, что делает его предпочтительным выбором для смешанных домашних сетей.</p>
+
+<blockquote>⚠️ Внимание: Перед началом настройки убедитесь, что ваш основной роутер не использует MAC-фильтрацию. В режиме репитера адрес беспроводного интерфейса может отличаться от физического адреса устройства, что приведет к блокировке доступа.</blockquote>
+
+<div class="pb-poll" id="poll-914be673"><div class="pb-poll-question">📊 Какой способ подключения вы используете?</div><div class="pb-poll-option" data-poll="914be673" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">WDS (беспроводной мост)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="914be673" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Client+AP (NAT)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="914be673" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">(Ethernet Backhaul)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="914be673" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Планирую выбрать</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="базовая-подготовка-и-настройка-беспроводного-интерфейса">Базовая подготовка и настройка беспроводного интерфейса</h2>
+
+<p>Первым шагом является вход в веб-интерфейс <strong>Luci</strong> и переход в меню настройки беспроводной сети. Здесь вам нужно отключить вашу локальную точку доступа, чтобы роутер работал исключительно в качестве клиента. Это критически важно для избежания конфликтов радиоканалов.</p>
+<p>На вкладке <code>Wireless</code> найдите интерфейс, который будет принимать сигнал от основного роутера. Нажмите кнопку <code>Edit</code> и переключите режим работы с <strong>Access Point</strong> на <strong>Client</strong>. В поле <code>ESSID</code> введите точное название вашей основной сети, а в поле <code>WPA Encryption</code> выберите тип шифрования, используемый в главной сети.</p>
+<p>Самым важным параметром здесь является <strong>Wireless Security</strong>. Необходимо ввести корректный пароль от основной сети. Если вы используете WPA2-PSK, убедитесь, что в поле <code>Key</code> введено правильное ключевое слово без лишних пробелов или символов. Ошибка здесь приведет к циклу переподключения.</p>
+<p>После сохранения настроек интерфейс должен попытаться подключиться к сети. Если подключение не установлено, попробуйте вручную включить интерфейс через кнопку <code>Enable</code>. Проверьте статус в разделе <code>Status</code>, чтобы убедиться, что роутер получил IP-адрес от основного сервера DHCP.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед запуском</h4><label class="check-item"><input type="checkbox"><span>Сканировать доступные сети</span></label><label class="check-item"><input type="checkbox"><span>Запомнить шифрование основной точки</span></label><label class="check-item"><input type="checkbox"><span>Отключить локальный AP</span></label><label class="check-item"><input type="checkbox"><span>Ввести пароль доступа</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="настройка-ip-адресации-и-режима-моста">Настройка IP-адресации и режима моста</h2>
+
+<p>Как только беспроводной интерфейс успешно подключился к внешней сети, необходимо настроить IP-адресацию самого роутера. В зависимости от выбранного сценария, вам нужно либо оставить настройки DHCP-клиентом, либо задать статический адрес.</p>
+<p>Если вы выбрали режим <strong>Client+AP</strong>, перейдите в настройки сетевого интерфейса <code>LAN</code>. Здесь важно изменить протокол с <strong>DHCP Client</strong> на <strong>Static Address</strong>. Укажите адрес, который находится в той же подсети, что и основной роутер, но не конфликтует с другими устройствами. Например, если основной шлюз <code>192.168.0.1</code>, задайте репитеру адрес <code>192.168.0.2</code>.</p>
+<p>Шлюз (Gateway) по умолчанию должен указывать на IP-адрес вашего основного роутера. То же самое касается DNS-серверов. Это обеспечит выход в интернет для всех устройств, подключенных к вашему <em>OpenWrt</em>. Если шлюз указан неверно, локальная сеть будет работать, но доступа к внешнему миру не будет.</p>
+<p>Для режима <strong>WDS</strong> настройка может отличаться. В этом случае часто требуется добавить интерфейс в <strong>бандл</strong> (bridge) вместе с портом LAN, чтобы создать единый мост. Это требует более глубокого понимания сетевой архитектуры и может быть выполнено через команду <code>uci</code> или веб-интерфейс в разделе <code>Network</code> → <code>Interfaces</code>.</p>
+
+<details class="pb-accordion"><summary>В чем разница между мостом и NAT??</summary><div class="pb-accordion-body"><p>В режиме моста (Bridge) все устройства находятся в одной подсети и могут напрямую общаться друг с другом (например, для игр по сети или общего доступа к файлам). В режиме NAT (Client+AP) создается вторая подсеть, что скрывает ваши устройства от основной сети, но может обеспечить лучшую изоляцию и безопасность.</p></div></details>
+
+<p>Не забудьте отключить службу <code>DHCP Server</code> на интерфейсе <strong>LAN</strong>, если вы работаете с мостом, чтобы не создавать конфликты выдачи адресов. Если же вы используете NAT, служба DHCP должна быть активна, чтобы раздавать адреса подключенным к репитеру клиентам.</p>
+
+<blockquote>⚠️ Внимание: При смене IP-адреса устройства вы потеряете доступ к веб-интерфейсу по старому адресу. Всегда записывайте новый IP перед сохранением настроек, чтобы не потерять управление роутером.</blockquote>
+
+<h2 id="оптимизация-каналов-и-мощности-сигнала">Оптимизация каналов и мощности сигнала</h2>
+
+<p>Эффективность работы репитера напрямую зависит от качества приема сигнала. Убедитесь, что вы выбрали правильный <strong>Channel Width</strong> (ширину канала). Для диапазона 2.4 ГГц лучше использовать ширину 20 МГц, так как это уменьшает помехи и повышает стабильность соединения на больших расстояниях.</p>
+<p>В диапазоне 5 ГГц ситуация иная: здесь можно использовать ширину 40 МГц или даже 80 МГц для достижения высокой скорости, но радиус действия будет меньше. Вам нужно найти баланс между скоростью и качеством сигнала. Используйте встроенный анализатор спектра или сторонние приложения для выбора наименее загруженного канала.</p>
+<p>Настройте <strong>TX Power</strong> (мощность передачи) в соответствии с нормативами вашей страны. Избыточная мощность может не улучшить прием, но создаст лишние помехи для соседних сетей. Оптимальная мощность обычно составляет 15-20 дБм в зависимости от условий окружающей среды.</p>
+<p>Также стоит обратить внимание на режим <strong>Wireless Mode</strong>. Если основной роутер работает в режиме <em>802.11n</em>, не стоит принудительно включать <em>802.11ac</em> на репитере, так как это может привести к снижению скорости до уровня самых медленных устройств в сети.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для проверки качества сигнала используйте команду iwinfo в консоли или установите пакет'iwinfo' в интерфейсе LuCi для детального анализа уровня шума и сигнала от основного роутера.</p></aside>
+
+<h2 id="устранение-распространенных-проблем">Устранение распространенных проблем</h2>
+
+<p>Иногда настройка не проходит гладко, и репитер не может получить доступ в интернет. Самой частой причиной является неверная маска подсети или отсутствие маршрута по умолчанию. Проверьте, что шлюз указан корректно в настройках интерфейса.</p>
+<p>Еще одна проблема — <strong>двойной NAT</strong>. Если основной роутер также использует NAT, а вы настроили его на репитере, это может вызвать проблемы с онлайн-играми или видеозвонками. В таких случаях рекомендуется использовать режим WDS, если оборудование поддерживает его, или настроить передачу портов на главном устройстве.</p>
+<p>Нестабильное соединение часто вызвано помехами от других устройств. Проверьте, не используете ли вы тот же канал, что и соседние сети. Изменение частотного канала может кардинально улучшить ситуацию. Также убедитесь, что драйверы Wi-Fi для вашего устройства <em>OpenWrt</em> обновлены до последней версии.</p>
+
+<div class="pb-table-wrap"><table>
+ <thead>
+ <tr>
+ <th>Проблема</th>
+ <th>Возможная причина</th>
+ <th>Решение</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+ <td>Репитер не подключается к сети</td>
+ <td>Неверный пароль или шифрование</td>
+ <td>Проверьте настройки безопасности и ключ WPA</td>
+ </tr>
+ <tr>
+ <td>Нет доступа в интернет</td>
+ <td>Неверный шлюз или DNS</td>
+ <td>Укажите IP основного роутера как шлюз</td>
+ </tr>
+ <tr>
+ <td>Низкая скорость</td>
+ <td>Помехи или узкий канал</td>
+ <td>Смените канал или ширину канала</td>
+ </tr>
+ <tr>
+ <td>Конфликт IP-адресов</td>
+ <td>Слишком много DHCP-серверов</td>
+ <td>Отключите DHCP на репитере</td>
+ </tr>
+ </tbody>
+</table></div>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Стабильность соединения зависит не только от настроек, но и от физического расположения устройства. Репитер должен находиться в зоне уверенного приема основного сигнала, но при этом быть достаточно близко к мертвой зоне.</p></aside>
+
+<h2 id="безопасность-и-дополнительные-настройки">Безопасность и дополнительные настройки</h2>
+
+<p>После успешной настройки базовых функций стоит уделить внимание безопасности. Даже если основной роутер имеет защиту, ваш <strong>OpenWrt</strong> репитер должен быть защищен от несанкционированного доступа к его интерфейсу.</p>
+<p>Смените пароль по умолчанию для доступа к веб-интерфейсу <code>root</code>. Убедитесь, что служба SSH отключена или защищена ключами, если она вам не нужна для администрирования. Настройте фаервол так, чтобы он блокировал входящие соединения из интернета, но пропускал локальный трафик.</p>
+<p>Для продвинутых пользователей рекомендуется включить функцию <strong>MAC-фильтрации</strong> на репитере, если это необходимо для контроля доступа. Это позволит ограничить подключение к вашей сети только доверенным устройствам, даже если они находятся в зоне покрытия.</p>
+<p>Не забывайте регулярно обновлять прошивку <em>OpenWrt</em>. Разработчики постоянно выпускают патчи безопасности и улучшения для драйверов Wi-Fi. Обновление может устранить уязвимости, которые могли быть использованы злоумышленниками для проникновения в вашу сеть.</p>
+
+<blockquote>⚠️ Внимание: При обновлении прошивки через сетевой интерфейс (по Wi-Fi) существует риск потери связи, если обновление прервется. Рекомендуется выполнять обновление через проводное соединение или использовать резервный источник питания.</blockquote>
+
+<details class="pb-accordion"><summary>Как проверить работу репитера??</summary><div class="pb-accordion-body"><p>Для проверки работоспособности используйте команду ping с компьютера, подключенного к репитеру, до внешнего ресурса (например, 8.8.8.8). Если пинг идет стабильно, значит, маршрутизация настроена верно. Также проверьте скорость через сервисы типа speedtest.net.</p></div></details>
+
+<h2 id="итоги-настройки">Итоги настройки</h2>
+
+<p>Настройка <strong>OpenWrt в режиме репитера</strong> — это процесс, требующий внимания к деталям, но он позволяет значительно расширить возможности вашей домашней сети. Правильно выбранный метод (WDS или Client+AP) и точная настройка параметров обеспечат стабильное соединение.</p>
+<p>Не бойтесь экспериментировать с настройками мощности и каналов, так как условия беспроводной среды в каждом доме уникальны. Регулярный мониторинг работы сети и своевременное обновление ПО помогут поддерживать высокую производительность на долгие годы.</p>
+<p>Используйте возможности <em>OpenWrt</em> для создания гибкой и надежной инфраструктуры, которая будет адаптироваться под ваши нужды, а не наоборот. С правильным подходом даже недорогие устройства могут стать мощным инструментом для расширения покрытия Wi-Fi.</p>
+
+<details>
+ <summary>Какой режим лучше выбрать: WDS или Client+AP?</summary>
+ <p>WDS лучше, если вам нужна единая подсеть и поддержка всех устройств в одной сети без двойного NAT. Client+AP подходит, если основной роутер не поддерживает WDS или вам нужна изоляция подсетей.</p>
+</details>
+<details>
+ <summary>Почему репитер не раздает интернет, хотя подключен к Wi-Fi?</summary>
+ <p>Скорее всего, неверно настроен шлюз (Gateway) или DNS в настройках интерфейса LAN. Проверьте, что IP-адрес шлюза совпадает с IP-адресом основного роутера.</p>
+</details>
+<details>
+ <summary>Можно ли использовать репитер с разными частотами (2.4 и 5 ГГц)?</summary>
+ <p>Да, если репитер двухдиапазонный. Вы можете подключиться к 5 ГГц для высокой скорости и раздавать сигнал на 2.4 ГГц для старых устройств, или наоборот.</p>
+</details>
+<details>
+ <summary>Как проверить, работает ли режим репитера корректно?</summary>
+ <p>Подключите устройство к репитеру и выполните команду ping до внешнего адреса (например, 8.8.8.8). Если ответ идет стабильно, все настроено верно.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/c/ch/chto-delat-esli-vaj-faj-podklyuchaetsya-bez-dostupa-v-internet.html" class="pb-related-card">
+                <span class="pb-related-title">Wi-Fi подключается, но нет доступа в интернет: причины и решение</span>
+                <span class="pb-related-desc">Интернет подключается, но не работает? Узнайте, как устранить ошибку &quot;Без доступа к сети&quot;. Пошаговая</span>
+            </a><a href="/set-i-internet/k/ka/kak-zvonit-na-sputnikovyj-telefon.html" class="pb-related-card">
+                <span class="pb-related-title">Как звонить на спутниковый телефон: полное руководство</span>
+                <span class="pb-related-desc">Подробная инструкция по звонкам с и на спутниковый телефон. Тарифы, форматы номеров, настройка антен</span>
+            </a><a href="/set-i-internet/m/mo/mozhno-li-abonentu-rostelekoma-podklyuchit-uslugu-garantiya-plyus-na-oborudovanie-ne-ot-rostelekoma.html" class="pb-related-card">
+                <span class="pb-related-title">Гарантия Плюс Ростелеком на чужое оборудование: можно ли подключить</span>
+                <span class="pb-related-desc">Можно ли оформить страховку Гарантия Плюс на роутер или приставку, купленную не в Ростелекоме? Полны</span>
+            </a><a href="/set-i-internet/n/na/nanostation-m2-kak-podklyuchit.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить Ubiquiti NanoStation M2: настройка и маршрутизация</span>
+                <span class="pb-related-desc">Пошаговая инструкция по подключению NanoStation M2. Настройка IP-адреса, прошивка AirOS, создание мо</span>
+            </a><a href="/set-i-internet/i/in/internet-na-dache-varianty-podklyucheniya.html" class="pb-related-card">
+                <span class="pb-related-title">Интернет на даче: лучшие варианты подключения 2026</span>
+                <span class="pb-related-desc">Полный гайд по выбору интернета для загородного дома. Спутниковые системы, 4G/5G роутеры, радиоканал</span>
+            </a><a href="/set-i-internet/p/pr/programma-dlya-razblokirovki-modema.html" class="pb-related-card">
+                <span class="pb-related-title">Программы для разблокировки модема: обзор и инструкции</span>
+                <span class="pb-related-desc">Как разблокировать модем под любого оператора? Обзор софта: DC-Unlocker, Huawei Calculator. Инструкц</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

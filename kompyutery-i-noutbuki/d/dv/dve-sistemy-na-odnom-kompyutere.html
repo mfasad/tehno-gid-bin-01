@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Две системы на одном компьютере: Dual Boot, виртуализация и контейнеры — Техно Гид</title>
+    <meta name="description" content="Полное руководство по запуску двух ОС на одном ПК. Сравнение Dual Boot, виртуальных машин и WSL. Как выбрать лучший метод и избежать конфликтов.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/d/dv/dve-sistemy-na-odnom-kompyutere.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Две системы на одном компьютере: Dual Boot, виртуализация и контейнеры">
+    <meta property="og:description" content="Полное руководство по запуску двух ОС на одном ПК. Сравнение Dual Boot, виртуальных машин и WSL. Как выбрать лучший метод и избежать конфликтов.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Две системы на одном компьютере: Dual Boot, виртуализация и контейнеры</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#основы-архитектуры-двойной-загрузки">Основы архитектуры двойной загрузки</a></li><li><a href="#виртуализация-как-альтернатива-физическим-разделам">Виртуализация как альтернатива физическим разделам</a></li><li><a href="#контейнеризация-и-windows-subsystem-for-linux">Контейнеризация и Windows Subsystem for Linux</a></li><li><a href="#технические-требования-и-конфигурация-оборудования">Технические требования и конфигурация оборудования</a></li><li><a href="#безопасность-данных-и-управление-разделами">Безопасность данных и управление разделами</a></li><li><a href="#решение-типичных-проблем-и-конфликтов">Решение типичных проблем и конфликтов</a></li><li><a href="#будущее-совместимости-и-интеграции">Будущее совместимости и интеграции</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/o/os/oshibka-0kh80070017-pri-ustanovke-windows.html">Ошибка 0х80070017 при установке Windows: полные методы исправления</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-uluchshit-okhlazhdenie-na-noutbuke.html">Как улучшить охлаждение ноутбука: эффективные способы и советы</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-vyglyadit-wifi-modul-v-noutbuke.html">Как выглядит WiFi модуль в ноутбуке: фото, формы и типы</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-vosstanovit-staryj-zhestkij-disk.html">Как восстановить старый жесткий диск: пошаговая инструкция</a></li><li><a href="/kompyutery-i-noutbuki/n/no/noutbuk-greetsya-no-ne-vklyuchaetsya.html">Ноутбук греется но не включается: диагностика и ремонт</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Две системы на одном компьютере: Полное руководство по совместному использованию</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#основы-архитектуры-двойной-загрузки">Основы архитектуры двойной загрузки</a></li><li><a href="#виртуализация-как-альтернатива-физическим-разделам">Виртуализация как альтернатива физическим разделам</a></li><li><a href="#контейнеризация-и-windows-subsystem-for-linux">Контейнеризация и Windows Subsystem for Linux</a></li><li><a href="#технические-требования-и-конфигурация-оборудования">Технические требования и конфигурация оборудования</a></li><li><a href="#безопасность-данных-и-управление-разделами">Безопасность данных и управление разделами</a></li><li><a href="#решение-типичных-проблем-и-конфликтов">Решение типичных проблем и конфликтов</a></li><li><a href="#будущее-совместимости-и-интеграции">Будущее совместимости и интеграции</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Современные пользователи часто сталкиваются с необходимостью работать в разных операционных средах одновременно. Кто-то нуждается в <strong>эксклюзивных функциях macOS</strong> для дизайна, но вынужден использовать Windows для игр или специфического <strong>корпоративного ПО</strong>. Другие разработчики тестируют свой код на <em>Ubuntu</em>, не желая отказываться от привычной <strong>интерфейсной экосистемы</strong> Windows 11. Решение этой дилеммы не требует покупки второго устройства, так как современные технологии позволяют эффективно управлять несколькими системами на одном физическом носителе.</p>
+
+<p>Существует три основных подхода к реализации этой задачи: создание <strong>разделов двойной загрузки</strong> (Dual Boot), использование <em>виртуальных машин</em> или внедрение <strong>контейнеризации</strong>. Каждый метод имеет свои уникальные преимущества и ограничения, влияющие на производительность, удобство переключения и безопасность данных. Понимание различий между ними критически важно для выбора оптимальной стратегии под ваши конкретные нужды.</p>
+
+<h2 id="основы-архитектуры-двойной-загрузки">Основы архитектуры двойной загрузки</h2>
+<p>Двойная загрузка — это классический способ, при котором на жесткий диск устанавливаются две независимые операционные системы, такие как <em>Windows 10</em> и <em>Ubuntu Linux</em>. При включении компьютера загрузчик <strong>GRUB</strong> или <strong>Windows Boot Manager</strong> предлагает пользователю выбрать, какую ОС запустить в данный момент. Этот метод обеспечивает полный доступ к аппаратным ресурсам, что делает его идеальным для ресурсоемких задач.</p>
+
+<p>Однако переключение между системами требует перезагрузки устройства. Это означает, что вы не сможете работать в двух средах одновременно без использования эмуляции. Важно понимать, что при установке <strong>двойной загрузки</strong> необходимо правильно разделить дисковое пространство, создав отдельные разделы для каждой системы, чтобы избежать конфликта файловых таблиц.</p>
+
+<p>Основные преимущества и недостатки метода:</p>
+<ul>
+  <li>🚀 Полная производительность: ОС использует все ресурсы <strong>CPU</strong> и <strong>GPU</strong> без накладных расходов.</li>
+  <li>⚠️ Необходимость перезагрузки для смены среды работы.</li>
+  <li>💾 Риск повреждения загрузчика при некорректных манипуляциях с разделами.</li>
+</ul>
+
+<blockquote>⚠️ Внимание: Никогда не отключайте компьютер во время процесса установки второй операционной системы. Это может привести к необратимому повреждению таблицы разделов и потере доступа ко всем данным на диске.</blockquote>
+
+<h2 id="виртуализация-как-альтернатива-физическим-разделам">Виртуализация как альтернатива физическим разделам</h2>
+<p>Виртуальные машины позволяют запускать одну операционную систему внутри другой, создавая изолированную среду. Для этого используются специализированные программы-гипервизоры, такие как <em>VirtualBox</em>, <em>VMware Workstation</em> или <em>Hyper-V</em>. Внутри окна обычной программы <strong>Windows</strong> вы можете запустить полноценный <em>Linux</em> или даже <em>macOS</em> (с ограничениями).</p>
+
+<p>Главное преимущество такого подхода — возможность работать в обеих системах одновременно без перезагрузки. Вы можете открывать терминал Linux прямо на рабочем столе Windows, копируя файлы между ними через общие папки. Однако производительность виртуальной машины всегда будет ниже, чем у нативной системы, из-за накладных расходов на эмуляцию оборудования.</p>
+
+<p>Сценарии использования виртуализации:</p>
+<ul>
+  <li>🧪 Тестирование программного обеспечения в безопасной <strong>песочнице</strong>.</li>
+  <li>🔒 Запуск устаревших программ, несовместимых с текущей версией ОС.</li>
+  <li>📂 Изоляция потенциально опасных файлов от основной системы.</li>
+</ul>
+
+<p>Если вам требуется графическая мощность для 3D-рендеринга внутри виртуальной машины, потребуется настроить <strong>GPU Passthrough</strong>, что значительно усложняет конфигурацию. Для большинства офисных и учебных задач стандартного распределения ресурсов (RAM и CPU) достаточно.</p>
+
+<div class="pb-poll" id="poll-b931a51b"><div class="pb-poll-question">📊 Что для вас важнее при выборе двух систем?</div><div class="pb-poll-option" data-poll="b931a51b" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Полная производительность (Dual Boot)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="b931a51b" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Удобство переключения (Виртуализация)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="b931a51b" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Изоляция безопасности</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="b931a51b" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Мне не нужно это</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="контейнеризация-и-windows-subsystem-for-linux">Контейнеризация и Windows Subsystem for Linux</h2>
+<p>Технология <strong>WSL 2</strong> (Windows Subsystem for Linux) кардинально изменила подход к использованию Linux на ПК с Windows. Это не полноценная виртуальная машина в привычном понимании, а легковесная среда, интегрированная прямо в ядро Windows. Вы получаете доступ к <em>терминалу</em> и файловой системе Linux с почти нативной производительностью.</p>
+
+<p>Контейнеры, такие как <em>Docker</em>, позволяют запускать приложения в изолированных средах без необходимости установки целой операционной системы. Это идеальный выбор для разработчиков, которым нужно поддерживать несколько версий библиотек или баз данных. <strong>Контейнеры</strong> потребляют меньше ресурсов, чем виртуальные машины, и запускаются за секунды.</p>
+
+<blockquote>⚠️ Внимание: WSL 2 не предназначен для запуска графических приложений с тяжелым 3D-рендерингом. Для работы с GUI-приложениями Linux в Windows может потребоваться настройка дополнительного <strong>X-сервера</strong> или использование WSLg, который не всегда стабилен.</blockquote>
+
+<details class="pb-accordion"><summary>Что такое WSLg?</summary><div class="pb-accordion-body"><p>WSLg — это компонент Windows Subsystem for Linux, который позволяет запускать графические приложения Linux (X11 и Wayland) и поддерживать звук, автоматически интегрируя их в интерфейс Windows.</p></div></details>
+
+<h2 id="технические-требования-и-конфигурация-оборудования">Технические требования и конфигурация оборудования</h2>
+<p>Для комфортной работы двух систем вам потребуется достаточное количество <strong>оперативной памяти</strong>. Если вы планируете использовать виртуальную машину, выделите ей минимум 4-8 ГБ RAM, оставляя остальное для хостовой системы. Для двойной загрузки объем памяти не так критичен, так как работает только одна система, но <strong>SSD-накопитель</strong> станет обязательным условием для быстрой работы.</p>
+
+<p>Не забудьте отключить функцию <em>Secure Boot</em> в BIOS/UEFI, если планируете запускать некоторые дистрибутивы Linux или специфические операционные системы. Также убедитесь, что ваш диск использует таблицу разделов <strong>GPT</strong>, а не MBR, так как современные загрузчики лучше работают с GPT. Проверьте свободное место: для установки двух систем минимум требуется 100-150 ГБ, но рекомендуется иметь запас.</p>
+
+<p>Сводная таблица требований к ресурсам:</p>
+<div class="pb-table-wrap"><table>
+  <thead>
+    <tr>
+      <th>Метод</th>
+      <th>Минимум RAM</th>
+      <th>Минимум SSD</th>
+      <th>Сложность настройки</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Dual Boot</td>
+      <td>8 ГБ</td>
+      <td>120 ГБ</td>
+      <td>Средняя</td>
+    </tr>
+    <tr>
+      <td>Виртуальная машина</td>
+      <td>16 ГБ</td>
+      <td>256 ГБ</td>
+      <td>Низкая</td>
+    </tr>
+    <tr>
+      <td>WSL 2 / Контейнеры</td>
+      <td>12 ГБ</td>
+      <td>100 ГБ</td>
+      <td>Низкая</td>
+    </tr>
+    <tr>
+      <td>Полная изоляция</td>
+      <td>32 ГБ</td>
+      <td>512 ГБ</td>
+      <td>Высокая</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка готовности системы</h4><label class="check-item"><input type="checkbox"><span>Включить виртуализацию в BIOS</span></label><label class="check-item"><input type="checkbox"><span>Освободить место на диске</span></label><label class="check-item"><input type="checkbox"><span>Скачать образы ОС</span></label><label class="check-item"><input type="checkbox"><span>Отключить Secure Boot</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="безопасность-данных-и-управление-разделами">Безопасность данных и управление разделами</h2>
+<p>Самый критичный этап при настройке двух систем — это работа с разделами диска. Ошибка в выборе раздела может привести к стиранию вашей основной системы. Всегда делайте <strong>полное резервное копирование</strong> важных данных перед началом любых манипуляций с разметкой диска. Используйте инструменты вроде <em>TestDisk</em> или встроенный <code>Управление дисками</code> в Windows для точного изменения размеров разделов.</p>
+
+<p>При установке второй ОС убедитесь, что вы выбираете режим <em>"Ручная разметка"</em> или <em>"Существующий раздел"</em>, а не "Удалить все". Файловая система NTFS отлично поддерживается Linux, но ext4 или APFS не читаются Windows без сторонних драйверов. Планируйте структуру папок заранее, чтобы избежать хаоса в файлах.</p>
+
+<p>Советы по управлению разделами:</p>
+<ul>
+  <li>🛡️ Создайте отдельный раздел <strong>Data</strong> в формате NTFS или exFAT для общих файлов.</li>
+  <li>🔒 Используйте шифрование диска (BitLocker или VeraCrypt) для защиты данных.</li>
+  <li>🔄 Настройте регулярное резервное копирование загрузчика.</li>
+</ul>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед изменением размера раздела обязательно проверьте целостность файловой системы через команду chkdsk, чтобы избежать ошибок при сжатии.</p></aside>
+
+<h2 id="решение-типичных-проблем-и-конфликтов">Решение типичных проблем и конфликтов</h2>
+<p>Частой проблемой является потеря доступа к загрузчику после обновления Windows. В этом случае система может загрузиться только в Windows, игнорируя другие ОС. Решение часто требует восстановления загрузчика с помощью загрузочной флешки и утилиты <code>bootrec</code> или <em>Grub Customizer</em>. Также стоит проверить настройки времени в BIOS, так как разные ОС могут использовать разное время (UTC или локальное).</p>
+
+<p>Проблемы с драйверами при Dual Boot могут возникать, если вы используете один жесткий диск для обеих систем. <strong>Быстрая загрузка Windows</strong> может блокировать доступ к разделам Linux, делая их недоступными для записи. Отключение этой функции в настройках электропитания решает проблему конфликтов файловой системы.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Регулярное обновление загрузчика и проверка целостности разделов — залог стабильной работы двух систем без потери данных.</p></aside>
+
+<p>Выбор между методами зависит от ваших задач. Если вам нужна максимальная скорость для игр или работы с графикой — выбирайте <strong>Dual Boot</strong>. Для разработки и тестирования лучше подойдет <em>WSL 2</em> или виртуализация. Главное — аккуратно планируйте изменения и всегда имейте под рукой резервную копию.</p>
+
+<blockquote>⚠️ Внимание: Перед обновлением одной из систем проверьте совместимость версий ядра и загрузчика. Несоответствие версий может привести к тому, что компиляция ядра или загрузка второй ОС станет невозможной без восстановления.</blockquote>
+
+<h2 id="будущее-совместимости-и-интеграции">Будущее совместимости и интеграции</h2>
+<p>Технологии продолжают развиваться, стирая границы между операционными системами. <em>Windows 11</em> уже позволяет запускать приложения Android через подсистему <strong>WSA</strong>, а macOS поддерживает запуск приложений iOS. Это указывает на тренд к полной интеграции, где выбор между "двумя системами" может стать вопросом лишь настройки параметров, а не смены среды.</p>
+
+<p>Тем не менее, для профессиональных задач, требующих специфических драйверов или аппаратного доступа, гибридные решения останутся актуальными. Понимание принципов работы <strong>гипервизоров</strong> и загрузчиков даст вам гибкость в выборе инструментов для любой задачи, будь то программирование, дизайн или анализ данных.</p>
+
+<details>
+  <summary>Как восстановить загрузчик, если Windows перезаписал GRUB?</summary>
+  <p>Вам понадобится загрузочная флешка с дистрибутивом Linux. Загрузитесь с нее, выберите "Try without installing", откройте терминал и выполните команду <code>sudo grub-install /dev/sda</code>, заменив device на ваш диск. Затем обновите конфигурацию: <code>sudo update-grub</code>.</p>
+</details>
+
+<details>
+  <summary>Можно ли установить macOS на обычный ПК с Windows?</summary>
+  <p>Технически возможно через проект <em>Hackintosh</em>, но это нарушает лицензионное соглашение Apple и требует сложной настройки, специфического оборудования (процессоры Intel) и драйверов. Для большинства пользователей это непрактично и нестабильно.</p>
+</details>
+
+<details>
+  <summary>Что лучше для разработки: WSL или виртуальная машина?</summary>
+  <p>Для веб-разработки и работы с контейнерами WSL 2 предпочтительнее благодаря высокой скорости и интеграции с файловой системой. Если же нужны изолированные среды с разными версиями ОС (например, Windows 7 и 10), выбирайте <strong>VirtualBox</strong>.</p>
+</details>
+
+<details>
+  <summary>Потребляет ли Dual Boot больше места на диске?</summary>
+  <p>Да, так как каждая система требует своего раздела под корневую директорию, файлы подкачки и гибернации. Однако вы экономите ресурсы оперативной памяти, так как не работаете с двумя системами одновременно.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/o/os/oshibka-0kh80070017-pri-ustanovke-windows.html" class="pb-related-card">
+                <span class="pb-related-title">Ошибка 0х80070017 при установке Windows: полные методы исправления</span>
+                <span class="pb-related-desc">Разбираем причины и способы устранения ошибки 0х80070017 при обновлении или установке Windows. Прове</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-uluchshit-okhlazhdenie-na-noutbuke.html" class="pb-related-card">
+                <span class="pb-related-title">Как улучшить охлаждение ноутбука: эффективные способы и советы</span>
+                <span class="pb-related-desc">Полный гид по снижению температуры ноутбука. Чистка от пыли, замена термопасты, настройка софта и вы</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-vyglyadit-wifi-modul-v-noutbuke.html" class="pb-related-card">
+                <span class="pb-related-title">Как выглядит WiFi модуль в ноутбуке: фото, формы и типы</span>
+                <span class="pb-related-desc">Узнайте, как выглядит WiFi модуль внутри ноутбука. Полное руководство по форм-факторам M.2, Mini PCI</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-vosstanovit-staryj-zhestkij-disk.html" class="pb-related-card">
+                <span class="pb-related-title">Как восстановить старый жесткий диск: пошаговая инструкция</span>
+                <span class="pb-related-desc">Полное руководство по диагностике и восстановлению HDD. Программные методы, чистка контактов и работ</span>
+            </a><a href="/kompyutery-i-noutbuki/n/no/noutbuk-greetsya-no-ne-vklyuchaetsya.html" class="pb-related-card">
+                <span class="pb-related-title">Ноутбук греется но не включается: диагностика и ремонт</span>
+                <span class="pb-related-desc">Ноутбук греется, но экран черный? Узнайте причины перегрева, методы сброса статики, проверки БП и ОЗ</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-razobrat-spinku-kompyuternogo-stula.html" class="pb-related-card">
+                <span class="pb-related-title">Как разобрать спинку компьютерного стула: пошаговая инструкция</span>
+                <span class="pb-related-desc">Подробный гайд по демонтажу спинки офисного кресла. Узнайте, как снять механизм, заменить газлифт ил</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

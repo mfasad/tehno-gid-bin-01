@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>UART1 на материнской плате: что это и как использовать — Техно Гид</title>
+    <meta name="description" content="Разбираем UART1 на материнской плате: назначение, распиновка TX RX GND, подключение преобразователя и диагностика BIOS через консоль.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/remont-i-diagnostika/u/ua/uart1-na-materinskoj-plate-chto-eto.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="UART1 на материнской плате: что это и как использовать">
+    <meta property="og:description" content="Разбираем UART1 на материнской плате: назначение, распиновка TX RX GND, подключение преобразователя и диагностика BIOS через консоль.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/remont-i-diagnostika/">Ремонт и Диагностика</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">UART1 на материнской плате: что это и как использовать</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#техническая-суть-интерфейса-uart">Техническая суть интерфейса UART</a></li><li><a href="#распиновка-и-назначение-контактов">Распиновка и назначение контактов</a></li><li><a href="#необходимое-оборудование-для-подключения">Необходимое оборудование для подключения</a></li><li><a href="#программная-настройка-терминала">Программная настройка терминала</a></li><li><a href="#процесс-диагностики-и-чтения-логов">Процесс диагностики и чтения логов</a></li><li><a href="#особенности-использования-на-ноутбуках-и-серверах">Особенности использования на ноутбуках и серверах</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/remont-i-diagnostika/o/ob/obzhimnoj-khomut-iz-otsinkovannoj-stali.html">Обжимной хомут из оцинкованной стали: выбор, монтаж и ГОСТ</a></li><li><a href="/remont-i-diagnostika/k/ka/kak-pochinit-stul-kotoryj-opuskaetsya.html">Как починить стул, который опускается: 5 рабочих методов</a></li><li><a href="/remont-i-diagnostika/p/po/podzaryadka-ul-lenina-205-otzyvy.html">Подзарядка на ул. Ленина 205: отзывы, цены и сервис в 2026 году</a></li><li><a href="/remont-i-diagnostika/k/ka/kak-snyat-nozhki-s-ofisnogo-kresla.html">Как снять ножки с офисного кресла: способы демонтажа</a></li><li><a href="/remont-i-diagnostika/z/za/zamena-termopasty-na-noutbuke-acer-aspire.html">Замена термопасты на ноутбуке Acer Aspire: инструкция и советы</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>UART1 на материнской плате: назначение и способы подключения</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#техническая-суть-интерфейса-uart">Техническая суть интерфейса UART</a></li><li><a href="#распиновка-и-назначение-контактов">Распиновка и назначение контактов</a></li><li><a href="#необходимое-оборудование-для-подключения">Необходимое оборудование для подключения</a></li><li><a href="#программная-настройка-терминала">Программная настройка терминала</a></li><li><a href="#процесс-диагностики-и-чтения-логов">Процесс диагностики и чтения логов</a></li><li><a href="#особенности-использования-на-ноутбуках-и-серверах">Особенности использования на ноутбуках и серверах</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>При углубленном изучении архитектуры современной материнской платы или при попытке восстановить неработающее устройство, пользователь рано или поздно сталкивается с загадочной маркировкой UART1. Это не просто набор контактов, а полноценный аппаратный интерфейс, который служит «черным ящиком» для инженеров и продвинутых энтузиастов. В отличие от привычных USB или HDMI портов, данный разъем скрыт от глаз обычного пользователя, но играет критическую роль в процессе загрузки системы и отладки на низком уровне.</p>
+
+<p>Понимание того, <strong>UART1 на материнской плате что это</strong> такое, открывает доступ к инструментам реанимации «кирпичей», диагностике зависаний на этапе POST и модификации параметров BIOS без использования стандартных утилит. Интерфейс позволяет получать текстовый вывод загрузчика еще до инициализации видеокарты, что делает его незаменимым при поиске аппаратных неисправностей, когда экран остается черным.</p>
+
+<h2 id="техническая-суть-интерфейса-uart">Техническая суть интерфейса UART</h2>
+
+<p>Аббревиатура UART расшифровывается как Universal Asynchronous Receiver-Transmitter, что в переводе означает универсальный асинхронный приемо-передатчик. По своей природе это последовательный порт, который преобразует параллельные данные из процессора или чипсета в последовательный поток битов для передачи по кабелю. На современных платах этот интерфейс часто реализован в виде контактной площадки (Pin Header) с шагом 2.54 мм или 2.0 мм.</p>
+
+<p>Основная особенность работы заключается в асинхронности передачи данных. Это означает, что для синхронизации отправителя и получателя не требуется отдельный тактовый сигнал, как это сделано в SPI или I2C. Вместо этого обе стороны договариваются о скорости передачи заранее. Для успешного обмена информацией критически важно, чтобы параметры baud rate (скорость в бодах) на обоих концах линии совпадали.</p>
+
+<p>В контексте материнских плат <em>UART1</em> чаще всего подключен непосредственно к контроллеру супервизора (Super I/O) или к южному мосту чипсета. Именно через этот канал BIOS или UEFI прошивка отправляет отчеты о ходе самотестирования системы. Если вы когда-либо видели на серверном оборудовании порт DB9 (COM-порт), то внутренняя разводка UART1 на плате является электрическим аналогом этого разъема, просто выполненным в компактном формате для внутренней коммутации.</p>
+
+<p>Стоит отметить, что наличие этого разъема не гарантирует его активацию по умолчанию. В некоторых потребительских моделях ноутбуков или десктопов контакты могут быть распаяны, но программно отключены в настройках прошивки. Активация часто требует изменения конфигурационных битов или физического замыкания определенных пинов для перевода контроллера в режим отладки.</p>
+
+<h2 id="распиновка-и-назначение-контактов">Распиновка и назначение контактов</h2>
+
+<p>Для физического подключения к разъему необходимо четко понимать назначение каждого пина в колодке. Стандартная конфигурация header-разъема UART обычно включает четыре основных контакта, хотя иногда их может быть больше для поддержки аппаратного управления потоком данных. Ошибочное подключение питания к линиям данных может привести к мгновенному выходу из строя как материнской платы, так и подключенного адаптера.</p>
+
+<p>Рассмотрим классическую распиновку, которая встречается в 90% случаев на компьютерном оборудовании. Линии обозначаются латинскими буквами, и их функции строго регламентированы стандартом RS-232 (хотя электрические уровни могут отличаться).</p>
+
+<ul>
+    <li>🔌 <strong>GND</strong> (Ground) — общий провод, земля. Подключение этого контакта является обязательным первым шагом, так как он выравнивает потенциалы между устройствами.</li>
+    <li>📤 <strong>TX</strong> (Transmit) — линия передачи данных. Сигнал идет от материнской платы к вашему компьютеру. Сюда нужно подключать вход приемника (RX) адаптера.</li>
+    <li>📥 <strong>RX</strong> (Receive) — линия приема данных. Сигнал идет от вашего компьютера к материнской плате. Сюда подключается выход передатчика (TX) адаптера.</li>
+    <li>⚡ <strong>VCC</strong> (Voltage) — питание. На этом пине обычно присутствует напряжение 3.3В или 5В. Использовать его для питания внешних устройств не рекомендуется без точного замера мультиметром.</li>
+</ul>
+
+<p>Важнейший нюанс, о котором часто забывают новички — это перекрестное подключение линий TX и RX. Логика проста: то, что одна плата передает, другая должна принять. Следовательно, TX материнской платы соединяется с RX USB-адаптера, а RX платы — с TX адаптера. Прямое соединение TX с TX и RX с RX приведет к тому, что оба устройства будут «кричать в пустоту», и обмен данными не состоится.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Перед подключением обязательно измерьте напряжение на пине VCC мультиметром. На некоторых серверных платах там может быть 12В, что мгновенно сожжет ваш 3.3-вольтовый USB-TTL преобразователь. Если питание адаптера не требуется, этот пин лучше вообще не подключать.</p>
+</blockquote>
+
+<p>Иногда встречаются конфигурации с дополнительными сигналами RTS (Request To Send) и CTS (Clear To Send). Они используются для аппаратного контроля потока данных, чтобы приемник мог сигнализировать передатчику о приостановке передачи при переполнении буфера. В простых сценариях отладки BIOS эти линии обычно остаются незадействованными.</p>
+
+<h2 id="необходимое-оборудование-для-подключения">Необходимое оборудование для подключения</h2>
+
+<p>Поскольку современные компьютеры и ноутбуки не имеют встроенных COM-портов с уровнями RS-232 (±12В), а UART на плате работает с TTL-уровнями (0В и 3.3В/5В), для связи необходим специальный преобразователь. Самым популярным и доступным решением является адаптер USB to TTL UART.</p>
+
+<p>На рынке представлено множество моделей таких конвертеров, основанных на различных чипах. Выбор конкретного устройства зависит от вашей операционной системы и требований к стабильности связи. Некоторые дешевые клоны могут работать нестабильно при высоких скоростях передачи или терять пакеты данных, что сделает чтение логов невозможным.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Модель чипа</th>
+<th>Стабильность</th>
+<th>Поддержка ОС</th>
+<th>Рекомендация</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>FTDI FT232RL</em></td>
+<td>Высокая</td>
+<td>Windows, Linux, macOS</td>
+<td>Лучший выбор для профи</td>
+</tr>
+<tr>
+<td><em>CP2102</em></td>
+<td>Средняя</td>
+<td>Windows, Linux, macOS</td>
+<td>Оптимально по цене/качеству</td>
+</tr>
+<tr>
+<td><em>PL2303</em></td>
+<td>Низкая/Средняя</td>
+<td>Windows (проблемы с драйверами)</td>
+<td>Только для простых задач</td>
+</tr>
+<tr>
+<td><em>CH340</em></td>
+<td>Средняя</td>
+<td>Windows, Linux</td>
+<td>Бюджетный вариант</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Помимо самого адаптера, вам понадобятся соединительные провода. Идеальным вариантом являются провода типа «папа-папа» с разъемами Dupont, которые плотно фиксируются в пинах материнской платы. Использование тонких монтажных проводов без изоляции на концах опасно, так как велик риск короткого замыкания соседних контактов, что может привести к сбою загрузки или повреждению дорожек.</p>
+
+<div class="pb-poll" id="poll-8308350b"><div class="pb-poll-question">📊 Какой USB-TTL адаптер вы используете чаще всего?</div><div class="pb-poll-option" data-poll="8308350b" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">FTDI FT232RL</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="8308350b" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">CP2102</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="8308350b" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">PL2303</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="8308350b" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">CH340</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="8308350b" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">У меня нет адаптера</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="программная-настройка-терминала">Программная настройка терминала</h2>
+
+<p>После физического подключения проводов и установки драйверов для USB-адаптера, следующим этапом становится настройка программного обеспечения на стороне ПК. Для работы с последовательным портом используется терминальная программа, которая позволяет отправлять команды и получать ответ от материнской платы.</p>
+
+<p>Самой распространенной и функциональной утилитой для Windows является <em>Putty</em>. Она бесплатна, легковесна и поддерживает сохранение профилей настроек. Также популярны <em>Tera Term</em> и <em>SecureCRT</em> для более продвинутых сценариев. В Linux и macOS можно использовать встроенную консольную утилиту <code>screen</code> или <code>minicom</code>.</p>
+
+<p>Для начала работы в Putty необходимо выбрать тип соединения «Serial». В поле «Serial line» указывается имя порта, которое присвоила система вашему адаптеру (например, COM3 или /dev/ttyUSB0). Это имя можно узнать в Диспетчере устройств Windows после подключения адаптера.</p>
+
+<pre><code>Speed (baud): 115200
+<p>Data bits: 8</p>
+<p>Stop bits: 1</p>
+<p>Parity: None</p>
+<p>Flow control: None</code></pre></p>
+
+<p>Настройка скорости передачи (Speed) является критическим параметром. Хотя стандартом де-факто для большинства современных BIOS и загрузчиков является 115200 бод, некоторые старые системы или специфическое серверное оборудование могут использовать 9600, 38400 или 57600. Если при подключении вы видите «мусор» (набор непечатных символов), попробуйте изменить скорость в ту или иную сторону.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если вы видите в терминале бессвязный набор символов, в 99% случаев проблема в неверно выбранной скорости (Baud Rate) или перепутанных проводах TX и RX.</p></aside>
+
+<h2 id="процесс-диагностики-и-чтения-логов">Процесс диагностики и чтения логов</h2>
+
+<p>После настройки терминала и нажатия кнопки «Open», соединение установлено. Теперь самое время включить питание материнской платы. Если все подключено верно, в окне терминала сразу же начнут появляться сообщения. Первыми строками обычно идут данные о версии BIOS, модели процессора и объеме обнаруженной оперативной памяти.</p>
+
+<p>Этот метод диагностики позволяет увидеть ошибки, которые не выводятся на экран монитора. Например, если система зависает на этапе инициализации контроллера памяти, на экране может просто гореть черный экран, а в консоли UART будет четко написано: <code>Memory Training Failed</code> или <code>DDR4 Initialization Error</code>.</p>
+
+<p>В некоторых случаях для активации вывода может потребоваться нажатие определенной клавиши в первые секунды после включения питания. Часто это клавиша Enter или специфическая комбинация, зависящая от производителя BIOS (AMI, Award, Phoenix). Также существует возможность отправки команд в загрузчик для изменения параметров загрузки, например, для запуска системы в безопасном режиме или сброса пароля администратора.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> При работе с консолью отладки будьте осторожны с вводом команд. Некоторые команды могут инициировать перепрошивку чипа или сброс настроек в заводское состояние без дополнительного подтверждения.</p>
+</blockquote>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Чек-лист перед включением питания</h4><label class="check-item"><input type="checkbox"><span>Проверить надежность контакта проводов</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в перекрестном подключении TX-RX</span></label><label class="check-item"><input type="checkbox"><span>Проверить отсутствие КЗ между пинами</span></label><label class="check-item"><input type="checkbox"><span>Установить скорость 115200 в терминале</span></label><label class="check-item"><input type="checkbox"><span>Запустить терминал ДО включения платы</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="особенности-использования-на-ноутбуках-и-серверах">Особенности использования на ноутбуках и серверах</h2>
+
+<p>В серверном сегменте оборудования наличие UART-порта часто является обязательным требованием стандарта. Многие серверные материнские платы имеют выведенный порт непосредственно на заднюю панель или маркированную площадку внутри корпуса для подключения IPMI-контроллера. Это позволяет администраторам управлять сервером удаленно, даже если операционная система не загрузилась.</p>
+
+<p>В ноутбуках ситуация сложнее. Производители стремятся к миниатюризации, поэтому разъем UART1 часто выполняется в виде микро-площадки без штырьков, расположенной в труднодоступном месте под клавиатурой или рядом с разъемом дисплея. Подключение требует ювелирной точности и использования тонких щупов или припайки проводов.</p>
+
+<p>Кроме того, в мобильных устройствах уровни напряжений могут быть нестандартными. В то время как стандартный TTL это 3.3В или 5В, некоторые чипсеты Intel или AMD в мобильных платформах используют логику 1.8В. Подключение 3.3В адаптера к 1.8В линии может повредить контроллер, а подключение 1.8В адаптера к 3.3В линии не позволит корректно считать логическую единицу.</p>
+
+<details class="pb-accordion"><summary>Как найти UART на схеме платы?</summary><div class="pb-accordion-body"><p>Ищите обозначения COM_PORT, SERIAL_DBG или прямые надписи TXD/RXD рядом с чипом Super I/O (ITE, Nuvoton, Fintek). Также полезно проверить даташит на чипсет, где указаны резервные GPIO, которые можно сконфигурировать как UART.</p></div></details>
+
+<p>Для ремонта ноутбуков с неисправным BIOS (например, после неудачного обновления) UART является спасением. Он позволяет использовать программаторы, работающие в режиме «живой» отладки, или просто контролировать процесс записи новой прошивки через специальные загрузчики, минуя стандартные ограничения защиты.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>UART1 — это не просто порт для передачи данных, а основной инструмент «низкоуровневой» диагностики, позволяющий видеть работу компьютера глазами инженера-разработчика.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли использовать UART1 для подключения обычной мыши или клавиатуры?</summary>
+<p>Теоретически последовательные мыши и клавиатуры существовали в эпоху DOS, но современные устройства используют протокол USB. Подключить современную периферию к UART напрямую невозможно без сложного преобразователя протоколов, который эмулировал бы устройство со стороны компьютера. Этот порт предназначен для отладки, а не для ввода данных пользователем.</p>
+</details>
+
+<details>
+<summary>Почему в терминале нет никаких символов при включении питания?</summary>
+<p>Причин может быть несколько: неверная скорость передачи (Baud Rate), перепутаны провода TX и RX, плохой контакт провода GND, либо вывод консоли отключен в настройках BIOS/UEFI. Также проверьте, выбран ли правильный COM-порт в программе терминала.</p>
+</details>
+
+<details>
+<summary>Опасно ли подключаться к работающей материнской плате?</summary>
+<p>Подключаться «на горячую» (без отключения питания) крайне не рекомендуется. Хотя интерфейс UART относительно защищен, случайное замыкание пина VCC на землю или сигнальные линии в момент включения может вызвать скачок тока и повреждение чипсета. Всегда подключайте провода при обесточенной плате.</p>
+</details>
+
+<details>
+<summary>Где найти драйверы для моего USB-TTL адаптера?</summary>
+<p>Драйверы зависят от чипа внутри адаптера. Для FTDI их лучше качать с официального сайта ftdichip.com. Для CP210x — на сайте Silicon Labs. Для CH340 и PL2303 драйверы часто идут в комплекте с адаптером на диске или доступны на сайтах производителей чипов. Windows 10/11 часто устанавливает их автоматически через Центр обновлений.</p>
+</details>
+
+<details>
+<summary>Можно ли через UART обновить BIOS?</summary>
+<p>Сам по себе UART не обновляет BIOS, он лишь передает данные. Однако, используя специальный программный загрузчик, который активируется через консоль, можно передать образ прошивки в оперативную память и запустить процедуру обновления. Это сложный процесс, требующий глубоких знаний конкретного загрузчика материнской платы.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/remont-i-diagnostika/o/ob/obzhimnoj-khomut-iz-otsinkovannoj-stali.html" class="pb-related-card">
+                <span class="pb-related-title">Обжимной хомут из оцинкованной стали: выбор, монтаж и ГОСТ</span>
+                <span class="pb-related-desc">Полный гид по обжимным хомутам из оцинкованной стали. Сравнение типов, критерии выбора, правила монт</span>
+            </a><a href="/remont-i-diagnostika/k/ka/kak-pochinit-stul-kotoryj-opuskaetsya.html" class="pb-related-card">
+                <span class="pb-related-title">Как починить стул, который опускается: 5 рабочих методов</span>
+                <span class="pb-related-desc">Пошаговая инструкция: как починить газовый газлифт, заменить уплотнитель и устранить самопроизвольно</span>
+            </a><a href="/remont-i-diagnostika/p/po/podzaryadka-ul-lenina-205-otzyvy.html" class="pb-related-card">
+                <span class="pb-related-title">Подзарядка на ул. Ленина 205: отзывы, цены и сервис в 2026 году</span>
+                <span class="pb-related-desc">Читайте реальные отзывы о сервисе Подзарядка (ул. Ленина 205). Анализ цен на ремонт телефонов, ноутб</span>
+            </a><a href="/remont-i-diagnostika/k/ka/kak-snyat-nozhki-s-ofisnogo-kresla.html" class="pb-related-card">
+                <span class="pb-related-title">Как снять ножки с офисного кресла: способы демонтажа</span>
+                <span class="pb-related-desc">Пошаговая инструкция по снятию ножек с офисного кресла. Как разъединить газлифт и крестовину, удалит</span>
+            </a><a href="/remont-i-diagnostika/z/za/zamena-termopasty-na-noutbuke-acer-aspire.html" class="pb-related-card">
+                <span class="pb-related-title">Замена термопасты на ноутбуке Acer Aspire: инструкция и советы</span>
+                <span class="pb-related-desc">Снизить нагрев ноутбука Acer Aspire поможет замена термопасты. Подробная инструкция по разборке, выб</span>
+            </a><a href="/remont-i-diagnostika/k/kh/kholodilnik-samsung-drenazhnoe-otverstie.html" class="pb-related-card">
+                <span class="pb-related-title">Дренажное отверстие в холодильнике Samsung: чистка и устранение засора</span>
+                <span class="pb-related-desc">Почему течет холодильник Самсунг? Полная инструкция по чистке дренажного отверстия, устранению налед</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

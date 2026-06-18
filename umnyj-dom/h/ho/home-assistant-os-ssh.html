@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Home Assistant OS SSH: Включение, настройка и отладка системы — Техно Гид</title>
+    <meta name="description" content="Полное руководство по настройке SSH в Home Assistant OS. Добавление аддона, подключение по ключам, доступ к терминалу и решение частых проблем.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/h/ho/home-assistant-os-ssh.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Home Assistant OS SSH: Включение, настройка и отладка системы">
+    <meta property="og:description" content="Полное руководство по настройке SSH в Home Assistant OS. Добавление аддона, подключение по ключам, доступ к терминалу и решение частых проблем.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Home Assistant OS SSH: Включение, настройка и отладка системы</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-среды-и-установка-аддона">Подготовка среды и установка аддона</a></li><li><a href="#генерация-ключей-и-настройка-аутентификации">Генерация ключей и настройка аутентификации</a></li><li><a href="#запуск-сервиса-и-проверка-соединения">Запуск сервиса и проверка соединения</a></li><li><a href="#навигация-по-файловой-системе-и-права-доступа">Навигация по файловой системе и права доступа</a></li><li><a href="#отладка-и-мониторинг-через-терминал">Отладка и мониторинг через терминал</a></li><li><a href="#частые-ошибки-и-методы-их-устранения">Частые ошибки и методы их устранения</a></li><li><a href="#вопросы-и-ответы-faq">Вопросы и ответы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/k/ka/kak-podklyuchit-alisu-k-chajniku-polaris.html">Как подключить умный чайник Polaris к Яндекс Алисе: полная инструкция</a></li><li><a href="/umnyj-dom/t/to/tovary-dlya-umnogo-doma-s-alisoj.html">Товары для умного дома с Алисой: полный гайд по выбору и настройке</a></li><li><a href="/umnyj-dom/d/dr/dreame-d9-ne-podaet-vodu.html">Dreame D9 не подает воду: причины и устранение</a></li><li><a href="/umnyj-dom/w/wi/wifi-chasy-na-esp8266.html">WiFi часы на ESP8266: Обзор, схемы и прошивка своими руками</a></li><li><a href="/umnyj-dom/t/te/tekhnika-s-alisoj-dlya-umnogo-doma.html">Умный дом с Алисой: полный гид по выбору и настройке техники</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Подключение к Home Assistant OS через SSH: Полная инструкция</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-среды-и-установка-аддона">Подготовка среды и установка аддона</a></li><li><a href="#генерация-ключей-и-настройка-аутентификации">Генерация ключей и настройка аутентификации</a></li><li><a href="#запуск-сервиса-и-проверка-соединения">Запуск сервиса и проверка соединения</a></li><li><a href="#навигация-по-файловой-системе-и-права-доступа">Навигация по файловой системе и права доступа</a></li><li><a href="#отладка-и-мониторинг-через-терминал">Отладка и мониторинг через терминал</a></li><li><a href="#частые-ошибки-и-методы-их-устранения">Частые ошибки и методы их устранения</a></li><li><a href="#вопросы-и-ответы-faq">Вопросы и ответы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Интеграция системы <strong>Home Assistant</strong> в инфраструктуру умного дома открывает безграничные возможности для автоматизации, но стандартный веб-интерфейс не всегда позволяет выполнять низкоуровневые операции. Для глубокой настройки, отладки интеграций или прямого управления файловой системой пользователям часто необходим доступ к командной строке операционной системы. Именно здесь на сцену выходит протокол <em>SSH</em> (Secure Shell), являющийся стандартом де-факто для безопасного удаленного администрирования серверов.</p>
+
+<p>В отличие от дистрибутива <em>Home Assistant Core</em>, устанавливаемого вручную на Linux, версия <strong>Home Assistant OS</strong> работает в изолированной среде, где прямой доступ к shell по умолчанию заблокирован в целях безопасности. Чтобы получить возможность ввода команд, необходимо активировать специальный программный модуль — аддон. Этот процесс требует внимательности, так как неправильная настройка прав доступа или ключей шифрования может привести к тому, что сервер останется недоступным для внешнего управления.</p>
+
+<p>В данной статье мы подробно разберем процедуру активации SSH-сервера, генерацию криптографических ключей и настройку безопасного подключения. Вы узнаете, как обойти ограничения стандартной оболочки и получить полноценный root-доступ для выполнения сложных скриптов или резервного копирования конфигураций на уровне файловой системы.</p>
+
+<h2 id="подготовка-среды-и-установка-аддона">Подготовка среды и установка аддона</h2>
+
+<p>Первым шагом является обеспечение наличия репозитория с официальными дополнениями в вашем интерфейсе. По умолчанию в <strong>Home Assistant OS</strong> уже подключен основной магазин аддонов, но если вы используете кастомные сборки или ограниченные конфигурации, проверьте наличие раздела <code>Настройки → Дополнения → Магазин дополнений</code>. Без этого компонента установка необходимого ПО невозможна.</p>
+
+<p>Найдите в списке доступных решений аддон с названием <em>"Terminal & SSH"</em>. Это официальное дополнение от разработчиков <em>Home Assistant</em>, которое предоставляет не только серверную часть для входящих соединений, но и удобный веб-терминал прямо в браузере. Нажмите на карточку аддона, чтобы перейти к странице деталей, где будут отображены версия, описание и требования к системе.</p>
+
+<blockquote>⚠️ <strong>Внимание:</strong> Убедитесь, что вы устанавливаете именно версию для <em>Home Assistant OS</em> или <em>Supervised</em>. Попытка установки этого аддона на инсталляцию <em>Core</em> приведет к ошибке, так как там управление зависимостями осуществляется иначе через pip и виртуальные окружения.</blockquote>
+
+<p>Перед запуском критически важно настроить параметры безопасности. Перейдите во вкладку <code>Конфигурация</code> внутри страницы аддона. Здесь вам предстоит решить, какой метод аутентификации использовать: парольную или ключевую. Для продакшн-среды настоятельно рекомендуется использовать второй вариант, так как он устойчив к перебору паролей и обеспечивает более высокий уровень криптографической защиты канала связи.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к установке SSH</h4><label class="check-item"><input type="checkbox"><span>Проверить наличие Магазина дополнений</span></label><label class="check-item"><input type="checkbox"><span>Найти аддон Terminal & SSH</span></label><label class="check-item"><input type="checkbox"><span>Изучить вкладку Конфигурация</span></label><label class="check-item"><input type="checkbox"><span>Сгенерировать SSH-ключи (при выборе ключевого доступа)</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="генерация-ключей-и-настройка-аутентификации">Генерация ключей и настройка аутентификации</h2>
+
+<p>Использование пары ключей (публичного и приватного) является наиболее надежным способом защиты вашего умного дома от несанкционированного доступа. Для генерации ключей на компьютере с операционной системой <em>Linux</em> или <em>macOS</em> можно воспользоваться встроенной утилитой <code>ssh-keygen</code>. В терминале выполните команду, которая создаст ключи типа RSA или Ed25519.</p>
+
+<pre><code>ssh-keygen -t ed25519 -C"home-assistant-key"</code></pre>
+
+<p>После генерации у вас появится два файла: приватный ключ (обычно <code>id_ed25519</code>) и публичный (<code>id_ed25519.pub</code>). Содержимое публичного ключа необходимо скопировать полностью, включая строку заголовка и тип ключа, и вставить в поле <code>authorized_keys</code> в конфигурации аддона <strong>Terminal & SSH</strong>. Это действие добавит ваш компьютер в список доверенных устройств.</p>
+
+<p>Если вы все же решили использовать парольную аутентификацию для временных целей или тестирования, задайте сложный пароль в соответствующем поле конфигурации. Однако помните, что при включении этой опции аддон может потребовать изменения порта по умолчанию или настройки брандмауэра для предотвращения автоматических атак ботнетов, сканирующих сеть на предмет открытых портов.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте тип ключа Ed25519 вместо RSA. Он обеспечиваетный уровень безопасности при меньшей длине ключа и работает быстрее, что особенно важно для устройств с ограниченными ресурсами, таких как Raspberry Pi.</p></aside>
+
+<p>Не забудьте сохранить конфигурацию, нажав кнопку <code>Сохранить</code> в нижней части экрана. Система проверит синтаксис введенных данных. Если в поле для ключей есть лишние пробелы или разрывы строк, которые не соответствуют формату OpenSSH, аддон откажется запускаться, сообщив об ошибке в логах.</p>
+
+<h2 id="запуск-сервиса-и-проверка-соединения">Запуск сервиса и проверка соединения</h2>
+
+<p>После успешного сохранения настроек перейдите на вкладку <code>Информация</code> и нажмите кнопку <code>Запуск</code>. Процесс инициализации может занять от нескольких секунд до минуты, в зависимости от производительности вашего хоста <strong>Home Assistant OS</strong>. В это время система загружает необходимые зависимости, настраивает сетевые интерфейсы и применяет правила брандмауэра.</p>
+
+<p>Как только статус аддона изменится на <em>"Запущен"</em> (зеленый индикатор), можно приступать к проверке подключения. Откройте терминал на вашем клиентском компьютере и попробуйте соединиться с устройством, используя команду <code>ssh</code>. По умолчанию аддон слушает порт <code>22</code>, если вы не изменили это значение в настройках.</p>
+
+<pre><code>ssh -p 22 root@192.168.1.100</code></pre>
+
+<p>При первом подключении система запросит подтверждение отпечатка ключа сервера (fingerprint). Сверьте его с тем, что отображается в логах аддона, если у вас есть сомнения в подлинности соединения, и введите <code>yes</code>. Если вы использовали ключевую аутентификацию, вход должен произойти автоматически без запроса пароля.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Значение по умолчанию</th>
+<th>Рекомендация</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Порт</td>
+<td>22</td>
+<td>Изменить на нестандартный (напр. 2222)</td>
+</tr>
+<tr>
+<td>Пользователь</td>
+<td>root</td>
+<td>Оставить без изменений</td>
+</tr>
+<tr>
+<td>Аутентификация</td>
+<td>Пароль/Ключ</td>
+<td>Только SSH-ключи</td>
+</tr>
+<tr>
+<td>Интерфейс</td>
+<code>/bin/bash</code>
+<td>Стандартная оболочка</td>
+</tr>
+</tbody>
+</table></div>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Успешный вход в систему под пользователем root означает, что вы получили полный контроль над контейнером аддона, но пока не имеете прямого доступа к хост-системе Home Assistant OS без дополнительных команд.</p></aside>
+
+<h2 id="навигация-по-файловой-системе-и-права-доступа">Навигация по файловой системе и права доступа</h2>
+
+<p>Попав внутрь оболочки, вы обнаружите, что находитесь в специфической среде. Стандартная файловая система <strong>Home Assistant OS</strong> скрыта от прямого просмотра в корне. Вы видите файловую структуру контейнера аддона, а не всего хоста. Основная конфигурация умного дома обычно расположена в директории <code>/config</code>, которая является общей папкой (volume mount), доступной для записи.</p>
+
+<p>Для выполнения команд, влияющих на работу самой операционной системы, а не только контейнера, используется специальная утилита <code>ha</code>. Этот CLI-инструмент позволяет взаимодействовать с API supervisora. Например, чтобы перезагрузить сам хост или обновить ядро, вам не нужно знать внутренние пути Linux, достаточно ввести соответствующую команду через этот интерфейс.</p>
+
+<ul>
+<li>📂 Команда <code>cd /config</code> переместит вас в директорию с файлами конфигурации YAML, где хранятся настройки автоматизаций и интеграций.</li>
+<li>🔍 Использование <code>ha core check</code> позволит проверить конфигурацию на наличие ошибок перед перезагрузкой ядра, не выходя из SSH сессии.</li>
+<li>💾 Команда <code>ha backup create</code> инициирует создание полной резервной копии системы прямо из командной строки, что удобно для скриптов автоматизации.</li>
+</ul>
+
+<p>Важно понимать разграничение прав. Пользователь <code>root</code> внутри аддона имеет привилегии только в пределах своего контейнера и смонтированных томов. Прямой доступ к системным библиотекам хоста заблокирован политикой безопасности <em>AppArmor</em> и изоляцией Docker. Это предотвращает случайное повреждение критических компонентов системы при неосторожном вводе команд.</p>
+
+<blockquote>⚠️ <strong>Внимание:</strong> Никогда не пытайтесь отключать механизмы безопасности или изменять системные файлы за пределами директории <code>/config</code> вручную через редакторы типа <code>nano</code> или <code>vi</code>, если вы точно не знаете последствий. Используйте штатные команды <code>ha</code> для управления системой.</blockquote>
+
+<details class="pb-accordion"><summary>Что такое директория /share и /ssl?</summary><div class="pb-accordion-body"><p>Директория /share предназначена для хранения общих файлов, доступных разным аддонам (например, базы данных для карт или медиафайлы). Директория /ssl используется для хранения сертификатов SSL, необходимых для безопасного соединения по HTTPS, если вы настраиваете внешний доступ без обратного прокси.</p></div></details>
+
+<h2 id="отладка-и-мониторинг-через-терминал">Отладка и мониторинг через терминал</h2>
+
+<p>Одним из главных преимуществ наличия SSH-доступа является возможность оперативной диагностики проблем. Когда веб-интерфейс не загружается или автоматизации работают некорректно, логи в браузере могут быть неполными или недоступными. Через терминал вы можете в реальном времени отслеживать потоки логов ядра и отдельных сервисов.</p>
+
+<p>Для просмотра логов самого <strong>Home Assistant Core</strong> используйте команду <code>ha core logs</code>. Если нужно увидеть детали работы конкретного аддона, добавьте его slug (идентификатор) в команду. Это позволяет быстро выявить ошибки зависимостей или проблемы с сетевым подключением у конкретных модулей.</p>
+
+<pre><code>ha addons logs core_ssh</code></pre>
+
+<p>Также через SSH удобно управлять ресурсами устройства. Вы можете использовать стандартные утилиты Linux, такие как <code>top</code> или <code>htop</code> (если установлены в образе аддона), для мониторинга загрузки процессора и потребления оперативной памяти. Это помогает выявить"тяжелые" интеграции, которые вызывают тормоза в работе интерфейса.</p>
+
+<ul>
+<li>🚀 Команда <code>ha restart</code> выполняет полную перезагрузку системы, аналогичную нажатию кнопки в интерфейсе, но может быть вызвана из скрипта.</li>
+<li>🛠 Утилита <code>docker ps</code> покажет список всех запущенных контейнеров, что полезно для понимания архитектуры запущенных сервисов.</li>
+<li>📡 Проверка сети через <code>ping</code> или <code>nslookup</code> изнутри контейнера помогает диагностировать проблемы с DNS или доступом к внешним API.</li>
+</ul>
+
+<p>Если вы разрабатываете собственные интеграции или скрипты на Python, наличие терминала позволяет запускать их в тестовом режиме непосредственно на устройстве. Вы можете установить дополнительные пакеты (в рамках сессии) или проверить пути к файлам, что ускоряет процесс разработки в разы по сравнению с удаленной отладкой.</p>
+
+<div class="pb-poll" id="poll-259f6b0b"><div class="pb-poll-question">📊 Как вы предпочитаете управлять Home Assistant?</div><div class="pb-poll-option" data-poll="259f6b0b" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Веб-интерфейс</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="259f6b0b" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Мобильное приложение</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="259f6b0b" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">SSH терминал</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="259f6b0b" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">API запросы</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="частые-ошибки-и-методы-их-устранения">Частые ошибки и методы их устранения</h2>
+
+<p>Несмотря на простоту настройки, пользователи часто сталкиваются с проблемами при первом подключении. Самая распространенная ошибка — <em>"Connection refused"</em>. Это обычно означает, что аддон не запущен, либо брандмауэр на маршрутизаторе или самом хосте блокирует входящий порт. Проверьте статус аддона и настройки сети.</p>
+
+<p>Другая частая проблема — <em>"Permission denied (publickey)"</em>. Это случается, если публичный ключ был скопирован с ошибкой (лишние пробелы, отсутствие заголовка) или если вы пытаетесь подключиться с компьютера, на котором находится приватный ключ, не соответствующий загруженному публичному ключу. Внимательно перепроверьте содержимое поля конфигурации.</p>
+
+<p>Иногда после обновления <strong>Home Assistant OS</strong> аддон SSH может перестать корректно работать из-за изменений в зависимостях. В таком случае помогает полная переустановка аддона с сохранением конфигурации. Нажмите кнопку"Переустановить" в информации об аддоне, чтобы скачать свежую версию образа контейнера.</p>
+
+<blockquote>⚠️ <strong>Внимание:</strong> Интерфейсы и команды CLI могут незначительно меняться с выходом новых версий прошивки. Если команда <code>ha</code> выдает ошибку"command not found", убедитесь, что вы находитесь в правильной оболочке и аддон полностью загрузился.</blockquote>
+
+<h2 id="вопросы-и-ответы-faq">Вопросы и ответы (FAQ)</h2>
+
+<details>
+<summary>Можно ли включить SSH без использования аддона в Home Assistant OS?</summary>
+<p>Нет, в версии <em>Home Assistant OS</em> прямой доступ к системе заблокирован архитектурой. Единственный легальный и безопасный способ получить доступ к shell — это установка официального аддона"Terminal & SSH" или аналогичных доверенных дополнений из магазина.</p>
+</details>
+
+<details>
+<summary>Почему не работает вход по паролю, хотя я его задал?</summary>
+<p>В новых версиях аддона опция входа по паролю может быть отключена по умолчанию в целях безопасности, если не настроены дополнительные параметры. Кроме того, убедитесь, что в конфигурации не стоит галочка"Только ключи". Попробуйте явно указать пароль в конфиге и перезапустить аддон.</p>
+</details>
+
+<details>
+<summary>Как изменить порт SSH, если 22 занят другим сервисом?</summary>
+<p>В конфигурации аддона"Terminal & SSH" есть поле"Port". Измените значение с 22 на любое свободное (например, 2222). Не забудьте при подключении указывать этот порт в команде: <code>ssh -p 2222 root@ip-address</code>.</p>
+</details>
+
+<details>
+<summary>Безопасно ли открывать порт SSH для доступа из интернета?</summary>
+<p>Категорически не рекомендуется открывать порт SSH напрямую в интернет без дополнительной защиты. Используйте VPN (например, WireGuard или Tailscale) для удаленного доступа или настройте Fail2Ban (если доступен в вашей среде) для блокировки перебора паролей. Лучший вариант — доступ только из локальной сети.</p>
+</details>
+
+<details>
+<summary>Где хранятся файлы конфигурации после подключения по SSH?</summary>
+<p>Основные файлы конфигурации находятся в директории <code>/config</code>. Именно здесь расположены файлы <code>configuration.yaml</code>, папки <code>automations</code>, <code>scripts</code> и <code>blueprints</code>. Все изменения, сделанные в этой папке, сразу применяются к системе.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/k/ka/kak-podklyuchit-alisu-k-chajniku-polaris.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить умный чайник Polaris к Яндекс Алисе: полная инструкция</span>
+                <span class="pb-related-desc">Пошаговая настройка умного чайника Polaris для работы с голосовым помощником Алиса. Решение проблем,</span>
+            </a><a href="/umnyj-dom/t/to/tovary-dlya-umnogo-doma-s-alisoj.html" class="pb-related-card">
+                <span class="pb-related-title">Товары для умного дома с Алисой: полный гайд по выбору и настройке</span>
+                <span class="pb-related-desc">Экспертный обзор умных устройств для дома с поддержкой голосового помощника Алиса. Рейтинг девайсов,</span>
+            </a><a href="/umnyj-dom/d/dr/dreame-d9-ne-podaet-vodu.html" class="pb-related-card">
+                <span class="pb-related-title">Dreame D9 не подает воду: причины и устранение</span>
+                <span class="pb-related-desc">Робот-пылесос Dreame D9 не моет пол? Узнайте реальные причины отсутствия воды, проверьте бак, помпу </span>
+            </a><a href="/umnyj-dom/w/wi/wifi-chasy-na-esp8266.html" class="pb-related-card">
+                <span class="pb-related-title">WiFi часы на ESP8266: Обзор, схемы и прошивка своими руками</span>
+                <span class="pb-related-desc">Как создать умные часы на базе ESP8266. Подробный гайд по выбору модулей, прошивке, подключению дисп</span>
+            </a><a href="/umnyj-dom/t/te/tekhnika-s-alisoj-dlya-umnogo-doma.html" class="pb-related-card">
+                <span class="pb-related-title">Умный дом с Алисой: полный гид по выбору и настройке техники</span>
+                <span class="pb-related-desc">Как выбрать устройства для умного дома с поддержкой Яндекс Алисы. Обзор лампочек, розеток, климат-ко</span>
+            </a><a href="/umnyj-dom/d/de/dejstvuyut-li-ultrazvukovye-otpugivateli-na-gryzunov.html" class="pb-related-card">
+                <span class="pb-related-title">Действуют ли ультразвуковые отпугиватели на грызунов: правда и мифы</span>
+                <span class="pb-related-desc">Полный разбор эффективности ультразвуковых отпугивателей против крыс и мышей. Научные факты, принцип</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

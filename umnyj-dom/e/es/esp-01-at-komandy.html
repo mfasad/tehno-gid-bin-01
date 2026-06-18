@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>ESP-01 AT команды: полный гайд по настройке Wi-Fi модуля — Техно Гид</title>
+    <meta name="description" content="Подробное руководство по использованию AT команд для ESP8266 ESP-01. Настройка режимов, сканирование сети, работа с TCP/UDP и устранение ошибок.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/e/es/esp-01-at-komandy.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ESP-01 AT команды: полный гайд по настройке Wi-Fi модуля">
+    <meta property="og:description" content="Подробное руководство по использованию AT команд для ESP8266 ESP-01. Настройка режимов, сканирование сети, работа с TCP/UDP и устранение ошибок.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">ESP-01 AT команды: полный гайд по настройке Wi-Fi модуля</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#основы-работы-с-модулем-esp-01">Основы работы с модулем ESP-01</a></li><li><a href="#настройка-baud-rate-и-базовые-команды">Настройка baud rate и базовые команды</a></li><li><a href="#работа-с-wi-fi-сетями-и-режимы-функционирования">Работа с Wi-Fi сетями и режимы функционирования</a></li><li><a href="#управление-сетевыми-подключениями-tcp-и-udp">Управление сетевыми подключениями TCP и UDP</a></li><li><a href="#работа-с-http-и-dns-запросами">Работа с HTTP и DNS запросами</a></li><li><a href="#таблица-основных-команд-и-параметров">Таблица основных команд и параметров</a></li><li><a href="#устранение-распространенных-ошибок">Устранение распространенных ошибок</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/k/ka/kak-nazyvaetsya-vytyanutyj-kvadrat.html">Как называется вытянутый квадрат: Терминология и применение форм</a></li><li><a href="/umnyj-dom/p/pr/programma-dlya-raskladki-trub-teplogo-vodyanogo-pola.html">Программа для раскладки труб теплого водяного пола: обзор софта</a></li><li><a href="/umnyj-dom/u/um/umnye-vyklyuchateli-sveta-alisa.html">Умные выключатели света Алиса: обзор, выбор и настройка управления</a></li><li><a href="/umnyj-dom/p/pr/proizvoditeli-ustrojstv-umnogo-doma.html">Производители устройств умного дома: обзор лучших брендов и экосистем</a></li><li><a href="/umnyj-dom/z/zv/zvuki-dlya-otpugivaniya-myshej-i-krys.html">Ультразвуковые отпугиватели грызунов: как работают и эффективны ли они</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Полный справочник по AT командам для модуля ESP-01</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#основы-работы-с-модулем-esp-01">Основы работы с модулем ESP-01</a></li><li><a href="#настройка-baud-rate-и-базовые-команды">Настройка baud rate и базовые команды</a></li><li><a href="#работа-с-wi-fi-сетями-и-режимы-функционирования">Работа с Wi-Fi сетями и режимы функционирования</a></li><li><a href="#управление-сетевыми-подключениями-tcp-и-udp">Управление сетевыми подключениями TCP и UDP</a></li><li><a href="#работа-с-http-и-dns-запросами">Работа с HTTP и DNS запросами</a></li><li><a href="#таблица-основных-команд-и-параметров">Таблица основных команд и параметров</a></li><li><a href="#устранение-распространенных-ошибок">Устранение распространенных ошибок</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="основы-работы-с-модулем-esp-01">Основы работы с модулем ESP-01</h2>
+<p>Модуль <em>ESP-8266</em> в форм-факторе <em>ESP-01</em> остается одним из самых популярных решений для быстрой реализации беспроводных проектов. Его ключевая особенность — возможность работы в режиме терминала через набор команд <strong>AT</strong>. Это позволяет управлять устройством без написания сложного кода на языке C++ или MicroPython, что особенно полезно для первоначальной настройки или создания простых прототипов.</p>
+<p>Командный протокол <strong>AT</strong> (Attention) является стандартом де-факто для модемов и модулей связи. В случае с <em>ESP-01</em>, вы взаимодействуете с микроконтроллером через последовательный порт (UART), передавая текстовые строки и ожидая ответ от прошивки. Важно понимать, что реакция устройства напрямую зависит от версии <strong>AT Firmware</em>, установленной на чипе, так как производители часто добавляют или удаляют функции.</p>
+
+<h2 id="настройка-baud-rate-и-базовые-команды">Настройка baud rate и базовые команды</h2>
+<p>Первым шагом в работе с модулем является корректная настройка скорости обмена данными. По умолчанию большинство версий прошивки <em>ESP-01</strong> работают на скорости <code>115200</code> бод, но старые ревизии могут использовать <code>9600</code> или <code>57600</code>. Неправильно выбранная скорость приводит к тому, что терминал показывает «кашу» из символов вместо понятных ответов.</p>
+<p>Для проверки текущей конфигурации и связи с устройством используйте базовый запрос. Если связь установлена, вы получите подтверждение готовности модуля к работе. Это критически важный этап перед любыми серьезными настройками сети.</p>
+<pre><code>AT</code></pre>
+<p>Ответом на успешную команду должно быть сообщение <code>OK</code>. Если вы видите <code>ERROR</code> или ничего не происходит, проверьте соединения: линии <strong>TXD</strong> и <strong>RXD</strong> должны быть перекрестно соединены с вашим USB-UART адаптером, а напряжение на выводе <strong>CH_PD</strong> (или <strong>EN</strong>) должно составлять стабильные <strong>3.3 В</strong>.</p>
+<blockquote>
+<p>⚠️ Внимание: Питание модуля ESP-01 требует достаточного тока (до 500 мА в пике). Нестабильное напряжение может вызывать случайные перезагрузки или потерю связи при отправке команд.</p>
+</blockquote>
+<p>Для смены скорости обмена данными используется специфическая команда, которая требует перезагрузки устройства для вступления в силу. После изменения параметра вам потребуется перенастроить ваш терминал на новую скорость, иначе дальнейшая работа станет невозможна.</p>
+<pre><code>AT+UART_DEF=115200,8,1,0,0</code></pre>
+<p>Здесь параметры определяют скорость, количество бит данных, стоповых бит, контроль четности и режим потока. Корректная настройка <strong>UART</em> гарантирует, что длинные команды и ответные пакеты будут передаваться без искажений и потерь информации.</p>
+
+<div class="pb-poll" id="poll-38b59082"><div class="pb-poll-question">📊 Какой baud rate использует ваш ESP-01 по умолчанию?</div><div class="pb-poll-option" data-poll="38b59082" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">9600</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="38b59082" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">57600</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="38b59082" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">115200</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="38b59082" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Не знаю</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="работа-с-wi-fi-сетями-и-режимы-функционирования">Работа с Wi-Fi сетями и режимы функционирования</h2>
+<p>Главная задача <em>ESP-01</em> — подключение к беспроводным сетям. Для этого модуль должен быть переведен в один из трех режимов работы: клиент (Station), точка доступа (Access Point) или комбинированный режим. Выбор режима определяет, как именно устройство будет взаимодействовать с вашей сетью и другими устройствами.</p>
+<p>Режим <strong>Station</strong> позволяет модулю подключаться к существующему роутеру и получать IP-адрес через DHCP. Это идеальный вариант для устройств, которые должны отправлять данные в интернет или на сервер. Проверить текущий режим можно командой <code>AT+CWMODE_CUR?</code>, а изменить его — командой с суффиксом <code>_DEF</code> для сохранения в память.</p>
+<pre><code>AT+CWMODE_DEF=1</code></pre>
+<p>Для подключения к конкретной сети необходимо указать имя точки доступа (SSID) и пароль. Процесс подключения занимает несколько секунд, в течение которых модуль ищет сеть и выполняет процедуру аутентификации. Успешное подключение подтверждается получением IP-адреса.</p>
+<pre><code>AT+CWJAP_DEF="MyHomeWiFi","password123"</code></pre>
+<p>Если сеть защищена, вводите пароль строго в кавычках. Ошибки в пароле или отсутствие сети вернут код ошибки <code>FAIL</code>. Также полезно знать команду сканирования доступных сетей, которая позволяет найти скрытые точки доступа и оценить качество сигнала.</p>
+<ul>
+<li>📡 Команда <code>AT+CWLAP</code> выводит список всех видимых сетей с их уровнем сигнала и типом шифрования.</li>
+<li>🔒 Команда <code>AT+CWQAP</code> используется для отключения от текущей точки доступа без смены режима работы.</li>
+<li>🛡️ Команда <code>AT+CIPMUX?</code> проверяет, разрешено ли использовать множественные соединения одновременно.</li>
+</ul>
+
+<details class="pb-accordion"><summary>Скрытая информация о режимах работы</summary><div class="pb-accordion-body"><p>Режим 2 (AP) превращает ESP в роутер, но он не имеет доступа в интернет сам по себе. Режим 3 (AP+STA) позволяет одновременно раздавать сеть и быть клиентом, но требует больше ресурсов памяти.</p></div></details>
+
+<h2 id="управление-сетевыми-подключениями-tcp-и-udp">Управление сетевыми подключениями TCP и UDP</h2>
+<p>После подключения к сети модуль готов к обмену данными. Для этого используется команда <code>AT+CIPSTART</code>, которая инициирует соединение с удаленным сервером. Вы можете выбрать протокол: <strong>TCP</strong> для надежной передачи данных или <strong>UDP</strong> для быстрой отправки пакетов без гарантии доставки.</p>
+<p>При создании соединения указывается тип связи, IP-адрес или доменное имя удаленного сервера и порт. Например, для подключения к веб-серверу на IP 192.168.1.50 на порту 80 используется следующая команда.</p>
+<pre><code>AT+CIPSTART="TCP","192.168.1.50",80</code></pre>
+<p>Если соединение успешно установлено, модуль вернет сообщение <code>CONNECT</code>. После этого можно отправлять данные с помощью команды <code>AT+CIPSEND</code>. Система сама рассчитает длину пакета, если вы укажете ее явно, или войдет в режим прямого ввода данных.</p>
+<p>Важно следить за состоянием соединения. Сбои в сети или таймауты могут привести к разрыву связи. В таком случае модуль сообщит <code>CLOSED</code>, и потребуется повторная инициализация соединения. Для UDP соединений не требуется подтверждение от сервера, что делает их быстрее, но менее надежными.</p>
+<ul>
+<li>🌐 Команда <code>AT+CIPDOMAIN</code> позволяет преобразовывать доменные имена в IP-адреса перед подключением.</li>
+<li>📉 Команда <code>AT+CIPSTATUS</code> показывает текущее состояние всех активных подключений.</li>
+<li>🛑 Команда <code>AT+CIPCLOSE</code> закрывает активное соединение и освобождает ресурсы.</li>
+</ul>
+<blockquote>
+<p>⚠️ Внимание: При работе с UDP убедитесь, что вы указали правильный порт назначения, так как ошибка в порту приведет к потере всех пакетов без уведомления отправителя.</p>
+</blockquote>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Настройка подключения</h4><label class="check-item"><input type="checkbox"><span>Выбрать режим работы (STA/AP)</span></label><label class="check-item"><input type="checkbox"><span>Подключиться к Wi-Fi</span></label><label class="check-item"><input type="checkbox"><span>Установить сервер (IP/Port)</span></label><label class="check-item"><input type="checkbox"><span>Открыть соединение (CIPSTART)</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="работа-с-http-и-dns-запросами">Работа с HTTP и DNS запросами</h2>
+<p>Современные версии прошивки <em>ESP-01</em> поддерживают упрощенный протокол HTTP, что избавляет от необходимости вручную формировать заголовки запросов. Это значительно упрощает работу с веб-сервисами, API и облачными платформами. Команда <code>AT+CIPHTTPGET</code> позволяет выполнить GET-запрос к указанному ресурсу.</p>
+<p>Формат команды включает URL и количество байт, которые модуль попытается прочитать. Ответ сервера будет возвращен в виде пакета данных, который можно обработать на принимающей стороне. Это удобно для получения статуса датчиков или отправки простых команд на сервер.</p>
+<pre><code>AT+CIPHTTPGET="http://example.com/api/status"</code></pre>
+<p>Для работы с DNS-серверами не обязательно использовать сложные утилиты, так как модуль автоматически выполняет преобразование имен, если он подключен к сети с рабочим DNS. Однако, если вам нужно использовать кастомный DNS, это можно настроить через продвинутые параметры сети.</p>
+<p>Обращайте внимание на размер буфера. Если ответ сервера превышает доступную память, данные могут быть обрезаны. В таких случаях рекомендуется разбивать запросы или использовать более мощные версии модуля, например, <em>ESP-12F</em>.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>При работе с HTTP запросами всегда проверяйте ответ сервера на наличие заголовка Content-Length, чтобы корректно обработать длину полученного пакета данных.</p></aside>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>HTTP-команды в AT-прошивке упрощают работу с веб-сервисами, но имеют ограничения по размеру ответов и поддерживают только базовые методы GET и POST.</p></aside>
+
+<h2 id="таблица-основных-команд-и-параметров">Таблица основных команд и параметров</h2>
+<p>Для удобства быстрого доступа к наиболее часто используемым командам ниже приведена сводная таблица. Она поможет не запоминать синтаксис каждой инструкции, а быстро находить нужный параметр при отладке проекта.</p>
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Команда</th>
+<th>Описание</th>
+<th>Пример использования</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AT+RST</code></td>
+<td>Перезагрузка модуля</td>
+<td><pre><code>AT+RST</code></pre></td>
+</tr>
+<tr>
+<td><code>AT+CIFSR</code></td>
+<td>Получение IP-адреса</td>
+<td><pre><code>AT+CIFSR</code></pre></td>
+</tr>
+<tr>
+<td><code>AT+CIPMUX</code></td>
+<td>Режим множественных соединений</td>
+<td><pre><code>AT+CIPMUX=1</code></pre></td>
+</tr>
+<tr>
+<td><code>AT+CIPSERVER</code></td>
+<td>Создание сервера на ESP</td>
+<td><pre><code>AT+CIPSERVER=1,80</code></pre></td>
+</tr>
+</tbody>
+</table></div>
+<p>Использование команды <code>AT+CIPMUX=1</code> критично, если вы хотите превратить <em>ESP-01</em> в полноценный сервер, принимающий подключение от нескольких клиентов одновременно. Без этого параметра модуль сможет обслуживать только одно соединение за раз, что ограничивает сценарии использования.</p>
+<p>Важно отметить, что некоторые команды имеют суффиксы <code>_CUR</code> (текущие настройки, сбрасываются после перезагрузки) и <code>_DEF</code> (постоянные настройки, записываются в флеш-память). Всегда используйте суффикс <code>_DEF</code> для параметров, которые должны сохраняться после выключения питания.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Запись в флеш-память (использование суффикса _DEF) имеет ограниченный ресурс циклов перезаписи. Не меняйте постоянные настройки слишком часто без необходимости.</p>
+</blockquote>
+
+<h2 id="устранение-распространенных-ошибок">Устранение распространенных ошибок</h2>
+<p>При работе с <em>ESP-01</em> пользователи часто сталкиваются с ошибками, которые могут быть вызваны как неправильным вводом команд, так и аппаратными проблемами. Наиболее частая ошибка — <code>ERROR</code> при вводе, что обычно означает некорректный синтаксис или отсутствие связи.</p>
+<p>Если вы видите сообщение <code>SYSERR</code> или модуль не отвечает на команду <code>AT</code>, проверьте, не включен ли режим прозрачной передачи (Transparent Transmission). В этом режиме модуль ожидает данные, а не команды. Чтобы выйти из этого режима, необходимо отправить специальную последовательность.</p>
+<pre><code>+++</code></pre>
+<p>Важно соблюсти паузу перед и после отправки этой последовательности, обычно около 1 секунды. Также проверьте, не заняты ли линии передачи данными от других устройств. Конфликты на шине UART могут приводить к полной неработоспособности интерфейса.</p>
+<ul>
+<li>🔌 Проверьте качество пайки: плохой контакт на ножках ESP-01 часто приводит к нестабильной работе.</li>
+<li>⚡ Убедитесь, что адаптер питания выдает достаточный ток (минимум 500-800 мА).</li>
+<li>📶 Попробуйте сбросить настройки до заводских командой <code>AT+RESTORE</code>, если прошивка работает некорректно.</li>
+</ul>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Секретный код +++ позволяет выйти из режима прозрачной передачи данных и вернуть модуль в режим команд, но требует соблюдения временных интервалов.</p></aside>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+<details>
+<summary>Как узнать версию прошивки AT на моем модуле?</summary>
+<p>Для получения версии прошивки используйте команду <code>AT+GMR</code>. Она отобразит версию AT-инструкции, версию SDK и дату компиляции прошивки. Это важно для совместимости с новыми командами.</p>
+</details>
+<details>
+<summary>Можно ли использовать ESP-01 для передачи данных через MQTT?</summary>
+<p>Базовая AT-прошивка не поддерживает MQTT напрямую. Вам нужно либо использовать TCP-соединение и реализовать MQTT-клиент на стороне принимающего устройства, либо перепрошить модуль firmware с поддержкой MQTT (например, через Arduino IDE).</p>
+</details>
+<details>
+<summary>Что делать, если модуль постоянно перезагружается?</summary>
+<p>Это чаще всего проблема питания. ESP-01 требует стабильного 3.3В с током до 500мА. Обычные преобразователи USB-3.3В могут не справляться. Попробуйте использовать источник питания с большей мощностью или добавьте конденсаторы 100мкФ и 10мкФ между питанием и землей.</p>
+</details>
+<details>
+<summary>Как сохранить настройки Wi-Fi навсегда?</summary>
+<p>Используйте команды с суффиксом <code>_DEF</code> (например, <code>AT+CWJAP_DEF</code>). После ввода таких команд выполните перезагрузку <code>AT+RST</code>, чтобы убедиться, что настройки применились корректно.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/k/ka/kak-nazyvaetsya-vytyanutyj-kvadrat.html" class="pb-related-card">
+                <span class="pb-related-title">Как называется вытянутый квадрат: Терминология и применение форм</span>
+                <span class="pb-related-desc">Узнайте, как правильно называется вытянутый квадрат в математике и дизайне. Разбор термина прямоугол</span>
+            </a><a href="/umnyj-dom/p/pr/programma-dlya-raskladki-trub-teplogo-vodyanogo-pola.html" class="pb-related-card">
+                <span class="pb-related-title">Программа для раскладки труб теплого водяного пола: обзор софта</span>
+                <span class="pb-related-desc">Выбор ПО для проектирования теплых полов. Обзор функций, алгоритмов расчета шага труб и примеры прог</span>
+            </a><a href="/umnyj-dom/u/um/umnye-vyklyuchateli-sveta-alisa.html" class="pb-related-card">
+                <span class="pb-related-title">Умные выключатели света Алиса: обзор, выбор и настройка управления</span>
+                <span class="pb-related-desc">Полный гайд по умным выключателям с поддержкой Алисы. Обзор моделей, инструкции по установке, сравне</span>
+            </a><a href="/umnyj-dom/p/pr/proizvoditeli-ustrojstv-umnogo-doma.html" class="pb-related-card">
+                <span class="pb-related-title">Производители устройств умного дома: обзор лучших брендов и экосистем</span>
+                <span class="pb-related-desc">Подробный гид по ведущим производителям умного дома. Сравнение экосистем Xiaomi, Apple, Google и Tuy</span>
+            </a><a href="/umnyj-dom/z/zv/zvuki-dlya-otpugivaniya-myshej-i-krys.html" class="pb-related-card">
+                <span class="pb-related-title">Ультразвуковые отпугиватели грызунов: как работают и эффективны ли они</span>
+                <span class="pb-related-desc">Разбор принципа действия ультразвуковых и электромагнитных отпугивателей. Сравнение моделей, частот,</span>
+            </a><a href="/umnyj-dom/k/ka/kak-rabotat-s-arduino.html" class="pb-related-card">
+                <span class="pb-related-title">Как работать с Arduino: полное руководство для начинающих</span>
+                <span class="pb-related-desc">Пошаговая инструкция по настройке среды, подключению плат и написанию кода для Arduino. Советы по вы</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

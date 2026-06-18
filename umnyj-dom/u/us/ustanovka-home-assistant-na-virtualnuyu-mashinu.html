@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Установка Home Assistant на виртуальную машину: пошаговая инструкция — Техно Гид</title>
+    <meta name="description" content="Как установить Home Assistant OS на VM. Настройка Proxmox, VirtualBox и ESXi. Преимущества контейнеризации умного дома и миграция данных.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/u/us/ustanovka-home-assistant-na-virtualnuyu-mashinu.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Установка Home Assistant на виртуальную машину: пошаговая инструкция">
+    <meta property="og:description" content="Как установить Home Assistant OS на VM. Настройка Proxmox, VirtualBox и ESXi. Преимущества контейнеризации умного дома и миграция данных.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Установка Home Assistant на виртуальную машину: пошаговая инструкция</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-платформы-виртуализации-и-подготовка-оборудования">Выбор платформы виртуализации и подготовка оборудования</a></li><li><a href="#загрузка-образа-и-создание-конфигурации-виртуальной-машины">Загрузка образа и создание конфигурации виртуальной машины</a></li><li><a href="#настройка-сетевого-интерфейса-и-проброс-периферии">Настройка сетевого интерфейса и проброс периферии</a></li><li><a href="#первичный-запуск-и-доступ-к-веб-интерфейсу">Первичный запуск и доступ к веб-интерфейсу</a></li><li><a href="#расширение-функционала-через-supervisor-и-add-ons">Расширение функционала через Supervisor и Add-ons</a></li><li><a href="#типичные-проблемы-и-методы-их-устранения">Типичные проблемы и методы их устранения</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/u/um/umnyj-dom-s-alisoj-skhema-podklyucheniya.html">Схема подключения умного дома с Алисой: Полное руководство по настройке</a></li><li><a href="/umnyj-dom/u/um/umnyj-dom-s-alisoj-obzor.html">Умный дом с Алисой: полный обзор экосистемы, устройств и голосового управления</a></li><li><a href="/umnyj-dom/r/ro/robot-pylesos-s-postroeniem-karty-pomeshcheniya.html">Робот-пылесос с картой: как выбрать и настроить умную уборку</a></li><li><a href="/umnyj-dom/l/lu/luchshie-ustrojstva-umnogo-doma.html">Топ лучших устройств умного дома 2026-2026: Рейтинг и обзор</a></li><li><a href="/umnyj-dom/p/po/pomogaet-li-ultrazvuk-ot-myshej-v-dome.html">Ультразвук от мышей в доме: эффективность и нюансы работы</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Установка Home Assistant на виртуальную машину</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-платформы-виртуализации-и-подготовка-оборудования">Выбор платформы виртуализации и подготовка оборудования</a></li><li><a href="#загрузка-образа-и-создание-конфигурации-виртуальной-машины">Загрузка образа и создание конфигурации виртуальной машины</a></li><li><a href="#настройка-сетевого-интерфейса-и-проброс-периферии">Настройка сетевого интерфейса и проброс периферии</a></li><li><a href="#первичный-запуск-и-доступ-к-веб-интерфейсу">Первичный запуск и доступ к веб-интерфейсу</a></li><li><a href="#расширение-функционала-через-supervisor-и-add-ons">Расширение функционала через Supervisor и Add-ons</a></li><li><a href="#типичные-проблемы-и-методы-их-устранения">Типичные проблемы и методы их устранения</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Современная экосистема умного дома стремительно развивается, и выбор платформы для управления устройствами становится критически важным решением. <strong>Home Assistant</strong> зарекомендовал себя как лидер в области локальной автоматизации, предлагая беспрецедентную гибкость и конфиденциальность данных. Однако, запуск этого программного обеспечения непосредственно на"железе" (bare metal) может ограничивать возможности пользователя в будущем.</p>
+
+<p>Использование <em>виртуализации</em> позволяет изолировать среду умного дома от основной операционной системы, обеспечивая стабильность и простоту резервного копирования. Вы получаете возможность создавать снимки системы перед крупными обновлениями, что значительно снижает риск потери конфигурации. В этой статье мы подробно разберем процесс развертывания образа <strong>Home Assistant OS</strong> на популярных гипервизорах.</p>
+
+<p>Независимо от того, используете ли вы старый ноутбук, мощный сервер или мини-ПК, виртуальная машина станет идельным фундаментом для вашей системы. Мы рассмотрим нюансы настройки ресурсов, проброса USB-портов для Zigbee-стиком и первоначальной конфигурации сети. Такой подход гарантирует, что ваш умный дом будет работать автономно и надежно.</p>
+
+<h2 id="выбор-платформы-виртуализации-и-подготовка-оборудования">Выбор платформы виртуализации и подготовка оборудования</h2>
+
+<p>Первым шагом является определение гипервизора, на котором будет разворачиваться система. Для домашнего использования наиболее популярными решениями являются <em>Proxmox VE</em>, <em>Oracle VM VirtualBox</em> и <em>VMware ESXi</em>. Каждый из них имеет свои преимущества: Proxmox идеален для выделенных серверов, VirtualBox отлично подходит для тестирования на рабочем столе, а ESXi выбирают для корпоративных инфраструктур.</p>
+
+<p>Критически важно убедиться, что процессор вашего хост-компьютера поддерживает технологии аппаратной виртуализации. В BIOS или UEFI необходимо активировать функции <code>Intel VT-x</code> или <code>AMD-V</code>. Без включения этих опций виртуальная машина либо не запустится, либо будет работать крайне медленно, что недопустимо для системы реального времени.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При установке гипервизора (например, Proxmox) на физический диск все данные на нем будут уничтожены. Обязательно сохраните важную информацию на внешний носитель перед началом установки платформы виртуализации.</p>
+</blockquote>
+
+<p>Также стоит заранее подготовить образ диска системы. Официальный сайт проекта предлагает готовые файлы в формате <code>.qcow2</code> или <code>.vmdk</code>, оптимизированные специально для виртуальных сред. Использование готового образа <strong>Home Assistant OS</strong> предпочтительнее ручной установки через Docker или Python, так как это обеспечивает полный контроль над обновлениями и зависимостями.</p>
+
+<div class="pb-poll" id="poll-02aba1b1"><div class="pb-poll-question">📊 На каком гипервизоре вы планируете запускать Home Assistant?</div><div class="pb-poll-option" data-poll="02aba1b1" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Proxmox VE</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="02aba1b1" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">VirtualBox</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="02aba1b1" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">VMware ESXi</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="02aba1b1" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Hyper-V</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="02aba1b1" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другой вариант</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="загрузка-образа-и-создание-конфигурации-виртуальной-машины">Загрузка образа и создание конфигурации виртуальной машины</h2>
+
+<p>Процесс создания новой машины начинается с выделения ресурсов. Для комфортной работы <strong>Home Assistant</strong> рекомендуется выделить минимум 2 ядра процессора и 4 ГБ оперативной памяти. Хотя система может запуститься и на меньших мощностях, запас ресурсов необходим для работы аддонов, таких как базы данных или системы видеонаблюдения.</p>
+
+<p>При создании виртуального диска следует выбирать тип хранилища, обеспечивающий высокую скорость записи. Формат <em>QCOW2</em> в Proxmox или <em>VDI</em> в VirtualBox позволяют динамически увеличивать размер файла по мере заполнения, экономя место на физическом диске. Однако для продакшн-среды лучше сразу выделить фиксированный объем, например, 32 ГБ, чтобы избежать фрагментации.</p>
+
+<ul>
+<li>🖥️ Выберите тип операционной системы"Linux" и версию"Other" или"Debian" в мастере создания.</li>
+<li>💾 Укажите путь к скачанному образу диска <code>home-assistant-os-generic-x86-64.qcow2</code> в качестве загрузочного устройства.</li>
+<li>🌐 Настройте сетевой адаптер в режим"Bridge", чтобы система получила IP-адрес из вашей локальной сети.</li>
+</ul>
+
+<p>Важным моментом является порядок загрузки. В некоторых гипервизорах требуется вручную указать загрузку с жесткого диска после импорта образа, так как виртуальный привод CD/DVD может быть приоритетным по умолчанию. Убедитесь, что в настройках <code>Boot Order</code> ваш виртуальный диск стоит на первом месте.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если вы используете Proxmox, импортируйте диск командой в shell, а затем в интерфейсе добавьте его как устройство жесткого диска, удалив неиспользуемый пустой диск, созданный мастером по умолчанию.</p></aside>
+
+<h2 id="настройка-сетевого-интерфейса-и-проброс-периферии">Настройка сетевого интерфейса и проброс периферии</h2>
+
+<p>Сетевая конфигурация является фундаментом стабильности умного дома. Статический IP-адрес предпочтителен, чтобы шлюз и устройства всегда знали, где искать контроллер. Хотя <strong>Home Assistant</strong> поддерживает работу через mDNS (адрес вида <code>homeassistant.local</code>), прямое обращение по IP надежнее для интеграции со сторонними системами и скриптами.</p>
+
+<p>Особое внимание следует уделить подключению Zigbee или Z-Wave контроллеров. Если вы используете USB-стик, его необходимо пробросить внутрь виртуальной машины. В Proxmox это делается через меню <code>Hardware → Add → USB Device</code>, где можно выбрать конкретное устройство по ID вендора и продукта, что гарантирует подключение даже после перезагрузки хоста.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Рекомендуемое значение</th>
+<th>Минимальное значение</th>
+<th>Комментарий</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU Cores</td>
+<td>4 ядра</td>
+<td>2 ядра</td>
+<td>Влияет на скорость обработки событий</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>8 ГБ</td>
+<td>4 ГБ</td>
+<td>Необходимо для тяжелых аддонов</td>
+</tr>
+<tr>
+<td>Disk Space</td>
+<td>64 ГБ</td>
+<td>32 ГБ</td>
+<td>Зависит от объема логов и истории</td>
+</tr>
+<tr>
+<td>Network</td>
+<td>Bridged</td>
+<td>NAT</td>
+<td>Bridged обязателен для доступа устройств</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Для пользователей <em>VirtualBox</em> важно установить"Guest Additions", хотя для серверной версии Home Assistant OS это не всегда применимо напрямую. В таком случае проброс USB осуществляется через фильтры устройств в настройках конкретной машины. Убедитесь, что пользователь, запускающий виртуальную машину, имеет права на доступ к USB-портам хост-системы.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к первому запуску</h4><label class="check-item"><input type="checkbox"><span>Скачан образ.qcow2 или.ova</span></label><label class="check-item"><input type="checkbox"><span>Выделено минимум 4 ГБ RAM</span></label><label class="check-item"><input type="checkbox"><span>Сетевой режим установлен в Bridge</span></label><label class="check-item"><input type="checkbox"><span>USB-стик подключен к хосту</span></label><label class="check-item"><input type="checkbox"><span>В BIOS включена виртуализация</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="первичный-запуск-и-доступ-к-веб-интерфейсу">Первичный запуск и доступ к веб-интерфейсу</h2>
+
+<p>После запуска виртуальной машины процесс загрузки занимает от 30 секунд до нескольких минут, в зависимости от скорости диска. На экране консоли вы увидите сообщения о запуске сервисов и, в конечном итоге, приглашение ввести логин. Система автоматически попытается получить адрес по DHCP, который будет отображен в строке состояния.</p>
+
+<p>Откройте браузер на любом устройстве в той же сети и введите адрес, указанный в консоли, например <code>http://192.168.1.50:8123</code>. Если вы видите страницу приветствия с выбором локации и имени пользователя, значит установка прошла успешно. На этом этапе создается первый аккаунт администратора с полными правами доступа.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Пароль администратора нельзя восстановить через консоль виртуальной машины стандартными средствами. Если вы его забудете, потребуется доступ к файловой системе образа для сброса, что сложно в среде виртуализации. Запишите учетные данные в надежное место.</p>
+</blockquote>
+
+<p>Первое, что необходимо сделать после входа — настроить резервное копирование. В разделе <code>Settings → System → Backups</code> создайте расписание автоматических снимков. Хранить копии лучше на внешнем сетевом хранилище (NAS) или в облаке, чтобы отказ физического диска хоста не привел к потере всей конфигурации умного дома.</p>
+
+<details class="pb-accordion"><summary>Что делать, если веб-интерфейс не открывается?</summary><div class="pb-accordion-body"><p>Убедитесь, что брандмауэр хоста не блокирует порт 8123. Проверьте, находится ли компьютер и виртуальная машина в одной подсети. Попробуйте пинговать IP-адрес машины из командной строки. Если пинг проходит, но сайт не грузится, возможно, браузер кэширует старую страницу или используется неверный протокол (http вместо https).</p></div></details>
+
+<h2 id="расширение-функционала-через-supervisor-и-add-ons">Расширение функционала через Supervisor и Add-ons</h2>
+
+<p>Главное преимущество версии <strong>OS</strong> перед другими методами установки — наличие встроенного менеджера дополнений (Supervisor). Это позволяет устанавливать сторонние сервисы, такие как <em>Mosquitto broker</em> для MQTT, <em>Zigbee2MQTT</em> для продвинутой работы с датчиками или <em>File editor</em> для редактирования конфигураций YAML, в несколько кликов.</p>
+
+<p>Установка аддонов происходит в изолированных контейнерах, что защищает ядро системы от сбоев в дополнительных сервисах. Вы можете настраивать ресурсы для каждого дополнения отдельно, ограничивая потребление памяти или процессорного времени, если это необходимо для баланса нагрузки на хосте.</p>
+
+<ul>
+<li>📦 Установите аддон"Terminal & SSH" для безопасного доступа к командной строке системы по сети.</li>
+<li>📂 Добавьте"Samba share", чтобы редактировать файлы конфигурации напрямую с компьютера по сети.</li>
+<li>📷 Для работы с камерами рассмотрите установку"Frigate" или интеграции через RTSP.</li>
+</ul>
+
+<p>Регулярное обновление аддонов и самого ядра Home Assistant критически важно для безопасности. Система уведомляет о доступных обновлениях на панели управления. Перед применением крупных обновлений всегда делайте ручной бэкап, даже если настроено автоматическое резервное копирование.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Использование Supervisor позволяет расширять функционал умного дома без риска нарушить стабильность основной системы, так как все дополнения работают в изолированных контейнерах.</p></aside>
+
+<h2 id="типичные-проблемы-и-методы-их-устранения">Типичные проблемы и методы их устранения</h2>
+
+<p>В процессе эксплуатации могут возникнуть ситуации, когда виртуальная машина перестает отвечать или теряется связь с периферией. Частой проблемой является изменение пути к USB-устройству после перезагрузки хоста. Чтобы избежать этого, используйте привязку по Vendor ID и Product ID, а не по номеру порта в настройках гипервизора.</p>
+
+<p>Если система работает медленно, проверьте настройки дисковой подсистемы. Для Proxmox рекомендуется использовать драйвер <code>VirtIO SCSI</code> вместо IDE или SATA, что значительно повышает производительность ввода-вывода. В VirtualBox аналогом служит контроллер <em>SATA</em> с включенным кэшированием ввода-вывода хоста.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Интерфейсы и названия меню в гипервизорах могут отличаться в зависимости от версии ПО. Если вы не находите описанную опцию, сверьтесь с официальной документацией вашего гипервизора, так как разработчики часто меняют структуру настроек.</p>
+</blockquote>
+
+<p>Проблемы с сетью часто решаются сбросом настроек сетевого адаптера виртуальной машины или проверкой настроек DHCP на роутере. Убедитесь, что MAC-адрес виртуальной сети не конфликтует с другими устройствами и не заблокирован фильтрами безопасности вашего маршрутизатора.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Включите в настройках виртуальной машины опцию"Start on Boot", чтобы система умного дома автоматически запускалась при включении питания сервера, обеспечивая непрерывность работы без вашего вмешательства.</p></aside>
+
+<details>
+<summary>Можно ли перенести существующую установку Home Assistant на виртуальную машину?</summary>
+<p>Да, это возможно. Вам необходимо создать полный бэкап текущей системы, перенести файл архива на новый сервер и восстановить его через интерфейс свежей установки Home Assistant OS. Это самый безопасный способ миграции, сохраняющий все настройки и историю.</p>
+</details>
+
+<details>
+<summary>Сколько места на диске реально потребуется для работы системы?</summary>
+<p>Базовая установка занимает около 5-8 ГБ. Однако с учетом логов, истории состояний устройств и баз данных видеонаблюдения, рекомендуется (зарезервировать) минимум 32-64 ГБ. При использовании базы данных MariaDB объем может расти быстрее.</p>
+</details>
+
+<details>
+<summary>Безопасно ли пробрасывать USB-порты в виртуальную машину?</summary>
+<p>Да, это стандартная практика. Однако убедитесь, что хост-система не пытается использовать это устройство одновременно. Конфликт доступа может привести к нестабильной работе Zigbee-сети или отключению стика.</p>
+</details>
+
+<details>
+<summary>Какой гипервизор лучше выбрать для новичка?</summary>
+<p>Для новичков, устанавливающих систему на обычный компьютер с Windows или macOS, лучшим выбором будет <em>VirtualBox</em> из-за простоты интерфейса. Для выделенного сервера без графической оболочки оптимален <em>Proxmox VE</em>.</p>
+</details>
+
+<details>
+<summary>Нужно ли выделять видеопамять для виртуальной машины Home Assistant?</summary>
+<p>Нет, Home Assistant работает в_headless_ режиме (без графического интерфейса на самом сервере). Веб-интерфейс обрабатывается вашим браузером. Выделение видеопамяти или подключение виртуального монитора не требуется и лишь расходует ресурсы.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/u/um/umnyj-dom-s-alisoj-skhema-podklyucheniya.html" class="pb-related-card">
+                <span class="pb-related-title">Схема подключения умного дома с Алисой: Полное руководство по настройке</span>
+                <span class="pb-related-desc">Пошаговая инструкция по сборке умного дома с Алисой. Обзор схем подключения, выбор протоколов Zigbee</span>
+            </a><a href="/umnyj-dom/u/um/umnyj-dom-s-alisoj-obzor.html" class="pb-related-card">
+                <span class="pb-related-title">Умный дом с Алисой: полный обзор экосистемы, устройств и голосового управления</span>
+                <span class="pb-related-desc">Подробный обзор умного дома с Алисой. Сравнение устройств Яндекс, сценарии автоматизации, настройка </span>
+            </a><a href="/umnyj-dom/r/ro/robot-pylesos-s-postroeniem-karty-pomeshcheniya.html" class="pb-related-card">
+                <span class="pb-related-title">Робот-пылесос с картой: как выбрать и настроить умную уборку</span>
+                <span class="pb-related-desc">Как робот-пылесос строит карту: технологии, сравнение LiDAR и камеры, настройка зон и запретов. Выбо</span>
+            </a><a href="/umnyj-dom/l/lu/luchshie-ustrojstva-umnogo-doma.html" class="pb-related-card">
+                <span class="pb-related-title">Топ лучших устройств умного дома 2026-2026: Рейтинг и обзор</span>
+                <span class="pb-related-desc">Полный гид по выбору лучших гаджетов для умного дома. Обзор станций, датчиков, розеток и систем безо</span>
+            </a><a href="/umnyj-dom/p/po/pomogaet-li-ultrazvuk-ot-myshej-v-dome.html" class="pb-related-card">
+                <span class="pb-related-title">Ультразвук от мышей в доме: эффективность и нюансы работы</span>
+                <span class="pb-related-desc">Помогает ли ультразвук от мышей? Обзор принципа действия, частот, минусов и эффективности ультразвук</span>
+            </a><a href="/umnyj-dom/s/se/sensornyj-vyklyuchatel-sveta-kak-podklyuchit.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить сенсорный выключатель света: схема и инструкция</span>
+                <span class="pb-related-desc">Пошаговый монтаж сенсорного выключателя света. Схемы подключения одно- и трехклавишных моделей, наст</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

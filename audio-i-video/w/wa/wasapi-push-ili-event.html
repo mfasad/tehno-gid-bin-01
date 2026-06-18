@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Wasapi Push или Event: выбор режима для Hi-Fi звука — Техно Гид</title>
+    <meta name="description" content="Сравнение режимов WASAPI Push и Event Driven. Разбор задержек, стабильности и совместимости с плеерами. Какой метод выбрать для идеального звука?">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/audio-i-video/w/wa/wasapi-push-ili-event.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Wasapi Push или Event: выбор режима для Hi-Fi звука">
+    <meta property="og:description" content="Сравнение режимов WASAPI Push и Event Driven. Разбор задержек, стабильности и совместимости с плеерами. Какой метод выбрать для идеального звука?">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/audio-i-video/">Аудио и Видео</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Wasapi Push или Event: выбор режима для Hi-Fi звука</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-мир-бит-ток-аут-звука">Введение в мир бит-ток-аут звука</a></li><li><a href="#механизм-работы-режима-push">Механизм работы режима Push</a></li><li><a href="#принцип-действия-режима-event">Принцип действия режима Event</a></li><li><a href="#сравнительный-анализ-и-производительность">Сравнительный анализ и производительность</a></li><li><a href="#совместимость-с-популярными-плеерами">Совместимость с популярными плеерами</a></li><li><a href="#влияние-на-качество-звука-и-джиттер">Влияние на качество звука и джиттер</a></li><li><a href="#практические-рекомендации-по-настройке">Практические рекомендации по настройке</a></li><li><a href="#частые-вопросы-и-ответы">Частые вопросы и ответы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/audio-i-video/g/gd/gde-mozhno-skachat-filmy-v-khoroshem-kachestve.html">Где безопасно смотреть и скачивать фильмы в хорошем качестве</a></li><li><a href="/audio-i-video/l/lu/luchshie-naushniki-za-1000-rublej.html">Топ-5 лучших наушников до 1000 рублей в 2026 году</a></li><li><a href="/audio-i-video/m/mi/mikrofon-shumit-kak-ispravit.html">Микрофон шумит: как исправить гул, треск и помехи</a></li><li><a href="/audio-i-video/a/af/afganets-2-film-1991.html">Афганец 2 фильм 1991: Сюжет, актеры и технические особенности</a></li><li><a href="/audio-i-video/s/se/sedmaya-pulya-film-1972-otzyvy.html">Седьмая пуля (1972): Отзывы зрителей и рецензии критиков</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Wasapi Push или Event: какой режимExclusive лучше выбрать?</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-мир-бит-ток-аут-звука">Введение в мир бит-ток-аут звука</a></li><li><a href="#механизм-работы-режима-push">Механизм работы режима Push</a></li><li><a href="#принцип-действия-режима-event">Принцип действия режима Event</a></li><li><a href="#сравнительный-анализ-и-производительность">Сравнительный анализ и производительность</a></li><li><a href="#совместимость-с-популярными-плеерами">Совместимость с популярными плеерами</a></li><li><a href="#влияние-на-качество-звука-и-джиттер">Влияние на качество звука и джиттер</a></li><li><a href="#практические-рекомендации-по-настройке">Практические рекомендации по настройке</a></li><li><a href="#частые-вопросы-и-ответы">Частые вопросы и ответы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-мир-бит-ток-аут-звука">Введение в мир бит-ток-аут звука</h2>
+
+<p>Многие аудиофилы, стремившиеся к идеальной цифровой передаче, сталкиваются с дилеммой выбора режима работы <strong>WASAPI</strong> в программных плеерах. Настройка <code>Exclusive Mode</code> обходит микшер Windows, позволяя передавать аудиопоток напрямую на ЦАП, но внутри этого режима скрывается два принципиально разных механизма доставки данных.</p>
+
+<p>Первый механизм называется <em>Push</em>, второй — <em>Event</em> (или Event Driven). Несмотря на то, что оба варианта обеспечивают бит-ток-аут качество, различия в их логике работы могут кардинально влиять на уровень джиттера, стабильность воспроизведения и совместимость с конкретным оборудованием.</p>
+
+<p>Понимание того, как именно ваш плеер взаимодействует с драйвером звуковой карты, поможет избежать щелчков, пропусков и бесконечных буферизаций. Давайте разберем, в чем суть каждого подхода и какой из них подойдет именно вашей системе.</p>
+
+<h2 id="механизм-работы-режима-push">Механизм работы режима Push</h2>
+
+<p>Режим <strong>Push</strong> (или Push Mode) работает по принципу инициативы со стороны программного обеспечения. В этом сценарии аудиоплеер выступает в роли активного отправителя, который постоянно отправляет пакеты данных в буфер драйвера звуковой карты, как только в системе появляется свободное место.</p>
+
+<p>Основная задача здесь — поддерживать буфер заполненным, чтобы избежать его опустошения (underrun). Плеер рассчитывает время отправки пакетов, исходя из своей внутренней тайм-основы. Это создает эффект «толкания» данных, когда программа не ждет разрешения от оборудования, а сама диктует график передачи.</p>
+
+<p><em>ASIO</em> и <em>DirectSound</em> также имеют похожие механизмы, но именно в <strong>WASAPI</strong> режиме Push это реализовано через регулярные вызовы API. Если ваш процессор работает под высокой нагрузкой, тайминги могут сбиваться, что приведет к необходимости увеличивать размер буфера.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При использовании режима <strong>Push</strong> слишком маленький размер буфера может привести к прерываниям звука, если ОС переключит ресурсы процессора на другие задачи в критический момент отправки пакета.</p>
+</blockquote>
+
+<p>Преимуществом данного метода является его предсказуемость для разработчиков плееров и высокая совместимость со старыми или менее отзывчивыми драйверами. Однако, он менее эффективен с точки зрения энергопотребления, так как процессор вынужден постоянно опрашивать состояние буфера.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Режим Push обеспечивает стабильную работу на разном оборудовании, но требует более высокого размера буфера для компенсации возможных сбоев таймингов ОС.</p></aside>
+
+<h2 id="принцип-действия-режима-event">Принцип действия режима Event</h2>
+
+<p>Режим <strong>Event</strong> (Event Driven) меняет парадигму взаимодействия. Здесь инициативу берет на себя звуковая карта или её драйвер. Драйвер генерирует аппаратное событие (интерупт), сигнализируя о том, что в буфере освободилось достаточно места для нового куска данных.</p>
+
+<p>Плеер, работающий в этом режиме, «спит» или ожидает, пока система не пришлет сигнал. Получив <em>Event</em>, программа мгновенно заполняет освободившееся место. Это позволяет минимизировать задержку (латентность) и снизить нагрузку на ЦП, так как лишние опросы не производятся.</p>
+
+<p>Для качественной работы <strong>Event</strong> режима критически важна поддержка драйвером звукового устройства механизма событийного ввода-вывода. Не все дешевые или старые звуковые карты способны корректно генерировать такие события без задержек, что может привести к непредсказуемому поведению звука.</p>
+
+<p>В идеальных условиях режим <strong>Event</strong> считается более совершенным, так как синхронизация происходит на аппаратном уровне. Это снижает риск накопления джиттера, вызванного программными задержками в планировщике задач Windows.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Если ваша звуковая карта не поддерживает события <strong>WASAPI Event</strong> корректно, включение этого режима может вызвать полный отказ воспроизведения или постоянные разрывы потока.</p>
+</blockquote>
+
+<details class="pb-accordion"><summary>Почему Event режим сложнее в настройке?</summary><div class="pb-accordion-body"><p>Для работы Event режима драйвер должен поддерживать механизм событийных колбэков. Если драйвер написан с ошибками или устарел, системные вызовы могут не приходить вовремя, заставляя плеер ждать бесконечно.</p></div></details>
+
+<div class="pb-poll" id="poll-7eb19a4b"><div class="pb-poll-question">📊 Какой режим WASAPI вы используете чаще?</div><div class="pb-poll-option" data-poll="7eb19a4b" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Push (более стабильный)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="7eb19a4b" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Event (меньше задержка)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="7eb19a4b" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Автоматический выбор</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="7eb19a4b" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Не знаю/Не использую</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="сравнительный-анализ-и-производительность">Сравнительный анализ и производительность</h2>
+
+<p>Выбор между этими двумя режимами часто сводится к компромиссу между стабильностью и минимальной задержкой. В реальных условиях тестирования <strong>Push</strong> часто демонстрирует более плавную работу на системах со смешанной нагрузкой, тогда как <strong>Event</strong> выигрывает в чистоте цифрового сигнала на высокопроизводительных ПК.</p>
+
+<p>Ниже приведена таблица, сравнивающая ключевые характеристики обоих методов в контексте использования с современными Hi-Fi плеерами:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Характеристика</th>
+<th>Режим WASAPI Push</th>
+<th>Режим WASAPI Event</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Инициатива передачи</td>
+<td>Со стороны плеера</td>
+<td>Со стороны драйвера (ЦАП)</td>
+</tr>
+<tr>
+<td>Нагрузка на процессор</td>
+<td>Выше (постоянные опросы)</td>
+<td>Ниже (обработка событий)</td>
+</tr>
+<tr>
+<td>Минимальная задержка</td>
+<td>Средняя (зависит от буфера)</td>
+<td>Низкая (зависит от драйвера)</td>
+</tr>
+<tr>
+<td>Совместимость с драйверами</td>
+<td>Высокая (работает почти везде)</td>
+<td>Средняя (требует поддержки)</td>
+</tr>
+<tr>
+<td>Риск джиттера</td>
+<td>Зависит от стабильности таймера ОС</td>
+<td>Минимальный при корректной работе</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Если вы используете внешнюю USB-звуковую карту, производитель которой внедрил качественную прошивку с поддержкой событий, <strong>Event</strong> режим может раскрыть её потенциал на 100%. Однако, при использовании встроенных звуковых карт ноутбуков, <strong>Push</strong> часто оказывается единственным рабочим вариантом.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед переключением режима в настройках плеера всегда проверяйте, указана ли поддержка WASAPI Event в документации вашей конкретной модели звуковой карты.</p></aside>
+
+<h2 id="совместимость-с-популярными-плеерами">Совместимость с популярными плеерами</h2>
+
+<p>Разработка аудиоплееров, таких как <em>Audirvana</em>, <em>foobar2000</em>, <em>JRiver Media Center</em> или <em>MusicBee</em>, изначально закладывает поддержку обоих режимов, но логика их выбора может отличаться. В некоторых интерфейсах это скрыто в глубоких настройках, в других — доступно как переключатель.</p>
+
+<p>В <em>foobar2000</em>, например, компоненты WASAPI позволяют явно выбрать тип подключения. Пользователи часто отмечают, что при смене режима с <strong>Push</strong> на <strong>Event</strong> меняется характер звука, что, вероятно, связано с изменением временных характеристик буферизации.</p>
+
+<p>Некоторые плееры автоматически выбирают режим при старте. Если система сообщает об ошибке инициализации устройства, это часто означает, что выбранный по умолчанию <strong>Event</strong> режим не поддерживается драйвером, и нужно принудительно переключиться на <strong>Push</strong>.</p>
+
+<p>Важно учитывать, что обновление драйверов звуковой карты может изменить доступные режимы. То, что работало в режиме <strong>Event</strong> полгода назад, может перестать работать после чистой установки Windows или обновления BIOS.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка совместимости плеера</h4><label class="check-item"><input type="checkbox"><span>Проверить версию плагина WASAPI</span></label><label class="check-item"><input type="checkbox"><span>Включить режим Exclusive в настройках</span></label><label class="check-item"><input type="checkbox"><span>Попробовать ручной выбор Push/Event</span></label><label class="check-item"><input type="checkbox"><span>Убедиться, что другие приложения не используют устройство</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="влияние-на-качество-звука-и-джиттер">Влияние на качество звука и джиттер</h2>
+
+<p>Самый горячий спор в аудио-сообществе касается того, влияет ли способ доставки пакетов на субъективное качество звука. Технически, если бит-ток-аут поток передан без ошибок, ЦАП должен воспроизвести сигнал идентично. Однако, джиттер (временная нестабильность) может возникать на этапе буферизации.</p>
+
+<p>В режиме <strong>Push</strong> колебания в таймингах отправки пакетов могут вносить микроскопические вариации в момент чтения данных, что теоретически увеличивает джиттер. Режим <strong>Event</strong>, будучи привязанным к аппаратному таймеру звуковой карты, часто обеспечивает более стабильные временные интервалы.</p>
+
+<p>Тем не менее, современные цифровые фильтры и выходной каскад большинства ЦАПов имеют буферы, способные компенсировать незначительные задержки. Поэтому на практике разница может быть незаметна на большинстве систем, если буфер настроен корректно.</p>
+
+<p>Только при экстремально низких настройках буфера (например, 10-15 мс) разница между режимами становится критичной для стабильности. В таких условиях <strong>Event</strong> обычно выигрывает, обеспечивая чистоту потока без щелчков.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Не пытайтесь снизить размер буфера до минимума в режиме <strong>Push</strong> на старом оборудовании — это гарантированно приведет к пропущенным сэмплам и искажениям.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Качество цифрового сигнала зависит не столько от режима WASAPI, сколько от стабильности таймингов и качества драйвера вашей звуковой карты.</p></aside>
+
+<h2 id="практические-рекомендации-по-настройке">Практические рекомендации по настройке</h2>
+
+<p>Чтобы добиться наилучшего результата, рекомендуется начать с автоматического выбора или режима <strong>Event</strong>, если ваша система позволяет. Если воспроизведение сопровождается щелчками или прерываниями, немедленно переходите на <strong>Push</strong> и увеличивайте размер буфера.</p>
+
+<p>Откройте <code>Настройки</code> вашего плеера, найдите раздел <code>Output</code> или <code>Audio</code>, выберите <code>WASAPI (Exclusive)</code> и посмотрите доступные варианты. Часто там есть выпадающий список с пометками <code>Push</code> и <code>Event</code> рядом с названием устройства.</p>
+
+<p>Если вы не видите явного выбора, попробуйте изменить размер буфера. Иногда переключение на <strong>Push</strong> происходит автоматически, если размер буфера установлен выше определенного порога (например, 200 мс), так как драйвер считает такие большие задержки несовместимыми с событийной обработкой.</p>
+
+<p>Для пользователей, использующих высококлассные внешние интерфейсы (например, от <em>RME</em> или <em>Motu</em>), стоит свериться с их документацией. Часто производители рекомендуют именно <strong>Event</strong> режим для минимизации задержки при мониторинге, но <strong>Push</strong> может быть предпочтительнее для воспроизведения музыки в фоновом режиме.</p>
+
+<p>Не забывайте, что <code>Sample Rate</code> и <code>Bit Depth</code> должны совпадать с возможностями устройства, иначе Windows или драйвер могут попытаться выполнить ресемплинг, что сведет на нет все усилия по использованию Exclusive режима.</p>
+
+<h2 id="частые-вопросы-и-ответы">Частые вопросы и ответы</h2>
+
+<details>
+<summary>Какой режим лучше: Push или Event?</summary>
+<p>Однозначного ответа нет. <strong>Event</strong> теоретически лучше для минимизации задержки и джиттера на качественном оборудовании, но <strong>Push</strong> надежнее на старых или дешевых звуковых картах. Лучше всего протестировать оба варианта.</p>
+</details>
+
+<details>
+<summary>Почему режим WASAPI Event не работает на моей карте?</summary>
+<p>Скорее всего, драйвер вашей звуковой карты не поддерживает генерацию аппаратных событий для WASAPI Exclusive Mode. Попробуйте обновить драйвер или переключиться на режим Push.</p>
+</details>
+
+<details>
+<summary>Влияет ли режим на громкость звука?</summary>
+<p>Нет, оба режима передают цифровой поток без изменений громкости. Изменения громкости в Windows блокируют Exclusive режим, поэтому громкость регулируется только внутри плеера или на аппаратных кнопках.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать оба режима одновременно?</summary>
+<p>Нет, устройство в режиме Exclusive может работать только в одном режиме в конкретный момент времени. Для переключения нужно остановить воспроизведение и изменить настройки в плеере.</p>
+</details>
+
+<details>
+<summary>Что делать, если слышны щелчки в режиме Event?</summary>
+<p>Увеличьте размер буфера в настройках плеера. Если это не помогает, перейдите на режим <strong>Push</strong>, который более устойчив к нестабильности системных таймеров.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/audio-i-video/g/gd/gde-mozhno-skachat-filmy-v-khoroshem-kachestve.html" class="pb-related-card">
+                <span class="pb-related-title">Где безопасно смотреть и скачивать фильмы в хорошем качестве</span>
+                <span class="pb-related-desc">Где найти фильмы в хорошем качестве онлайн и офлайн. Обзор легальных сервисов, торрент-трекеров и но</span>
+            </a><a href="/audio-i-video/l/lu/luchshie-naushniki-za-1000-rublej.html" class="pb-related-card">
+                <span class="pb-related-title">Топ-5 лучших наушников до 1000 рублей в 2026 году</span>
+                <span class="pb-related-desc">Выбираем лучшие бюджетные наушники за 1000 рублей. Обзор моделей, сравнение звука и материалов. Полн</span>
+            </a><a href="/audio-i-video/m/mi/mikrofon-shumit-kak-ispravit.html" class="pb-related-card">
+                <span class="pb-related-title">Микрофон шумит: как исправить гул, треск и помехи</span>
+                <span class="pb-related-desc">Подробное руководство по устранению шума микрофона. Настройка драйверов, фильтров, проверка кабеля и</span>
+            </a><a href="/audio-i-video/a/af/afganets-2-film-1991.html" class="pb-related-card">
+                <span class="pb-related-title">Афганец 2 фильм 1991: Сюжет, актеры и технические особенности</span>
+                <span class="pb-related-desc">Подробный обзор фильма Афганец 2 (1991): история создания, роль спецэффектов, актерский состав и ана</span>
+            </a><a href="/audio-i-video/s/se/sedmaya-pulya-film-1972-otzyvy.html" class="pb-related-card">
+                <span class="pb-related-title">Седьмая пуля (1972): Отзывы зрителей и рецензии критиков</span>
+                <span class="pb-related-desc">Читайте актуальные отзывы о фильме «Седьмая пуля» 1972 года. Разбор сюжета, актёрской игры и мнения </span>
+            </a><a href="/audio-i-video/s/so/sony-naushniki-besprovodnye-kak-podklyuchitsya.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить наушники Sony Bluetooth: полная инструкция</span>
+                <span class="pb-related-desc">Пошаговое руководство, как подключить беспроводные наушники Sony к телефону, ТВ и ПК. Инструкции для</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

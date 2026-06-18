@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>BIOS видит SSD, а Windows нет: причины и решения — Техно Гид</title>
+    <meta name="description" content="Почему компьютер не видит SSD в Windows, хотя он есть в BIOS? Полный гид по режимам SATA, GPT/MBR, драйверам и инициализации диска.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/p/po/pochemu-bios-vidit-ssd-a-windows-net.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="BIOS видит SSD, а Windows нет: причины и решения">
+    <meta property="og:description" content="Почему компьютер не видит SSD в Windows, хотя он есть в BIOS? Полный гид по режимам SATA, GPT/MBR, драйверам и инициализации диска.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">BIOS видит SSD, а Windows нет: причины и решения</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#проверка-режима-работы-контроллера-sata-в-bios">Проверка режима работы контроллера SATA в BIOS</a></li><li><a href="#инициализация-и-разметка-нового-диска-в-управлении-дисками">Инициализация и разметка нового диска в Управлении дисками</a></li><li><a href="#проблемы-с-драйверами-контроллера-накопителя">Проблемы с драйверами контроллера накопителя</a></li><li><a href="#конфликт-букв-дисков-и-скрытые-разделы">Конфликт букв дисков и скрытые разделы</a></li><li><a href="#использование-консольной-утилиты-diskpart">Использование консольной утилиты Diskpart</a></li><li><a href="#аппаратные-нюансы-кабели-порты-и-совместимость">Аппаратные нюансы: кабели, порты и совместимость</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/c/cl/class-10-uhs-speed-class-1-u1.html">Class 10, UHS Speed Class 1, U1: Расшифровка скоростей карт памяти</a></li><li><a href="/kompyutery-i-noutbuki/k/ku/kuda-udalyaetsya-fajl-iz-setevoj-papki.html">Куда исчезает файл при удалении из сетевой папки: куда и как вернуть</a></li><li><a href="/kompyutery-i-noutbuki/h/hd/hdmi-chto-eto-takoe-v-monitore.html">HDMI в мониторе: что это, версии и как подключить</a></li><li><a href="/kompyutery-i-noutbuki/v/vo/vosstanovlenie-rabotosposobnosti-fleshki-usb.html">Как восстановить работоспособность флешки USB: полный гайд 2026</a></li><li><a href="/kompyutery-i-noutbuki/k/ko/kompyuter-tormozit-chto-delat-windows-7.html">Компьютер тормозит на Windows 7: причины и способы ускорения</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>BIOS видит SSD, а Windows нет: пошаговое устранение проблемы</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#проверка-режима-работы-контроллера-sata-в-bios">Проверка режима работы контроллера SATA в BIOS</a></li><li><a href="#инициализация-и-разметка-нового-диска-в-управлении-дисками">Инициализация и разметка нового диска в Управлении дисками</a></li><li><a href="#проблемы-с-драйверами-контроллера-накопителя">Проблемы с драйверами контроллера накопителя</a></li><li><a href="#конфликт-букв-дисков-и-скрытые-разделы">Конфликт букв дисков и скрытые разделы</a></li><li><a href="#использование-консольной-утилиты-diskpart">Использование консольной утилиты Diskpart</a></li><li><a href="#аппаратные-нюансы-кабели-порты-и-совместимость">Аппаратные нюансы: кабели, порты и совместимость</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Ситуация, когда <strong>BIOS</strong> или <em>UEFI</em> успешно определяет накопитель, но операционная система игнорирует его присутствие, является одной из самых распространенных проблем при сборке ПК или апгрейде. Пользователь видит диск в меню загрузки, но после входа в <em>Windows</em> его нет ни в «Моем компьютере», ни в списке устройств. Это вызывает панику, но в 90% случаев проблема кроется не в физической поломке <strong>SSD</strong>, а в настройках контроллера или отсутствии инициализации.</p>
+
+<p>Причины могут варьироваться от банального конфликта режимов работы портов до необходимости ручной разметки нового носителя. Часто виновником становится неправильный выбор между стандартами <strong>GPT</strong> и <strong>MBR</strong>, либо отсутствие необходимых драйверов для контроллера накопителя, особенно если вы используете современные модели <em>NVMe</em> на старых материнских платах.</p>
+
+<p>В этом материале мы детально разберем алгоритм диагностики, начиная от проверки настроек <code>SATA Mode</code> в BIOS и заканчивая работой с утилитой <code>diskpart</code>. Вы узнаете, как заставить систему увидеть ваш диск без потери данных или необходимости срочно нести компьютер в сервис.</p>
+
+<h2 id="проверка-режима-работы-контроллера-sata-в-bios">Проверка режима работы контроллера SATA в BIOS</h2>
+
+<p>Первым делом необходимо убедиться, что настройки материнской платы соответствуют требованиям операционной системы. В разделе <code>SATA Configuration</code> или <code>Storage Options</code> часто встречается параметр <strong>SATA Mode</strong>. Если там выбран режим <em>IDE</em> или <em>RAID</em>, а Windows устанавливалась или работала в режиме <strong>AHCI</strong>, система просто не сможет найти загрузочный раздел или инициализировать диск.</p>
+
+<p>Смена этого параметра на лету может привести к ошибке <code>INACCESSIBLE_BOOT_DEVICE</code> и бесконечной перезагрузке. Поэтому, если вы меняете настройки на уже работающей системе, делайте это осторожно. Для новых сборок оптимальным выбором всегда является режим <strong>AHCI</strong>, который обеспечивает полную поддержку функций современных SSD, включая команду <em>TRIM</em>.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Переключение режима SATA с RAID на AHCI (или наоборот) на уже установленной Windows без специальной подготовки в реестре приведет к тому, что система перестанет загружаться. Будьте готовы выполнить восстановление загрузчика.</p>
+</blockquote>
+
+<p>Также стоит проверить, не отключен ли конкретный порт в настройках BIOS. Иногда после сброса настроек до заводских (<em>Load Optimized Defaults</em>) некоторые порты могут переходить в состояние <code>Disabled</code>. Убедитесь, что порт, к которому подключен ваш <strong>SSD</strong>, активен и работает в правильном режиме.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если у вас современный процессор Intel с графикой Iris Xe или дискретная карта NVIDIA, убедитесь, что накопитель подключен к портам, управляемым чипсетом, а не сторонним контроллером, если возникают проблемы с драйверами.</p></aside>
+
+<h2 id="инициализация-и-разметка-нового-диска-в-управлении-дисками">Инициализация и разметка нового диска в Управлении дисками</h2>
+
+<p>Если вы установили совершенно новый накопитель, он по умолчанию находится в состоянии «Не распределена» и не имеет буквы диска. Windows не отображает такие устройства в проводнике, пока вы не выполните процедуру инициализации. Это штатное поведение, а не ошибка.</p>
+
+<p>Для доступа к инструменту управления нажмите комбинацию клавиш <code>Win + R</code> и введите команду <code>diskmgmt.msc</code>. В открывшемся окне вы, скорее всего, увидите всплывающее сообщение с требованием инициализировать диск. Вам будет предложено выбрать стиль разделов: <strong>GPT</strong> (GUID Partition Table) или <strong>MBR</strong> (Master Boot Record).</p>
+
+<ul>
+<li>🔹 <strong>GPT</strong> — современный стандарт, обязательный для систем с UEFI и дисков объемом более 2 ТБ.</li>
+<li>🔹 <strong>MBR</strong> — устаревший стандарт, необходимый только для старых компьютеров с классическим BIOS Legacy.</li>
+<li>🔹 <strong>Не распределена</strong> — статус диска, на котором еще не созданы тома.</li>
+</ul>
+
+<p>После выбора стиля нажмите правой кнопкой мыши на область с надписью «Не распределена» и выберите «Создать простой том». Мастер предложит назначить букву диска и выбрать файловую систему. Для системных дисков и большинства пользовательских данных стандартом является <strong>NTFS</strong>.</p>
+
+
+
+<h2 id="проблемы-с-драйверами-контроллера-накопителя">Проблемы с драйверами контроллера накопителя</h2>
+
+<p>В некоторых случаях, особенно при использовании высокоскоростных <em>NVMe</em> накопителей или RAID-массивов, стандартные драйверы <em>Microsoft Standard NVM Express Controller</em> могут работать некорректно или вообще не определять устройство. Это часто случается при установке Windows 7 или ранних версий Windows 10 на новое железо.</p>
+
+<p>В Диспетчере устройств (<code>devmgmt.msc</code>) проверьте раздел <strong>Контроллеры запоминающих устройств</strong>. Если вы видите устройство с желтым восклицательным знаком или название «Стандартный контроллер», необходимо скачать актуальный драйвер с сайта производителя материнской платы или самого SSD (например, <em>Samsung NVMe Driver</em> или <em>Intel RST</em>).</p>
+
+<pre><code>pnputil /add-driver oem12.inf /install</code></pre>
+
+<p>Установка правильного драйвера часто решает проблему мгновенно. Обратите внимание, что для процессоров <em>AMD Ryzen</em> иногда требуется отдельный драйвер чипсета для корректной работы линий PCIe, к которым подключен диск.</p>
+
+
+
+<h2 id="конфликт-букв-дисков-и-скрытые-разделы">Конфликт букв дисков и скрытые разделы</h2>
+
+<p>Иногда диск физически исправен, инициализирован и отформатирован, но просто не отображается в «Моем компьютере». Причина банальна: системе не удалось автоматически присвоить ему букву, либо возник конфликт с уже существующей буквой (например, подключенной флешкой или сетевым диском).</p>
+
+<p>Вернитесь в утилиту <code>diskmgmt.msc</code>. Найдите ваш раздел. Если под ним нет буквы (например, <code>(D:)</code>), нажмите на него правой кнопкой мыши и выберите пункт <strong>Изменить букву диска или путь к диску</strong>. Нажмите «Добавить» и выберите любую свободную букву из списка.</p>
+
+<p>Также стоит проверить, не скрыт ли раздел намеренно. В свойствах тома можно снять галочку «Скрыть этот диск», если такая опция доступна в вашей версии ОС, хотя в стандартной оснастке управления дисками это делается именно через назначение буквы.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Статус в Disk Management</th>
+<th>Возможная причина</th>
+<th>Решение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Не инициализирован</td>
+<td>Новый диск без разметки</td>
+<td>Инициализировать (GPT/MBR)</td>
+</tr>
+<tr>
+<td>Не распределена</td>
+<td>Нет логического тома</td>
+<td>Создать простой том</td>
+</tr>
+<tr>
+<td>RAW</td>
+<td>Файловая система повреждена</td>
+<td>Форматирование или восстановление</td>
+</tr>
+<tr>
+<td>Нет буквы</td>
+<td>Конфликт присвоения</td>
+<td>Назначить букву вручную</td>
+</tr>
+</tbody>
+</table></div>
+
+<h2 id="использование-консольной-утилиты-diskpart">Использование консольной утилиты Diskpart</h2>
+
+<p>Если графический интерфейс управления дисками выдает ошибки или не видит диск, на помощь приходит мощная консольная утилита <strong>Diskpart</strong>. Она позволяет управлять разделами на низком уровне, очищать атрибуты и принудительно создавать структуры данных.</p>
+
+<p>Запустите командную строку от имени администратора и введите <code>diskpart</code>. Далее выполните команду <code>list disk</code>. Если ваш SSD отображается здесь (например, как Диск 1), значит, система его видит на аппаратном уровне, и проблема исключительно программная.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Команда <code>clean</code> в Diskpart полностью удаляет всю структуру разделов и данные на выбранном диске. Используйте её только если диск новый или данные на нем не важны.</p>
+</blockquote>
+
+<p>Для очистки диска и создания нового раздела выполните последовательность: <code>select disk X</code> (где X — номер вашего SSD), затем <code>clean</code>, далее <code>create partition primary</code> и <code>format fs=ntfs quick</code>. После этого назначьте букву командой <code>assign letter=Z</code>.</p>
+
+
+
+<h2 id="аппаратные-нюансы-кабели-порты-и-совместимость">Аппаратные нюансы: кабели, порты и совместимость</h2>
+
+<p>Не стоит сбрасывать со счетов физические факторы. Даже если BIOS видит диск, нестабильное соединение может приводить к тому, что драйвер Windows теряет устройство при загрузке. Это часто случается с дешевыми SATA-кабелями или при подключении через переходники Molex-SATA.</p>
+
+<p>Попробуйте переподключить кабель в другой порт на материнской плате. Желательно использовать порты, контролируемые основным чипсетом (обычно они подписаны как <em>SATA_1</em>, <em>SATA_2</em>), а не дополнительные контроллеры сторонних производителей, которые требуют отдельных драйверов.</p>
+
+<p>Для накопителей формата <em>M.2</em> критично значение ключа (Key M или Key B+M) и поддержка поколения PCIe. Установка диска <strong>PCIe 4.0</strong> в слот, поддерживающий только <em>PCIe 2.0</em> (на очень старых платах), может привести к несовместимости, хотя BIOS может пытаться его инициализировать.</p>
+
+
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Почему новый SSD отображается как "Неизвестно" и "Не инициализирован"?</summary>
+<p>Это нормальное состояние для нового накопителя, на котором еще нет таблицы разделов. Вам нужно зайти в "Управление дисками" и инициализировать его, выбрав стиль GPT или MBR, а затем создать том.</p>
+</details>
+
+<details>
+<summary>Можно ли конвертировать MBR в GPT без потери данных?</summary>
+<p>Да, в Windows 10 и 11 есть встроенная утилита <code>mbr2gpt.exe</code>, которая позволяет выполнить конвертацию без форматирования. Однако настоятельно рекомендуется сделать резервную копию важных данных перед началом процедуры.</p>
+</details>
+
+<details>
+<summary>Видно ли SSD в BIOS, если он полностью сгорел?</summary>
+<p>Нет. Если контроллер памяти или плата накопителя вышли из строя физически, BIOS не сможет определить устройство. Отображение в BIOS гарантирует, что электроника диска исправна и отвечает на запросы.</p>
+</details>
+
+<details>
+<summary>Что делать, если диск имеет статус RAW?</summary>
+<p>Статус RAW означает, что файловая система повреждена или не распознана. Попробуйте запустить проверку диска через командную строку: <code>chkdsk X: /f /r</code>. Если это не поможет, потребуется форматирование, что удалит все данные.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/c/cl/class-10-uhs-speed-class-1-u1.html" class="pb-related-card">
+                <span class="pb-related-title">Class 10, UHS Speed Class 1, U1: Расшифровка скоростей карт памяти</span>
+                <span class="pb-related-desc">Разбираем маркировку карт памяти: что такое Class 10, UHS Speed Class 1 и U1. Таблица скоростей, сов</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ku/kuda-udalyaetsya-fajl-iz-setevoj-papki.html" class="pb-related-card">
+                <span class="pb-related-title">Куда исчезает файл при удалении из сетевой папки: куда и как вернуть</span>
+                <span class="pb-related-desc">Полное руководство: физическое и логическое удаление файлов из сетевых папок, работа корзины, восста</span>
+            </a><a href="/kompyutery-i-noutbuki/h/hd/hdmi-chto-eto-takoe-v-monitore.html" class="pb-related-card">
+                <span class="pb-related-title">HDMI в мониторе: что это, версии и как подключить</span>
+                <span class="pb-related-desc">Подробный гид по интерфейсу HDMI в мониторах. Разбираем версии, поддержку 4K и HDR, отличия от Displ</span>
+            </a><a href="/kompyutery-i-noutbuki/v/vo/vosstanovlenie-rabotosposobnosti-fleshki-usb.html" class="pb-related-card">
+                <span class="pb-related-title">Как восстановить работоспособность флешки USB: полный гайд 2026</span>
+                <span class="pb-related-desc">Пошаговая инструкция по диагностике и ремонту USB-накопителей. Методы восстановления данных, формати</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ko/kompyuter-tormozit-chto-delat-windows-7.html" class="pb-related-card">
+                <span class="pb-related-title">Компьютер тормозит на Windows 7: причины и способы ускорения</span>
+                <span class="pb-related-desc">Почему медленно работает ПК на Windows 7? Полное руководство по оптимизации, чистке реестра, удалени</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-uvelichit-obem-ssd.html" class="pb-related-card">
+                <span class="pb-related-title">Как увеличить объем SSD: лучшие способы и методы расширения</span>
+                <span class="pb-related-desc">Узнайте, как увеличить место на SSD без замены диска: очистка, перенос данных, клонирование и смена </span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

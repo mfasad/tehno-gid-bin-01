@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как скопировать файл в Linux: полный гид по командам cp и rsync — Техно Гид</title>
+    <meta name="description" content="Подробное руководство по копированию файлов в Linux. Разбор синтаксиса cp, продвинутые опции, рекурсивное копирование и работа с правами доступа.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/k/ka/kak-skopirovat-fajl-v-linux.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как скопировать файл в Linux: полный гид по командам cp и rsync">
+    <meta property="og:description" content="Подробное руководство по копированию файлов в Linux. Разбор синтаксиса cp, продвинутые опции, рекурсивное копирование и работа с правами доступа.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как скопировать файл в Linux: полный гид по командам cp и rsync</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#базовый-синтаксис-команды-копирования">Базовый синтаксис команды копирования</a></li><li><a href="#абсолютные-и-относительные-пути-в-linux">Абсолютные и относительные пути в Linux</a></li><li><a href="#копирование-директорий-и-рекурсивный-режим">Копирование директорий и рекурсивный режим</a></li><li><a href="#сохранение-прав-доступа-и-атрибутов-файлов">Сохранение прав доступа и атрибутов файлов</a></li><li><a href="#интерактивный-режим-и-безопасная-перезапись">Интерактивный режим и безопасная перезапись</a></li><li><a href="#продвинутые-техники-прогресс-и-ограничения-скорости">Продвинутые техники: прогресс и ограничения скорости</a></li><li><a href="#сравнение-утилит-копирования">Сравнение утилит копирования</a></li><li><a href="#частые-ошибки-и-диагностика-проблем">Частые ошибки и диагностика проблем</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/k/ko/kombinatsiya-klavish-dlya-sozdaniya-yarlyka.html">Комбинация клавиш для создания ярлыка: горячие клавиши Windows</a></li><li><a href="/kompyutery-i-noutbuki/n/no/noutbuk-asus-ne-zaryazhaetsya-batareya.html">Ноутбук Асус не заряжается: диагностика и ремонт батареи</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-menyat-podsvetku-na-noutbuke-asus.html">Настройка подсветки клавиатуры на ноутбуках ASUS: Полное руководство 2026</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-najti-poteryannuyu-fleshku.html">Как найти потерянную флешку: методы поиска и восстановление данных</a></li><li><a href="/kompyutery-i-noutbuki/u/us/ustanovit-ms-dos-na-fleshku.html">Как установить MS-DOS на флешку: полная инструкция</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как скопировать файл в Linux: полное руководство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#базовый-синтаксис-команды-копирования">Базовый синтаксис команды копирования</a></li><li><a href="#абсолютные-и-относительные-пути-в-linux">Абсолютные и относительные пути в Linux</a></li><li><a href="#копирование-директорий-и-рекурсивный-режим">Копирование директорий и рекурсивный режим</a></li><li><a href="#сохранение-прав-доступа-и-атрибутов-файлов">Сохранение прав доступа и атрибутов файлов</a></li><li><a href="#интерактивный-режим-и-безопасная-перезапись">Интерактивный режим и безопасная перезапись</a></li><li><a href="#продвинутые-техники-прогресс-и-ограничения-скорости">Продвинутые техники: прогресс и ограничения скорости</a></li><li><a href="#сравнение-утилит-копирования">Сравнение утилит копирования</a></li><li><a href="#частые-ошибки-и-диагностика-проблем">Частые ошибки и диагностика проблем</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Работа в операционной системе Linux, особенно через терминал, требует понимания базовых принципов управления файловой системой. Одним из самых частых действий, которое приходится выполнять системному администратору или обычному пользователю, является создание копии документа, скрипта или каталога. В отличие от графических интерфейсов, где мы привыкли использовать сочетание клавиш или перетаскивание мышью, в консоли этот процесс управляется строгими командами.</p>
+<p>Основным инструментом для этих целей служит утилита <code>cp</code> (от англ. copy). Она обладает широким набором флагов, позволяющих не просто дублировать данные, но и сохранять их атрибуты, права доступа или выполнять операции в фоновом режиме. Понимание нюансов работы этой команды поможет избежать потери данных и ускорит рутинные задачи.</p>
+<p>В этой статье мы детально разберем синтаксис команды, рассмотрим различия между абсолютными и относительными путями, а также затронем тему безопасности при перезаписи существующих файлов. Вы научитесь копировать как одиночные файлы, так и целые директории со сложной структурой вложенности.</p>
+
+<h2 id="базовый-синтаксис-команды-копирования">Базовый синтаксис команды копирования</h2>
+<p>Фундамент работы с файлами в консоли строится на четком понимании структуры команды. Стандартный вызов утилиты требует указания источника и назначения. Если вы новичок в Linux, помните, что порядок аргументов здесь критичен: сначала идет то, что мы копируем, а затем — куда мы это помещаем.</p>
+<p>Простейшая форма команды выглядит следующим образом:</p>
+<pre><code>cp источник назначение</code></pre>
+<p>Например, чтобы создать копию файла <em>report.txt</em> с именем <em>report_backup.txt</em> в той же папке, вы введете <code>cp report.txt report_backup.txt</code>. Система мгновенно создаст дубликат. Однако, если вы попытаетесь скопировать файл в место, где уже существует объект с таким же именем, поведение системы будет зависеть от установленных <strong>алиасов</strong> и настроек оболочки.</p>
+<p>В современных дистрибутивах, таких как <em>Ubuntu</em> или <em>Fedora</em>, по умолчанию часто настроено так, что система спросит подтверждение перед перезаписью. Это защитный механизм, предотвращающий случайную потерю важных данных при опечатках в именах файлов.</p>
+<blockquote>⚠️ Внимание: При использовании команды без флага подтверждения в некоторых скриптах или при сбросе алиасов, файл может быть перезаписан без предупреждения. Всегда проверяйте имя целевого файла перед выполнением операции.</blockquote>
+
+<h2 id="абсолютные-и-относительные-пути-в-linux">Абсолютные и относительные пути в Linux</h2>
+<p>Эффективное управление файлами невозможно без грамотного использования путей. Ошибка в указании адреса часто приводит к тому, что команда выполняется, но файл оказывается не там, где вы ожидали, или вовсе возникает ошибка "файл не найден".</p>
+<p>Различают два типа путей. <strong>Абсолютный путь</strong> начинается от корня файловой системы (символ <code>/</code>) и описывает полное местоположение объекта. Он универсален и работает из любой директории, в которой вы находитесь в данный момент.</p>
+<p><strong>Относительный путь</strong> строится относительно вашей текущей рабочей директории. Здесь используются специальные обозначения: точка <code>.</code> означает "текущая папка", а две точки <code>..</code> — "родительская папка" (уровень выше). Использование относительных путей делает команды короче и удобнее при работе в рамках одного проекта.</p>
+<p>Рассмотрим пример. Если вы находитесь в папке <code>/home/user/docs</code>, то команда для копирования файла в папку <code>backups</code>, которая лежит на уровень выше, будет выглядеть так:</p>
+<pre><code>cp config.ini ../backups/config.ini</code></pre>
+<p>Здесь мы указываем, что нужно подняться на один уровень вверх и поместить файл в директорию <em>backups</em>. Это гораздо быстрее, чем писать полный путь <code>/home/user/backups/config.ini</code>.</p>
+
+<div class="pb-poll" id="poll-ef6db53a"><div class="pb-poll-question">📊 Какой тип путей вы используете чаще?</div><div class="pb-poll-option" data-poll="ef6db53a" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Абсолютные (полные)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="ef6db53a" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Относительные (короткие)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="ef6db53a" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Только через файловый менеджер</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="ef6db53a" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Затрудняюсь ответить</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="копирование-директорий-и-рекурсивный-режим">Копирование директорий и рекурсивный режим</h2>
+<p>Попытка скопировать обычную папку с помощью базовой команды <code>cp</code> приведет к ошибке. Утилита по умолчанию работает только с файлами. Для работы с каталогами, содержащими внутри другие файлы и подпапки, необходимо активировать рекурсивный режим.</p>
+<p>Для этого используется флаг <code>-r</code> (или <code>-R</code>). Этот параметр instructs утилиту проходить по всем вложенным уровням директории и копировать всё содержимое. Без этого флага вы получите сообщение об ошибке, указывающее, что объект является директорией, а не файлом.</p>
+<p>Синтаксис рекурсивного копирования выглядит так:</p>
+<pre><code>cp -r /source_folder /destination_folder</code></pre>
+<p>При использовании этой команды важно следить за тем, существует ли целевая папка. Если вы копируете папку <em>ProjectA</em> в существующую папку <em>Archives</em>, то <em>ProjectA</em> окажется внутри <em>Archives</em>. Если же <em>Archives</em> не существует, система создаст её и поместит туда содержимое источника.</p>
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте флаг -v (verbose) вместе с -r, чтобы видеть в реальном времени, какие именно файлы копируются. Это особенно полезно при работе с большими объемами данных, когда процесс может занять несколько минут.</p></aside>
+
+<h2 id="сохранение-прав-доступа-и-атрибутов-файлов">Сохранение прав доступа и атрибутов файлов</h2>
+<p>В среде Linux каждый файл обладает набором метаданных: правами на чтение, запись и выполнение, владельцем, группой, а также временными метками создания и изменения. При обычном копировании новые файлы наследуют права текущей директории и пользователя, выполняющего команду.</p>
+<p>Часто это нежелательно. Например, при резервном копировании конфигурационных файлов сервера критически важно сохранить их оригинальные права доступа, чтобы при восстановлении система работала корректно. Для решения этой задачи существует опция <code>-p</code> (preserve).</p>
+<p>Флаг <code>-p</code> заставляет утилиту сохранять:</p>
+<ul>
+    <li>🕒 Временные метки (время последнего изменения и доступа)</li>
+    <li>🔐 Режим доступа (права чтения/записи/выполнения)</li>
+    <li>👤 Контекст безопасности (если используется SELinux)</li>
+    <li>👥 Ссылки и атрибуты расширения</li>
+</ul>
+<p>Более мощным инструментом является флаг <code>-a</code> (archive). Он включает в себя режим <code>-p</code>, а также работает рекурсивно (<code>-r</code>) и сохраняет символические ссылки как ссылки, а не как копии целевых файлов. Это идеальный вариант для создания точных снимков файловой системы.</p>
+<p>Команда для архивного копирования выглядит лаконично:</p>
+<pre><code>cp -a /var/www/html /backup/www_html</code></pre>
+<p>Использование <strong>символических ссылок</strong> требует особого внимания. При обычном копировании ссылка "разворачивается" в файл, на который она указывает. При использовании флага <code>-a</code> или <code>-P</code> копируется сама ссылка, что экономит место и сохраняет структуру проекта.</p>
+
+<h2 id="интерактивный-режим-и-безопасная-перезапись">Интерактивный режим и безопасная перезапись</h2>
+<p>Человеческий фактор остается главной причиной потери данных. Ошибочный ввод имени файла может привести к перезаписи важного документа пустым файлом или устаревшей версией. Чтобы минимизировать этот риск, существует интерактивный режим работы.</p>
+<p>Флаг <code>-i</code> (interactive) заставляет утилиту запрашивать подтверждение у пользователя перед перезаписью существующего файла. Если целевой файл уже есть, терминал выведет запрос вида <code>cp: overwrite 'filename'?</code>, и операция продолжится только после ввода символа <code>y</code> (yes).</p>
+<p>Пример использования:</p>
+<pre><code>cp -i important_data.csv new_data.csv</code></pre>
+<p>Если файл <em>new_data.csv</em> уже существует, команда приостановится и ждет вашего решения. Это особенно полезно при выполнении пакетных операций или использовании подстановочных знаков (wildcards), когда вы копируете множество файлов по маске и не уверены на 100% в содержимом целевой папки.</p>
+<blockquote>⚠️ Внимание: В некоторых конфигурациях оболочки <code>bash</code> алиас для команды <code>cp</code> уже содержит флаг <code>-i</code>. Чтобы принудительно отключить запросы подтверждения (например, в автоматических скриптах), используйте обратный слэш перед командой: <code>\cp source dest</code>.</blockquote>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Чек-лист перед массовым копированием</h4><label class="check-item"><input type="checkbox"><span>Проверить свободное место на диске</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в правах доступа к источнику</span></label><label class="check-item"><input type="checkbox"><span>Проверить права доступа к назначению</span></label><label class="check-item"><input type="checkbox"><span>Сделать тестовое копирование одного файла</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="продвинутые-техники-прогресс-и-ограничения-скорости">Продвинутые техники: прогресс и ограничения скорости</h2>
+<p>Стандартная утилита <code>cp</code> работает быстро, но она не предоставляет пользователю информации о прогрессе выполнения задачи. При копировании гигабайтов данных создается иллюзия зависания системы, так как курсор просто мигает в ожидании завершения.</p>
+<p>Для визуализации процесса в современных дистрибутивах можно использовать опцию <code>--progress</code>. Она выводит процент выполнения и текущую скорость передачи данных прямо в терминал. Это делает процесс прозрачным и предсказуемым.</p>
+<pre><code>cp --progress large_image.iso /mnt/usb_drive/</code></pre>
+<p>Однако, если вам требуется более тонкий контроль, например, ограничение скорости копирования, чтобы не нагружать дисковую подсистему или сеть, стандартный <code>cp</code> не подойдет. В таких случаях профессионалы обращаются к утилите <em>rsync</em>. Она является стандартом де-факто для синхронизации данных.</p>
+<p>Команда <em>rsync</em> с флагом <code>--bwlimit</code> позволяет искусственно ограничивать пропускную способность. Например, следующая команда ограничит скорость копирования до 10 Мегабит в секунду:</p>
+<pre><code>rsync --bwlimit=10000 -av source/ dest/</code></pre>
+<p>Использование <em>rsync</em> также выгодно тем, что она умеет докачивать прерванные файлы, копируя только измененные части, а не весь файл целиком. Это критически важно при работе с нестабильным соединением или огромными базами данных.</p>
+<details class="pb-accordion"><summary>Почему rsync быстрее при повторном запуске?</summary><div class="pb-accordion-body"><p>Утилита использует алгоритм контрольных сумм. Она сравнивает блоки файлов источника и назначения. Если блок не изменился, он не копируется повторно, что экономит колоссальное количество времени и ресурсов ввода-вывода.</p></div></details>
+
+<h2 id="сравнение-утилит-копирования">Сравнение утилит копирования</h2>
+<p>Выбор инструмента зависит от конкретной задачи. Для разовых операций достаточно простого <code>cp</code>, но для сложных сценариев резервирования нужны более мощные средства. Ниже приведена таблица, помогающая определиться с выбором.</p>
+
+<div class="pb-table-wrap"><table>
+    <thead>
+        <tr>
+            <th>Утилита</th>
+            <th>Основное назначение</th>
+            <th>Ключевые преимущества</th>
+            <th>Недостатки</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>cp</code></td>
+            <td>Быстрое локальное копирование</td>
+            <td>Простота, скорость, предустановлена везде</td>
+            <td>Нет прогресс-бара, нет ограничения скорости</td>
+        </tr>
+        <tr>
+            <td><code>rsync</code></td>
+            <td>Синхронизация и резервное копирование</td>
+            <td>Докачка, дельта-кодирование, работа по сети</td>
+            <td>Более сложный синтаксис, выше потребление CPU</td>
+        </tr>
+        <tr>
+            <td><code>dd</code></td>
+            <td>Побитовое копирование образов</td>
+            <td>Копирует всё, включая загрузочные сектора</td>
+            <td>Опасна при ошибках, нет понимания файловой системы</td>
+        </tr>
+        <tr>
+            <td><code>mc</code></td>
+            <td>Файловый менеджер в терминале</td>
+            <td>Визуальный интерфейс, удобство навигации</td>
+            <td>Требует установки, медленнее чистых команд</td>
+        </tr>
+    </tbody>
+</table></div>
+
+<p>Отдельного упоминания заслуживает утилита <em>dd</em>. Она работает на низком уровне, копируя данные побитово. Это незаменимый инструмент для создания загрузочных флешек или полных образов дисков, но использовать её для обычного копирования файлов <mark>категорически не рекомендуется</mark> из-за высокого риска уничтожить данные при ошибке в указании устройства.</p>
+<p>Также стоит отметить графические файловые менеджеры, такие как <em>Nautilus</em> или <em>Dolphin</em>. Они предоставляют удобный интерфейс, но под капотом всё равно используют те же системные вызовы. Для удаленного администрирования через SSH графический интерфейс часто недоступен, поэтому знание консольных команд остается обязательным навыком.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для ежедневных задач используйте cp, для резервного копирования и синхронизации — rsync, а для создания образов дисков — dd. Выбор правильного инструмента экономит время и нервы.</p></aside>
+
+<h2 id="частые-ошибки-и-диагностика-проблем">Частые ошибки и диагностика проблем</h2>
+<p>Даже опытные пользователи сталкиваются с ошибками при копировании. Самая распространенная из них — <code>Permission denied</code>. Она возникает, когда у текущего пользователя нет прав на чтение исходного файла или на запись в целевую директорию.</p>
+<p>Для решения этой проблемы часто используют команду <code>sudo</code>, которая временно повышает привилегии до суперпользователя. Однако делать это нужно с осторожностью, чтобы не создать файлы, принадлежащие root, в домашней директории обычного пользователя, что может заблокировать доступ к ним в будущем.</p>
+<p>Еще одна частая проблема — отсутствие свободного места на диске. Перед копированием больших объемов данных всегда полезно проверить доступное пространство с помощью команды <code>df -h</code>. Если место закончится в процессе, файл будет поврежден и, скорее всего, непригоден для использования.</p>
+<blockquote>⚠️ Внимание: Интерфейсы командной строки и поведение утилит могут незначительно отличаться в разных дистрибутивах Linux. Всегда сверяйтесь с документацией (man pages) вашей конкретной системы, если стандартные флаги не работают.</blockquote>
+<p>Для получения подробной информации о любой команде прямо в терминале используйте справочную систему <code>man</code>. Ввод <code>man cp</code> откроет полное руководство с описанием всех возможных опций и примерами использования. Это самый надежный источник истины в мире Linux.</p>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+    <summary>Как скопировать файл с сохранением даты изменения?</summary>
+    <p>Для этого необходимо использовать флаг <code>-p</code>. Команда будет выглядеть так: <code>cp -p файл_источник файл_назначение</code>. Это сохранит временные метки модификации и доступа оригинального файла.</p>
+</details>
+
+<details>
+    <summary>Что делать, если команда говорит "No space left on device"?</summary>
+    <p>Это означает, что на целевом диске закончилось свободное место. Проверьте доступное пространство командой <code>df -h</code>. Вам потребуется освободить место или выбрать другой диск для копирования.</p>
+</details>
+
+<details>
+    <summary>Можно ли копировать файлы между разными компьютерами в Linux?</summary>
+    <p>Да, для этого лучше всего использовать утилиту <code>scp</code> (secure copy) или <code>rsync</code> через SSH. Они позволяют безопасно передавать файлы по сети, например: <code>scp file.txt user@remote_host:/path/to/dest</code>.</p>
+</details>
+
+<details>
+    <summary>Как отменить копирование, если оно уже началось?</summary>
+    <p>Нажмите комбинацию клавиш <code>Ctrl + C</code> в терминале. Это прервет выполнение текущей команды. Однако частично скопированный файл останется на диске и будет неполным, его придется удалить вручную.</p>
+</details>
+
+<details>
+    <summary>В чем разница между cp и mv?</summary>
+    <p>Команда <code>cp</code> создает полную копию файла, оставляя оригинал на месте. Команда <code>mv</code> (move) перемещает файл, то есть оригинал исчезает из старой папки и появляется в новой. При перемещении в пределах одного диска это происходит мгновенно.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/k/ko/kombinatsiya-klavish-dlya-sozdaniya-yarlyka.html" class="pb-related-card">
+                <span class="pb-related-title">Комбинация клавиш для создания ярлыка: горячие клавиши Windows</span>
+                <span class="pb-related-desc">Узнайте, какая комбинация клавиш для создания ярлыка работает на рабочем столе и в проводнике. Сочет</span>
+            </a><a href="/kompyutery-i-noutbuki/n/no/noutbuk-asus-ne-zaryazhaetsya-batareya.html" class="pb-related-card">
+                <span class="pb-related-title">Ноутбук Асус не заряжается: диагностика и ремонт батареи</span>
+                <span class="pb-related-desc">Почему ноутбук ASUS не заряжает батарею? Разбор причин, сброс контроллера, проверка драйверов и адап</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-menyat-podsvetku-na-noutbuke-asus.html" class="pb-related-card">
+                <span class="pb-related-title">Настройка подсветки клавиатуры на ноутбуках ASUS: Полное руководство 2026</span>
+                <span class="pb-related-desc">Пошаговая инструкция по управлению RGB-подсветкой на ноутбуках ASUS. Настройка в Armoury Crate, испо</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-najti-poteryannuyu-fleshku.html" class="pb-related-card">
+                <span class="pb-related-title">Как найти потерянную флешку: методы поиска и восстановление данных</span>
+                <span class="pb-related-desc">Потеряли флешку? Узнайте эффективные способы поиска устройства, инструменты для восстановления данны</span>
+            </a><a href="/kompyutery-i-noutbuki/u/us/ustanovit-ms-dos-na-fleshku.html" class="pb-related-card">
+                <span class="pb-related-title">Как установить MS-DOS на флешку: полная инструкция</span>
+                <span class="pb-related-desc">Пошаговое руководство по установке MS-DOS на USB-накопитель. Скачивание образа, настройка загрузочно</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-na-noutbuke-vydelit-vse-fajly-bez-myshki.html" class="pb-related-card">
+                <span class="pb-related-title">Как выделить все файлы на ноутбуке без мышки: горячие клавиши и методы</span>
+                <span class="pb-related-desc">Полное руководство по выделению всех файлов на ноутбуке без использования мыши. Горячие клавиши для </span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

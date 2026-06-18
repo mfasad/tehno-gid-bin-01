@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Принт-сервер для USB-принтера своими руками: Полное руководство — Техно Гид</title>
+    <meta name="description" content="Создайте сетевой принт-сервер из Raspberry Pi, старого ПК или роутера. Подробная инструкция по настройке CUPS и драйверов для Windows/Linux.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/printery-i-periferiya/p/pr/print-server-dlya-usb-printera-svoimi-rukami.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Принт-сервер для USB-принтера своими руками: Полное руководство">
+    <meta property="og:description" content="Создайте сетевой принт-сервер из Raspberry Pi, старого ПК или роутера. Подробная инструкция по настройке CUPS и драйверов для Windows/Linux.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-nav-active">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/printery-i-periferiya/">Принтеры и Периферия</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Принт-сервер для USB-принтера своими руками: Полное руководство</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-оборудования-для-реализации-задачи">Выбор оборудования для реализации задачи</a></li><li><a href="#настройка-сервера-печати-на-базе-raspberry-pi">Настройка сервера печати на базе Raspberry Pi</a></li><li><a href="#альтернативное-решение-использование-роутера">Альтернативное решение: Использование роутера</a></li><li><a href="#интеграция-принтера-в-сеть-windows-и-linux">Интеграция принтера в сеть Windows и Linux</a></li><li><a href="#решение-проблем-с-драйверами-и-совместимостью">Решение проблем с драйверами и совместимостью</a></li><li><a href="#оптимизация-работы-и-безопасность">Оптимизация работы и безопасность</a></li><li><a href="#частые-вопросы-при-создании-принт-сервера">Частые вопросы при создании принт-сервера</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/printery-i-periferiya/p/pr/printer-canon-mg3040-migaet-indikator-molniya.html">Принтер Canon MG3040 мигает индикатор молния: причины и ремонт</a></li><li><a href="/printery-i-periferiya/p/pr/pri-raspechatke-na-printere-poyavlyayutsya-polosy-kak-ispravit.html">Полосы на принтере: как убрать черные и цветные полосы при печати</a></li><li><a href="/printery-i-periferiya/s/sc/scx-4200-net-tonera.html">Samsung SCX-4200 нет тонера: решение проблемы мигания индикатора</a></li><li><a href="/printery-i-periferiya/m/mi/mikrofon-podklyuchen-no-menya-ne-slyshno.html">Микрофон подключен, но меня не слышно: 7 причин и решение</a></li><li><a href="/printery-i-periferiya/k/ka/kak-iz-printera-vytashchit-zastryavshuyu-bumagu-pantum.html">Как вытащить застрявшую бумагу из принтера Pantum: пошагово</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как сделать принт-сервер для USB-принтера своими руками</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-оборудования-для-реализации-задачи">Выбор оборудования для реализации задачи</a></li><li><a href="#настройка-сервера-печати-на-базе-raspberry-pi">Настройка сервера печати на базе Raspberry Pi</a></li><li><a href="#альтернативное-решение-использование-роутера">Альтернативное решение: Использование роутера</a></li><li><a href="#интеграция-принтера-в-сеть-windows-и-linux">Интеграция принтера в сеть Windows и Linux</a></li><li><a href="#решение-проблем-с-драйверами-и-совместимостью">Решение проблем с драйверами и совместимостью</a></li><li><a href="#оптимизация-работы-и-безопасность">Оптимизация работы и безопасность</a></li><li><a href="#частые-вопросы-при-создании-принт-сервера">Частые вопросы при создании принт-сервера</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Превращение обычного локального принтера в сетевое устройство открывает новые горизонты для организации рабочего пространства. Вместо того чтобы постоянно носить флешку с документами или подключать устройство к конкретному компьютеру, вы получаете возможность отправлять печать с любого девайса в сети. Это особенно актуально, когда в офисе или дома используется несколько устройств, и необходимость делиться одним принтером становится рутиной.</p>
+
+<p>Существует множество готовых решений, предлагаемых производителями, но они часто стоят недешево и имеют ограниченный функционал. Создание собственного <strong>принт-сервера</strong> позволяет сэкономить бюджет и адаптировать устройство под специфические задачи. Вы сможете использовать в качестве основы старое "железо", которое просто пылится на полке, и заставить его работать на благо всей сети.</p>
+
+<p>Понимание принципов работы <em>CUPS</em> (Common Unix Printing System) или альтернативных прошивок для роутеров даст вам полный контроль над процессом печати. Вы сможете настраивать права доступа, очереди задач и приоритеты документов без привязки к охране проприетарного софта.</p>
+
+<h2 id="выбор-оборудования-для-реализации-задачи">Выбор оборудования для реализации задачи</h2>
+
+<p>Первым шагом в создании <strong>принт-сервера</strong> является определение аппаратной платформы. Выбор зависит от ваших технических навыков, имеющегося в наличии оборудования и требований к производительности. Самый популярный вариант — это использование одноплатных компьютеров, таких как <em>Raspberry Pi</em>.</p>
+
+<p>Они потребляют минимум энергии, работают тихо и поддерживают все необходимые пакеты для развертывания сервера печати. Если у вас нет Raspberry Pi, можно обратить внимание на старые нетбуки, мини-ПК или даже мощные роутеры с поддержкой USB-портов. Важно, чтобы выбранное устройство имело стабильное сетевое подключение.</p>
+
+<ul>
+<li>🖥️ <em>Raspberry Pi 3/4/5</em> — идеальный баланс цены, производительности и энергопотребления.</li>
+<li>🌐 <em>Роутер с USB-портом</em> — простое решение, если прошивка поддерживает функцию принт-сервера.</li>
+<li>💻 <em>Старый ПК или ноутбук</em> — мощный вариант, который может выполнять функции сервера печати и файлопомойки.</li>
+</ul>
+
+<p>При выборе оборудования обязательно проверьте совместимость драйверов принтера с выбранной операционной системой. Некоторые старые модели могут не иметь поддержки в современных дистрибутивах Linux, что потребует поиска альтернативных решений или использования Windows-сервера.</p>
+
+<h2 id="настройка-сервера-печати-на-базе-raspberry-pi">Настройка сервера печати на базе Raspberry Pi</h2>
+
+<p>Для тех, кто выбрал путь использования <em>Raspberry Pi</em>, процесс начинается с установки операционной системы Raspberry Pi OS. После настройки сети и обновления пакетов необходимо установить сервер печати <strong>CUPS</strong>. Это стандартное решение для Unix-подобных систем, которое отлично справляется с задачами маршрутизации печати.</p>
+
+<p>Установка выполняется через терминал одной командой, но требует внимательности при настройке прав доступа. Вам нужно будет добавить пользователя в группу <em>lpadmin</em>, чтобы иметь возможность управлять очередями печати через веб-интерфейс.</p>
+
+<pre><code>sudo apt update
+<p>sudo apt install cups</p>
+<p>sudo usermod -a -G lpadmin pi</code></pre></p>
+
+<p>После установки сервер автоматически запустится и начнет прослушивать порты. Однако по умолчанию он доступен только с самого устройства. Чтобы сделать его видимым для других компьютеров в сети, необходимо отредактировать конфигурационный файл <code>/etc/cups/cupsd.conf</code>.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Будьте предельно осторожны при редактировании системных файлов. Ошибка в синтаксисе конфигурации CUPS может привести к тому, что служба перестанет запускаться, и принтер станет недоступен. Всегда делайте резервную копию файла перед изменениями.</p>
+</blockquote>
+
+<p>Не забудьте открыть доступ к интерфейсу администратора (порт 631) и разрешить подключения из локальной подсети, указав правильные IP-диапазоны в настройках <code>Allow</code>.</p>
+
+<h2 id="альтернативное-решение-использование-роутера">Альтернативное решение: Использование роутера</h2>
+
+<p>Многие современные маршрутизаторы имеют встроенную функцию превращения USB-устройств в сетевые ресурсы. Это самый простой способ, не требующий установки дополнительного ПО. Для этого достаточно подключить принтер к USB-порту роутера и активировать соответствующую опцию в веб-интерфейсе устройства.</p>
+
+<p>Однако функционал роутеров часто ограничен. Они могут не поддерживать сложные почтовые драйверы или специфические форматы данных. В таких случаях может потребоваться установка альтернативной прошивки, такой как <em>OpenWrt</em> или <em>DD-WRT</em>, которые предоставляют расширенные возможности настройки.</p>
+
+<ul>
+<li>🔌 <em>Подключение по USB 2.0/3.0</em> — проверьте, поддерживает ли роутер ваш тип принтера (принтеры с твердотельными накопителями требуют USB 3.0).</li>
+<li>⚙️ <em>Прошивка роутера</em> — убедитесь, что в прошивке есть пакет <code>kmod-usb-printer</code> и модуль <code>samba</code> для доступа по сети.</li>
+<li>🔒 <em>Безопасность</em> — настройте пароль на доступ к USB-портам, чтобы предотвратить несанкционированную печать.</li>
+</ul>
+
+<p>Если встроенная функция не работает корректно, попробуйте обновить прошивку роутера до последней версии. Производители часто исправляют ошибки совместимости с периферией в обновлениях.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Перепрошивка роутера несет риск превратить его в "кирпич". Если вы не уверены в своих силах, лучше откажитесь от этого шага и используйте стандартные функции производителя или отдельный одноплатный компьютер.</p>
+</blockquote>
+
+<blockquote>
+<p>⚠️ Внимание: Проверьте официальный сайт производителя вашего роутера на предмет списка совместимых принтеров. Некоторые модели могут не работать корректно из-за отсутствия драйверов в предустановленном образе прошивки.</p>
+</blockquote>
+
+<div class="pb-poll" id="poll-86d8708d"><div class="pb-poll-question">📊 Какой способ настройки принт-сервера вы выберете?</div><div class="pb-poll-option" data-poll="86d8708d" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Raspberry Pi</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="86d8708d" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Старый ПК</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="86d8708d" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Роутер</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="86d8708d" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Покупка готового сервера</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="интеграция-принтера-в-сеть-windows-и-linux">Интеграция принтера в сеть Windows и Linux</h2>
+
+<p>После того как <strong>принт-сервер</strong> запущен и настроен, необходимо добавить принтер на клиентские компьютеры. В операционной системе Windows это делается через меню "Устройства и принтеры". Вам потребуется выбрать "Добавить принтер" и указать его сетевой адрес.</p>
+
+<p>Самый надежный способ подключения — использование протокола IPP (Internet Printing Protocol). В поле адреса вы вводите URL вида <code>http://IP-адрес-сервера:631/printers/имя-принтера</code>. Система попытается найти драйвер автоматически или предложит установить его вручную.</p>
+
+<p>Для пользователей Linux процесс еще проще, если используется <em>CUPS</em> на клиенте. Достаточно открыть настройки печати, выбрать "Добавить принтер" и найти устройство в списке доступных сетевых ресурсов.</p>
+
+<details>
+<summary>Как узнать точное имя принтера в CUPS?</summary>
+<p>Чтобы узнать имя принтера, которое используется в CUPS, введите в терминале команду <code>lpstat -p</code> или просмотрите веб-интерфейс по адресу <code>http://localhost:631</code>. Имя обычно указывается в поле "Name" и используется для формирования URL подключения.</p>
+</details>
+
+<p>Важно отметить, что некоторые старые модели принтеров требуют установки драйверов на сам сервер печати, а не на клиентскую машину. В этом случае сервер конвертирует данные в понятный принтеру формат PCL или PostScript.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка подключения принтера</h4><label class="check-item"><input type="checkbox"><span>Принтер включен и подключен к серверу</span></label><label class="check-item"><input type="checkbox"><span>Сервер доступен по сети (ping)</span></label><label class="check-item"><input type="checkbox"><span>Драйвер установлен или выбран автоматически</span></label><label class="check-item"><input type="checkbox"><span>Тестовая страница печатается корректно</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="решение-проблем-с-драйверами-и-совместимостью">Решение проблем с драйверами и совместимостью</h2>
+
+<p>Самая частая проблема при создании собственного <strong>принт-сервера</strong> — отсутствие драйверов. Если производитель не предоставляет драйвер для Linux, а Windows-драйвер не может быть использован на сервере, печать станет невозможной. В таких ситуациях на помощь приходят универсальные драйверы или драйверы с открытым исходным кодом.</p>
+
+<p>Для принтеров <em>Hewlett-Packard</em> часто используется пакет <em>HPLIP</em>, который поддерживает огромное количество моделей. Для принтеров <em>Epson</em> и <em>Cannon</em> существуют отличные драйверы от сообщества <em>Goodprinting</em> или официальные пакеты <em>ESC/P-R</em>.</p>
+
+<ul>
+<li>🔍 <em>Поиск драйверов</em> — проверьте базу данных <code>OpenPrinting</code> или форумы сообществ Linux (например, Arch Wiki).</li>
+<li>🔄 <em>PPD файлы</em> — иногда достаточно найти правильный файл описания принтера (PPD) и подключить его вручную через интерфейс CUPS.</li>
+<li>🛠️ <em>Конвертеры</em> — используйте инструменты вроде <code>foo2zjs</code> или <code>splix</code> для работы с языками печати Samsung и Xerox.</li>
+</ul>
+
+<p>Если драйвер не находится автоматически, попробуйте загрузить его вручную через веб-интерфейс CUPS в разделе "Add Printer". Вам потребуется выбрать модель из списка или загрузить PPD-файл.</p>
+
+<details class="pb-accordion"><summary>Что делать, если принтер печатает "кракозябры"?</summary><div class="pb-accordion-body"><p>Это означает, что принтер получает данные в неверном формате. Скорее всего, выбран неправильный драйвер или язык описания страницы. Попробуйте сменить драйвер на универсальный PCL или PostScript в настройках очереди печати.</p></div></details>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Производитель</th>
+<th>Рекомендуемый пакет/драйвер</th>
+<th>Сложность настройки</th>
+<th>Совместимость</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hewlett-Packard</td>
+<td>HPLIP (hplip)</td>
+<td>Низкая</td>
+<td>Отличная</td>
+</tr>
+<tr>
+<td>Epson</td>
+<td>escpr / Goodprinting</td>
+<td>Средняя</td>
+<td>Хорошая</td>
+</tr>
+<tr>
+<td>Canon</td>
+<td>cnijfilter / CUPS-PDF</td>
+<td>Средняя</td>
+<td>Хорошая</td>
+</tr>
+<tr>
+<td>Xerox/Samsung</td>
+<td>foo2zjs / splix</td>
+<td>Высокая</td>
+<td>Зависит от модели</td>
+</tr>
+<tr>
+<td>Brother</td>
+<td>Brother LPR / CUPS</td>
+<td>Средняя</td>
+<td>Отличная</td>
+</tr>
+</tbody>
+</table></div>
+
+<h2 id="оптимизация-работы-и-безопасность">Оптимизация работы и безопасность</h2>
+
+<p>После успешной настройки важно обеспечить стабильность работы системы. Настройте автоматический запуск службы печати при загрузке системы, чтобы принтер был доступен сразу после включения сервера. Также стоит настроить логирование ошибок для быстрого выявления проблем.</p>
+
+<p>Безопасность сети — критический аспект. Не открывайте порт 631 для доступа из интернета без необходимости. Ограничьте доступ к сервису печати только доверенными подсетями и установите надежные пароли для административного интерфейса CUPS.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Не оставляйте веб-интерфейс CUPS открытым без пароля в публичной сети. Злоумышленники могут использовать его для загрузки вредоносных заданий или для атак на вашу локальную сеть.</p>
+</blockquote>
+
+<p>Для повышения производительности на слабых устройствах (например, Raspberry Pi 1) можно отключить ненужные функции, такие как преобразование PDF в изображения, если принтер поддерживает нативные форматы.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Регулярно обновляйте пакет CUPS и драйверы, чтобы получить исправления уязвимостей и поддержку новых моделей принтеров, которые могут выйти в будущем.</p></aside>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильная настройка прав доступа и выбор подходящего драйвера — залог стабильной работы вашего кастомного принт-сервера.</p></aside>
+
+<h2 id="частые-вопросы-при-создании-принт-сервера">Частые вопросы при создании принт-сервера</h2>
+
+<p>В процессе настройки у пользователей часто возникают вопросы, связанные с совместимостью и спецификой работы сервисов. Ниже приведены ответы на наиболее популярные из них.</p>
+
+<details>
+<summary>Можно ли печатать с мобильных устройств на самодельный сервер?</summary>
+<p>Да, если сервер поддерживает протокол AirPrint (для iOS) или Mopria (для Android). В CUPS это достигается включением опции "Browse Local Protocols" и правильным описанием принтера. На Raspberry Pi это делается установкой пакета <code>avahi-daemon</code>.</p>
+</details>
+
+<details>
+<summary>Почему принтер не виден в сети после перезагрузки сервера?</summary>
+<p>Вероятно, IP-адрес изменился. Настройте статический IP-адрес для вашего сервера печати в настройках роутера или в самой операционной системе, чтобы он всегда был доступен по одному и тому же адресу.</p>
+</details>
+
+<details>
+<summary>Как настроить приоритеты печати для разных пользователей?</summary>
+<p>В интерфейсе CUPS можно настроить очереди (Queues) с разными приоритетами. Вы можете создать отдельную очередь для VIP-пользователей или срочных задач, установив ей более высокий приоритет в свойствах очереди.</p>
+</details>
+
+<details>
+<summary>Работает ли это решение для цветных струйных принтеров?</summary>
+<p>Да, принцип работы одинаков для лазерных и струйных устройств. Главное — убедиться, что драйвер корректно обрабатывает цветные данные и что пропускная способность USB-подключения достаточна для передачи больших объемов цветных изображений.</p>
+</details>
+
+<details>
+<summary>Нужен ли постоянный доступ к интернету для работы сервера?</summary>
+<p>Нет, для локальной печати интернет не требуется. Сервер работает внутри вашей локальной сети. Интернет нужен только для первоначальной загрузки драйверов и обновлений системы.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/printery-i-periferiya/p/pr/printer-canon-mg3040-migaet-indikator-molniya.html" class="pb-related-card">
+                <span class="pb-related-title">Принтер Canon MG3040 мигает индикатор молния: причины и ремонт</span>
+                <span class="pb-related-desc">Почему мигает индикатор молния на Canon MG3040? Полный гид по устранению ошибок питания, сбросу наст</span>
+            </a><a href="/printery-i-periferiya/p/pr/pri-raspechatke-na-printere-poyavlyayutsya-polosy-kak-ispravit.html" class="pb-related-card">
+                <span class="pb-related-title">Полосы на принтере: как убрать черные и цветные полосы при печати</span>
+                <span class="pb-related-desc">Узнайте, как исправить полосы на принтере. Проверка картриджей, очистка дюз и головки, замена фотоба</span>
+            </a><a href="/printery-i-periferiya/s/sc/scx-4200-net-tonera.html" class="pb-related-card">
+                <span class="pb-related-title">Samsung SCX-4200 нет тонера: решение проблемы мигания индикатора</span>
+                <span class="pb-related-desc">Мигает индикатор «нет тонера» на Samsung SCX-4200? Узнайте, как сбросить чип, проверить картридж и у</span>
+            </a><a href="/printery-i-periferiya/m/mi/mikrofon-podklyuchen-no-menya-ne-slyshno.html" class="pb-related-card">
+                <span class="pb-related-title">Микрофон подключен, но меня не слышно: 7 причин и решение</span>
+                <span class="pb-related-desc">Почему микрофон подключен, но не работает? Полный гайд по диагностике: проверка драйверов, настроек </span>
+            </a><a href="/printery-i-periferiya/k/ka/kak-iz-printera-vytashchit-zastryavshuyu-bumagu-pantum.html" class="pb-related-card">
+                <span class="pb-related-title">Как вытащить застрявшую бумагу из принтера Pantum: пошагово</span>
+                <span class="pb-related-desc">Подробная инструкция по устранению замятия бумаги в принтерах Pantum. Как безопасно извлечь лист, оч</span>
+            </a><a href="/printery-i-periferiya/p/pr/printer-ne-vidit-kartridzh-canon.html" class="pb-related-card">
+                <span class="pb-related-title">Принтер Canon не видит картридж: причины, чипы и решение</span>
+                <span class="pb-related-desc">Почему принтер Canon не видит картридж? Разбор причин, ремонт чипов, чистка контактов и переустановк</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

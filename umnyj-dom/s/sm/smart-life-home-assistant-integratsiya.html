@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Интеграция Smart Life и Home Assistant: Полное руководство — Техно Гид</title>
+    <meta name="description" content="Настройка интеграции Tuya/Smart Life в Home Assistant. Разбор методов, решение проблем с облаком, создание автоматизаций и управление устройствами без задержек.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/s/sm/smart-life-home-assistant-integratsiya.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Интеграция Smart Life и Home Assistant: Полное руководство">
+    <meta property="og:description" content="Настройка интеграции Tuya/Smart Life в Home Assistant. Разбор методов, решение проблем с облаком, создание автоматизаций и управление устройствами без задержек.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Интеграция Smart Life и Home Assistant: Полное руководство</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-экосистему-умного-дома">Введение в экосистему умного дома</a></li><li><a href="#сравнение-методов-интеграции-облако-против-локального-подключения">Сравнение методов интеграции: Облако против Локального подключения</a></li><li><a href="#подготовка-облачной-интеграции-tuya">Подготовка облачной интеграции Tuya</a></li><li><a href="#пошаговая-настройка-интеграции-local-tuya">Пошаговая настройка интеграции Local Tuya</a></li><li><a href="#таблица-соответствия-типов-устройств-и-ключевых-параметров">Таблица соответствия типов устройств и ключевых параметров</a></li><li><a href="#решение-проблем-с-подключением-и-сбоями">Решение проблем с подключением и сбоями</a></li><li><a href="#создание-эффективных-автоматизаций">Создание эффективных автоматизаций</a></li><li><a href="#безопасность-и-частые-вопросы">Безопасность и частые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/c/ch/chto-takoe-protokol-zigbee-v-yandeks.html">Zigbee в Яндекс Станции: как работает и зачем нужен</a></li><li><a href="/umnyj-dom/o/ot/otzyvy-yandeks-stantsiya-maks.html">Яндекс Станция Макс: честные отзывы владельцев о звуке и умном доме</a></li><li><a href="/umnyj-dom/k/ka/kak-podklyuchit-svet-k-yandeks-stantsii.html">Как подключить свет к Яндекс Станции: полное руководство по настройке</a></li><li><a href="/umnyj-dom/s/sk/skolko-dlitsya-utro-den-vecher-noch.html">Сколько длится утро, день, вечер и ночь: астрономия и биология</a></li><li><a href="/umnyj-dom/k/ka/kak-obnovit-yandeks-stantsiyu.html">Как обновить Яндекс Станцию: полное руководство по разным моделям</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Интеграция Smart Life и Home Assistant: Полный гид по настройке</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-экосистему-умного-дома">Введение в экосистему умного дома</a></li><li><a href="#сравнение-методов-интеграции-облако-против-локального-подключения">Сравнение методов интеграции: Облако против Локального подключения</a></li><li><a href="#подготовка-облачной-интеграции-tuya">Подготовка облачной интеграции Tuya</a></li><li><a href="#пошаговая-настройка-интеграции-local-tuya">Пошаговая настройка интеграции Local Tuya</a></li><li><a href="#таблица-соответствия-типов-устройств-и-ключевых-параметров">Таблица соответствия типов устройств и ключевых параметров</a></li><li><a href="#решение-проблем-с-подключением-и-сбоями">Решение проблем с подключением и сбоями</a></li><li><a href="#создание-эффективных-автоматизаций">Создание эффективных автоматизаций</a></li><li><a href="#безопасность-и-частые-вопросы">Безопасность и частые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-экосистему-умного-дома">Введение в экосистему умного дома</h2>
+
+<p>Современный <strong>умный дом</strong> требует централизованного управления, и единственной платформой, способной объединить разрозненные гаджеты, является <em>Home Assistant</em>. Пользователи часто сталкиваются с необходимостью подключить тысячи доступных на рынке устройств, работающих через протоколы Tuya или <em>Smart Life</em>, к локальному серверу.</p>
+
+<p>Интеграция <strong>Smart Life</strong> в <em>Home Assistant</em> открывает доступ к огромному спектру оборудования: от умных розеток до сложных систем освещения. Однако процесс настройки имеет свои нюансы, которые могут вызвать трудности у новичков. В этой статье мы разберем все доступные методы подключения и способы устранения распространенных ошибок.</p>
+
+<p>Важно понимать, что интеграция может быть реализована через облачный API или локальный протокол. Выбор стратегии напрямую влияет на скорость реакции устройств и их работоспособность при отключении интернета. <em>Локальное управление</em> является приоритетным для энтузиастов, стремящихся к полной независимости.</p>
+
+<h2 id="сравнение-методов-интеграции-облако-против-локального-подключения">Сравнение методов интеграции: Облако против Локального подключения</h2>
+
+<p>Перед началом настройки необходимо выбрать подходящий метод. Первый вариант — использование официальной интеграции через облачный сервис <code>Tuya IoT Platform</code>. Этот способ прост в реализации, но имеет существенный недостаток: команды проходят через сервера в Китае или США, что создает задержки.</p>
+
+<p>Второй, более продвинутый метод — интеграция <strong>Local Tuya</strong>. Она позволяет управлять устройствами напрямую через локальную сеть, минуя внешние сервера. Это обеспечивает мгновенный отклик и работает даже при отсутствии интернета. Однако данный метод требует получения уникальных <code>Local Key</code> для каждого устройства.</p>
+
+<p>Существует и третий вариант — использование <em>MQTT</em> прошивок (Tasmota/ESPHome), но он предполагает перепрошивку устройств, что доступно далеко не всем. Для большинства пользователей оптимальным решением будет комбинация облачной интеграции для сложных датчиков и локальной — для исполнительных механизмов.</p>
+
+<p><strong>Скорость отклика</strong> при использовании облачного метода может составлять до 2-3 секунд, тогда как локальное подключение сокращает этот показатель до миллисекунд. Выбор зависит от ваших приоритетов: простота настройки или максимальная производительность системы.</p>
+
+<div class="pb-poll" id="poll-0965f0d9"><div class="pb-poll-question">📊 Какой метод интеграции вы предпочитаете?</div><div class="pb-poll-option" data-poll="0965f0d9" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Облачный (Tuya Cloud)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0965f0d9" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Локальный (Local Tuya)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0965f0d9" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">ESPHome/Tasmota</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0965f0d9" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Не знаю, что выбрать</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="подготовка-облачной-интеграции-tuya">Подготовка облачной интеграции Tuya</h2>
+
+<p>Если вы выбираете облачный метод, вам необходимо зарегистрироваться в <code>Tuya IoT Platform</code>. Это не то же самое, что аккаунт в приложении <em>Smart Life</em>. Вам потребуется создать проект типа <code>Smart Home</code> в отдельной консоли разработчика.</p>
+
+<p>После создания проекта необходимо сгенерировать <strong>API Key</strong> и <code>Secret Key</code>. Эти данные понадобятся для авторизации в <em>Home Assistant</em>. Также нужно будет привязать ваш аккаунт <code>Smart Life</code> или <em>Tuya Smart</em> к созданному проекту, чтобы система увидела ваши устройства.</p>
+
+<p>Процесс привязки аккаунта часто вызывает вопросы. Вам будет предложено выбрать регион сервера. Важно указать тот же регион, где был создан ваш аккаунт при регистрации в приложении. Несоответствие регионов — частая причина ошибки авторизации.</p>
+
+<blockquote>⚠️ Внимание: После генерации ключей API обязательно сохраните их в надежном месте. Повторно получить <code>Secret Key</code> в интерфейсе менеджера облака невозможно, придется создавать новый проект.</blockquote>
+
+<p>Иногда возникает проблема с привязкой аккаунта, когда система не находит устройства. Это часто случается, если устройства были добавлены через приложение <em>Smart Life</em>, а проект создан в консоли <code>Tuya IoT</code> без корректной настройки API-интеграции. Проверьте, включена ли опция <code>Link Tuya App Account</code>.</p>
+
+<details class="pb-accordion"><summary>Частые ошибки при привязке аккаунта</summary><div class="pb-accordion-body"><p>Ошибка 1: Выбран неверный регион (например, Европа вместо США). Ошибка 2: API не имеет прав на чтение/запись. Ошибка 3: Аккаунт Smart Life уже привязан к другому проекту (нужен новый аккаунт).</p></div></details>
+
+<h2 id="пошаговая-настройка-интеграции-local-tuya">Пошаговая настройка интеграции Local Tuya</h2>
+
+<p>Для настройки <strong>Local Tuya</strong> сначала установите соответствующее дополнение или интеграцию через HACS (Home Assistant Community Store). Это популярный способ расширения функционала <em>Home Assistant</em> без вмешательства в системные файлы.</p>
+
+<p>Вам понадобится получить уникальный <code>Local Key</code> для каждого устройства. Сделать это можно через несколько инструментов, например, <code>tuya-convert</code> или специализированные веб-скрипты, если вы не хотите перепрошивать девайсы. Ключ — это 16-символьная строка, которая шифрует локальное взаимодействие.</p>
+
+<p>После получения ключей запустите процесс добавления устройства в интеграции <em>Local Tuya</em>. Введите <code>IP-адрес</code> устройства, <code>Local Key</code> и выберите тип устройства из списка. Система автоматически определит доступные <strong>DPs (Data Points)</strong> — точки данных, которыми можно управлять.</p>
+
+<p>Важно правильно сопоставить функции. Например, для умной лампочки нужно переименовать DPs в понятные названия, такие как <code>power</code>, <code>brightness</code> или <code>color_temp</code>. Без правильной настройки имя сущности в интерфейсе будет выглядеть как <code>Dp 1</code>, что неудобно для управления.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Настройка Local Tuya</h4><label class="check-item"><input type="checkbox"><span>Установить HACS</span></label><label class="check-item"><input type="checkbox"><span>Получить Local Key для устройства</span></label><label class="check-item"><input type="checkbox"><span>Добавить интеграцию в Home Assistant</span></label><label class="check-item"><input type="checkbox"><span>Ввести IP и ключ</span></label><label class="check-item"><input type="checkbox"><span>Сопоставить DPs с функциями</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="таблица-соответствия-типов-устройств-и-ключевых-параметров">Таблица соответствия типов устройств и ключевых параметров</h2>
+
+<p>Понимание того, какие типы устройств поддерживают локальное управление, критически важно. Не все гаджеты <em>Smart Life</em> имеют локальный протокол. Ниже приведена таблица с основными характеристиками популярных девайсов.</p>
+
+<div class="pb-table-wrap"><table>
+ <thead>
+  <tr>
+   <th>Тип устройства</th>
+   <th>Поддержка локального режима</th>
+   <th>Требования к сети</th>
+   <th>Примечание</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>Умная розетка (Wi-Fi)</td>
+   <td>Полная поддержка</td>
+   <td>2.4 ГГц</td>
+   <td>Работает стабильно без облака</td>
+  </tr>
+  <tr>
+   <td>Умная лампочка (RGB)</td>
+   <td>Частичная поддержка</td>
+   <td>2.4 ГГц</td>
+   <td>Цветовые переходы могут требовать облака</td>
+  </tr>
+  <tr>
+   <td>Датчик движения (Zigbee)</td>
+   <td>Только через шлюз</td>
+   <td>Zigbee Gateway</td>
+   <td>Требует локального шлюза Tuya</td>
+  </tr>
+  <tr>
+   <td>Умный выключатель (Wi-Fi)</td>
+   <td>Полная поддержка</td>
+   <td>2.4 ГГц</td>
+   <td>Необходимо настроить режим переключателя</td>
+  </tr>
+ </tbody>
+</table></div>
+
+<p>Обратите внимание, что устройства, работающие по протоколу <strong>Zigbee</strong>, требуют наличия локального шлюза, который транслирует их сигнал в Wi-Fi сеть. Без такого шлюза интеграция <em>Local Tuya</em> для них невозможна, и придется полагаться на облачный метод.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>При настройке выключателей обязательно укажите, является ли устройство однополюсным или двухполюсным, так как это влияет на логику работы нейтрального провода и доступные сценарии.</p></aside>
+
+<h2 id="решение-проблем-с-подключением-и-сбоями">Решение проблем с подключением и сбоями</h2>
+
+<p>Одной из самых распространенных проблем является потеря связи с устройствами через некоторое время после настройки. Это часто связано с тем, что <code>IP-адрес</code> устройства изменился. Для решения этой проблемы необходимо настроить статический IP-адрес для каждого гаджета в роутере.</p>
+
+<p>Другая частая ошибка — <strong>ошибка аутентификации</strong> при использовании <code>Local Key</code>. Если вы перепрошивали устройство или сбрасывали настройки, ключ мог измениться. В этом случае потребуется заново извлечь актуальный <code>Local Key</code> для восстановления связи.</p>
+
+<p>Иногда интеграция перестает обновлять статусы. Это может быть вызвано блокировкой портов на роутере или фаерволе. Убедитесь, что порты <code>6666</code>, <code>6667</code>, <code>6668</code> и <code>6669</code> открыты для локальной сети, так как они используются протоколом Tuya для передачи данных.</p>
+
+<blockquote>⚠️ Внимание: Если вы используете роутер с функцией <code>AP Isolation</code> (изоляция клиентов), устройства не смогут связываться с сервером <em>Home Assistant</em>. Отключите эту функцию в настройках беспроводной сети.</blockquote>
+
+<p>В редких случаях помогает полное удаление интеграции и повторное создание с новыми данными. Перед этим обязательно сделайте резервную копию конфигурации, чтобы не потерять сложные автоматизации, привязанные к сущностям.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Статический IP-адрес — это фундамент стабильной работы локальной интеграции. Без него устройства будут постоянно теряться при перезагрузке роутера.</p></aside>
+
+<h2 id="создание-эффективных-автоматизаций">Создание эффективных автоматизаций</h2>
+
+<p>После успешной интеграции откроются широкие возможности для создания сценариев. Вы можете использовать <strong>автоматизации</strong> для реагирования на события. Например, включение света при срабатывании датчика движения или изменение цвета ламп в зависимости от времени суток.</p>
+
+<p>Интеграция позволяет использовать <code>DP</code> состояния как триггеры. Это означает, что вы можете запустить сценарий не только по изменению статуса "вкл/выкл", но и, например, по изменению уровня заряда батареи датчика или значения температуры.</p>
+
+<p>Для продвинутых пользователей доступна интеграция с <em>Node-RED</em>. Визуальное программирование позволяет создавать сложные логические цепочки, которые трудно реализовать стандартным редактором <em>Home Assistant</em>. Это особенно полезно для управления климатом или безопасностью.</p>
+
+<p>Важно тестировать автоматизации в режиме реального времени. Используйте логирование событий, чтобы убедиться, что триггер срабатывает корректно. Ошибки в логике могут привести к тому, что свет будет включаться бесконечно или не реагировать на команды.</p>
+
+<details class="pb-accordion"><summary>Пример сложной автоматизации</summary><div class="pb-accordion-body"><p> Если датчик движения сработал ночью (с 23:00 до 06:00), включить свет на 10% яркости. Если сработал днем — включить на 100%. Если в комнате никого нет 5 минут — выключить свет.</p></div></details>
+
+<h2 id="безопасность-и-частые-вопросы">Безопасность и частые вопросы</h2>
+
+<p>Безопасность локальных устройств остается важным аспектом. Хотя <code>Local Tuya</code> работает внутри вашей сети, рекомендуется использовать сложные пароли и разбивать сеть на сегменты (VLAN). Это защитит умные устройства от потенциальных атак извне, если они скомпрометируют сеть.</p>
+
+<p>Некоторые пользователи опасаются, что производители <em>Tuya</em> будут собирать данные даже при локальном режиме. На самом деле, при корректной настройке Data Points передаются только внутри вашей LAN, и облако не участвует в обмене данными, если только это не требуется для специфических функций.</p>
+
+<p>Если вы решите обновить прошивку устройства, будьте предельно осторожны. Обновление может сбросить <code>Local Key</code> и сделать локальное управление невозможным до повторной настройки. Всегда проверяйте совместимость прошивки перед установкой.</p>
+
+<blockquote>⚠️ Внимание: При обновлении прошивки через приложение <em>Smart Life</em> ключ <code>Local Key</code> сбрасывается. Вам придется заново извлекать его и обновлять конфигурацию в <em>Home Assistant</em> вручную.</blockquote>
+
+<p>Наконец, помните, что сообщество постоянно развивает интеграции. Следите за обновлениями HACS и форумами, так как новые методы могут сделать процесс настройки еще проще и быстрее. Обновляемые материалы всегда доступна в документации проекта.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Регулярное резервное копирование конфигурации Home Assistant спасет вас от потери всех настроек в случае сбоя или ошибки при обновлении системы.</p></aside>
+
+<details>
+ <summary>Как получить Local Key для устройства без перепрошивки?</summary>
+ <p>Для получения Local Key можно использовать инструмент <code>tuya-convert</code> или веб-сервисы, которые требуют входа в ваш облачный аккаунт Tuya. После авторизации сервис покажет список устройств и их ключи. Также существуют специальные приложения для Android, способные перехватывать ключи при добавлении нового устройства.</p>
+</details>
+
+<details>
+ <summary>Почему интеграция Local Tuya не видит мое устройство?</summary>
+ <p>Скорее всего, устройство не находится в одной подсети с сервером Home Assistant или на роутере включена изоляция клиентов. Проверьте, что IP-адрес устройства находится в том же диапазоне, что и адрес вашего сервера, и что порт 6666 открыт.</p>
+</details>
+
+<details>
+ <summary>Можно ли управлять устройствами Tuya через Home Assistant без интернета?</summary>
+ <p>Да, при использовании интеграции Local Tuya управление полностью локальное. Интернет не требуется, если только вы не используете внешние облачные сервисы (например, Google Home или Alexa) для голосового управления извне дома.</p>
+</details>
+
+<details>
+ <summary>Что делать, если датчик перестал отправлять данные?</summary>
+ <p>Проверьте заряд батареи, так как многие датчики переходят в спящий режим. Если батарея в порядке, возможно, устройство потеряло связь с шлюзом. Попробуйте переключить устройство в режим сопряжения и снова добавить его в сеть, обновив Local Key.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/c/ch/chto-takoe-protokol-zigbee-v-yandeks.html" class="pb-related-card">
+                <span class="pb-related-title">Zigbee в Яндекс Станции: как работает и зачем нужен</span>
+                <span class="pb-related-desc">Полный гайд по протоколу Zigbee в экосистеме Яндекса. Выбор хаба, подключение датчиков, настройка сц</span>
+            </a><a href="/umnyj-dom/o/ot/otzyvy-yandeks-stantsiya-maks.html" class="pb-related-card">
+                <span class="pb-related-title">Яндекс Станция Макс: честные отзывы владельцев о звуке и умном доме</span>
+                <span class="pb-related-desc">Подробный обзор Яндекс Станция Макс на основе отзывов пользователей. Плюсы, минусы, настройка звука,</span>
+            </a><a href="/umnyj-dom/k/ka/kak-podklyuchit-svet-k-yandeks-stantsii.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить свет к Яндекс Станции: полное руководство по настройке</span>
+                <span class="pb-related-desc">Пошаговая инструкция: как подключить умный свет к Яндекс Станции, настроить сценарии и голосовое упр</span>
+            </a><a href="/umnyj-dom/s/sk/skolko-dlitsya-utro-den-vecher-noch.html" class="pb-related-card">
+                <span class="pb-related-title">Сколько длится утро, день, вечер и ночь: астрономия и биология</span>
+                <span class="pb-related-desc">Точная длительность световых частей суток. Разница между астрономическим и бытовым временем. Влияние</span>
+            </a><a href="/umnyj-dom/k/ka/kak-obnovit-yandeks-stantsiyu.html" class="pb-related-card">
+                <span class="pb-related-title">Как обновить Яндекс Станцию: полное руководство по разным моделям</span>
+                <span class="pb-related-desc">Подробная инструкция по обновлению Яндекс Станции и Станции Мини. Разбор автоматических и ручных мет</span>
+            </a><a href="/umnyj-dom/p/po/pochemu-kamera-videonablyudeniya-ne-podklyuchaetsya-k-vaj-faj.html" class="pb-related-card">
+                <span class="pb-related-title">Почему камера не подключается к Wi-Fi: причины и инструкции</span>
+                <span class="pb-related-desc">Разбираем, почему камера видеонаблюдения не видит сеть или отключается. Причины ошибок, настройка ча</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

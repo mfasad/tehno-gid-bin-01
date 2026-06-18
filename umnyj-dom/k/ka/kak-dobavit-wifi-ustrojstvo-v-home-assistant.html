@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как добавить WiFi устройство в Home Assistant: Полное руководство — Техно Гид</title>
+    <meta name="description" content="Пошаговая инструкция по интеграции умных гаджетов через WiFi в Home Assistant. Разбор протоколов ZHA, Zigbee2MQTT и ESPHome для стабильной работы.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/k/ka/kak-dobavit-wifi-ustrojstvo-v-home-assistant.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как добавить WiFi устройство в Home Assistant: Полное руководство">
+    <meta property="og:description" content="Пошаговая инструкция по интеграции умных гаджетов через WiFi в Home Assistant. Разбор протоколов ZHA, Zigbee2MQTT и ESPHome для стабильной работы.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как добавить WiFi устройство в Home Assistant: Полное руководство</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-стратегии-подключения-и-протоколов-связи">Выбор стратегии подключения и протоколов связи</a></li><li><a href="#интеграция-устройств-tuya-и-облачных-сервисов">Интеграция устройств Tuya и облачных сервисов</a></li><li><a href="#локализация-через-tasmota-и-esphome">Локализация через Tasmota и ESPHome</a></li><li><a href="#настройка-сервера-и-конфигурация-mqtt">Настройка сервера и конфигурация MQTT</a></li><li><a href="#таблица-совместимости-популярных-протоколов">Таблица совместимости популярных протоколов</a></li><li><a href="#решение-проблем-с-подключением-и-отладка">Решение проблем с подключением и отладка</a></li><li><a href="#faq-частые-вопросы-по-интеграции">FAQ: Частые вопросы по интеграции</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/v/vs/vstroennyj-khab-upravleniya-zigbee-chto-eto.html">Встроенный хаб управления Zigbee: что это и зачем нужен</a></li><li><a href="/umnyj-dom/n/na/na-chasakh-nol-nol-chto-znachit.html">На часах ноль ноль: тайный смысл, приметы и технические причины</a></li><li><a href="/umnyj-dom/p/po/podklyuchenie-videokamery-naruzhnogo-nablyudeniya-k-telefonu-cherez-wifi.html">Как подключить уличную камеру к телефону через WiFi: инструкция</a></li><li><a href="/umnyj-dom/w/wi/wifi-switch-chto-eto.html">WiFi Switch: что это такое и как работает умный выключатель</a></li><li><a href="/umnyj-dom/k/ka/kak-podelitsya-ustrojstvami-umnogo-doma.html">Как поделиться устройствами умного дома: инструкции и настройки доступа</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Полное руководство по добавлению WiFi устройств в Home Assistant</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-стратегии-подключения-и-протоколов-связи">Выбор стратегии подключения и протоколов связи</a></li><li><a href="#интеграция-устройств-tuya-и-облачных-сервисов">Интеграция устройств Tuya и облачных сервисов</a></li><li><a href="#локализация-через-tasmota-и-esphome">Локализация через Tasmota и ESPHome</a></li><li><a href="#настройка-сервера-и-конфигурация-mqtt">Настройка сервера и конфигурация MQTT</a></li><li><a href="#таблица-совместимости-популярных-протоколов">Таблица совместимости популярных протоколов</a></li><li><a href="#решение-проблем-с-подключением-и-отладка">Решение проблем с подключением и отладка</a></li><li><a href="#faq-частые-вопросы-по-интеграции">FAQ: Частые вопросы по интеграции</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Создание экосистемы умного дома часто начинается с простого вопроса: как связать разрозненные гаджеты в единую сеть управления. <strong>Home Assistant</strong> выступает идеальным центральным узлом, способным объединить тысячи устройств от разных производителей. Однако процесс подключения через беспроводные протоколы, такие как WiFi, имеет свои архитектурные особенности, которые отличают его от проводных или других радиоканальных решений.</p>
+
+<p>Многие пользователи ошибочно полагают, что достаточно просто подключить устройство к роутеру, и оно автоматически появится в системе. На самом деле, интеграция требует правильной настройки <strong>интеграций</strong>, выбора подходящего метода загрузки прошивки и понимания того, как гаджет взаимодействует с сервером автоматизации. В этой статье мы разберем не только базовые шаги, но и глубокие нюансы работы с популярными протоколами.</p>
+
+<h2 id="выбор-стратегии-подключения-и-протоколов-связи">Выбор стратегии подключения и протоколов связи</h2>
+
+<p>Прежде чем приступать к физическому подключению, необходимо определить, какой протокол передачи данных использует ваше устройство. Большинство современных Wi-Fi гаджетов работают по прямому соединению с роутером, но существуют и специализированные решения, требующие промежуточного шлюза. Понимание этого различия критично для планирования архитектуры вашей сети.</p>
+
+<p>Если вы используете устройства с встроенным модулем Wi-Fi, они обычно подключаются напрямую к вашей локальной сети. В этом случае <strong>локальное управление</strong> становится ключевым фактором, так как многие облачные интеграции работают медленно и зависят от интернета. Для стабильной работы без задержек необходимо убедиться, что устройство поддерживает локальные API или протоколы вроде MQTT.</p>
+
+<p>Альтернативный подход подразумевает использование устройств на базе чипов ESP8266 или ESP32. Эти микроконтроллеры позволяют перепрошить гаджеты под уникальные требования системы. <em>Tasmota</em> и <em>ESPHome</em> — это два лидера в этой сфере, превращающие дешевые китайские выключатели в полностью управляемые элементы умного дома с мгновенным откликом.</p>
+
+<p>Особое внимание стоит уделить совместимости протоколов. Некоторые устройства требуют обязательного присутствия облачного шлюза, что создает единую точку отказа. В таких случаях простая замена прошивки может открыть возможность для прямого взаимодействия с сервером.</p>
+
+<blockquote>⚠️ Внимание: Перед началом работы убедитесь, что ваш роутер поддерживает стабильное подключение всех новых устройств. Перегруженная сеть 2.4 ГГц может привести к частым разрывам связи и нестабильности работы умного дома.</blockquote>
+
+<h2 id="интеграция-устройств-tuya-и-облачных-сервисов">Интеграция устройств Tuya и облачных сервисов</h2>
+
+<p>Многие бюджетные умные розетки, лампы и датчики продаются под брендами, работающими в экосистеме <em>Tuya</em> или <em>Smart Life</em>. Первым шагом для них является регистрация в мобильном приложении производителя. Это необходимо для инициализации устройства в облаке и получения уникальных идентификаторов.</p>
+
+<p>После регистрации в приложении необходимо перейти к настройке в <strong>Home Assistant</strong>. Вам потребуется установить официальную интеграцию Tuya или использовать сторонний хаб. В процессе настройки система запросит ключи API, которые формируются через портал разработчиков Tuya. Это позволяет системе общаться с устройствами напрямую, минуя лишние звенья цепочки.</p>
+
+<p>Важно понимать, что облачные интеграции могут работать с задержкой. Если вы не перепрошиваете устройства, они будут отправлять данные через сервера производителя. Это удобно для быстрого старта, но менее надежно при отключении интернета. Для критически важных сценариев лучше рассмотреть вариант локализации.</p>
+
+<p>Существует также метод захвата локального ключа для устройств Tuya, который позволяет управлять ими без облака. Для этого используется специальное приложение на телефоне, которое перехватывает пакетные данные при обновлении устройства. Это сложный, но эффективный способ получить полный контроль над гаджетом.</p>
+
+<blockquote>⚠️ Внимание: При использовании облачных интеграций вы зависите от работоспособности серверов производителя. Если сервис Tuya будет недоступен, управление устройствами через Home Assistant может быть утеряно.</blockquote>
+
+<div class="pb-poll" id="poll-3872c1ea"><div class="pb-poll-question">📊 Выбор метода подключения каких устройств для вас приоритетнее?</div><div class="pb-poll-option" data-poll="3872c1ea" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Облачные (Tuya, Xiaomi)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="3872c1ea" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Локальные (ESPHome)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="3872c1ea" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Шлюзовые (Zigbee)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="3872c1ea" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Смешанный тип</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="локализация-через-tasmota-и-esphome">Локализация через Tasmota и ESPHome</h2>
+
+<p>Для энтузиастов, желающих получить максимальную скорость и независимость, перепрошивка на альтернативное ПО является лучшим решением. <em>Tasmota</em> — это открытое программное обеспечение, которое позволяет превратить любой совместимый Wi-Fi модуль в устройство, управляемое через MQTT. Процесс начинается с поиска правильной веб-версии прошивки для вашей модели.</p>
+
+<p>Процесс прошивки требует подключения устройства к компьютеру через USB-конвертер или использования метода OTA (Over-The-Air). После успешной загрузки прошивки устройство появится в вашей локальной сети с новым IP-адресом. Далее необходимо настроить параметры подключения: имя хоста, пароль от Wi-Fi и адрес брокера <strong>MQTT</strong>.</p>
+
+<p>ESPHome работает немного иначе, интегрируясь прямо в интерфейс Home Assistant. Вы создаете конфигурационный файл, описывающий пины и функции чипа, и система сама компилирует и загружает прошивку. Это делает процесс доступным даже для новичков, так как не требует ручного ввода сложных команд в терминале.</p>
+
+<p>После установки прошивки устройство становится полностью независимым от облачных сервисов. Оно работает локально, реагирует мгновенно и не передает ваши данные третьим лицам. Это идеальный выбор для систем безопасности и автоматизации освещения.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к перепрошивке</h4><label class="check-item"><input type="checkbox"><span>Скачать Tasmota/ESPHome</span></label><label class="check-item"><input type="checkbox"><span>Подключить USB-конвертер</span></label><label class="check-item"><input type="checkbox"><span>Найти распиновку устройства</span></label><label class="check-item"><input type="checkbox"><span>Сканировать сеть на предмет устройства</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>Однако не все устройства поддаются перепрошивке. Некоторые производители жестко блокируют загрузку стороннего ПО или используют уникальные протоколы шифрования. В таких случаях остается только облачный метод или поиск альтернативных моделей.</p>
+
+<p>Для успешной прошивки часто требуется перевести устройство в режим загрузчика. Это делается сочетанием кнопок или перемыканием контактов на плате. Будьте осторожны: неправильные действия могут привести к "окирпичиванию" устройства, если вы не знаете точной схемы.</p>
+
+<details class="pb-accordion"><summary>Что делать, если устройство не определяется при прошивке?</summary><div class="pb-accordion-body"><p>Часто проблема кроется в драйверах USB-конвертера. Попробуйте сменить порт или переустановить драйверы CH340/CP2102. Также проверьте, не заблокирован ли загрузчик на самом устройстве аппаратным способом.</p></div></details>
+
+<h2 id="настройка-сервера-и-конфигурация-mqtt">Настройка сервера и конфигурация MQTT</h2>
+
+<p>Для работы большинства локальных интеграций необходим брокер сообщений. <strong>MQTT</strong> — это легкий протокол обмена сообщениями, который идеально подходит для IoT-устройств. В Home Assistant он реализуется через аддон Mosquitto. Установка этого компонента является фундаментом для работы перепрошитых гаджетов.</p>
+
+<p>После установки брокера необходимо настроить учетные данные: имя пользователя и пароль. Эти данные нужно будет указать в конфигурации каждого устройства. Без правильного подключения к брокеру устройство будет "видеть" сеть, но не сможет обмениваться состояниями с сервером.</p>
+
+<p>Важно настроить сохранение истории состояний. MQTT позволяет устройству отправлять сообщение "retain", которое хранит последнее известное состояние даже после перезагрузки сервера. Это предотвращает ситуации, когда после включения света он возвращается в выключенное состояние из-за отсутствия данных.</p>
+
+<p>Настройка тематик (topics) требует внимательности. Каждая тема должна иметь уникальное название, чтобы сигналы от разных устройств не перекрывали друг друга. Используйте структуру `home/device_name/status` для удобной навигации в логах и отладке.</p>
+
+<p>Иногда возникают проблемы с обнаружением устройств. В этом случае проверьте настройки брандмауэра и убедитесь, что порт 1883 открыт для внутренней сети. Также стоит проверить, что время на сервере и устройствах синхронизировано, так как это критично для работы SSL-соединений.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте статические IP-адреса для всех ключевых устройств умного дома. Это избавит от проблем с подключением при перезагрузке роутера и изменении DHCP-диапазона.</p></aside>
+
+<h2 id="таблица-совместимости-популярных-протоколов">Таблица совместимости популярных протоколов</h2>
+
+<p>Для наглядности сравним основные характеристики различных методов подключения. Это поможет вам выбрать оптимальный вариант в зависимости от типа устройства и ваших требований к скорости работы.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Метод</th>
+<th>Скорость реакции</th>
+<th>Зависимость от Интернета</th>
+<th>Сложность настройки</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Облако (Tuya/Xiaomi)</td>
+<td>Средняя (2-5 сек)</td>
+<td>Полная</td>
+<td>Низкая</td>
+</tr>
+<tr>
+<td>Tasmota (MQTT)</td>
+<td>Мгновенная</td>
+<td>Отсутствует</td>
+<td>Средняя</td>
+</tr>
+<tr>
+<td>ESPHome (Native)</td>
+<td>Мгновенная</td>
+<td>Отсутствует</td>
+<td>Низкая</td>
+</tr>
+<tr>
+<td>Wi-Fi Direct (HA)</td>
+<td>Быстрая</td>
+<td>Частичная</td>
+<td>Средняя</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Как видно из таблицы, локальные решения значительно выигрывают по скорости и надежности. Однако они требуют больше времени на первоначальную настройку. Если вам нужна быстрая автоматизация "здесь и сейчас" без глубокой технической подготовки, облачные интеграции могут быть приемлемым компромиссом.</p>
+
+<p>Для сложных сценариев, таких как сценарии безопасности или управление климатом, задержка в несколько секунд недопустима. В таких случаях использование <strong>Tasmota</strong> или <em>ESPHome</em> становится не просто рекомендацией, а необходимостью. Только прямой обмен данными гарантирует мгновенную реакцию на команды.</p>
+
+<blockquote>⚠️ Внимание: При использовании статических IP-адресов убедитесь, что они не пересекаются с диапазоном раздаваемых роутером. Это может привести к конфликтам адресов и потере связи с устройством.</blockquote>
+
+<h2 id="решение-проблем-с-подключением-и-отладка">Решение проблем с подключением и отладка</h2>
+
+<p>Даже при идеальной настройке иногда возникают сбои. Устройство может исчезать из списка, не отвечать на команды или показывать неверный статус. Первым шагом диагностики является проверка связи через Ping. Если пинг работает, значит физический уровень связей сохранен.</p>
+
+<p>В Home Assistant включите режим отладки для конкретной интеграции. Это позволит увидеть подробные логи передачи данных. Вы сможете определить, отправляет ли устройство сигнал и получает ли он ответ от сервера. Часто проблема кроется в неверно указанном порте или пароле.</p>
+
+<p>Если устройство теряет связь после перезагрузки роутера, проверьте настройки DHCP. Убедитесь, что IP-адрес устройства не меняется. Для этого используйте функцию зарезервирования адреса по MAC-адресу в настройках маршрутизатора.</p>
+
+<p>Иногда проблема заключается в перегрузке сети. Если у вас установлено более 50-100 устройств на одном частотном канале 2.4 ГГц, каналы могут забиваться. Попробуйте разнести устройства по разным каналам или установить второй роутер для расширения покрытия.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Регулярная проверка логов и обновление прошивок — залог стабильной работы умного дома. Игнорирование ошибок в логах часто приводит к внезапным сбоям в критические моменты.</p></aside>
+
+<p>Для продвинутых пользователей доступны инструменты анализа сетевого трафика, такие как Wireshark. Они позволяют увидеть пакеты данных на низком уровне и выявить ошибки протокола. Это мощный инструмент, но требует глубоких знаний сетевых технологий.</p>
+
+<p>Не забывайте о резервном копировании конфигурации. Перед любым серьезным изменением настроек создавайте бэкап. Это спасет вас от долгой повторной настройки в случае неудачи.</p>
+
+<h2 id="faq-частые-вопросы-по-интеграции">FAQ: Частые вопросы по интеграции</h2>
+
+<details>
+<summary>Можно ли добавить устройство без интернета после перепрошивки?</summary>
+<p>Да, после перепрошивки на Tasmota или ESPHome устройство работает полностью локально. Интернет нужен только для первоначальной загрузи прошивки и настройки Wi-Fi, далее связь осуществляется через локальную сеть.</p>
+</details>
+
+<details>
+<summary>Почему Home Assistant не видит мое устройство через MQTT?</summary>
+<p>Чаще всего это связано с неправильными настройками брокера или неверным названием темы. Проверьте, совпадают ли настройки подключения в устройстве и в Home Assistant. Убедитесь, что браузер устройства и сервер находятся в одной подсети.</p>
+</details>
+
+<details>
+<summary>Нужен ли специальный роутер для умного дома?</summary>
+<p>Необязательно, но роутер с поддержкой нескольких каналов Wi-Fi и хорошей пропускной способностью значительно повысит стабильность. Для больших систем (более 50 устройств) рекомендуется использовать Mesh-системы или профессиональное оборудование.</p>
+</details>
+
+<details>
+<summary>Как обновить прошивку устройства, уже работающего в сети?</summary>
+<p>В Tasmota и ESPHome используется механизм OTA (Over-The-Air). Вы загружаете новый файл прошивки через веб-интерфейс устройства или через интерфейс Home Assistant, и обновление происходит по воздуху без необходимости физического подключения.</p>
+</details>
+
+<details>
+<summary>Что делать, если устройство зависло после перепрошивки?</summary>
+<p>Если устройство не отвечает, попробуйте перезагрузить его вручную. Если проблема не устранена, возможно, прошивка не подошла по версии железа. Вам потребуется подключить устройство к компьютеру через USB и прошить его заново в режиме загрузчика.</p>
+</details>
+
+<p>Интеграция устройств в <strong>Home Assistant</strong> открывает безграничные возможности для автоматизации быта. Главное — правильно выбрать метод подключения и уделить время настройке сети. Это обеспечит стабильную работу вашей системы на долгие годы.</p>
+
+<p>Помните, что каждый шаг настройки влияет на общую надежность. Не спешите и тщательно проверяйте каждый параметр. Только так вы сможете создать по-настоящему умный и отзывчивый дом, который будет служить вам верой и правдой.</p></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/v/vs/vstroennyj-khab-upravleniya-zigbee-chto-eto.html" class="pb-related-card">
+                <span class="pb-related-title">Встроенный хаб управления Zigbee: что это и зачем нужен</span>
+                <span class="pb-related-desc">Подробный разбор встроенного хаба Zigbee. Зачем он нужен, какие устройства поддерживает и как работа</span>
+            </a><a href="/umnyj-dom/n/na/na-chasakh-nol-nol-chto-znachit.html" class="pb-related-card">
+                <span class="pb-related-title">На часах ноль ноль: тайный смысл, приметы и технические причины</span>
+                <span class="pb-related-desc">Что значит видеть время 00:00? Полный разбор эзотерического значения, нумерологии и технических прич</span>
+            </a><a href="/umnyj-dom/p/po/podklyuchenie-videokamery-naruzhnogo-nablyudeniya-k-telefonu-cherez-wifi.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить уличную камеру к телефону через WiFi: инструкция</span>
+                <span class="pb-related-desc">Полная настройка IP-камеры наружного наблюдения. Подключение к смартфону, маршрутизатору, выбор прил</span>
+            </a><a href="/umnyj-dom/w/wi/wifi-switch-chto-eto.html" class="pb-related-card">
+                <span class="pb-related-title">WiFi Switch: что это такое и как работает умный выключатель</span>
+                <span class="pb-related-desc">Разбираем, что такое WiFi выключатель, как он работает без хаба, плюсы и минусы smart-устройств. Пол</span>
+            </a><a href="/umnyj-dom/k/ka/kak-podelitsya-ustrojstvami-umnogo-doma.html" class="pb-related-card">
+                <span class="pb-related-title">Как поделиться устройствами умного дома: инструкции и настройки доступа</span>
+                <span class="pb-related-desc">Подробная инструкция по настройке общего доступа к гаджетам умного дома. Узнайте, как добавить семью</span>
+            </a><a href="/umnyj-dom/k/ka/kak-pochinit-robot-pylesos-xiaomi.html" class="pb-related-card">
+                <span class="pb-related-title">Ремонт робота-пылесоса Xiaomi: неисправности и починка</span>
+                <span class="pb-related-desc">Как починить робот-пылесос Xiaomi своими руками. Разбор ошибок, замена деталей, сброс Wi-Fi и чистка</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

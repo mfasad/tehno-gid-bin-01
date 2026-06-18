@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Прошивка Wemos D1 Mini: Полное руководство по Flash и настройке — Техно Гид</title>
+    <meta name="description" content="Узнайте, как правильно прошить Wemos D1 Mini. Обзор прошивок ESPHome, Tasmota, Arduino. Инструкция по миганию, выбору COM-порта и устранению ошибок.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/w/we/wemos-d1-mini-proshivka.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Прошивка Wemos D1 Mini: Полное руководство по Flash и настройке">
+    <meta property="og:description" content="Узнайте, как правильно прошить Wemos D1 Mini. Обзор прошивок ESPHome, Tasmota, Arduino. Инструкция по миганию, выбору COM-порта и устранению ошибок.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Прошивка Wemos D1 Mini: Полное руководство по Flash и настройке</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-программного-обеспечения-для-микроконтроллера">Выбор программного обеспечения для микроконтроллера</a></li><li><a href="#необходимое-оборудование-и-подготовка-драйверов">Необходимое оборудование и подготовка драйверов</a></li><li><a href="#процесс-прошивки-через-arduino-ide">Процесс прошивки через Arduino IDE</a></li><li><a href="#установка-готовых-прошивок-esphome-и-tasmota">Установка готовых прошивок ESPHome и Tasmota</a></li><li><a href="#особенности-работы-с-режимами-flash-памяти">Особенности работы с режимами Flash памяти</a></li><li><a href="#техника-безопасности-и-устранение-неисправностей">Техника безопасности и устранение неисправностей</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/m/mi/mijia-pure-humidifier-3.html">Mijia Pure Humidifier 3: обзор, настройка и особенности</a></li><li><a href="/umnyj-dom/c/ch/chajnik-polaris-pwk-1712cgld-wi-fi-iq-home.html">Polaris PWK 1712CGLD Wi-Fi IQ Home: обзор, настройка и управление</a></li><li><a href="/umnyj-dom/s/sh/shampun-dlya-robota-pylesosa-xiaomi.html">Шампунь для робота-пылесоса Xiaomi: выбор, пропорции, ошибки</a></li><li><a href="/umnyj-dom/p/po/pochemu-mozhet-ne-rabotat-kolonka-alisa.html">Почему не работает Алиса: причины и решения | Яндекс</a></li><li><a href="/umnyj-dom/s/se/sensornyj-vyklyuchatel-sveta-skhema-podklyucheniya-220.html">Сенсорный выключатель света: схема подключения 220В и настройка</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Полное руководство по прошивке Wemos D1 Mini: Выбор, установка и настройка</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-программного-обеспечения-для-микроконтроллера">Выбор программного обеспечения для микроконтроллера</a></li><li><a href="#необходимое-оборудование-и-подготовка-драйверов">Необходимое оборудование и подготовка драйверов</a></li><li><a href="#процесс-прошивки-через-arduino-ide">Процесс прошивки через Arduino IDE</a></li><li><a href="#установка-готовых-прошивок-esphome-и-tasmota">Установка готовых прошивок ESPHome и Tasmota</a></li><li><a href="#особенности-работы-с-режимами-flash-памяти">Особенности работы с режимами Flash памяти</a></li><li><a href="#техника-безопасности-и-устранение-неисправностей">Техника безопасности и устранение неисправностей</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Платформа <em>Wemos D1 Mini</em> представляет собой один из самых популярных микроконтроллеров для создания устройств интернета вещей (IoT) благодаря своей компактности и доступности. Однако сам по себе этот модуль — лишь «чистый лист», требующий загрузки программного обеспечения для выполнения конкретных задач. Процесс загрузки кода, или <strong>прошивка</strong>, является фундаментальным этапом, определяющим функциональность вашего будущего умного устройства.</p>
+
+<p>Многие новички сталкиваются с трудностями на этапе выбора подходящей среды разработки или правильной последовательности действий при записи бинарного файла. Вам предстоит разобраться, что лучше использовать: готовую прошивку <em>Tasmota</em> или <em>ESPHome</em>, либо писать собственный код на базе <strong>Arduino IDE</strong>. Каждое из этих решений имеет свои преимущества и требует специфического подхода к настройке.</p>
+
+<h2 id="выбор-программного-обеспечения-для-микроконтроллера">Выбор программного обеспечения для микроконтроллера</h2>
+
+<p>Перед тем как начать записывать данные во флеш-память устройства, необходимо четко определиться с целью использования <em>Wemos D1 Mini</em>. Если ваша задача — быстрое создание датчиков температуры или влажности, которые будут управляться через Home Assistant, идеальным выбором станет <strong>ESPHome</strong>. Эта платформа позволяет описывать конфигурацию устройства в простом YAML-файле, а сама компиляция и прошивка происходят автоматически.</p>
+
+<p>Для более сложных сценариев, требующих кастомизации протоколов связи или работы с нестандартным оборудованием, профессионалы часто отдают предпочтение <em>Tasmota</em>. Это готовая операционная система с веб-интерфейсом, которая поддерживает множество протоколов и имеет огромное сообщество разработчиков. Если же вам нужны уникальные алгоритмы, никто не мешает написать собственный скетч в <strong>Arduino IDE</strong>, используя библиотеки для платформы ESP8266.</p>
+
+<p>Важно понимать, что выбор прошивки определяет и способ взаимодействия с устройством в будущем. <em>ESPHome</em> интегрируется нативно в экосистему Home Assistant, тогда как <em>Tasmota</em> требует настройки MQTT или REST API. Ошибиться с выбором на старте сложно, так как процесс перепрошивки обычно не требует паяльника, если вы используете правильный кабель.</p>
+
+<blockquote>⚠️ Внимание: Убедитесь, что выбранная вами версия прошивки поддерживает конкретную ревизию чипа на вашей плате <em>Wemos D1 Mini</em>, так как старые версии могут не работать с новыми ревизиями Wi-Fi модулей.</blockquote>
+
+<div class="pb-poll" id="poll-f9e0f3bc"><div class="pb-poll-question">📊 Какую прошивку вы планируете использовать на Wemos D1 Mini?</div><div class="pb-poll-option" data-poll="f9e0f3bc" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Tasmota</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="f9e0f3bc" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">ESPHome</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="f9e0f3bc" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Arduino (Свой код)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="f9e0f3bc" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Планирую использовать MQTT напрямую</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="необходимое-оборудование-и-подготовка-драйверов">Необходимое оборудование и подготовка драйверов</h2>
+
+<p>Физическое подключение <em>Wemos D1 Mini</em> к компьютеру осуществляется через стандартный разъем micro-USB. Однако ключевым моментом здесь является не сам кабель, а установленные в операционную систему драйверы. Без корректных драйверов компьютер не увидит COM-порт, и процесс загрузки станет невозможным.</p>
+
+<p>Большинство копий плат используют чипы-конвертеры USB-UART от производителей CP210x или CH340. Вам нужно скачать и установить драйвер <strong>CP210x</strong> или <strong>CH340</strong> в зависимости от того, какой чип распаян на вашей плате. Проверить наличие устройства можно в «Диспетчере устройств» Windows, где оно должно отображаться как «USB Serial Device» или «USB-to-UART Bridge Controller».</p>
+
+<p>Если устройство не определяется, попробуйте заменить кабель на заведомо рабочий, так как многие дешевые кабели предназначены только для зарядки и не передают данные. Также стоит проверить, не занят ли выбранный порт другим приложением, что часто случается при попытке открыть Serial Monitor в нескольких окнах IDE одновременно.</p>
+
+<blockquote>⚠️ Внимание: Если в диспетчере устройств вы видите «Неизвестное устройство» с желтым восклицательным знаком, драйвер установлен неверно — попробуйте скачать версию, совместимую с вашей архитектурой ОС (x64 или x86).</blockquote>
+
+<h2 id="процесс-прошивки-через-arduino-ide">Процесс прошивки через Arduino IDE</h2>
+
+<p>Если вы выбрали путь самостоятельной разработки, вам потребуется среда <strong>Arduino IDE</strong>. В настройках платы необходимо добавить URL менеджера плат ESP8266 Community. После установки поддержки плат в меню «Tools» вы сможете выбрать <em>LOLIN(WEMOS) D1 R2 & Mini</em>. Это критически важно, так как настройки загрузчика и размеров флеш-памяти для этого модуля специфичны.</p>
+
+<p>После написания кода или открытия примера, нажмите кнопку «Upload» (стрелка вправо). Система автоматически выполнит компиляцию и начнет запись. В этот момент на плате <em>Wemos D1 Mini</em> должны замигать светодиоды, сигнализируя о процессе передачи данных. Если процесс завис, нажмите кнопку «Boot» на плате, удерживая её нажатой до начала мигания светодиода, и только затем отпустите.</p>
+
+<p>Иногда возникает ошибка «Failed to connect to ESP8266», которая часто решается простым нажатием кнопки «RST» или «Boot» во время старта загрузки. Также убедитесь, что в настройках выбран правильный COM-порт и скорость передачи данных <code>115200</code> для большинства современных прошивок.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к прошивке через Arduino IDE</h4><label class="check-item"><input type="checkbox"><span>Установить драйверы CH340/CP2102</span></label><label class="check-item"><input type="checkbox"><span>Добавить URL плат ESP8266</span></label><label class="check-item"><input type="checkbox"><span>Выбрать модель платы Wemos D1 Mini</span></label><label class="check-item"><input type="checkbox"><span>Подключить кабель и выбрать COM-порт</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<details class="pb-accordion"><summary>Что делать, если загрузка зависла на 1%?</summary><div class="pb-accordion-body"><p>Это часто означает, что модуль не переходит в режим загрузки. Попробуйте зажать кнопку GPIO0 (Boot) перед нажатием Upload, и отпустить её, когда начнется запись, либо проверьте, не сажается ли питание от USB-порта ноутбука.</p></div></details>
+
+<h2 id="установка-готовых-прошивок-esphome-и-tasmota">Установка готовых прошивок ESPHome и Tasmota</h2>
+
+<p>Для тех, кто не хочет писать код, существуют готовые решения. <strong>ESPHome</strong> предлагает удобный веб-инсталлятор, который работает прямо в браузере. Вам достаточно подключить плату, выбрать ее из списка, и нажать «Install». Этот метод позволяет избежать сложностей с компиляцией на локальном компьютере и работает даже с Chromebook или iPad.</p>
+
+<p>Прошивка <em>Tasmota</em> исторически использовала утилиту <strong>esptool.py</strong> или графическую оболочку <em>Flash Download Tools</em> от Espressif. Современный подход — использование веб-интерфейса Tasmota, где вы выбираете модель платы, и сайт автоматически подготавливает правильный образ прошивки. Это значительно упрощает жизнь, так как не нужно вручную выбирать адреса секторов памяти.</p>
+
+<p>При использовании утилит <em>Flash Download Tools</em> необходимо вручную загрузить бинарный файл (.bin) и указать правильные адреса записи для каждой секции (SPI Flash, Firmware, OTA). Ошибка в адресах может привести к тому, что устройство вообще не загрузится после перезагрузки.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед запуском процесса установки через веб-интерфейс ESPHome, закройте другие вкладки браузера, использующие Serial Port API, чтобы избежать конфликта доступа к устройству.</p></aside>
+
+<h2 id="особенности-работы-с-режимами-flash-памяти">Особенности работы с режимами Flash памяти</h2>
+
+<p>Одной из самых частых проблем при прошивке является неверный выбор размера флеш-памяти. Модуль <em>Wemos D1 Mini</em> обычно имеет 4 МБ памяти, но в некоторых случаях система может определять его как 1 МБ или 2 МБ. Это приводит к конфликту адресов и краху программы сразу после старта.</p>
+
+<p>В Arduino IDE в разделе «Tools» -> «Flash Size» всегда выбирайте <code>4MB (FS:2MB OTA:~1019KB)</code>. Этот размер оптимален для большинства задач и оставляет достаточно места для системы, файлов и прошивок OTA (Over-The-Air). Если выбрать «4MB (FS:none OTA:~1019KB)», вы потеряете возможность хранить файлы конфигурации в системе fichiers.</p>
+
+<p>Иногда возникает необходимость полного стирания памяти перед новой прошивкой, особенно если устройство ранее использовалось с другой сложной конфигурацией. Для этого используйте команду <code>erase_flash</code> в терминале или соответствующую опцию в графических утилитах. Это гарантирует чистую установку без старых битых секторов.</p>
+
+<div class="pb-table-wrap"><table>
+  <thead>
+    <tr>
+      <th>Параметр</th>
+      <th>Рекомендуемое значение</th>
+      <th>Описание</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Flash Size</td>
+      <td><code>4M (FS:2M OTA:~1019K)</code></td>
+      <td>Оптимальный размер для большинства задач</td>
+    </tr>
+    <tr>
+      <td>Upload Speed</td>
+      <td><code>921600</code></td>
+      <td>Скорость загрузки (для стабильности снижайте до 115200)</td>
+    </tr>
+    <tr>
+      <td>Core Version</td>
+      <td><code>2.7.4</code> или новее</td>
+      <td>Версия ядра ESP8266</td>
+    </tr>
+    <tr>
+      <td>Baud Rate (Serial)</td>
+      <td><code>115200</code></td>
+      <td>Скорость обмена данными через UART</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильный выбор размера флеш-памяти в настройках IDE критичен для стабильной работы; ошибка здесь приводит к циклической перезагрузке устройства.</p></aside>
+
+<h2 id="техника-безопасности-и-устранение-неисправностей">Техника безопасности и устранение неисправностей</h2>
+
+<p>Хотя работа с низким напряжением 3.3В считается безопасной, пренебрежение правилами подключения может сжечь контроллер. Никогда не подключайте питание к плате <em>Wemos D1 Mini</em> через внешний блок 5В, если вы уже подключили его к USB-порту компьютера, чтобы избежать конфликтов питания.</p>
+
+<p>Если после прошивки устройство не реагирует на команды, проверьте, не залипает ли кнопка «Boot» или «RST». Также обратите внимание на качество пайки: холодная пайка контактов на разъеме micro-USB часто становится причиной того, что плата заряжается, но не передает данные.</p>
+
+<p>В случае, если ничего не помогает, попробуйте использовать режим <strong>Manual Boot</strong>. Для этого зажмите кнопку загрузчика (GPIO0), подключите питание, подождите 3 секунды и отпустите кнопку. Это принудительно переведет чип в режим записи, даже если программное обеспечение не может передать команду на вход.</p>
+
+<blockquote>⚠️ Внимание: Не подключайте внешние устройства с низким входным сопротивлением к пинам GPIO напрямую, так как это может повредить логику микроконтроллера при перезагрузке.</blockquote>
+
+<p>Помните, что современные прошивки поддерживают <strong>OTA-обновление</strong>, что позволяет обновлять ПО по воздуху без физического подключения к компьютеру. Это значительно упрощает обслуживание устройств, установленных в труднодоступных местах. Однако первая прошивка всегда должна происходить через кабель.</p>
+
+<h2 id="часто-задаваемые-вопросы">Часто задаваемые вопросы</h2>
+
+<details>
+  <summary>Какой кабель лучше всего использовать для прошивки?</summary>
+  <p>Используйте качественный кабель micro-USB с подлинной передачей данных (Data+ и Data-). Дешевые кабели часто имеют только линии питания (VCC и GND), что делает невозможным загрузку прошивки.</p>
+</details>
+
+<details>
+  <summary>Что делать, если Arduino IDE не видит плат Wemos D1 Mini?</summary>
+  <p>Проверьте, установлен ли менеджер плат ESP8266 в настройках IDE (File -> Preferences -> Additional Boards Manager URLs). Убедитесь, что в меню «Boards» выбрана именно «LOLIN(WEMOS) D1 R2 & Mini».</p>
+</details>
+
+<details>
+  <summary>Можно ли прошить Tasmota через ESPHome?</summary>
+  <p>Нет, это разные системы. ESPHome создает свои прошивки, а Tasmota — это готовый бинарный образ. Их нельзя смешивать в одном процессе, нужно выбирать одну из двух платформ для конкретного устройства.</p>
+</details>
+
+<details>
+  <summary>Как сбросить настройки на Wemos D1 Mini?</summary>
+  <p>Для полного сброса можно зажать кнопку «Boot» при включении питания и удерживать её 10-15 секунд, либо использовать команду <code>flash_erase</code> через утилиту esptool.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/m/mi/mijia-pure-humidifier-3.html" class="pb-related-card">
+                <span class="pb-related-title">Mijia Pure Humidifier 3: обзор, настройка и особенности</span>
+                <span class="pb-related-desc">Полный обзор увлажнителя Mijia Pure Humidifier 3. Характеристики, инструкция по подключению к Mi Hom</span>
+            </a><a href="/umnyj-dom/c/ch/chajnik-polaris-pwk-1712cgld-wi-fi-iq-home.html" class="pb-related-card">
+                <span class="pb-related-title">Polaris PWK 1712CGLD Wi-Fi IQ Home: обзор, настройка и управление</span>
+                <span class="pb-related-desc">Полный гид по умному чайнику Polaris PWK 1712CGLD. Инструкция по подключению к Wi-Fi, интеграция в I</span>
+            </a><a href="/umnyj-dom/s/sh/shampun-dlya-robota-pylesosa-xiaomi.html" class="pb-related-card">
+                <span class="pb-related-title">Шампунь для робота-пылесоса Xiaomi: выбор, пропорции, ошибки</span>
+                <span class="pb-related-desc">Какое моющее средство использовать для робота-пылесоса Xiaomi? Разбор состава, дозировок, совместимо</span>
+            </a><a href="/umnyj-dom/p/po/pochemu-mozhet-ne-rabotat-kolonka-alisa.html" class="pb-related-card">
+                <span class="pb-related-title">Почему не работает Алиса: причины и решения | Яндекс</span>
+                <span class="pb-related-desc">Полный разбор причин, почему Яндекc Станция не отвечает. Сбои сети, микрофона, настройки и обновлени</span>
+            </a><a href="/umnyj-dom/s/se/sensornyj-vyklyuchatel-sveta-skhema-podklyucheniya-220.html" class="pb-related-card">
+                <span class="pb-related-title">Сенсорный выключатель света: схема подключения 220В и настройка</span>
+                <span class="pb-related-desc">Подробная инструкция по подключению сенсорного выключателя к сети 220 вольт. Схемы монтажа, выбор пр</span>
+            </a><a href="/umnyj-dom/k/ka/kak-razobrat-yandeks-rozetku.html" class="pb-related-card">
+                <span class="pb-related-title">Как разобрать Яндекс Розетку: пошаговая инструкция по демонтажу</span>
+                <span class="pb-related-desc">Подробный гайд: как безопасно разобрать умную розетку Яндекс. Механизм вскрытия, проверка контактов </span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

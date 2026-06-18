@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как изменить файловую систему флешки с FAT32 на NTFS — Техно Гид</title>
+    <meta name="description" content="Конвертация флешки из FAT32 в NTFS без форматирования и потери данных. Подробная инструкция по использованию команд convert и сторонних утилит.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/k/ka/kak-izmenit-fajlovuyu-sistemu-na-fleshke-s-fat32-na-ntfs-bez-poteri-dannykh.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как изменить файловую систему флешки с FAT32 на NTFS">
+    <meta property="og:description" content="Конвертация флешки из FAT32 в NTFS без форматирования и потери данных. Подробная инструкция по использованию команд convert и сторонних утилит.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как изменить файловую систему флешки с FAT32 на NTFS</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#технические-различия-между-файловыми-системами">Технические различия между файловыми системами</a></li><li><a href="#подготовка-накопителя-к-конвертации">Подготовка накопителя к конвертации</a></li><li><a href="#использование-встроенной-утилиты-convertexe">Использование встроенной утилиты Convert.exe</a></li><li><a href="#альтернативные-методы-через-сторонний-софт">Альтернативные методы через сторонний софт</a></li><li><a href="#возможные-ошибки-и-способы-их-решения">Возможные ошибки и способы их решения</a></li><li><a href="#обратный-процесс-можно-ли-вернуть-fat32">Обратный процесс: можно ли вернуть FAT32?</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/c/ch/chtoby-najti-versiyu-dlya-vashego-kompyutera.html">Как найти версию для вашего компьютера: Полная инструкция</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-proverit-blok-pitaniya-kompa.html">Как проверить блок питания компьютера: 5 способов диагностики</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kakuyu-sistemu-okhlazhdeniya-vybrat-dlya-igrovogo-pk.html">Какую систему охлаждения выбрать для игрового ПК: гид по кулерам</a></li><li><a href="/kompyutery-i-noutbuki/g/gd/gde-na-klaviature-knopka-shift-na-kompyutere.html">Где находится клавиша Shift на клавиатуре компьютера: фото и описание</a></li><li><a href="/kompyutery-i-noutbuki/f/fl/fleshka-10-klassa-chto-eto-znachit.html">Флешка 10 класса: что это значит в информатике и ЕГЭ</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Конвертация флешки из FAT32 в NTFS: сохранение данных</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#технические-различия-между-файловыми-системами">Технические различия между файловыми системами</a></li><li><a href="#подготовка-накопителя-к-конвертации">Подготовка накопителя к конвертации</a></li><li><a href="#использование-встроенной-утилиты-convertexe">Использование встроенной утилиты Convert.exe</a></li><li><a href="#альтернативные-методы-через-сторонний-софт">Альтернативные методы через сторонний софт</a></li><li><a href="#возможные-ошибки-и-способы-их-решения">Возможные ошибки и способы их решения</a></li><li><a href="#обратный-процесс-можно-ли-вернуть-fat32">Обратный процесс: можно ли вернуть FAT32?</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Пользователи часто сталкиваются с ограничением файловой системы <strong>FAT32</strong> при попытке перенести на внешний накопитель файл размером более 4 гигабайт. Стандарт <em>FAT32</em>, будучи универсальным и совместимым с большинством устройств, имеет жесткие технические лимиты, которые не позволяют работать с современными объемами данных.</p>
+<p>Переход на <strong>NTFS</strong> решает проблему размера файлов и повышает надежность хранения информации благодаря журналированию, однако стандартная процедура форматирования в Windows подразумевает полное удаление всех данных с носителя. Это создает серьезную дилемму для тех, кто не хочет или не может временно переносить гигабайты информации на жесткий диск.</p>
+<p>К счастью, существует проверенный метод изменения структуры файловой системы с <em>FAT32</em> на <strong>NTFS</strong> без физического удаления файлов. Данная процедура использует встроенные возможности операционной системы для перестройки таблицы размещения файлов «на лету», сохраняя целостность ваших документов, фотографий и видеоархивов.</p>
+
+<h2 id="технические-различия-между-файловыми-системами">Технические различия между файловыми системами</h2>
+<p>Понимание архитектуры накопителя критически важно перед началом любых манипуляций. <strong>FAT32</strong> (File Allocation Table) — это старая, но крайне совместимая система, которая работает практически с любым устройством, от старых телевизоров до игровых консолей.</p>
+<p>Однако у нее есть фатальный недостаток: максимальный размер одного файла не может превышать 4 ГБ. Даже если у вас флешка на 128 ГБ, вы не сможете записать на нее один фильм в высоком качестве, если он весит 5 ГБ.</p>
+<p>Система <strong>NTFS</strong> (New Technology File System) лишена этого ограничения и поддерживает файлы колоссальных размеров. Кроме того, она ведет журнал изменений, что снижает риск потери данных при внезапном отключении питания.</p>
+<blockquote>⚠️ Внимание: Хотя NTFS идеально работает в Windows, многие медиаплееры, автомобильные магнитолы и телевизоры могут не распознавать этот формат, требуя установки дополнительного ПО.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед конвертацией проверьте, поддерживает ли ваше целевое устройство (телевизор или приставка) файловую систему NTFS, иначе данные станут нечитаемыми.</p></aside>
+
+<p>Выбор между совместимостью и функциональностью остается за пользователем, но если ваша цель — работа исключительно с компьютерами под управлением Windows, переход на <em>NTFS</em> является логичным шагом.</p>
+
+<h2 id="подготовка-накопителя-к-конвертации">Подготовка накопителя к конвертации</h2>
+<p>Несмотря на то, что метод считается безопасным, любая операция с таблицей разделов несет в себе минимальные риски. Сбои в электропитании или ошибки контроллера памяти могут привести к повреждению структуры данных.</p>
+<p>Настоятельно рекомендуется создать резервную копию критически важных файлов перед началом процесса. Это займет несколько минут, но спасет вас от потенциальной потери информации в случае непредвиденного сбоя.</p>
+<p>Также необходимо проверить диск на наличие логических ошибок. Встроенная утилита Windows способна исправить битые сектора или поврежденные кластеры, которые могут помешать процессу конвертации.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка флешки</h4><label class="check-item"><input type="checkbox"><span>Сделать резервную копию важных файлов</span></label><label class="check-item"><input type="checkbox"><span>Проверить диск на ошибки</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в наличии свободного места</span></label><label class="check-item"><input type="checkbox"><span>Закрыть все программы, использующие флешку</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>Для проверки диска откройте «Этот компьютер», нажмите правой кнопкой мыши на вашу флешку и выберите <code>Свойства</code>. Перейдите на вкладку <code>Сервис</code> и нажмите кнопку <code>Проверить</code> в разделе «Проверка на наличие ошибок».</p>
+
+<h2 id="использование-встроенной-утилиты-convertexe">Использование встроенной утилиты Convert.exe</h2>
+<p>Самый надежный и чистый способ изменить файловую систему — использование стандартной консольной утилиты <strong>convert.exe</strong>, входящей в состав всех современных версий Windows. Этот инструмент не требует установки стороннего софта.</p>
+<p>Процесс запускается через командную строку. Вам потребуется узнать букву, присвоенную вашей флешке в системе (например, <code>F:</code> или <code>G:</code>). Это можно сделать в проводнике Windows.</p>
+<p>Откройте командную строку от имени администратора. Для этого нажмите <code>Win + X</code> и выберите соответствующий пункт в меню, либо найдите <code>cmd</code> в поиске, нажмите правой кнопкой и выберите <code>Запуск от имени администратора</code>.</p>
+
+<details class="pb-accordion"><summary>Что делать, если диск используется другой программой?</summary><div class="pb-accordion-body"><p>Если система сообщит, что диск занят, утилита предложит провести конвертацию после перезагрузки. Согласитесь с этим, перезагрузите компьютер и не открывайте файлы на флешке до окончания процесса.</p></div></details>
+
+<p>Введите команду для запуска процесса преобразования. Синтаксис предельно прост и требует указания только буквы диска и целевой файловой системы.</p>
+
+<pre><code>convert X: /fs:ntfs</code></pre>
+
+<p>Вместо символа <code>X</code> подставьте реальную букву вашей флешки. После нажатия клавиши <code>Enter</code> система проанализирует том и начнет процесс конвертации.</p>
+<p>Время выполнения операции зависит от объема накопителя и количества файлов. Для флешек малого объема это занимает считанные секунды, тогда как для дисков на несколько терабайт процесс может затянуться.</p>
+
+<h2 id="альтернативные-методы-через-сторонний-софт">Альтернативные методы через сторонний софт</h2>
+<p>Если по каким-то причинам встроенная утилита Windows не справляется с задачей или выдает ошибку, можно воспользоваться специализированными программами управления дисками. Они часто обладают более дружелюбным интерфейсом.</p>
+<p>Популярные решения, такие как <em>AOMEI Partition Assistant</em> или <em>MiniTool Partition Wizard</em>, позволяют выполнять конвертацию в графическом режиме. Это удобно для пользователей, которые не любят работать с командной строкой.</p>
+<p>В таких программах алгоритм действий схож: вы выбираете нужный раздел в списке устройств, кликаете правой кнопкой мыши и находите пункт «Convert to NTFS» (Конвертировать в NTFS).</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Метод</th>
+<th>Сложность</th>
+<th>Риск потери данных</th>
+<th>Скорость работы</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Командная строка (Convert)</td>
+<td>Средняя</td>
+<td>Минимальный</td>
+<td>Высокая</td>
+</tr>
+<tr>
+<td>Сторонний софт</td>
+<td>Низкая</td>
+<td>Низкий</td>
+<td>Средняя</td>
+</tr>
+<tr>
+<td>Форматирование</td>
+<td>Низкая</td>
+<td>100% (данные удаляются)</td>
+<td>Высокая</td>
+</tr>
+<tr>
+<td>Удаление раздела</td>
+<td>Высокая</td>
+<td>100% (данные удаляются)</td>
+<td>Средняя</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Использование стороннего ПО оправдано в сложных случаях, когда стандартные средства Windows отказываются работать с конкретным контроллером флеш-памяти.</p>
+
+<div class="pb-poll" id="poll-cf6d3e77"><div class="pb-poll-question">📊 Какой способ конвертации вы предпочитаете?</div><div class="pb-poll-option" data-poll="cf6d3e77" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Встроенная консоль Windows</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="cf6d3e77" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Сторонние программы</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="cf6d3e77" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Полное форматирование</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="cf6d3e77" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Я не меняю файловую систему</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="возможные-ошибки-и-способы-их-решения">Возможные ошибки и способы их решения</h2>
+<p>В процессе конвертации вы можете столкнуться с сообщением об ошибке. Чаще всего это связано с тем, что диск используется другим процессом или на нем слишком мало свободного места для создания временных структур.</p>
+<p>Убедитесь, что на флешке есть хотя бы 10-15% свободного пространства. Утилите <strong>convert</strong> требуется место для временного буфера при перестройке таблицы файлов.</p>
+<p>Если появляется ошибка «Недостаточно места на диске», освободите место, удалив ненужные файлы, или попробуйте выполнить дефрагментацию перед конвертацией.</p>
+<blockquote>⚠️ Внимание: Никогда не извлекайте флешку из USB-порта во время выполнения команды convert, даже если индикатор прогресса замер. Это гарантированно приведет к потере данных.</blockquote>
+<p>Также стоит проверить, не включено ли шифрование диска. Если флешка зашифрована средствами <em>BitLocker</em>, конвертация может быть заблокирована до момента расшифровки тома.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Успешная конвертация требует, чтобы диск был исправен, имел свободное место и не использовался другими приложениями в момент выполнения команды.</p></aside>
+
+<h2 id="обратный-процесс-можно-ли-вернуть-fat32">Обратный процесс: можно ли вернуть FAT32?</h2>
+<p>Многих пользователей волнует вопрос обратимости процедуры. К сожалению, встроенная утилита Windows <code>convert</code> работает только в одном направлении: из FAT/FAT32 в NTFS.</p>
+<p>Вернуть файловую систему обратно в <strong>FAT32</strong> без потери данных стандартными средствами Windows невозможно. Для этого потребуется сторонний софт или полное форматирование накопителя.</p>
+<p>Если вам срочно нужно вернуть совместимость со старыми устройствами, придется скопировать данные на компьютер, отформатировать флешку в FAT32 и вернуть файлы обратно.</p>
+<p>Существуют специализированные утилиты,ющие возможность обратной конвертации без форматирования, но их использование сопряжено с высоким риском повреждения данных, поэтому полагаться на них не стоит.</p>
+
+<h2 id="часто-задаваемые-вопросы">Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Потеряются ли мои файлы после конвертации?</summary>
+<p>При использовании команды <code>convert</code> файлы остаются на месте. Однако всегда существует теоретический риск сбоя оборудования, поэтому резервная копия обязательна.</p>
+</details>
+
+<details>
+<summary>Можно ли конвертировать системный диск C:?</summary>
+<p>Да, это возможно. Система попросит перезагрузить компьютер, и конвертация пройдет до загрузки Windows. Процесс может занять значительное время в зависимости от объема диска.</p>
+</details>
+
+<details>
+<summary>Почему флешка стала медленнее после смены на NTFS?</summary>
+<p>Флеш-память часто оптимизирована под FAT32. NTFS ведет активное журналирование, что создает дополнительную нагрузку на контроллер дешевых флешек, снижая скорость записи.</p>
+</details>
+
+<details>
+<summary>Как узнать текущую файловую систему флешки?</summary>
+<p>Нажмите правой кнопкой мыши на значок диска в «Моем компьютере», выберите «Свойства». Тип файловой системы указан в первой строке окна свойств.</p>
+</details>
+
+<details>
+<summary>Поддерживает ли macOS запись на NTFS по умолчанию?</summary>
+<p>Нет, macOS может только читать диски NTFS. Для записи файлов на такую флешку с компьютера Mac потребуются специальные драйверы или утилиты.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/c/ch/chtoby-najti-versiyu-dlya-vashego-kompyutera.html" class="pb-related-card">
+                <span class="pb-related-title">Как найти версию для вашего компьютера: Полная инструкция</span>
+                <span class="pb-related-desc">Узнайте, как точно определить версию ОС и программы для вашего ПК. Разбор разрядности, архитектуры и</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-proverit-blok-pitaniya-kompa.html" class="pb-related-card">
+                <span class="pb-related-title">Как проверить блок питания компьютера: 5 способов диагностики</span>
+                <span class="pb-related-desc">Узнайте, как самостоятельно проверить блок питания ПК. Методы от визуального осмотра до тестов мульт</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kakuyu-sistemu-okhlazhdeniya-vybrat-dlya-igrovogo-pk.html" class="pb-related-card">
+                <span class="pb-related-title">Какую систему охлаждения выбрать для игрового ПК: гид по кулерам</span>
+                <span class="pb-related-desc">Полный разбор систем охлаждения для игрового компьютера. Сравнение башенных кулеров и СЖО, расчет TD</span>
+            </a><a href="/kompyutery-i-noutbuki/g/gd/gde-na-klaviature-knopka-shift-na-kompyutere.html" class="pb-related-card">
+                <span class="pb-related-title">Где находится клавиша Shift на клавиатуре компьютера: фото и описание</span>
+                <span class="pb-related-desc">Полный гайд по расположению клавиши Shift на разных раскладках. Как найти кнопку, для чего она нужна</span>
+            </a><a href="/kompyutery-i-noutbuki/f/fl/fleshka-10-klassa-chto-eto-znachit.html" class="pb-related-card">
+                <span class="pb-related-title">Флешка 10 класса: что это значит в информатике и ЕГЭ</span>
+                <span class="pb-related-desc">Подробный разбор термина «флешка 10 класса»: школьная программа, задачи на объем памяти, перевод еди</span>
+            </a><a href="/kompyutery-i-noutbuki/s/so/sozdanie-zagruzochnoj-fleshki-win-xp.html" class="pb-related-card">
+                <span class="pb-related-title">Создание загрузочной флешки Windows XP: полное руководство</span>
+                <span class="pb-related-desc">Пошаговая инструкция по созданию загрузочной USB-флешки для установки Windows XP. Использование Rufu</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

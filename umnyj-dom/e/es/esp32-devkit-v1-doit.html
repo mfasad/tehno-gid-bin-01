@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>ESP32 DevKit V1 DOIT: Обзор, Подключение и Настройка Архитектуры — Техно Гид</title>
+    <meta name="description" content="Полный гайд по микроконтроллеру ESP32 DevKit V1 от DOIT. Схема пинов, особенности отладки, выбор IDE и примеры подключения датчиков для умного дома.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/e/es/esp32-devkit-v1-doit.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ESP32 DevKit V1 DOIT: Обзор, Подключение и Настройка Архитектуры">
+    <meta property="og:description" content="Полный гайд по микроконтроллеру ESP32 DevKit V1 от DOIT. Схема пинов, особенности отладки, выбор IDE и примеры подключения датчиков для умного дома.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">ESP32 DevKit V1 DOIT: Обзор, Подключение и Настройка Архитектуры</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-мир-esp32-от-doit">Введение в мир ESP32 от DOIT</a></li><li><a href="#ключевые-характеристики-и-архитектура">Ключевые характеристики и архитектура</a></li><li><a href="#схема-пинов-и-подключение-периферии">Схема пинов и подключение периферии</a></li><li><a href="#настройка-среды-разработки-и-прошивка">Настройка среды разработки и прошивка</a></li><li><a href="#энергопотребление-и-режимы-сна">Энергопотребление и режимы сна</a></li><li><a href="#безопасность-и-защита-от-помех">Безопасность и защита от помех</a></li><li><a href="#типичные-ошибки-при-сборке-и-эксплуатации">Типичные ошибки при сборке и эксплуатации</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/k/ka/kak-otpravit-soobshchenie-na-kolonku-alisa-s-telefona.html">Как отправить сообщение на колонку Алиса с телефона: инструкция</a></li><li><a href="/umnyj-dom/n/ne/ne-moet-robot-pylesos-xiaomi-pochemu.html">Почему робот-пылесос Xiaomi не моет пол: причины и ремонт</a></li><li><a href="/umnyj-dom/h/ho/home-assistant-os-ssh.html">Home Assistant OS SSH: Включение, настройка и отладка системы</a></li><li><a href="/umnyj-dom/k/ka/kak-promyt-dispenser-dlya-zhidkogo-myla.html">Как промыть диспенсер для жидкого мыла: пошаговая инструкция</a></li><li><a href="/umnyj-dom/u/um/umnyj-dom-so-sberom.html">Умный дом со Сбером: обзор экосистемы, устройство и настройка</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>ESP32 DevKit V1 DOIT: Полное руководство по настройке и использованию</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-мир-esp32-от-doit">Введение в мир ESP32 от DOIT</a></li><li><a href="#ключевые-характеристики-и-архитектура">Ключевые характеристики и архитектура</a></li><li><a href="#схема-пинов-и-подключение-периферии">Схема пинов и подключение периферии</a></li><li><a href="#настройка-среды-разработки-и-прошивка">Настройка среды разработки и прошивка</a></li><li><a href="#энергопотребление-и-режимы-сна">Энергопотребление и режимы сна</a></li><li><a href="#безопасность-и-защита-от-помех">Безопасность и защита от помех</a></li><li><a href="#типичные-ошибки-при-сборке-и-эксплуатации">Типичные ошибки при сборке и эксплуатации</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-мир-esp32-от-doit">Введение в мир ESP32 от DOIT</h2>
+<p>Микроконтроллеры платформы <em>ESP32</em> стали настоящим стандартом де-факто для разработчиков <strong>Интернета вещей</strong>, предлагая невероятное сочетание производительности и доступности. Среди множества версий плат, именно <em>ESP32 DevKit V1 DOIT</em> выделяется своей универсальностью и широкой поддержкой сообщества. Эта плата представляет собой готовое решение, объединяющее мощный чип Wi-Fi и Bluetooth с удобными портами ввода-вывода.</p>
+<p>Вам не нужно проектировать сложные схемы с нуля, чтобы начать работу с беспроводными сетями. <mark>Плата DOIT отличается от аналогов от Espressif специальным расположением портов и встроенным стабилизатором, что упрощает подключение датчиков без дополнительных модулей.</mark> Это делает её идеальным выбором как для образовательных целей, так и для создания прототипов промышленных решений.</p>
+
+<h2 id="ключевые-характеристики-и-архитектура">Ключевые характеристики и архитектура</h2>
+<p>Сердцем данной платы является чип <strong>ESP-WROOM-32</strong>, который обеспечивает высокую вычислительную мощность и надежную связь. <em>DOIT</em> использует двухъядерный процессор Tensilica Xtensa LX6, работающий на частоте до 240 МГц. Это позволяет выполнять сложные задачи, такие как обработка аудио-потоков или управление несколькими периферийными устройствами одновременно, без заметных задержек.</p>
+<p>Важным аспектом является встроенный модуль беспроводной связи, который поддерживает стандарты <code>802.11 b/g/n</code> и Bluetooth версии <code>4.2 BR/EDR и BLE</code>. Поддержка Bluetooth Low Energy критична для устройств, работающих от батареек. Вы можете найти в спецификации наличие 4 МБ флеш-памяти, что достаточно для хранения большинства программных проектов.</p>
+<p>Помимо вычислительной части, плата оснащена встроенным стабилизатором напряжения, который позволяет подключать питание напрямую к разъему micro-USB или через винтовые клеммы. Это избавляет от необходимости использовать внешние блоки питания для простых проектов. Также стоит отметить наличие 30 пинов ввода-вывода (GPIO), что дает огромную гибкость при подключении сенсоров.</p>
+
+<div class="pb-poll" id="poll-6d3f4bcf"><div class="pb-poll-question">📊 Какой язык программирования вы используете чаще всего для ESP32?</div><div class="pb-poll-option" data-poll="6d3f4bcf" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Arduino (C++)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6d3f4bcf" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">MicroPython</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6d3f4bcf" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">C/C++ (ESP-IDF)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6d3f4bcf" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">PlatformIO</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="схема-пинов-и-подключение-периферии">Схема пинов и подключение периферии</h2>
+<p>При работе с <em>ESP32 DevKit V1</em> необходимо четко понимать назначение каждого контакта. Большинство пинов поддерживают функции <strong>ШИМ</strong> (PWM) и <em>ADC</em> (аналогово-цифровое преобразование). Однако, есть ограничения: например, пины GPIO 34-39 являются только входами (Input Only) и не могут использоваться для записи данных. Игнорируя это правило, вы можете повредить логику контроллера или получить непредсказуемое поведение.</p>
+<p>Для подключения внешних устройств, таких как <code>DHT11</code> или <code>DS18B20</code>, используйте пины с поддержкой цифрового ввода-вывода. Если вам нужно подключить OLED-дисплей, обратите внимание на пины <code>GPIO 21</code> и <code>GPIO 22</code>, которые по умолчанию занимают шину <strong>I2C</strong>. Для работы с сервоприводами или шаговыми двигателями подойдут любые пины с ШИМ-функцией.</p>
+<p>Особое внимание уделите контактам питания. На плате есть разъемы <code>3.3V</code>, <code>5V</code> и <code>GND</code>. Не подавайте 5 вольт на пины, рассчитанные только на 3.3 вольта, если только это не защищенный логический выход. Использование уровня <strong>Logich Level</strong> 5В на входах может привести к выходу из строя чипа ESP32, так как он не является 5-вольтовым устройством.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Пин</th>
+<th>Назначение</th>
+<th>Особенности</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPIO 16/17</td>
+<td>UART</td>
+<td>Используются для Bluetooth и USB-OTG</td>
+</tr>
+<tr>
+<td>GPIO 6-11</td>
+<td>Flash</td>
+<td>Зарезервированы под чип памяти, не подключать</td>
+</tr>
+<tr>
+<td>GPIO 34-39</td>
+<td>Input Only</td>
+<td>Только ввод, без внутренних подтяжек</td>
+</tr>
+<tr>
+<td>GPIO 0</td>
+<td>Boot</td>
+<td>Критичен при загрузке прошивки</td>
+</tr>
+<tr>
+<td>GPIO 2</td>
+<td>LED</td>
+<td>Подключен к встроенному светодиоду</td>
+</tr>
+</tbody>
+</table></div>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед включением</h4><label class="check-item"><input type="checkbox"><span>Проверить напряжение питания на разъеме</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в отсутствии короткого замыкания на плате</span></label><label class="check-item"><input type="checkbox"><span>Проверить правильность подключения периферии</span></label><label class="check-item"><input type="checkbox"><span>Убедиться, что пин GPIO 0 не замкнут на землю</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="настройка-среды-разработки-и-прошивка">Настройка среды разработки и прошивка</h2>
+<p>Для начала работы вам потребуется установить среду разработки. Самый популярный вариант — это <em>Arduino IDE</em>, которая имеет огромную базу готовых библиотек. Однако, для более профессиональных задач часто используют <strong>ESP-IDF</strong> или <code>PlatformIO</code> в среде Visual Studio Code. Выбор инструмента зависит от сложности проекта и ваших предпочтений в программировании.</p>
+<p>Перед первой загрузкой кода необходимо установить драйверы для чипа конвертера USB-UART. В зависимости от ревизии платы <em>DOIT</em>, это может быть чип <strong>CP2102</strong> или <code>CH340</code>. Без правильно установленного драйвера компьютер просто не увидит порт устройства, и загрузка будет невозможна. Скачайте драйверы с официального сайта производителя чипа.</p>
+<p>Процесс прошивки имеет свои нюансы. Если плата не загружается, попробуйте зажать кнопку <code>BOOT</code> во время нажатия кнопки <code>EN</code> (Reset). Это классический метод для входа в режим загрузчика. Убедитесь, что в настройках IDE выбран правильный порт COM и правильный тип платы <code>DOIT ESP32 DEVKIT V1</code>.</p>
+
+<details class="pb-accordion"><summary>Проблемы с драйверами CP2102</summary><div class="pb-accordion-body"><p>Часто на Windows 10/11 драйвер устанавливается автоматически, но если порт не определяется, попробуйте переустановить его через Диспетчер устройств, выбрав "Обновить драйвер" и указав путь к скачанному файлу. Иногда помогает смена порта USB на другой физический разъем, предпочтительно 2.0.</p></div></details>
+
+<blockquote>
+<strong>⚠️ Внимание</strong>
+<p>При работе с последовательным портом убедитесь, что ни одна другая программа не захватила доступ к COM-порту. Если в момент прошивки IDE выдаст ошибку "Device busy" или "Failed to connect", закройте терминальные программы и мониторы порта. Это частая причина неудачной загрузки.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Сохраняйте скетчи в облако или на внешний диск, так как сбой питания во время прошивки может потребовать повторной загрузки драйверов и настройки.</p></aside>
+
+<h2 id="энергопотребление-и-режимы-сна">Энергопотребление и режимы сна</h2>
+<p>Одним из главных преимуществ <em>ESP32</em> является возможность глубокого сна, что критично для автономных устройств. Вы можете настроить микроконтроллер на пробуждение по таймеру или по внешнему сигналу с пинов. Это позволяет снизить потребление энергии до микроампер, что продлевает жизнь батарейкам на месяцы.</p>
+<p>Режимы сна различаются по степени экономии энергии. <strong>Deep Sleep</strong> отключает большую часть чипа, сохраняя только RTC-память. Для перехода в этот режим используется функция <code>esp_deep_sleep_start()</code>. После пробуждения программа продолжает выполнение со строки после вызова функции сна, что выглядит как перезагрузка, но с сохранением данных в RTC.</p>
+<p>Не забывайте, что периферийные устройства также потребляют энергию. Если вы подключили датчик, который не поддерживает режим сна, он будет разряжать батарею даже когда ESP32 "спит". Используйте транзисторы или реле для отключения питания внешних модулей во время простоя системы.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Глубокий сон позволяет снизить потребление до 10 мкА, но требует правильной настройки периферии и отключения внешних источников питания.</p></aside>
+
+<h2 id="безопасность-и-защита-от-помех">Безопасность и защита от помех</h2>
+<p>Работая с высокочастотными модулями Wi-Fi, вы можете столкнуться с электромагнитными помехами. Антенна на плате <em>DOIT</em> требует свободного пространства вокруг себя для нормальной работы. Не закрывайте антенну металлическими корпусами или толстыми слоями пластика, иначе радиус действия существенно снизится.</p>
+<p>Для стабильной работы аналоговых датчиков (ADC) важно обеспечить чистое питание. Пики напряжения от Wi-Fi модуля могут влиять на показания датчиков. Используйте конденсаторы номиналом <code>100 нФ</code> и <code>10 мкФ</code> вблизи контактов питания чувствительных компонентов. Это сгладит скачки напряжения и улучшит точность измерений.</p>
+<p>При работе с сетью следует учитывать меры безопасности. Если ваше устройство управляет критической инфраструктурой, реализуйте шифрование данных. Настройка <strong>WPA2</strong> или <code>WPA3</code> обязательна для защиты от несанкционированного доступа. Не оставляйте устройства с открытым Wi-Fi или стандартными паролями.</p>
+
+<blockquote>
+<strong>⚠️ Внимание</strong>
+<p>Никогда не оставляйте устройство подключенным к сети без защиты, особенно если оно управляет физическими процессами. Взломанная ESP32 может быть использована для атак на вашу локальную сеть или для вывода оборудования из строя.</p>
+</blockquote>
+
+<h2 id="типичные-ошибки-при-сборке-и-эксплуатации">Типичные ошибки при сборке и эксплуатации</h2>
+<p>Новички часто допускают ошибку, пытаясь подключить индуктивные нагрузки (реле, моторы) напрямую к пинам без драйверов. Это приводит к скачкам обратного напряжения, которые могут мгновенно вывести чип из строя. Всегда используйте <strong>транзисторные ключи</strong> или оптопары для развязки слаботочной логики от силовой части.</p>
+<p>Еще одна частая проблема — перегрев. При длительной работе на высокой нагрузке чип ESP32 может нагреваться до 80-90 градусов. Если корпус устройства герметичен, это может привести к троттлингу или отключению. Убедитесь, что у платы есть вентиляционные отверстия или используйте радиатор, если проект требует высокой производительности.</p>
+<p>Неправильная работа кнопки сброса также может ввести в заблуждение. Если кнопка залипает или имеет плохой контакт, устройство может постоянно перезагружаться. Проверьте механику кнопок <code>EN</code> и <code>BOOT</code> перед финальной сборкой. Использование подтягивающих резисторов на кнопках может улучшить стабильность сигнала.</p>
+
+<details class="pb-accordion"><summary>Почему пинает при прошивке?</summary><div class="pb-accordion-body"><p>Если при прошивке возникают ошибки "Failed to write" или "Timed out", проверьте качество кабеля micro-USB. Многие кабели предназначены только для зарядки и не имеют линий данных. Используйте качественный кабель с поддержкой передачи данных.</p></div></details>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Можно ли питать ESP32 DevKit V1 DOIT напрямую от 5 Вольт?</summary>
+<p>Да, можно, если подавать питание на разъем Vin или на 5V пин, так как на плате встроен стабилизатор. Однако, если вы подключаетесь через micro-USB, питание уже стабилизировано. Не подавайте 5В напрямую на пин 3.3V.</p>
+</details>
+
+<details>
+<summary>Какая максимальная частота для ШИМ на этой плате?</summary>
+<p>Максимальная частота ШИМ зависит от используемой библиотеки и конкретного пина. В Arduino IDE обычно доступна частота от 1 Гц до 40 кГц. Для более высоких частот лучше использовать аппаратные ШИМ-контроллеры или ESP-IDF.</p>
+</details>
+
+<details>
+<summary>Как сбросить настройки Wi-Fi на чипе?</summary>
+<p>Чтобы сбросить настройки Wi-Fi, необходимо вызвать функцию <code>WiFi.disconnect(true)</code> в коде или стереть флеш-память через загрузчик. В Arduino IDE это можно сделать через меню "Tools" -> "Erase Flash".</p>
+</details>
+
+<details>
+<summary>Почему плата не включается при нажатии на кнопку "Включить"?</summary>
+<p>Проверьте наличие напряжения на входе питания. Если напряжение есть, возможно, кнопка EN (Reset) или BOOT заклинила в нижнем положении. Также проверьте, не перегорел ли встроенный предохранитель на плате.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать эту плату в промышленных условиях?</summary>
+<p>Плата DOIT разработана для прототипирования. Для промышленных условий рекомендуется использовать корпусы с защитой от влаги и пыли, а также стабилизированные источники питания с фильтрацией помех. Прямое использование в открытом виде в агрессивной среде не рекомендуется.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/k/ka/kak-otpravit-soobshchenie-na-kolonku-alisa-s-telefona.html" class="pb-related-card">
+                <span class="pb-related-title">Как отправить сообщение на колонку Алиса с телефона: инструкция</span>
+                <span class="pb-related-desc">Пошаговая инструкция: как отправить сообщение на Яндекс Станцию с телефона. Настройка уведомлений, ч</span>
+            </a><a href="/umnyj-dom/n/ne/ne-moet-robot-pylesos-xiaomi-pochemu.html" class="pb-related-card">
+                <span class="pb-related-title">Почему робот-пылесос Xiaomi не моет пол: причины и ремонт</span>
+                <span class="pb-related-desc">Робот-пылесос Xiaomi перестал мыть пол? Узнайте основные причины неисправности, как проверить уровен</span>
+            </a><a href="/umnyj-dom/h/ho/home-assistant-os-ssh.html" class="pb-related-card">
+                <span class="pb-related-title">Home Assistant OS SSH: Включение, настройка и отладка системы</span>
+                <span class="pb-related-desc">Полное руководство по настройке SSH в Home Assistant OS. Добавление аддона, подключение по ключам, д</span>
+            </a><a href="/umnyj-dom/k/ka/kak-promyt-dispenser-dlya-zhidkogo-myla.html" class="pb-related-card">
+                <span class="pb-related-title">Как промыть диспенсер для жидкого мыла: пошаговая инструкция</span>
+                <span class="pb-related-desc">Узнайте, как очистить диспенсер для мыла от засоров и бактерий. Эффективные методы промывки, разборк</span>
+            </a><a href="/umnyj-dom/u/um/umnyj-dom-so-sberom.html" class="pb-related-card">
+                <span class="pb-related-title">Умный дом со Сбером: обзор экосистемы, устройство и настройка</span>
+                <span class="pb-related-desc">Как создать умный дом с Сбере: обзор устройств, голосовой помощник Салют, тарифы и возможности интег</span>
+            </a><a href="/umnyj-dom/x/xi/xiaomi-ochistitel-vozdukha-s-uvlazhneniem.html" class="pb-related-card">
+                <span class="pb-related-title">Xiaomi очиститель воздуха с увлажнением: обзор, выбор и настройка</span>
+                <span class="pb-related-desc">Полный гид по очистителям воздуха Xiaomi с функцией увлажнения. Сравнение моделей, обзор технологий,</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

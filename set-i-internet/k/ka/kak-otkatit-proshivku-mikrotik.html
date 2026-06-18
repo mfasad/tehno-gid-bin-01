@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Инструкция: как откатить прошивку RouterOS на MikroTik — Техно Гид</title>
+    <meta name="description" content="Пошаговое руководство по откату версии RouterOS. Методы: Netinstall, WinBox, Bootloader. Особенности работы с firmware и software. Безопасность данных.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/k/ka/kak-otkatit-proshivku-mikrotik.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Инструкция: как откатить прошивку RouterOS на MikroTik">
+    <meta property="og:description" content="Пошаговое руководство по откату версии RouterOS. Методы: Netinstall, WinBox, Bootloader. Особенности работы с firmware и software. Безопасность данных.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Инструкция: как откатить прошивку RouterOS на MikroTik</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-процесс-отката-routeros">Введение в процесс отката RouterOS</a></li><li><a href="#подготовка-и-диагностика-перед-откатом">Подготовка и диагностика перед откатом</a></li><li><a href="#методы-отката-через-интерфейс-winbox-и-cli">Методы отката через интерфейс WinBox и CLI</a></li><li><a href="#использование-утилиты-netinstall-для-восстановления">Использование утилиты Netinstall для восстановления</a></li><li><a href="#особенности-работы-с-bootloader-и-режимами-загрузчика">Особенности работы с Bootloader и режимами загрузчика</a></li><li><a href="#совместимость-версий-и-критические-изменения">Совместимость версий и критические изменения</a></li><li><a href="#частые-ошибки-и-предотвращение-проблем">Частые ошибки и предотвращение проблем</a></li><li><a href="#faq-ответы-на-частые-вопросы">FAQ: Ответы на частые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/k/ka/kakoj-usilitel-sotovoj-svyazi-vybrat.html">Какой усилитель сотовой связи выбрать: полный гид по репитерам</a></li><li><a href="/set-i-internet/k/ka/kak-perevesti-dengi-v-sbere-cherez-sms-po-nomeru-telefona.html">Как перевести деньги в СберБанк через СМС: пошаговая инструкция</a></li><li><a href="/set-i-internet/p/pe/perekhod-k-drugomu-operatoru-s-sokhraneniem-nomera-mts.html">Перенос номера МТС к другому оператору: полная инструкция 2026</a></li><li><a href="/set-i-internet/k/ka/kak-uvelichit-ploshchad-pokrytiya-wifi-routera-v-chastnom-dome.html">Как увеличить площадь покрытия Wi-Fi роутера в частном доме: методы и советы</a></li><li><a href="/set-i-internet/k/ka/kak-uznat-gde-nakhodyatsya-menty.html">Как узнать, где находятся менты: сервисы и способы</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Полное руководство: как откатить прошивку MikroTik RouterOS</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-процесс-отката-routeros">Введение в процесс отката RouterOS</a></li><li><a href="#подготовка-и-диагностика-перед-откатом">Подготовка и диагностика перед откатом</a></li><li><a href="#методы-отката-через-интерфейс-winbox-и-cli">Методы отката через интерфейс WinBox и CLI</a></li><li><a href="#использование-утилиты-netinstall-для-восстановления">Использование утилиты Netinstall для восстановления</a></li><li><a href="#особенности-работы-с-bootloader-и-режимами-загрузчика">Особенности работы с Bootloader и режимами загрузчика</a></li><li><a href="#совместимость-версий-и-критические-изменения">Совместимость версий и критические изменения</a></li><li><a href="#частые-ошибки-и-предотвращение-проблем">Частые ошибки и предотвращение проблем</a></li><li><a href="#faq-ответы-на-частые-вопросы">FAQ: Ответы на частые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-процесс-отката-routeros">Введение в процесс отката RouterOS</h2>
+
+<p>Ситуация, когда обновление системы приводит к нестабильной работе, потере функционала или критическим ошибкам в сетевой инфраструктуре, не является редкостью для администраторов <em>MikroTik</em>. Часто новая версия <strong>RouterOS</strong> вносит изменения в логику обработки пакетов или драйверы оборудования, что требует немедленной реакции от инженера. В таких случаях единственно верным решением становится возврат к предыдущей, стабильной версии прошивки, известной как откат.</p>
+
+<p>Процедура понижения версии ПО на роутерах <em>MikroTik</em> имеет свои технические нюансы, которые отличаются от простого обновления. Система не всегда позволяет автоматически выбрать более раннюю версию через стандартное меню, если не соблюдены определенные условия совместимости. Поэтому важно понимать разницу между откатом <strong>RouterOS</strong> и <strong>firmware</strong>, а также знать доступные методы восстановления работоспособности устройства.</p>
+
+<p>В данной инструкции мы разберем все доступные способы понижения версии, начиная от штатных инструментов в интерфейсе <code>WinBox</code> и заканчивая использованием утилиты <code>Netinstall</code> для сложных случаев, когда устройство не загружается. Мы также обсудим риски потери данных и важность резервного копирования перед началом любых манипуляций с системным софтом.</p>
+
+<h2 id="подготовка-и-диагностика-перед-откатом">Подготовка и диагностика перед откатом</h2>
+
+<p>Прежде чем приступать к активным действиям по изменению версии <strong>RouterOS</strong>, необходимо провести тщательную диагностику текущего состояния оборудования. Не спешите сбрасывать настройки, пока не убедитесь в том, что проблема действительно вызвана версией ПО, а не аппаратным сбоем или ошибкой конфигурации. Часто бывает достаточно перезагрузки или отключения определенных модулей, чтобы устранить нестабильность.</p>
+
+<p>Если решение об откате принято, критически важно создать полную резервную копию текущей конфигурации. Используйте команды для экспорта настроек в текстовом формате, чтобы иметь возможность восстановить их на новой прошивке. Обратите внимание, что файл бэкапа <code>.backup</code> может быть несовместим с более старой версией системы, поэтому текстовый экспорт <code>/export</code> является более надежным вариантом для переноса настроек.</p>
+
+<p>Также проверьте совместимость версий <strong>RouterOS</strong> и <strong>firmware</strong> для вашей конкретной модели. Некоторые модели <em>MikroTik</em>, такие как серия <em>Cloud Router Switch</em> или новые <em>Cloud Router</em>, требуют обязательного обновления <strong>firmware</strong> перед установкой любой версии ПО, иначе загрузка может не состояться. Ознакомьтесь с официальным списком изменений в релизе, который вы планируете установить, чтобы избежать конфликтов.</p>
+
+<p>Убедитесь, что у вас есть физический доступ к устройству и стабильное соединение по Ethernet. Процесс отката через <code>Netinstall</code> требует прямого подключения кабеля к LAN-порту, а использование Wi-Fi в этом случае категорически не рекомендуется из-за риска потери связи.</p>
+
+<blockquote>⚠️ Внимание: Файлы резервной копии <code>.backup</code> создаются в бинарном формате и привязаны к версии системы. Откат на более старую версию может сделать такой файл нечитаемым. Всегда сохраняйте текстовый экспорт настроек.</blockquote>
+
+<div class="pb-poll" id="poll-00f8c261"><div class="pb-poll-question">📊 Пользовались ли вы когда-либо откатом прошивки на MikroTik?</div><div class="pb-poll-option" data-poll="00f8c261" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Да, успешно</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="00f8c261" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Да, но были проблемы</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="00f8c261" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Нет, впервые сталкиваюсь</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="00f8c261" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Не планирую этого делать</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="методы-отката-через-интерфейс-winbox-и-cli">Методы отката через интерфейс WinBox и CLI</h2>
+
+<p>Самый простой способ понизить версию системы — использовать встроенный менеджер пакетов в интерфейсе <code>WinBox</code> или командной строке <code>Terminal</code>. Этот метод подходит для устройств, которые успешно загружаются и позволяют выполнять команды. Главный секрет данного метода заключается в том, чтобы сначала удалить текущую версию, а затем установить желаемую, так как прямая установка более старой версии поверх новой может быть заблокирована.</p>
+
+<p>Для начала необходимо отключить автоматическое обновление и удалить текущий пакет <strong>RouterOS</strong>. В разделе <code>System -> Packages</code> найдите пакет с версией системы, нажмите на него и выберите удаление. После перезагрузки устройства система перейдет в состояние, где версия ПО отсутствует или находится на базовом уровне, после чего можно скачать и установить необходимую версию.</p>
+
+<p>Скачивание нужной версии <strong>RouterOS</strong> осуществляется через официальный сайт MikroTik. Важно загружать именно тот архив, который соответствует архитектуре вашего процессора (например, <em>arm64</em> для новых моделей или <em>mipsbe</em> для старых). Не пытайтесь установить версию для другой архитектуры, это гарантированно выведет устройство из строя.</p>
+
+<p>Если устройство не видит старые версии в списке обновлений, вам придется вручную загрузить файл расширения <code>.npk</code> через WinBox в раздел <code>Files</code>, а затем установить его через команду <code>system package install</code>. Это позволяет гибко управлять версиями, но требует внимательности при выборе файла.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка готовности к откату</h4><label class="check-item"><input type="checkbox"><span>Сделан текстовый экспорт настроек</span></label><label class="check-item"><input type="checkbox"><span>Подключен кабель Ethernet</span></label><label class="check-item"><input type="checkbox"><span>Скачан нужный .npk файл</span></label><label class="check-item"><input type="checkbox"><span>Проверена совместимость архитектуры</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="использование-утилиты-netinstall-для-восстановления">Использование утилиты Netinstall для восстановления</h2>
+
+<p>В случаях, когда устройство не загружается, зависает на этапе загрузки <strong>bootloader</strong> или интерфейс управления недоступен, единственным спасением становится утилита <code>Netinstall</code>. Это мощный инструмент от <em>MikroTik</em>, который позволяет загрузить систему по сети, минуя внутреннюю память устройства. Процесс требует настройки статического IP-адреса на сетевой карте компьютера и запуска процесса загрузчика.</p>
+
+<p>Запуск <code>Netinstall</code> начинается с включения устройства и нажатия кнопки <code>Reset</code> на корпусе при подключении кабеля. Индикатор <em>ACT</em> начнет мигать, сигнализируя о готовности к загрузке. В программе вы увидите ваше устройство в списке, и вам нужно будет указать путь к файлу <strong>RouterOS</strong> или <strong>firmware</strong>, который вы хотите установить.</p>
+
+<p>Особое внимание следует уделить выбору файла образа. В старом <em>Netinstall</em> часто предлагался выбор между версиями, но в новых сборках необходимо вручную указывать конкретный файл <code>.npk</code>. Если вы хотите откатиться на старую версию, убедитесь, что у вас есть архив с нужной версией <strong>RouterOS</strong> и <strong>firmware</strong> для вашей платформы.</p>
+
+<p>Процесс установки по сети может занять несколько минут в зависимости от скорости соединения и размера образа. Ни в коем случае не прерывайте процесс и не отключайте питание до тех пор, пока программа не выдаст сообщение об успешном завершении. После перезагрузки устройство загрузится с установленной версией.</p>
+
+<details class="pb-accordion"><summary>Что делать, если Netinstall не видит устройство?</summary><div class="pb-accordion-body"><p>Убедитесь, что на сетевой карте установлен статический IP из диапазона 192.168.88.x, отключите фаервол и антивирус, проверьте, что кнопка Reset удерживалась достаточно долго до включения питания, и что используется кабель прямого подключения без коммутаторов.</p></div></details>
+
+<h2 id="особенности-работы-с-bootloader-и-режимами-загрузчика">Особенности работы с Bootloader и режимами загрузчика</h2>
+
+<p>Некоторые модели <em>MikroTik</em>, особенно устройства серии <em>Cloud Router</em> и <em>hAP</em> последних поколений, имеют специфический режим загрузчика, который позволяет выполнять откат без использования внешнего ПО. Этот режим активируется удержанием кнопки <code>Reset</code> при включении питания до загорания индикатора <em>USR</em> или <em>ACT</em>. В этом режиме устройство становится видимым в сети и готовым к приему прошивки.</p>
+
+<p>При попадании в этот режим загрузчика важно не перепутать файлы. Устройства могут требовать одновременной установки <strong>RouterOS</strong> и <strong>firmware</strong>. Если вы установите только одну из составляющих, система может не загрузиться. В меню загрузки через браузер или <code>Netinstall</code> убедитесь, что загружены оба пакета для вашей архитектуры.</p>
+
+<p>Существует также риск потери данных при использовании режима загрузчика. В некоторых случаях форматирование раздела памяти происходит автоматически для установки новой системы. Поэтому всегда имейте под рукой текстовый экспорт настроек, который можно будет импортировать после восстановления работоспособности устройства.</p>
+
+<p>Также стоит отметить, что для очень старых моделей <em>MikroTik</em> (серии <em>RB750</em>, <em>RB493</em>) процесс может отличаться. Там часто требуется использование утилиты <code>tftp</code> и специфических настроек IP-адресов. Изучите документацию именно для вашей модели перед началом работы.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Режим загрузчика — это аварийный метод, который позволяет восстановить устройство, когда стандартные методы управления недоступны, но требует наличия всех необходимых файлов прошивки под рукой.</p></aside>
+
+<h2 id="совместимость-версий-и-критические-изменения">Совместимость версий и критические изменения</h2>
+
+<p>Переход на более старую версию <strong>RouterOS</strong> может привести к потере функционала, который был реализован только в новых релизах. Например, протоколы шифрования, методы маршрутизации или поддержка новых типов интерфейсов могут отсутствовать в старой версии. Это важно учитывать при планировании отката, чтобы не нарушить работу существующей сети.</p>
+
+<p>В таблице ниже представлены основные различия между версиями, которые могут повлиять на решение об откате:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Версия RouterOS</th>
+<th>Тип архитектуры</th>
+<th>Особенности</th>
+<th>Риск отката</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v6.x</td>
+<td>Legacy (mipsbe, x86)</td>
+<td>Стабильная, но устаревшая</td>
+<td>Низкий (если оборудование старое)</td>
+</tr>
+<tr>
+<td>v7.x (старая)</td>
+<td>ARM64, MIPSBE</td>
+<td>Новый движок, изменения в командах</td>
+<td>Средний (потеря скриптов)</td>
+</tr>
+<tr>
+<td>v7.x (новая)</td>
+<td>ARM64, MIPSBE</td>
+<td>Оптимизация, новые драйверы</td>
+<td>Высокий (если старая версия не поддерживает драйвер)</td>
+</tr>
+<tr>
+<td>Long-term</td>
+<td>Все</td>
+<td>Максимальная стабильность</td>
+<td>Минимальный</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Обратите внимание, что откат с версии <strong>v7</strong> на версию <strong>v6</strong> на современных устройствах часто невозможен или крайне не рекомендуется. <em>MikroTik</em> изменил архитектуру ядра, и старые версии могут просто не загрузиться на новом "железе". В таких случаях лучше искать стабильную версию в ветке <strong>v7</strong>.</p>
+
+<p>Если вы используете сложные скрипты или сторонние пакеты, такие как <strong>ROS4</strong> или специфические модули безопасности, их работа на старой версии может быть нарушена. Проверьте документацию к этим пакетам перед началом отката.</p>
+
+<blockquote>⚠️ Внимание: Откат версии на устройствах с процессорами ARM64 (серии RB5009, hAP ax3) с версии 7.15+ на версии 7.0-7.14 может быть невозможен из-за изменений в загрузчике. Сверьте совместимость на официальном форуме.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед откатом проверьте, не используете ли вы функции, уникальные для новой версии (например, WireGuard или новые методы NAT), так как они могут быть недоступны в старом релизе.</p></aside>
+
+<h2 id="частые-ошибки-и-предотвращение-проблем">Частые ошибки и предотвращение проблем</h2>
+
+<p>Одной из самых распространенных ошибок является попытка отката без подготовки. Пользователи часто забывают, что конфигурация, сохраненная в бинарном файле <code>.backup</code>, может не загрузиться на старую версию. Это приводит к тому, что после отката устройство работает в "пустом" состоянии, и настройки приходится восстанавливать вручную из текстового экспорта.</p>
+
+<p>Еще одна ошибка — использование неправильных файлов <strong>firmware</strong>. Для каждого устройства существует свой уникальный файл прошивки. Установка чужого файла может привести к "окирпичиванию" устройства, когда оно перестает реагировать на любые команды. Всегда скачивайте файлы с официального сайта или доверенных зеркал, проверяя хеш-суммы.</p>
+
+<p>Иногда процесс отката может зависнуть на этапе форматирования раздела. В таких случаях не стоит сразу перезагружать устройство кнопкой. Дайте ему время (до 10-15 минут), так как процесс перезаписи флеш-памяти может быть долгим. Если загрузка не происходит, попробуйте изменить кабель или порт подключения.</p>
+
+<p>Также важно учитывать, что после отката некоторые настройки могут сброситься к заводским. Это касается особенно настроек безопасности, паролей и доступа. Убедитесь, что у вас есть доступ к устройству через консоль или Telnet/SSH до начала процесса, чтобы не потерять управление.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Всегда проверяйте целостность скачанных файлов .npk и наличие текстового экспорта настроек — это два основных фактора успешного восстановления работоспособности.</p></aside>
+
+<h2 id="faq-ответы-на-частые-вопросы">FAQ: Ответы на частые вопросы</h2>
+
+<details>
+<summary>Можно ли откатить RouterOS на версию, которая старше, чем дата покупки устройства?</summary>
+<p>Технически это возможно, если вы найдете файл прошивки для вашей архитектуры. Однако, если устройство было выпущено с новой версией загрузчика, старые версии могут не загрузиться. Рекомендуется использовать версию, которая была актуальна на момент выпуска вашей модели.</p>
+</details>
+
+<details>
+<summary>Что делать, если после отката пропал доступ к Wi-Fi?</summary>
+<p>Скорее всего, драйверы беспроводной карты в старой версии <strong>RouterOS</strong> отличаются или настроены иначе. Проверьте настройки интерфейса <code>wifi</code> или <code>wlan</code>. Возможно, потребуется ручная настройка SSID и безопасности, так как конфигурация могла не загрузиться корректно.</p>
+</details>
+
+<details>
+<summary>Есть ли разница между откатом для х86 и для роутеров?</summary>
+<p>Да, процесс может отличаться. Для архитектуры <strong>x86</strong> часто используется загрузка с ISO или установщик, тогда как для роутеров <em>MikroTik</em> используется <code>Netinstall</code> или загрузчик по кнопке. Также файлы <strong>firmware</strong> для этих платформ несовместимы.</p>
+</details>
+
+<details>
+<summary>Можно ли откатить прошивку через веб-интерфейс?</summary>
+<p>Веб-интерфейс <code>WebFig</code> имеет ограниченные возможности для отката. Обычно он позволяет только обновлять систему. Для отката лучше использовать <code>WinBox</code> или утилиту <code>Netinstall</code>, так как они дают более полный контроль над процессом установки пакетов.</p>
+</details>
+
+<details>
+<summary>Потеряются ли лицензии при откате версии?</summary>
+<p>Лицензия привязана к железу (серийному номеру) и сохраняется при откате. Однако, если вы откатитесь на версию, которая не поддерживает текущий тип лицензии (например, новые функции в v7), некоторые возможности могут быть недоступны, но сама лицензия не слетит.</p>
+</details>
+
+<blockquote>⚠️ Внимание: Если вы используете специфические настройки безопасности или сложные скрипты, убедитесь, что они совместимы с версией, на которую вы планируете откатиться, чтобы избежать внезапных сбоев в работе сети.</blockquote>
+
+<p>Откат прошивки на оборудовании <em>MikroTik</em> — это процедура, требующая аккуратности и подготовки. Следуя описанным шагам и учитывая особенности вашей модели, вы сможете вернуть устройство к стабильной работе без потери критических данных. Помните, что тестирование в лабораторных условиях перед массовым откатом всегда является лучшей практикой.</p></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/k/ka/kakoj-usilitel-sotovoj-svyazi-vybrat.html" class="pb-related-card">
+                <span class="pb-related-title">Какой усилитель сотовой связи выбрать: полный гид по репитерам</span>
+                <span class="pb-related-desc">Выбираем лучший усилитель сотовой связи для дома и офиса. Обзор стандартов 3G/4G, расчет мощности, м</span>
+            </a><a href="/set-i-internet/k/ka/kak-perevesti-dengi-v-sbere-cherez-sms-po-nomeru-telefona.html" class="pb-related-card">
+                <span class="pb-related-title">Как перевести деньги в СберБанк через СМС: пошаговая инструкция</span>
+                <span class="pb-related-desc">Подробная инструкция: как перевести деньги на карту Сбербанка через СМС. Команды, лимиты, тарифы и в</span>
+            </a><a href="/set-i-internet/p/pe/perekhod-k-drugomu-operatoru-s-sokhraneniem-nomera-mts.html" class="pb-related-card">
+                <span class="pb-related-title">Перенос номера МТС к другому оператору: полная инструкция 2026</span>
+                <span class="pb-related-desc">Как перейти от МТС к другому сотовому оператору и сохранить свой старый номер. Пошаговая инструкция,</span>
+            </a><a href="/set-i-internet/k/ka/kak-uvelichit-ploshchad-pokrytiya-wifi-routera-v-chastnom-dome.html" class="pb-related-card">
+                <span class="pb-related-title">Как увеличить площадь покрытия Wi-Fi роутера в частном доме: методы и советы</span>
+                <span class="pb-related-desc">Узнайте, как расширить зону действия Wi-Fi в частном доме. Настройка антенн, выбор ретранслятора, Me</span>
+            </a><a href="/set-i-internet/k/ka/kak-uznat-gde-nakhodyatsya-menty.html" class="pb-related-card">
+                <span class="pb-related-title">Как узнать, где находятся менты: сервисы и способы</span>
+                <span class="pb-related-desc">Полный гид: как узнать местоположение сотрудников полиции через онлайн-сервисы, карты и приложения. </span>
+            </a><a href="/set-i-internet/m/mo/mobilnye-vyshki-sotovoj-svyazi-na-karte.html" class="pb-related-card">
+                <span class="pb-related-title">Мобильные вышки сотовой связи на карте: как найти и проверить покрытие</span>
+                <span class="pb-related-desc">Гайд по поиску вышек сотовой связи на интерактивных картах. Разбор сервисов 4glte.ru, OpenSignal, ка</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Диск в формате RAW: как вернуть NTFS без потери данных — Техно Гид</title>
+    <meta name="description" content="Пошаговая инструкция восстановления диска RAW в NTFS. Команды CHKDSK, Diskpart, тесты поверхности и выбор софта для спасения файлов.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/d/di/disk-v-formate-raw-kak-vernut-ntfs.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Диск в формате RAW: как вернуть NTFS без потери данных">
+    <meta property="og:description" content="Пошаговая инструкция восстановления диска RAW в NTFS. Команды CHKDSK, Diskpart, тесты поверхности и выбор софта для спасения файлов.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Диск в формате RAW: как вернуть NTFS без потери данных</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#диагностика-проблемы-и-предварительная-проверка-оборудования">Диагностика проблемы и предварительная проверка оборудования</a></li><li><a href="#использование-утилиты-chkdsk-для-исправления-ошибок">Использование утилиты CHKDSK для исправления ошибок</a></li><li><a href="#восстановление-через-консольную-утилиту-diskpart">Восстановление через консольную утилиту Diskpart</a></li><li><a href="#применение-стороннего-по-для-восстановления-данных">Применение стороннего ПО для восстановления данных</a></li><li><a href="#анализ-причин-появления-raw-и-профилактика">Анализ причин появления RAW и профилактика</a></li><li><a href="#что-делать-если-ничего-не-помогло">Что делать, если ничего не помогло</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/c/ch/chto-oznachaet-ctrl-x.html">Что означает Ctrl+X: назначение, функции и способы восстановления</a></li><li><a href="/kompyutery-i-noutbuki/c/ch/chto-esli-nazhat-alt-f4.html">Что будет, если нажать Alt+F4: последствия и скрытые функции</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-peremestit-windows-na-drugoj-disk.html">Как переместить Windows 10/11 на другой диск: подробная инструкция</a></li><li><a href="/kompyutery-i-noutbuki/u/us/usb-vid-0451-pid-3410-rev-0100.html">USB VID 0451 PID 3410: Что это за устройство и как установить драйвер</a></li><li><a href="/kompyutery-i-noutbuki/k/kh/khochu-sobrat-kompyuter-s-chego-nachat.html">Собрать компьютер с нуля: пошаговый гайд для новичка</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как восстановить диск в формате RAW обратно в NTFS</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#диагностика-проблемы-и-предварительная-проверка-оборудования">Диагностика проблемы и предварительная проверка оборудования</a></li><li><a href="#использование-утилиты-chkdsk-для-исправления-ошибок">Использование утилиты CHKDSK для исправления ошибок</a></li><li><a href="#восстановление-через-консольную-утилиту-diskpart">Восстановление через консольную утилиту Diskpart</a></li><li><a href="#применение-стороннего-по-для-восстановления-данных">Применение стороннего ПО для восстановления данных</a></li><li><a href="#анализ-причин-появления-raw-и-профилактика">Анализ причин появления RAW и профилактика</a></li><li><a href="#что-делать-если-ничего-не-помогло">Что делать, если ничего не помогло</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Внезапное преобразование файловой системы вашего жесткого диска или USB-флешки в статус <strong>RAW</strong> становится для многих пользователей шокирующим событием. Вместо привычного доступа к документам и фотографиям операционная система выдает пугающее сообщение о необходимости форматирования раздела перед использованием. Это состояние означает, что файловая таблица повреждена или отсутствует, из-за чего Windows перестает распознавать структуру данных, хотя сами файлы физически могут находиться на носителе в целости.</p>
+
+<p>Ситуация с диском в формате RAW часто возникает после скачков напряжения, неправильного извлечения устройства или сбоя в работе контроллера. Многие пользователи совершают фатальную ошибку, сразу соглашаясь на форматирование, предложенное системой, что приводит к безвозвратной потере информации. Однако существуют проверенные методы, позволяющие вернуть файловую систему <em>NTFS</em> или <em>FAT32</em> без удаления содержимого, если физическая целостность накопителя не нарушена.</p>
+
+<p>В этом руководстве мы детально разберем алгоритм действий от первичной диагностики до использования специализированного программного обеспечения. Мы рассмотрим встроенные утилиты Windows, возможности командной строки и сторонние решения для восстановления структуры разделов. Важно понимать, что успех операции напрямую зависит от причины возникновения ошибки и оперативности ваших действий.</p>
+
+<h2 id="диагностика-проблемы-и-предварительная-проверка-оборудования">Диагностика проблемы и предварительная проверка оборудования</h2>
+
+<p>Прежде чем приступать к программному восстановлению файловой системы, необходимо исключить аппаратные неисправности. Иногда ошибка RAW является следствием плохого контакта в USB-порту или повреждения кабеля, а не логического сбоя самого диска. Попробуйте подключить накопитель к другому разъему, желательно расположенному непосредственно на материнской плате, если речь идет о стационарном компьютере.</p>
+
+<p>Проверьте состояние диска через стандартную оснастку управления дисками. Для этого нажмите комбинацию клавиш <code>Win + R</code> и введите команду <code>diskmgmt.msc</code>. В открывшемся окне найдите проблемный раздел: если его файловая система отображается как RAW, а статус —"Исправен", это хороший знак, указывающий на логическую ошибку. Если же диск отображается как"Не распределен" или имеет статус"Неизвестный", ситуация может быть сложнее.</p>
+
+<p>Обратите внимание на посторонние звуки, издаваемые жестким диском при работе. Щелчки, скрежет или периодическая остановка вращения шпинделя свидетельствуют о механическом повреждении головок или мотора. В таких случаях любые попытки программно вернуть NTFS могут привести к окончательному выходу устройства из строя.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Если диск издает нехарактерные звуки или сильно нагревается, немедленно отключите питание. Дальнейшие попытки включения могут привести к необратимому повреждению магнитных пластин и полной потере данных.</p>
+</blockquote>
+
+<p>Также стоит проверить диск на наличие битых секторов с помощью утилиты <em>CrystalDiskInfo</em> или аналогов. Если программа показывает статус"Тревога" или"Плохо", восстановление файловой системы следует проводить только после создания посекторной копии образа диска на исправный носитель.</p>
+
+<div class="pb-poll" id="poll-31e941fb"><div class="pb-poll-question">📊 Как проявилась ошибка RAW?</div><div class="pb-poll-option" data-poll="31e941fb" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">После обновления Windows</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="31e941fb" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">После скачка напряжения</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="31e941fb" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">При подключении к другому ПК</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="31e941fb" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Внезапно без видимых причин</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="использование-утилиты-chkdsk-для-исправления-ошибок">Использование утилиты CHKDSK для исправления ошибок</h2>
+
+<p>Самым первым и часто эффективным инструментом для восстановления доступа к данным является встроенная консольная утилита <strong>CHKDSK</strong> (Check Disk). Она предназначена для проверки целостности файловой системы и исправления логических ошибок, которые могут приводить к статусу RAW. Запуск этой команды требует прав администратора и осторожности в исполнении.</p>
+
+<p>Для начала работы откройте командную строку от имени администратора. Нажмите <code>Пуск</code>, введите <code>cmd</code>, нажмите правой кнопкой мыши на найденное приложение и выберите соответствующий пункт меню. В окне терминала необходимо ввести команду проверки для конкретного диска, заменив букву X на букву вашего проблемного раздела.</p>
+
+<pre><code>chkdsk X: /f /r</code></pre>
+
+<p>Параметр <code>/f</code> instructs the system to fix errors on the disk, while <code>/r</code> locates bad sectors and recovers readable information. Процесс сканирования может занять от нескольких минут до нескольких часов в зависимости от объема накопителя и степени повреждения. Если утилита сообщит, что проверка невозможна в режиме чтения-записи, она предложит запланировать проверку при следующей перезагрузке.</p>
+
+<p>Важно отметить, что в некоторых случаях CHKDSK может отказаться работать с разделом RAW, заявляя, что тип файловой системы не определен. Это происходит при серьезном повреждении загрузочного сектора. В такой ситуации команда просто завершит работу без внесения изменений, и потребуется переход к более радикальным методам восстановления через <em>Diskpart</em> или специализированный софт.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед запуском CHKDSK закройте все программы, работающие с файлами на проверяемом диске, чтобы избежать конфликтов доступа и зависания процесса.</p></aside>
+
+<h2 id="восстановление-через-консольную-утилиту-diskpart">Восстановление через консольную утилиту Diskpart</h2>
+
+<p>Если стандартная проверка не дала результатов, можно попытаться восстановить структуру разделов с помощью мощной утилиты <strong>Diskpart</strong>. Этот инструмент позволяет управлять дисками, разделами и томами на низком уровне. Будьте предельно внимательны при вводе команд, так как ошибка в выборе номера диска может привести крованию правильного раздела.</p>
+
+<p>Запустите командную строку от имени администратора и введите <code>diskpart</code>. После появления приглашения утилиты выполните команду <code>list disk</code>, чтобы отобразить список всех подключенных накопителей. Определите номер проблемного диска по его объему и введите команду <code>select disk N</code>, где N — номер вашего устройства.</p>
+
+<p>Далее необходимо выбрать конкретный раздел командой <code>list partition</code> и затем <code>select partition M</code>. После выбора раздела попробуйте назначить ему букву, если она отсутствует, командой <code>assign letter=Z</code>. Иногда простой переназначения буквы достаточно, чтобы система снова начала видеть файловую систему корректно.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Команда</th>
+<th>Описание действия</th>
+<th>Риск потери данных</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>list disk</code></td>
+<td>Отображение списка дисков</td>
+<td>Нет</td>
+</tr>
+<tr>
+<td><code>select disk</code></td>
+<td>Выбор целевого диска для работы</td>
+<td>Нет (но риск ошибки выбора)</td>
+</tr>
+<tr>
+<td><code>clean</code></td>
+<td>Полная очистка структуры разделов</td>
+<td>Высокий (удаляет все разделы)</td>
+</tr>
+<tr>
+<td><code>create partition primary</code></td>
+<td>Создание нового основного раздела</td>
+<td>Высокий (требует форматирования)</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Крайней мерой в Diskpart является команда <code>clean</code>, которая полностью удаляет таблицу разделов. Используйте её только в том случае, если данные не важны или уже сохранены на другом носителе, так как после её выполнения диск станет полностью пустым и потребует создания нового тома и форматирования в NTFS.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к работе с Diskpart</h4><label class="check-item"><input type="checkbox"><span>Скопировать важные данные (если возможно)</span></label><label class="check-item"><input type="checkbox"><span>Определить точный номер диска</span></label><label class="check-item"><input type="checkbox"><span>Закрыть все лишние программы</span></label><label class="check-item"><input type="checkbox"><span>Запустить консоль от администратора</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="применение-стороннего-по-для-восстановления-данных">Применение стороннего ПО для восстановления данных</h2>
+
+<p>Когда встроенные средства Windows бессильны, на помощь приходят специализированные программы для восстановления данных. Лидерами в этой области являются решения от <em>R-Studio</em>, <em>DMDE</em>, <em>TestDisk</em> и <em>EaseUS Data Recovery</em>. Эти утилиты умеют читать диск в обход файловой системы, находя файлы по сигнатурам и восстанавливая структуру каталогов.</p>
+
+<p>Программа <strong>TestDisk</strong> является бесплатным инструментом с открытым исходным кодом, который особенно эффективен при восстановлении потерянных разделов. Она может перезаписать загрузочный сектор корректной копией, тем самым мгновенно возвращая доступ к файловой системе NTFS без копирования файлов. Однако интерфейс программы текстовый и требует четкого следования инструкциям.</p>
+
+<p>Более дружелюбные интерфейсы предлагают коммерческие продукты, которые позволяют предварительно просмотреть найденные файлы перед восстановлением. Это критически важный этап, позволяющий убедиться, что данные не повреждены и подлежат спасению. Процесс обычно сводится к сканированию диска RAW, выбору нужных файлов и сохранению их на другой физический носитель.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Никогда не сохраняйте восстановленные файлы на тот же диск, с которого производится восстановление. Это может привести к затиранию еще не считанных данных и окончательной потере информации.</p>
+</blockquote>
+
+<p>После того как данные успешно скопированы на надежный носитель, вы можете смело форматировать проблемный диск в файловую систему NTFS через стандартное меню проводника или утилиту управления дисками. Это вернет диску работоспособность для дальнейшего использования.</p>
+
+<details class="pb-accordion"><summary>Почему TestDisk эффективен для RAW?</summary><div class="pb-accordion-body"><p>TestDisk работает напрямую с секторами диска, игнорируя поврежденную файловую таблицу. Он ищет сигнатуры загрузочных секторов NTFS, FAT32 или exFAT и может восстановить их из резервной копии, которая обычно хранится в конце раздела.</p></div></details>
+
+<h2 id="анализ-причин-появления-raw-и-профилактика">Анализ причин появления RAW и профилактика</h2>
+
+<p>Понимание причин возникновения ошибки помогает предотвратить её появление в будущем. Одной из самых частых причин является небезопасное извлечение устройства. Выдергивание флешки или отключение внешнего HDD во время записи данных нарушает структуру файловой таблицы, что операционная система интерпретирует как повреждение и переводит раздел в RAW.</p>
+
+<p>Вирусная активность также может стать виновником проблемы. Некоторые вредоносные программы намеренно повреждают загрузочные записи или таблицы разделов, блокируя доступ к данным. Регулярное использование антивирусного ПО и проверка съемных носителей при подключении к чужим компьютерам снижают этот риск.</p>
+
+<p>Физический износ накопителя — еще один фактор. Со временем ячейки памяти изнашиваются, появляются битые сектора, которые контроллер не может переназначить. Если диск старый и часто использовался, появление RAW может быть предвестником его скорой кончины. В таком случае разумнее заменить устройство, чем пытаться его реанимировать repeatedly.</p>
+
+<p>Сбои в электропитании компьютера могут привести к некорректной записи системных файлов. Использование источника бесперебойного питания (ИБП) для стационарных ПК поможет сгладить скачки напряжения и завершить процессы записи корректно даже при отключении света.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Регулярное резервное копирование важных данных на облачные сервисы или второй физический диск — единственный гарантированный способ защиты от потери информации при сбоях файловой системы.</p></aside>
+
+<h2 id="что-делать-если-ничего-не-помогло">Что делать, если ничего не помогло</h2>
+
+<p>Если ни CHKDSK, ни Diskpart, ни профессиональный софт не смогли восстановить доступ к данным или вернуть файловую систему NTFS, вероятнее всего, имеет место сложное физическое повреждение. Это может быть неисправность контроллера памяти, повреждение служебной зоны диска или дефекты магнитных пластин.</p>
+
+<p>В таких случаях самостоятельные попытки лечения часто усугубляют ситуацию. Программные утилиты создают дополнительную нагрузку на механизм диска, что при наличии механических проблем может привести к полному разрушению поверхности пластин. Дальнейшие действия без специального оборудования бессмысленны и опасны для данных.</p>
+
+<p>Единственным верным решением остается обращение в специализированный сервис по восстановлению данных. Такие лаборатории имеют доступ к оборудованию для посекторного чтения в обход контроллера, чистые комнаты для вскрытия гермоблоков и замены компонентов. Конечно, эти услуги стоят дорого, но это единственный шанс спасти уникальную информацию.</p>
+
+<p>Перед обращением в сервис уточните политику конфиденциальности и условия оплаты. Многие компании работают по принципу"нет данных — нет оплаты", что защищает вас от финансовых потерь в случае неудачного восстановления. Не пытайтесь вскрывать гермоблок диска самостоятельно в домашних условиях — попадание пыли уничтожит данные мгновенно.</p>
+
+<details>
+<summary>Можно ли восстановить данные после форматирования диска из RAW в NTFS?</summary>
+<p>Да, вероятность восстановления высока. При быстром форматировании удаляется только файловая таблица, а сами данные остаются на диске до момента их перезаписи новыми файлами. Используйте программы для восстановления данных сразу после форматирования.</p>
+</details>
+
+<details>
+<summary>Почему диск показывает объем 0 байт в свойствах?</summary>
+<p>Это характерный признак повреждения файловой системы или таблицы разделов. Операционная система не может корректно считать информацию о размере кластеров и занятом пространстве, поэтому отображает нулевое значение.</p>
+</details>
+
+<details>
+<summary>Безопасно ли использовать команду convert в Diskpart?</summary>
+<p>Команда <code>convert fs:ntfs</code> работает только с существующей файловой системой FAT32. Если диск уже в статусе RAW, эта команда не сработает и может выдать ошибку. Для RAW нужны методы восстановления структуры, а не конвертации.</p>
+</details>
+
+<details>
+<summary>Сколько времени занимает восстановление диска RAW?</summary>
+<p>Время зависит от объема диска и метода. Проверка CHKDSK может занять от 30 минут до нескольких часов. Восстановление данных программами типа R-Studio на диске 1 ТБ может длиться от 2 до 10 часов в зависимости от количества битых секторов.</p>
+</details>
+
+<details>
+<summary>Исчезнут ли файлы после исправления ошибки RAW?</summary>
+<p>При успешном исправлении ошибки методами CHKDSK или TestDisk файлы остаются на своих местах и становятся доступными. При использовании программ восстановления файлы копируются на другой носитель, а исходный диск затем форматируется.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/c/ch/chto-oznachaet-ctrl-x.html" class="pb-related-card">
+                <span class="pb-related-title">Что означает Ctrl+X: назначение, функции и способы восстановления</span>
+                <span class="pb-related-desc">Разбираем сочетание клавиш Ctrl+X. Узнайте, как работает функция вырезания, где применяется в разных</span>
+            </a><a href="/kompyutery-i-noutbuki/c/ch/chto-esli-nazhat-alt-f4.html" class="pb-related-card">
+                <span class="pb-related-title">Что будет, если нажать Alt+F4: последствия и скрытые функции</span>
+                <span class="pb-related-desc">Разбор действия комбинации Alt+F4 в Windows. Что происходит при закрытии игр, программ и на рабочем </span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-peremestit-windows-na-drugoj-disk.html" class="pb-related-card">
+                <span class="pb-related-title">Как переместить Windows 10/11 на другой диск: подробная инструкция</span>
+                <span class="pb-related-desc">Пошаговое руководство по переносу Windows на SSD или HDD. Как клонировать систему, настроить загрузк</span>
+            </a><a href="/kompyutery-i-noutbuki/u/us/usb-vid-0451-pid-3410-rev-0100.html" class="pb-related-card">
+                <span class="pb-related-title">USB VID 0451 PID 3410: Что это за устройство и как установить драйвер</span>
+                <span class="pb-related-desc">Подробный разбор идентификаторов VID 0451 и PID 3410. Определение устройства Texas Instruments, спос</span>
+            </a><a href="/kompyutery-i-noutbuki/k/kh/khochu-sobrat-kompyuter-s-chego-nachat.html" class="pb-related-card">
+                <span class="pb-related-title">Собрать компьютер с нуля: пошаговый гайд для новичка</span>
+                <span class="pb-related-desc">Хотите собрать ПК? Узнайте, с чего начать: выбор комплектующих, совместимость, бюджет и пошаговая ин</span>
+            </a><a href="/kompyutery-i-noutbuki/z/za/zalipanie-klavish-na-noutbuke-chto-delat.html" class="pb-related-card">
+                <span class="pb-related-title">Залипание клавиш на ноутбуке: пошаговая инструкция по ремонту</span>
+                <span class="pb-related-desc">Клавиатура ноутбука залипает? Узнайте эффективные способы устранения: от чистки в домашних условиях </span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

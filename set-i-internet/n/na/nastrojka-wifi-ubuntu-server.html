@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Настройка WiFi на Ubuntu Server: полное руководство — Техно Гид</title>
+    <meta name="description" content="Подробная инструкция по настройке WiFi на Ubuntu Server. Использование Netplan, NetworkManager и iw. Решение проблем с подключением для версий 20.04 и 22.04.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/n/na/nastrojka-wifi-ubuntu-server.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Настройка WiFi на Ubuntu Server: полное руководство">
+    <meta property="og:description" content="Подробная инструкция по настройке WiFi на Ubuntu Server. Использование Netplan, NetworkManager и iw. Решение проблем с подключением для версий 20.04 и 22.04.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Настройка WiFi на Ubuntu Server: полное руководство</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-оборудования-и-проверка-драйверов">Подготовка оборудования и проверка драйверов</a></li><li><a href="#идентификация-доступных-сетей-и-точек-доступа">Идентификация доступных сетей и точек доступа</a></li><li><a href="#настройка-wifi-через-netplan-ubuntu-2004-и-новее">Настройка WiFi через Netplan (Ubuntu 20.04 и новее)</a></li><li><a href="#использование-networkmanager-в-серверной-среде">Использование NetworkManager в серверной среде</a></li><li><a href="#настройка-статического-ip-адреса-для-сервера">Настройка статического IP-адреса для сервера</a></li><li><a href="#диагностика-проблем-и-проверка-соединения">Диагностика проблем и проверка соединения</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/n/na/nastrojka-routera-rostelekom-na-drugogo-provajdera.html">Как настроить роутер Ростелеком для другого провайдера: инструкция</a></li><li><a href="/set-i-internet/k/ka/kak-podklyuchit-internet-modem-megafon-k-kompyuteru.html">Как подключить интернет модем МегаФон к компьютеру: инструкция</a></li><li><a href="/set-i-internet/m/mo/moshchnyj-repiter-wifi-signala.html">Мощный репитер WiFi сигнала: как усилить сеть в доме</a></li><li><a href="/set-i-internet/k/kr/krug-klipy-smotret-besplatno.html">Круг клипы смотреть бесплатно: обзор и поиск контента</a></li><li><a href="/set-i-internet/u/us/usilitel-interneta-dlya-doma-v-rozetku.html">Усилитель интернета для дома в розетку: выбор и настройка</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как настроить WiFi на Ubuntu Server: полное руководство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-оборудования-и-проверка-драйверов">Подготовка оборудования и проверка драйверов</a></li><li><a href="#идентификация-доступных-сетей-и-точек-доступа">Идентификация доступных сетей и точек доступа</a></li><li><a href="#настройка-wifi-через-netplan-ubuntu-2004-и-новее">Настройка WiFi через Netplan (Ubuntu 20.04 и новее)</a></li><li><a href="#использование-networkmanager-в-серверной-среде">Использование NetworkManager в серверной среде</a></li><li><a href="#настройка-статического-ip-адреса-для-сервера">Настройка статического IP-адреса для сервера</a></li><li><a href="#диагностика-проблем-и-проверка-соединения">Диагностика проблем и проверка соединения</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Развертывание сервера без проводного соединения — задача, с которой сталкиваются многие системные администраторы при работе с мини-ПК, ноутбуками или удаленными точками доступа. В отличие от десктопных версий, <strong>Ubuntu Server</strong> по умолчанию не имеет графического интерфейса для управления сетью, что делает процесс настройки менее очевидным для новичков. Однако современные инструменты позволяют настроить беспроводное соединение быстро и надежно, используя лишь командную строку.</p>
+
+<p>Основная сложность заключается в правильном выборе инструмента управления сетью, так как в разных версиях дистрибутива используются разные механизмы. Начиная с версии 17.10, Canonical внедрила <em>Netplan</em> как стандартный конфигурационный слой, который генерирует конфигурацию для бэкендов вроде <em>systemd-networkd</em> или <em>NetworkManager</em>. Понимание этой архитектуры критически важно для успешной настройки <strong>беспроводного интерфейса</strong> и обеспечения стабильности соединения после перезагрузки.</p>
+
+<p>В этой статье мы детально разберем все этапы: от поиска имени адаптера до редактирования YAML-файлов и проверки безопасности соединения. Вы узнаете, как избежать типичных ошибок синтаксиса и какие команды использовать для диагностики проблем, если подключение не устанавливается с первого раза.</p>
+
+<h2 id="подготовка-оборудования-и-проверка-драйверов">Подготовка оборудования и проверка драйверов</h2>
+
+<p>Прежде чем приступать к конфигурации, необходимо убедиться, что операционная система видит ваш беспроводной адаптер. В серверных средах часто используются специфические карты, для которых могут потребоваться дополнительные проприетарные драйверы. Первым шагом всегда должна быть физическая проверка: убедитесь, что антенны подключены, а переключатель WiFi на корпусе устройства (если он есть) находится в положении <code>ON</code>.</p>
+
+<p>Для проверки видимости адаптера системой используйте утилиту <code>ip</code> или <code>lshw</code>. Введите команду <code>ip link show</code> в терминале. Если вы видите интерфейс с названием вроде <code>wlan0</code>, <code>wlp2s0</code> или подобным, значит, оборудование обнаружено. Отсутствие такого интерфейса может указывать на проблему с драйверами или отключенный модуль ядра.</p>
+
+<p>Если адаптер не отображается, проверьте loaded модули ядра с помощью команды <code>lsmod | grep wifi</code> или <code>lspci -k | grep -A 3 -i network</code>. Иногда требуется вручную загрузить модуль, используя команду <code>modprobe</code>. Для некоторых карт Intel или Realtek может потребоваться установка пакетов <em>firmware-linux</em> или специфических драйверов из репозиториев.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Если вы используете виртуальную машину (VirtualBox, VMware), убедитесь, что режим сети адаптера настроен корректно. Для работы внутреннего WiFi хоста в гостевой ОС часто требуется режим "Прозрачный мост" (Bridged Adapter), но прямая передача USB-адаптера внутрь VM дает наилучшую производительность.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте команду `rfkill list`, чтобы проверить, не заблокирован ли беспроводной адаптер программно или аппаратно. Статус "Soft blocked: yes" снимается командой `rfkill unblock wifi`.</p></aside>
+
+<h2 id="идентификация-доступных-сетей-и-точек-доступа">Идентификация доступных сетей и точек доступа</h2>
+
+<p>После подтверждения наличия адаптера следующим логическим шагом является сканирование эфира для обнаружения доступных точек доступа. Для этой задачи в Ubuntu Server идеально подходит утилита <code>nmcli</code> (если установлен NetworkManager) или <code>iwlist</code>. Использование <code>nmcli</code> предпочтительнее, так как этот инструмент является частью стандартного стека управления сетью во многих современных конфигурациях.</p>
+
+<p>Выполните команду <code>nmcli device wifi list</code> для получения списка окружающих сетей. Вывод покажет SSID (имя сети), режим работы, канал, уровень сигнала и статус безопасности. Обратите внимание на столбец <strong>SIGNAL</strong>: значения выше 60-70% гарантируют стабильное соединение, тогда как сигналы ниже 40% могут приводить к разрывам и низкой скорости передачи данных.</p>
+
+<p>Если <code>nmcli</code> недоступен, можно использовать более низкоуровневую утилиту <code>iw</code>. Команда <code>sudo iw dev wlan0 scan | grep SSID</code> выведет список имен сетей. Этот метод требует прав суперпользователя и может быть менее удобным для чтения, но он работает даже в минимальных сборках системы без установленных менеджеров сетей.</p>
+
+<ul>
+<li>📡 <strong>SSID</strong> — уникальное имя вашей беспроводной сети, которое будет указано в конфигурационном файле.</li>
+<li>🔒 <strong>Security</strong> — тип шифрования (обычно WPA2 или WPA3), который определяет метод аутентификации.</li>
+<li>📶 <strong>Signal Strength</strong> — мощность сигнала, критический параметр для выбора точки подключения в условиях радиопомех.</li>
+</ul>
+
+<div class="pb-poll" id="poll-8196167e"><div class="pb-poll-question">📊 Какой уровень сигнала у вашей целевой сети?</div><div class="pb-poll-option" data-poll="8196167e" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Отличный (>80%)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="8196167e" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Хороший (60-80%)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="8196167e" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Средний (40-60%)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="8196167e" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Плохой (<40%)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="настройка-wifi-через-netplan-ubuntu-2004-и-новее">Настройка WiFi через Netplan (Ubuntu 20.04 и новее)</h2>
+
+<p>Начиная с Ubuntu 17.10, основным инструментом конфигурации сети стал <strong>Netplan</strong>. Он использует файлы формата YAML для описания сетевой топологии. Это декларативный подход: вы описываете желаемое состояние сети, а система приводит конфигурацию к этому состоянию. Файлы конфигурации обычно располагаются в директории <code>/etc/netplan/</code> и имеют расширение <code>.yaml</code>.</p>
+
+<p>Откройте существующий файл конфигурации или создайте новый, например <code>01-netcfg.yaml</code>, используя текстовый редактор <code>nano</code> или <code>vim</code>. Синтаксис YAML крайне чувствителен к отступам: необходимо использовать только пробелы (обычно 2 или 4), использование табуляций приведет к ошибке при применении настроек. Структура файла должна строго соответствовать иерархии, описанной в документации.</p>
+
+<p>Пример конфигурации для подключения к защищенной сети выглядит следующим образом. Обратите внимание на отступы и форматирование:</p>
+
+<pre><code>network:
+<p>version: 2</p>
+<p>renderer: networkd</p>
+<p>wifis:</p>
+<p>wlan0:</p>
+<p>dhcp4: true</p>
+<p>access-points:</p>
+<p>"MyHomeWiFi":</p>
+<p>password: "SuperSecretPassword123"</p>
+</code></pre>
+
+<p>В данном примере <code>renderer: networkd</code> указывает на использование демона systemd-networkd. Если вы предпочитаете использовать NetworkManager, замените это значение на <code>renderer: NetworkManager</code>. Параметр <code>dhcp4: true</code> автоматически запросит IP-адрес у роутера. Для статического IP необходимо указать параметры <code>addresses</code>, <code>gateway4</code> (в старых версиях) или <code>routes</code> (в новых).</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Никогда не редактируйте файлы в <code>/etc/netplan/</code> без создания резервной копии. Ошибка в отступах YAML может привести к потере сетевого доступа, и исправить её можно будет только через физический доступ к консоли сервера.</p>
+</blockquote>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка конфигурации Netplan</h4><label class="check-item"><input type="checkbox"><span>Сделана резервная копия файла</span></label><label class="check-item"><input type="checkbox"><span>Проверены отступы (только пробелы)</span></label><label class="check-item"><input type="checkbox"><span>Указан правильный интерфейс (wlan0)</span></label><label class="check-item"><input type="checkbox"><span>Пароль заключен в кавычки</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="использование-networkmanager-в-серверной-среде">Использование NetworkManager в серверной среде</h2>
+
+<p>Хотя <em>Netplan</em> является стандартом, многие администраторы предпочитают использовать <strong>NetworkManager</strong> напрямую из-за его гибкости и удобства управления через CLI. Этот инструмент особенно полезен, если сервер периодически перемещается между разными сетями, так как он умеет запоминать несколько профилей подключения.</p>
+
+<p>Для начала убедитесь, что пакет установлен. В минимальных образах Ubuntu Server его может не быть. Установите его командой <code>sudo apt update && sudo apt install network-manager</code>. После установки сервис нужно включить и запустить: <code>sudo systemctl enable --now NetworkManager</code>. Это гарантирует, что менеджер сетей будет активен после перезагрузки.</p>
+
+<p>Подключение к WiFi осуществляется одной командой. Используйте синтаксис: <code>sudo nmcli device wifi connect "SSID" password "ВАШ_ПАРОЛЬ"</code>. Система автоматически создаст профиль соединения, попытается получить IP-адрес и настроит маршруты. Если подключение успешно, вы увидите сообщение "Device 'wlan0' successfully activated".</p>
+
+<p>Для управления существующими соединениями используйте команду <code>nmcli connection show</code>. Она отобразит список всех сохраненных профилей, их статус и тип устройства. Вы можете редактировать параметры конкретного соединения, например, установить статический IP, используя команду <code>nmcli connection modify</code> с соответствующими флагами.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Команда</th>
+<th>Описание действия</th>
+<th>Необходимые права</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nmcli r wifi on</code></td>
+<td>Включает радио модуль WiFi</td>
+<td>root / sudo</td>
+</tr>
+<tr>
+<td><code>nmcli d wifi list</code></td>
+<td>Сканирует доступные сети</td>
+<td>пользователь</td>
+</tr>
+<tr>
+<td><code>nmcli c up "Profile"</code></td>
+<td>Активирует профиль соединения</td>
+<td>root / sudo</td>
+</tr>
+<tr>
+<td><code>nmcli c delete "Profile"</code></td>
+<td>Удаляет сохраненный профиль</td>
+<td>root / sudo</td>
+</tr>
+</tbody>
+</table></div>
+
+<details class="pb-accordion"><summary>Что делать, если NetworkManager конфликтует с netplan?</summary><div class="pb-accordion-body"><p>Если оба сервиса пытаются управлять одним интерфейсом, могут возникать конфликты. В файле конфигурации Netplan явно укажите `renderer: NetworkManager`, чтобы передать управление интерфейсом именно этому демону, отключив systemd-networkd для данного устройства.</p></div></details>
+
+<h2 id="настройка-статического-ip-адреса-для-сервера">Настройка статического IP-адреса для сервера</h2>
+
+<p>Для серверной инфраструктуры использование динамического IP (DHCP) часто является неприемлемым решением, так как адрес может измениться после перезагрузки роутера или истечения аренды. Настройка <strong>статического IP</strong> обеспечивает постоянный адрес, по которому к серверу можно обратиться в любой момент.</p>
+
+<p>При использовании Netplan конфигурация статического адреса требует указания самого адреса с маской подсети, шлюза по умолчанию и DNS-серверов. Синтаксис немного изменился в последних версиях Ubuntu (22.04+), где маршрут по умолчанию задается через секцию <code>routes</code>, а не устаревшим параметром <code>gateway4</code>.</p>
+
+<p>Пример корректной конфигурации для статического адреса:</p>
+
+<pre><code>network:
+<p>version: 2</p>
+<p>renderer: networkd</p>
+<p>wifis:</p>
+<p>wlan0:</p>
+<p>addresses:</p>
+<p>- 192.168.1.50/24</p>
+<p>routes:</p>
+<p>- to: default</p>
+<p>via: 192.168.1.1</p>
+<p>nameservers:</p>
+<p>addresses:</p>
+<p>- 8.8.8.8</p>
+<p>- 1.1.1.1</p>
+<p>access-points:</p>
+<p>"MyHomeWiFi":</p>
+<p>password: "SuperSecretPassword123"</p>
+</code></pre>
+
+<p>Здесь <code>192.168.1.50/24</code> обозначает IP-адрес и маску подсети (255.255.255.0). Шлюз <code>192.168.1.1</code> указывает на адрес вашего роутера. DNS-серверы Google и Cloudflare обеспечивают надежное разрешение доменных имен. После внесения изменений обязательно примените конфигурацию командой <code>sudo netplan apply</code>.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> При настройке статического IP убедитесь, что выбранный адрес не находится в диапазоне DHCP-пула вашего роутера. В противном случае может возникнуть конфликт адресов, который приведет к нестабильной работе сети для обоих устройств.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Статический IP-адрес критически важен для серверов, предоставляющих услуги (Web, SSH, Database), так как клиенты должны знать постоянный адрес для подключения.</p></aside>
+
+<h2 id="диагностика-проблем-и-проверка-соединения">Диагностика проблем и проверка соединения</h2>
+
+<p>Даже при правильной конфигурации могут возникать проблемы с подключением. Первичная диагностика начинается с проверки статуса интерфейса. Команда <code>ip addr show wlan0</code> покажет, присвоен ли интерфейсу IP-адрес. Если адреса нет или он находится в диапазоне 169.254.x.x, значит, получение адреса по DHCP не удалось.</p>
+
+<p>Для детального анализа процесса подключения используйте журналы системы. В Ubuntu с <em>systemd</em> основным инструментом является <code>journalctl</code>. Команда <code>journalctl -u systemd-networkd -f</code> (или <code>-u NetworkManager`) позволит видеть логи в реальном времени во время попытки подключения. Ищите сообщения об ошибке аутентификации или таймауты.</code></p>
+
+<p>Проверка связности осуществляется утилитой <code>ping</code>. Попробуйте пропинговать шлюз по умолчанию (<code>ping 192.168.1.1</code>) и внешний ресурс (<code>ping 8.8.8.8</code>). Если пинг до шлюза проходит, а до внешнего IP нет, проблема в настройках маршрутизации или DNS. Если не работает даже пинг до шлюза, проблема на уровне беспроводного соединения или драйверов.</p>
+
+<ul>
+<li>🔍 <strong>journalctl</strong> — мощный инструмент для просмотра логов конкретных сервисов и поиска причин сбоев.</li>
+<li>🌐 <strong>ping</strong> — базовая утилита для проверки доступности узлов сети и измерения задержек.</li>
+<li>🛠️ <strong>iwconfig</strong> — устаревшая, но иногда полезная утилита для просмотра частоты канала и уровня сигнала в реальном времени.</li>
+</ul>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если подключение разрывается через определенные промежутки времени, проверьте настройки энергосбережения WiFi. Отключите режим экономии энергии для беспроводного адаптера в конфигурации NetworkManager или через параметры модуля ядра.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Почему команда `netplan apply` возвращает ошибку синтаксиса?</summary>
+<p>Наиболее частая причина — использование символов табуляции вместо пробелов в YAML-файле. YAML требует строгого соблюдения отступов пробелами. Также проверьте, что все ключевые слова написаны верно и структура вложенности соответствует требованиям документации Netplan.</p>
+</details>
+
+<details>
+<summary>Как подключиться к скрытой сети (Hidden SSID)?</summary>
+<p>В конфигурации Netplan добавьте параметр <code>hidden: true</code> внутрь блока <code>access-points</code>. Для NetworkManager используйте флаг <code>--hidden yes</code> в команде подключения: <code>nmcli device wifi connect "SSID" password "PASS" --hidden yes</code>.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать Ubuntu Server без графического интерфейса для WiFi?</summary>
+<p>Да, абсолютно. Все описанные методы (Netplan, nmcli, iw) работают исключительно в командной строке и не требуют установки графической оболочки GNOME или KDE, что сохраняет ресурсы системы.</p>
+</details>
+
+<details>
+<summary>Как переключиться между несколькими сохраненными WiFi сетями?</summary>
+<p>Используйте <code>nmcli connection up "Имя_Профиля"</code> для активации нужного профиля. NetworkManager автоматически отключит текущее соединение и установит новое. Можно также настроить приоритеты подключений через параметр <code>connection.autoconnect-priority</code>.</p>
+</details>
+
+<details>
+<summary>Где хранятся пароли от WiFi сетей в Ubuntu?</summary>
+<p>При использовании NetworkManager пароли хранятся в зашифрованном виде в файлах директории <code>/etc/NetworkManager/system-connections/</code>. Просмотреть их можно только с правами суперпользователя, и содержимое может быть зашифровано в зависимости от настроек безопасности системы.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/n/na/nastrojka-routera-rostelekom-na-drugogo-provajdera.html" class="pb-related-card">
+                <span class="pb-related-title">Как настроить роутер Ростелеком для другого провайдера: инструкция</span>
+                <span class="pb-related-desc">Пошаговая инструкция по перенастройке роутера Ростелеком под другого провайдера. Сброс настроек, вво</span>
+            </a><a href="/set-i-internet/k/ka/kak-podklyuchit-internet-modem-megafon-k-kompyuteru.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить интернет модем МегаФон к компьютеру: инструкция</span>
+                <span class="pb-related-desc">Пошаговое руководство по установке USB-модема МегаФон на ПК. Настройка драйверов, выбор места устано</span>
+            </a><a href="/set-i-internet/m/mo/moshchnyj-repiter-wifi-signala.html" class="pb-related-card">
+                <span class="pb-related-title">Мощный репитер WiFi сигнала: как усилить сеть в доме</span>
+                <span class="pb-related-desc">Выбор мощного репитера WiFi сигнала для частного дома. Обзор характеристик, советы по установке и на</span>
+            </a><a href="/set-i-internet/k/kr/krug-klipy-smotret-besplatno.html" class="pb-related-card">
+                <span class="pb-related-title">Круг клипы смотреть бесплатно: обзор и поиск контента</span>
+                <span class="pb-related-desc">Где смотреть круг клипы бесплатно онлайн. Разбор форматов 360, приложений для ТВ и смартфонов, а так</span>
+            </a><a href="/set-i-internet/u/us/usilitel-interneta-dlya-doma-v-rozetku.html" class="pb-related-card">
+                <span class="pb-related-title">Усилитель интернета для дома в розетку: выбор и настройка</span>
+                <span class="pb-related-desc">Как выбрать усилитель интернета для дома в розетку. Обзор технологий, сравнение моделей, ошибки монт</span>
+            </a><a href="/set-i-internet/p/po/podklyuchil-modem-k-kompyuteru-no-interneta-net.html" class="pb-related-card">
+                <span class="pb-related-title">Подключил модем к компьютеру, но нет интернета: причины и решение</span>
+                <span class="pb-related-desc">Нет доступа к сети после подключения USB-модема? Полный гайд по устранению ошибок драйверов, APN и н</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

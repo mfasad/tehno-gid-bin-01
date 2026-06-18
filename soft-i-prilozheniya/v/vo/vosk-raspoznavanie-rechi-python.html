@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Vosk распознавание речи на Python: установка и примеры — Техно Гид</title>
+    <meta name="description" content="Полное руководство по установке и настройке Vosk для распознавания речи в Python. Обзор моделей, примеры кода, работа с микрофоном и файлами.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/soft-i-prilozheniya/v/vo/vosk-raspoznavanie-rechi-python.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Vosk распознавание речи на Python: установка и примеры">
+    <meta property="og:description" content="Полное руководство по установке и настройке Vosk для распознавания речи в Python. Обзор моделей, примеры кода, работа с микрофоном и файлами.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/soft-i-prilozheniya/">Софт и Приложения</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Vosk распознавание речи на Python: установка и примеры</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#архитектура-и-преимущества-библиотеки-vosk">Архитектура и преимущества библиотеки Vosk</a></li><li><a href="#установка-зависимостей-и-подготовка-окружения">Установка зависимостей и подготовка окружения</a></li><li><a href="#выбор-и-загрузка-языковых-моделей">Выбор и загрузка языковых моделей</a></li><li><a href="#написание-скрипта-для-потокового-распознавания">Написание скрипта для потокового распознавания</a></li><li><a href="#настройка-аудио-потока">Настройка аудио потока</a></li><li><a href="#обработка-готовых-аудиофайлов-и-форматов">Обработка готовых аудиофайлов и форматов</a></li><li><a href="#расширенные-настройки-и-оптимизация">Расширенные настройки и оптимизация</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/soft-i-prilozheniya/p/pr/prilozhenie-dlya-poiska-podrabotki.html">Лучшие приложения для поиска подработки: Рейтинг 2026</a></li><li><a href="/soft-i-prilozheniya/s/si/sinyaya-galochka-dlya-nika.html">Как получить синюю галочку для ника в соцсетях: правила и инструкции</a></li><li><a href="/soft-i-prilozheniya/s/sm/smushchayushchijsya-smajlik-iz-simvolov.html">Смущающийся смайлик из символов: коллекция и коды</a></li><li><a href="/soft-i-prilozheniya/p/pr/privyazannye-ustrojstva-yandeks-plyus.html">Привязанные устройства Яндекс Плюс: лимиты, управление и настройка</a></li><li><a href="/soft-i-prilozheniya/p/pr/programma-dlya-proshivki-ratsii-motorola.html">Программа для прошивки рации Motorola: выбор CPS, настройка и обновление</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Vosk распознавание речи на Python: полное руководство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#архитектура-и-преимущества-библиотеки-vosk">Архитектура и преимущества библиотеки Vosk</a></li><li><a href="#установка-зависимостей-и-подготовка-окружения">Установка зависимостей и подготовка окружения</a></li><li><a href="#выбор-и-загрузка-языковых-моделей">Выбор и загрузка языковых моделей</a></li><li><a href="#написание-скрипта-для-потокового-распознавания">Написание скрипта для потокового распознавания</a></li><li><a href="#настройка-аудио-потока">Настройка аудио потока</a></li><li><a href="#обработка-готовых-аудиофайлов-и-форматов">Обработка готовых аудиофайлов и форматов</a></li><li><a href="#расширенные-настройки-и-оптимизация">Расширенные настройки и оптимизация</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Современные проекты в области искусственного интеллекта всё чаще требуют интеграции функций преобразования голоса в текст прямо на устройстве пользователя, без отправки данных в облако. Библиотека <strong>Vosk</strong> стала стандартом де-факто для разработчиков на <em>Python</em>, которые ищут легковесное и эффективное решение для офлайн-распознавания. Она позволяет создавать приложения, работающие на Raspberry Pi, Android или обычных ноутбуках, обеспечивая высокую скорость обработки аудио потока.</p>
+
+<p>В отличие от громоздких нейросетей, требующих мощных GPU, этот инструмент оптимизирован для работы на CPU, что делает его идеальным выбором для встраиваемых систем и IoT-устройств. Разработчики ценят его за простоту интеграции: всего несколько строк кода позволяют запустить полноценный движок распознавания. В этой статье мы детально разберем процесс установки, выбор языковых моделей и напишем работающий скрипт для транскрибации звука.</p>
+
+<p>Вы узнаете, как настроить буферизацию аудиопотока, чтобы избежать задержек, и какие параметры влияют на точность распознавания в шумной обстановке. Мы также рассмотрим различия между потоковой обработкой и анализом готовых файлов, что критически важно при проектировании архитектуры вашего приложения.</p>
+
+<h2 id="архитектура-и-преимущества-библиотеки-vosk">Архитектура и преимущества библиотеки Vosk</h2>
+
+<p>Основой системы является движок <em>Kaldi</em>, который был адаптирован для работы в режиме реального времени с минимальными задержками. Ключевой особенностью является возможность работы без постоянного подключения к интернету, что открывает двери для создания приватных голосовых ассистентов и систем диктовки в защищенных контурах. <strong>Локальная обработка</strong> гарантирует, что ваши аудиоданные никогда не покинут устройство, что особенно важно в свете современных требований к конфиденциальности.</p>
+
+<p>Библиотека поддерживает более 20 языков, включая русский, английский, китайский и многие другие, предоставляя готовые модели разного размера. Вы можете выбрать компактную модель весом всего 50 МБ для мобильных устройств или более точную модель размером в несколько гигабайт для серверных решений. Гибкость настройки позволяет балансировать между скоростью отклика и качеством транскрибации в зависимости от задач вашего проекта.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Качество распознавания напрямую зависит от выбранной модели. Маленькие модели работают быстрее, но могут хуже справляться со сложной терминологией или акцентами.</p>
+</blockquote>
+
+<p>Для разработчиков важно понимать, что система использует конечные автоматы и графы декодирования, что позволяет ей эффективно отсекать нерелевантные гипотезы еще на этапе обработки звука. Это снижает нагрузку на процессор и позволяет обрабатывать речь даже на устройствах с ограниченными ресурсами, таких как микрокомпьютеры.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте модель "vosk-model-small-ru" для тестирования на слабых устройствах, она занимает мало места в оперативной памяти и быстро загружается.</p></aside>
+
+<h2 id="установка-зависимостей-и-подготовка-окружения">Установка зависимостей и подготовка окружения</h2>
+
+<p>Первым шагом является установка самой библиотеки через менеджер пакетов <em>pip</em>. Процесс установки стандартен для экосистемы <strong>Python</strong>, однако требует наличия определенных системных зависимостей, особенно если вы работаете в среде Linux или macOS. В Windows большинство необходимых DLL поставляются вместе с пакетом, что упрощает старт для новичков.</p>
+
+<p>Для установки выполните команду в терминале:</p>
+<pre><code>pip install vosk</code></pre>
+
+<p>Помимо основной библиотеки, вам потребуется модуль для работы со звуковым оборудованием, например, <em>pyaudio</em> или <em>sounddevice</em>. Первый вариант часто требует предварительной установки системных пакетов развития (dev-пакетов), таких как <code>portaudio19-dev</code> в Debian-подобных дистрибутивах. Второй вариант, <em>sounddevice</em>, часто является более беспроблемным решением, так как имеет меньше внешних зависимостей.</p>
+
+<ul>
+<li>📦 Установите основной пакет: <code>pip install vosk</code></li>
+<li>🎙️ Выберите драйвер звука: <code>pip install pyaudio</code> или <code>pip install sounddevice</code></li>
+<li>📂 Скачайте языковую модель с официального репозитория</li>
+<li>⚙️ Распакуйте архив модели в рабочую директорию проекта</li>
+</ul>
+
+<p>После установки проверьте корректность работы, импортировав модуль в интерактивной оболочке. Если ошибок не возникло, можно переходить к загрузке языковой модели, которая является сердцем системы распознавания.</p>
+
+<div class="pb-poll" id="poll-a4b18e71"><div class="pb-poll-question">📊 Какую операционную систему вы используете для разработки?</div><div class="pb-poll-option" data-poll="a4b18e71" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Windows</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="a4b18e71" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Linux</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="a4b18e71" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">macOS</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="a4b18e71" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Raspberry Pi OS</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="выбор-и-загрузка-языковых-моделей">Выбор и загрузка языковых моделей</h2>
+
+<p>Модели распространяются в виде архивов, которые необходимо скачать вручную или через скрипт. Официальный сайт проекта предоставляет широкий выбор вариантов, различающихся по размеру и точности. Для русского языка рекомендуется начинать с модели <em>vosk-model-small-ru-0.22</em>, которая предлагает оптимальный баланс между размером и качеством.</p>
+
+<p>Структура папки модели должна быть соблюдена строго: внутри должны находиться файлы конфигурации, графы декодирования и акустические модели. Обычно после распаковки вы получаете папку с названием модели, путь к которой вы будете передавать в конструктор объекта <strong>Model</strong> в своем коде.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Название модели</th>
+<th>Размер</th>
+<th>Точность</th>
+<th>Рекомендуемое использование</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vosk-model-small-ru</td>
+<td>~50 МБ</td>
+<td>Средняя</td>
+<td>Мобильные приложения, IoT</td>
+</tr>
+<tr>
+<td>vosk-model-ru</td>
+<td>~800 МБ</td>
+<td>Высокая</td>
+<td>Серверные приложения, ПК</td>
+</tr>
+<tr>
+<td>vosk-model-en-us</td>
+<td>~700 МБ</td>
+<td>Высокая</td>
+<td>Англоязычные проекты</td>
+</tr>
+<tr>
+<td>vosk-model-de</td>
+<td>~900 МБ</td>
+<td>Высокая</td>
+<td>Немецкая речь</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>При выборе модели учитывайте доступный объем оперативной памяти. Загрузка большой модели на устройство с 512 МБ ОЗУ может привести к нестабильной работе системы или падению приложения из-за нехватки ресурсов.</p>
+
+<details class="pb-accordion"><summary>Где хранить модели?</summary><div class="pb-accordion-body"><p>Храните модели в отдельной директории, например "models", и используйте относительные пути в коде. Это упростит перенос проекта на другие компьютеры и избежит проблем с абсолютными путями вроде "C:/Users/Admin/...".</p></div></details>
+
+<h2 id="написание-скрипта-для-потокового-распознавания">Написание скрипта для потокового распознавания</h2>
+
+<p>Создание скрипта начинается с инициализации объекта модели и создания распознавателя <em>Recognizer</em>. Этот объект будет принимать байты аудиоданных и возвращать JSON-строки с результатом. Важно настроить частоту дискретизации (sample rate) в соответствии с параметрами вашей модели, обычно это 16000 Гц.</p>
+
+<p>Далее необходимо организовать чтение данных с микрофона. Мы используем цикл, который считывает небольшие chunks данных и передает их в метод <code>AcceptWaveform</code>. Этот метод возвращает <code>True</code>, когда завершена обработка значимой части речи (например, конца фразы), и в этот момент можно забрать полный результат.</p>
+
+<pre><code>from vosk import Model, Recognizer
+<p>import pyaudio</p>
+
+<p>model = Model("model-ru")</p>
+<p>rec = Recognizer(model, 16000)</p>
+
+<h2 id="настройка-аудио-потока">Настройка аудио потока</h2>
+<p>p = pyaudio.PyAudio()</p>
+<p>stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True)</p>
+
+<p>stream.start_stream()</p>
+<p>while True:</p>
+<p>data = stream.read(4000)</p>
+<p>if rec.AcceptWaveform(data):</p>
+<p>print(rec.Result())</p>
+<p>else:</p>
+<p>print(rec.PartialResult())</p>
+</code></pre>
+
+<p>Обратите внимание на использование метода <code>PartialResult</code>. Он позволяет получать промежуточные гипотезы распознавания в реальном времени, пока пользователь еще говорит. Это создает эффект "живого" набора текста, когда слова появляются на экране по мере их произнесения.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Убедитесь, что формат аудио данных строго соответствует ожиданиям модели (обычно 16-bit PCM, моно, 16кГц). Несоответствие формата приведет к бессмысленному набору символов на выходе.</p>
+</blockquote>
+
+<h2 id="обработка-готовых-аудиофайлов-и-форматов">Обработка готовых аудиофайлов и форматов</h2>
+
+<p>Работа с файлами отличается от потокового режима тем, что вы можете прочитать весь файл целиком или большими блоками. Библиотека поддерживает различные контейнеры, но наиболее надежным является работа с сырым WAV-форматом. Если у вас файл в MP3 или OGG, его предварительно нужно конвертировать в WAV с помощью утилит типа <em>ffmpeg</em>.</p>
+
+<p>Процесс конвертации можно выполнить командой:</p>
+<pre><code>ffmpeg -i input.mp3 -ar 16000 -ac 1 -f s16le output.wav</code></pre>
+
+<p>Параметр <code>-ar 16000</code> устанавливает частоту дискретизации, а <code>-ac 1</code> преобразует звук в моно. Это критически важные параметры, так как <strong>Vosk</strong> ожидает именно такой формат входных данных для корректной работы акустической модели.</p>
+
+<p>При чтении файла в коде вы просто заменяете источник данных с микрофона на файловый поток. Логика обработки результатов остается прежней: вы передаете байты в распознаватель и собираете итоговый текст. Такой подход часто используется для автоматической транскрибации записей встреч, подкастов или телефонных разговоров.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Всегда приводите аудио к формату 16kHz Mono перед подачей в распознаватель, независимо от исходного качества записи.</p></aside>
+
+<h2 id="расширенные-настройки-и-оптимизация">Расширенные настройки и оптимизация</h2>
+
+<p>Для повышения точности распознавания специфических терминов можно использовать функцию установки списка слов (grammar). Это особенно полезно в узкоспециализированных приложениях, например, в медицинских или юридических системах, где важен каждый термин. Вы можете ограничить словарь распознавателя несколькими сотнями слов, что резко снизит количество ошибок.</p>
+
+<p>Также доступна настройка порога срабатывания. Если приложение реагирует на фоновый шум, можно увеличить порог энергии сигнала, необходимого для начала распознавания. Это избавит от ложных срабатываний, когда в комнате просто кто-то кашляет или двигает стулом.</p>
+
+<ul>
+<li>🔊 Настройте чувствительность микрофона в ОС перед запуском скрипта</li>
+<li>📝 Используйте <code>rec.SetWords(True)</code> для получения таймкодов каждого слова</li>
+<li>🚀 Отключите лишние логирования для ускорения работы в продакшене</li>
+<li>🧩 Используйте многопоточность для обработки нескольких потоков одновременно</li>
+</ul>
+
+<p>Получение таймкодов позволяет синхронизировать текст с видео или аудио, создавая субтитры автоматически. Это мощная функция, которая превращает простой распознаватель речи в инструмент для профессиональной пост-обработки медиа-контента.</p>
+
+<details>
+<summary>Как добавить свои слова в словарь?</summary>
+<p>Для добавления специальных слов необходимо создать файл словаря в формате, совместимом с Kaldi, и положить его в папку модели. Однако, проще всего использовать метод <code>rec.SetGrammar</code> в коде, передав список допустимых фраз. Это динамически перестроит граф декодирования под ваши нужды без перекомпиляции модели.</p>
+</details>
+
+<details>
+<summary>Почему распознавание работает медленно?</summary>
+<p>Медленная работа чаще всего связана с использованием слишком большой модели на слабом процессоре или неправильной частотой дискретизации. Попробуйте переключиться на версию "small" или убедитесь, что аудио подается именно в формате 16kHz, чтобы избежать лишней конвертации на лету.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать Vosk на Android?</summary>
+<p>Да, существуют официальные обертки для Android (Java/Kotlin) и iOS. Принцип работы тот же: модель загружается в память устройства, и аудио передается в нативную библиотеку. Это позволяет создавать полностью офлайн голосовые интерфейсы в мобильных приложениях.</p>
+</details>
+
+<details>
+<summary>Поддерживает ли библиотека распознавание нескольких говорящих?</summary>
+<p>На текущий момент базовая версия библиотеки ориентирована на одного говорящего. Для разделения голосов (speaker diarization) требуются дополнительные пост-обработки или использование специализированных моделей, которые пока не интегрированы в стандартный пакет Vosk напрямую.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/soft-i-prilozheniya/p/pr/prilozhenie-dlya-poiska-podrabotki.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшие приложения для поиска подработки: Рейтинг 2026</span>
+                <span class="pb-related-desc">Обзор топовых мобильных сервисов для поиска подработки. Как выбрать надежное приложение, избежать мо</span>
+            </a><a href="/soft-i-prilozheniya/s/si/sinyaya-galochka-dlya-nika.html" class="pb-related-card">
+                <span class="pb-related-title">Как получить синюю галочку для ника в соцсетях: правила и инструкции</span>
+                <span class="pb-related-desc">Полный гайд по верификации профиля. Узнайте, как получить синюю галочку в ВКонтакте, Telegram и Inst</span>
+            </a><a href="/soft-i-prilozheniya/s/sm/smushchayushchijsya-smajlik-iz-simvolov.html" class="pb-related-card">
+                <span class="pb-related-title">Смущающийся смайлик из символов: коллекция и коды</span>
+                <span class="pb-related-desc">Полный гид по текстовым смайликам смущения. Коллекции каомодзи, ASCII-арт, коды для вставки и советы</span>
+            </a><a href="/soft-i-prilozheniya/p/pr/privyazannye-ustrojstva-yandeks-plyus.html" class="pb-related-card">
+                <span class="pb-related-title">Привязанные устройства Яндекс Плюс: лимиты, управление и настройка</span>
+                <span class="pb-related-desc">Узнайте, как управлять привязанными устройствами в Яндекс Плюс, менять лимиты стриминга и решать про</span>
+            </a><a href="/soft-i-prilozheniya/p/pr/programma-dlya-proshivki-ratsii-motorola.html" class="pb-related-card">
+                <span class="pb-related-title">Программа для прошивки рации Motorola: выбор CPS, настройка и обновление</span>
+                <span class="pb-related-desc">Полный гайд по выбору и использованию ПО Motorola CPS для программирования раций. Инструкция по подк</span>
+            </a><a href="/soft-i-prilozheniya/c/ch/chto-takoe-hosts-fajl.html" class="pb-related-card">
+                <span class="pb-related-title">Файл Hosts: назначение, путь к файлу и инструкция по редактированию</span>
+                <span class="pb-related-desc">Что такое файл Hosts в Windows и Linux? Полный гайд: где находится hosts, как открыть и отредактиров</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

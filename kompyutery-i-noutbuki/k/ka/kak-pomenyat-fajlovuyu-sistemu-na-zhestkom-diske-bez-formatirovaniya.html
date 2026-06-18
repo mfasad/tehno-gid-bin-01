@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как сменить файловую систему на жестком диске без потери данных — Техно Гид</title>
+    <meta name="description" content="Подробная инструкция по конвертации FAT32 в NTFS и обратно без форматирования. Сохранение всех файлов при смене структуры тома.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/k/ka/kak-pomenyat-fajlovuyu-sistemu-na-zhestkom-diske-bez-formatirovaniya.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как сменить файловую систему на жестком диске без потери данных">
+    <meta property="og:description" content="Подробная инструкция по конвертации FAT32 в NTFS и обратно без форматирования. Сохранение всех файлов при смене структуры тома.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как сменить файловую систему на жестком диске без потери данных</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#понимание-разницы-между-форматированием-и-конвертацией">Понимание разницы между форматированием и конвертацией</a></li><li><a href="#конвертация-fat32-в-ntfs-с-помощью-команды-convert">Конвертация FAT32 в NTFS с помощью команды Convert</a></li><li><a href="#важные-предостережения-перед-началом-работы">Важные предостережения перед началом работы</a></li><li><a href="#как-изменить-систему-на-exfat-без-форматирования">Как изменить систему на exFAT без форматирования</a></li><li><a href="#сравнительная-характеристика-файловых-систем">Сравнительная характеристика файловых систем</a></li><li><a href="#возможные-риски-и-способы-восстановления">Возможные риски и способы восстановления</a></li><li><a href="#частые-вопросы-пользователей">Частые вопросы пользователей</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/k/ka/kak-podklyuchit-staryj-vinchester-k-noutbuku.html">Как подключить старый винчестер к ноутбуку: все способы</a></li><li><a href="/kompyutery-i-noutbuki/p/po/pochemu-pk-stal-medlenno-rabotat.html">Почему ПК стал медленно работать: 7 главных причин и решения</a></li><li><a href="/kompyutery-i-noutbuki/v/vi/videokarta-na-noutbuke-ne-rabotaet-v-polnuyu-moshchnost.html">Видеокарта ноутбука не работает на полную: диагностика и решение</a></li><li><a href="/kompyutery-i-noutbuki/s/sb/sborka-protsessora-i-materinskoj-platy.html">Как собрать процессор на материнскую плату: пошаговая инструкция</a></li><li><a href="/kompyutery-i-noutbuki/g/gd/gde-nakhoditsya-backspace-na-klaviature-kompyutera.html">Где находится Backspace на клавиатуре: полное руководство</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Смена файловой системы на жестком диске без форматирования: Полное руководство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#понимание-разницы-между-форматированием-и-конвертацией">Понимание разницы между форматированием и конвертацией</a></li><li><a href="#конвертация-fat32-в-ntfs-с-помощью-команды-convert">Конвертация FAT32 в NTFS с помощью команды Convert</a></li><li><a href="#важные-предостережения-перед-началом-работы">Важные предостережения перед началом работы</a></li><li><a href="#как-изменить-систему-на-exfat-без-форматирования">Как изменить систему на exFAT без форматирования</a></li><li><a href="#сравнительная-характеристика-файловых-систем">Сравнительная характеристика файловых систем</a></li><li><a href="#возможные-риски-и-способы-восстановления">Возможные риски и способы восстановления</a></li><li><a href="#частые-вопросы-пользователей">Частые вопросы пользователей</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Многие пользователи сталкиваются с ситуацией, когда необходимо изменить структуру хранения данных на накопителе, но полное стирание информации недопустимо. Стандартные инструменты операционной системы часто предлагают только форматирование, что ведет к безвозвратной потере всех файлов. Однако существуют штатные утилиты и методы, позволяющие провести конвертацию без разрушения данных.</p>
+<p>Процесс изменения <strong>файловой системы</strong> без форматирования требует тщательной подготовки и понимания работы разделов жесткого диска. Неправильные действия могут привести к повреждению таблиц размещения файлов, что сделает доступ к информации невозможным. В этой статье мы разберем, как безопасно изменить параметры тома, используя встроенные средства <em>Windows</em>.</p>
+
+<h2 id="понимание-разницы-между-форматированием-и-конвертацией">Понимание разницы между форматированием и конвертацией</h2>
+<p>Форматирование уничтожает файловую систему полностью, создавая новую структуру с нуля. Конвертация же переписывает структуру данных, адаптируя её под новые требования, сохраняя при этом содержимое. Это фундаментальное различие определяет выбор метода работы с вашим <strong>жестким диском</strong>.</p>
+<p>Самый распространенный сценарий — переход с <code>FAT32</code> на <code>NTFS</code>. Первая система не поддерживает файлы объемом более 4 ГБ, что критично для современных видеофайлов и образов. Вторая система лишена этого ограничения и обладает лучшей стабильностью. Обратный процесс (конвертация в <code>FAT32</code>) технически возможен без форматирования только с помощью стороннего ПО, так как штатные утилиты <em>Windows</em> пишут только в одну сторону.</p>
+
+<h2 id="конвертация-fat32-в-ntfs-с-помощью-команды-convert">Конвертация FAT32 в NTFS с помощью команды Convert</h2>
+<p>Для выполнения безопасного перехода используйте утилиту командной строки <code>Convert</code>. Она встроена в любую современную версию <em>Windows</em> и не требует установки дополнительного софта. Процесс занимает от нескольких минут до часа в зависимости от объема накопителя и его фрагментации.</p>
+<p>Сначала необходимо запустить командную строку от имени администратора. Введите команду <code>cmd</code> в поиске, кликните правой кнопкой мыши и выберите соответствующий пункт. В открывшемся окне введите команду <code>convert X: /fs:ntfs</code>, заменив букву <code>X</code> на букву вашего диска. После нажатия <code>Enter</code> начнется процесс проверки и преобразования.</p>
+<p>Утилита автоматически проверит диск на наличие ошибок <strong>file system errors</strong>. Если будут найдены проблемы, система предложит их исправить перед продолжением. Это критически важный этап, так как конвертация поврежденной структуры может привести к потере данных. Дождитесь сообщения об успешном завершении операции.</p>
+
+<h2 id="важные-предостережения-перед-началом-работы">Важные предостережения перед началом работы</h2>
+<p>Несмотря на то, что конвертация считается безопасной процедурой, она не гарантирует 100% сохранность данных в случае внезапного сбоя. Электрические скачки или принудительное выключение компьютера могут повредить служебные записи. <mark>Перед началом любых манипуляций создайте резервную копию наиболее важных данных на внешний носитель или в облако.</mark></p>
+<blockquote>⚠️ Внимание: Если диск используется как системный, процесс конвертации потребует перезагрузки компьютера и выполнения операций до загрузки операционной системы. Не прерывайте этот процесс вручную.</blockquote>
+<p>Также стоит учитывать, что после перехода на <code>NTFS</code> диск может не читаться на некоторых старых устройствах, таких как игровые консоли предыдущих поколений или медиаплееры. Убедитесь, что ваша новая файловая система совместима с другим оборудованием, к которому вы планируете подключать накопитель.</p>
+
+<div class="pb-poll" id="poll-51ff6485"><div class="pb-poll-question">📊 Какая файловая система сейчас на вашем диске?</div><div class="pb-poll-option" data-poll="51ff6485" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">FAT32</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="51ff6485" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">NTFS</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="51ff6485" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">exFAT</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="51ff6485" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Не знаю</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="как-изменить-систему-на-exfat-без-форматирования">Как изменить систему на exFAT без форматирования</h2>
+<p>Смена на <code>exFAT</code> без форматирования штатными средствами <em>Windows</em> невозможна. Эта файловая система предназначена для флеш-накопителей и требует создания новой структуры таблицы размещения. Для решения этой задачи придется использовать специализированный софт от сторонних разработчиков.</p>
+<p>Программы вроде <em>Aomei Partition Assistant</em> или <em>MiniTool Partition Wizard</em> предлагают функцию конвертации. Они работают по принципу пересчета метаданных, аналогично утилите <code>Convert</code>, но поддерживают более сложные сценарии. В интерфейсе таких программ вы увидите выбор целевой системы и кнопку запуска процесса.</p>
+<p>Используйте только проверенные версии ПО, скачанные с официальных сайтов. Многие бесплатные версии имеют ограничения на объем диска или блокируют некоторые функции. <strong>Стороннее ПО</strong> часто требует перезагрузки для применения изменений, так как блокировка системного раздела мешает его изменению "на лету".</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к конвертации</h4><label class="check-item"><input type="checkbox"><span>Создать резервную копию данных</span></label><label class="check-item"><input type="checkbox"><span>Отключить антивирус</span></label><label class="check-item"><input type="checkbox"><span>Закрыть все программы</span></label><label class="check-item"><input type="checkbox"><span>Освободить место на диске</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="сравнительная-характеристика-файловых-систем">Сравнительная характеристика файловых систем</h2>
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Файловая система</th>
+<th>Максимальный размер файла</th>
+<th>Совместимость</th>
+<th>Поддержка прав доступа</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FAT32</td>
+<td>4 ГБ</td>
+<td>Высокая (все ОС)</td>
+<td>Нет</td>
+</tr>
+<tr>
+<td>NTFS</td>
+<td>16 ЭБ (эксабайт)</td>
+<td>Windows, Linux (чтение)</td>
+<td>Есть</td>
+</tr>
+<tr>
+<td>exFAT</td>
+<td>16 ЭБ (эксабайт)</td>
+<td>Windows, Mac, Android</td>
+<td>Ограниченная</td>
+</tr>
+</tbody>
+</table></div>
+<p>Выбор зависит от задач. <code>NTFS</code> идеален для системных дисков и хранения больших файлов в экосистеме <em>Windows</em>. <code>exFAT</code> лучше подходит для флешек, которые будут использоваться как на ПК, так и на Mac. <code>FAT32</code> остается актуальным только для старых устройств и специфических встраиваемых систем.</p>
+
+<details class="pb-accordion"><summary>Что делать, если команда Convert не работает?</summary><div class="pb-accordion-body"><p>Если утилита выдает ошибку "The type of the file system is NTFS. Cannot convert NTFS to NTFS", это значит, что диск уже использует нужную систему. Ошибка "Cannot perform this operation on a system volume" означает, что диск занят, и потребуется перезагрузка для запуска процесса в режиме восстановления.</p></div></details>
+
+<h2 id="возможные-риски-и-способы-восстановления">Возможные риски и способы восстановления</h2>
+<p>В случае сбоя во время конвертации диск может стать нечитаемым или получить статус RAW. Это означает, что операционная система не может определить структуру данных. В такой ситуации не пытайтесь сразу форматировать диск, так как это уничтожит уникальные метаданные, которые еще можно восстановить.</p>
+<p>Для восстановления используйте профессиональные утилиты восстановления данных, такие как <em>R-Studio</em> или <em>DMDE</em>. Они позволяют просканировать "сырой" диск и извлечь файлы, игнорируя поврежденную файловую таблицу. Иногда помогает повторный запуск команды конвертации, если процесс был прерван на ранней стадии.</p>
+<blockquote>⚠️ Внимание: Если диск начал издавать щелчки или не определяется в BIOS, конвертация невозможна. Это признаки физического повреждения, требующие обращения в сервисный центр.</blockquote>
+<p>Избегайте хранения данных на дисках с признаками "bad-блоков" перед конвертацией. Проверьте здоровье накопителя утилитой <code>chkdsk</code> с параметром <code>/r</code> перед началом любых операций. Это поможет выявить секторы, которые могут не сохраниться при переписывании структуры.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед запуском конвертации отключите все лишние USB-устройства, чтобы избежать путаницы в буквах дисков и случайного преобразования не того тома.</p></aside>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Конвертация без форматирования — это безопасный метод смены системы, но он не отменяет необходимости наличия резервной копии критически важных данных.</p></aside>
+
+<h2 id="частые-вопросы-пользователей">Частые вопросы пользователей</h2>
+
+<details>
+<summary>Можно ли вернуть FAT32 из NTFS без потери данных штатными средствами?</summary>
+<p>Нет, встроенная утилита Windows <code>convert</code> работает только в одну сторону: с FAT32 на NTFS. Для обратного перехода придется использовать стороннее ПО или форматирование с переносом данных.</p>
+</details>
+
+<details>
+<summary>Сколько времени занимает процесс конвертации?</summary>
+<p>Время зависит от объема накопителя и степени его фрагментации. Для диска на 500 ГБ процесс может занять от 15 минут до 2 часов. Не прерывайте процесс, даже если кажется, что он завис.</p>
+</details>
+
+<details>
+<summary>Что делать, если после конвертации диск стал виден как RAW?</summary>
+<p>Это признак ошибки в процессе записи. Не форматируйте диск сразу. Попробуйте запустить проверку <code>chkdsk X: /f</code> или используйте утилиты восстановления данных для извлечения информации.</p>
+</details>
+
+<details>
+<summary>Можно ли конвертировать системный диск?</summary>
+<p>Да, конвертацию системного диска <code>C:</code> можно выполнить. Компьютер попросит перезагрузку, и процесс пройдет в режиме восстановления до загрузки Windows. Это стандартная процедура.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/k/ka/kak-podklyuchit-staryj-vinchester-k-noutbuku.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить старый винчестер к ноутбуку: все способы</span>
+                <span class="pb-related-desc">Подробная инструкция: как подключить старый жесткий диск к ноутбуку через USB-адаптер, док-станцию и</span>
+            </a><a href="/kompyutery-i-noutbuki/p/po/pochemu-pk-stal-medlenno-rabotat.html" class="pb-related-card">
+                <span class="pb-related-title">Почему ПК стал медленно работать: 7 главных причин и решения</span>
+                <span class="pb-related-desc">Узнайте, почему компьютер тормозит. Полный гайд по диагностике: от пыли и автозагрузки до перегрева </span>
+            </a><a href="/kompyutery-i-noutbuki/v/vi/videokarta-na-noutbuke-ne-rabotaet-v-polnuyu-moshchnost.html" class="pb-related-card">
+                <span class="pb-related-title">Видеокарта ноутбука не работает на полную: диагностика и решение</span>
+                <span class="pb-related-desc">Почему GPU в ноутбуке не выдает 100% производительности? Разбор причин: перегрев, драйверы, электроп</span>
+            </a><a href="/kompyutery-i-noutbuki/s/sb/sborka-protsessora-i-materinskoj-platy.html" class="pb-related-card">
+                <span class="pb-related-title">Как собрать процессор на материнскую плату: пошаговая инструкция</span>
+                <span class="pb-related-desc">Полный гайд по установке процессора в сокет материнской платы. Разбор риска повреждения ножек, выбор</span>
+            </a><a href="/kompyutery-i-noutbuki/g/gd/gde-nakhoditsya-backspace-na-klaviature-kompyutera.html" class="pb-related-card">
+                <span class="pb-related-title">Где находится Backspace на клавиатуре: полное руководство</span>
+                <span class="pb-related-desc">Найдите клавишу Backspace на любой клавиатуре. Разбор расположения, отличий от Delete, функции на но</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-razdat-vaj-faj-s-noutbuka-windows-11.html" class="pb-related-card">
+                <span class="pb-related-title">Как раздать Wi-Fi с ноутбука на Windows 11: Полное руководство</span>
+                <span class="pb-related-desc">Научитесь превращать ноутбук в точку доступа. Простая настройка через командную строку и меню параме</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>MBR или GPT: выбор разметки диска для установки Windows — Техно Гид</title>
+    <meta name="description" content="Что выбрать: MBR или GPT? Полный гайд по таблицам разделов, совместимости с BIOS/UEFI и конвертации без потери данных.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/m/ma/master-boot-record-ili-guid-partition-table.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MBR или GPT: выбор разметки диска для установки Windows">
+    <meta property="og:description" content="Что выбрать: MBR или GPT? Полный гайд по таблицам разделов, совместимости с BIOS/UEFI и конвертации без потери данных.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">MBR или GPT: выбор разметки диска для установки Windows</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#архитектурные-различия-mbr-и-gpt">Архитектурные различия MBR и GPT</a></li><li><a href="#совместимость-с-bios-и-uefi">Совместимость с BIOS и UEFI</a></li><li><a href="#ограничения-по-объему-и-количеству-разделов">Ограничения по объему и количеству разделов</a></li><li><a href="#безопасность-данных-и-восстановление">Безопасность данных и восстановление</a></li><li><a href="#конвертация-mbr-в-gpt-без-потери-данных">Конвертация MBR в GPT без потери данных</a></li><li><a href="#диагностика-и-проверка-текущей-схемы">Диагностика и проверка текущей схемы</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/d/di/diskovod-na-noutbuke-gde.html">Дисковод на ноутбуке: как найти, открыть или заменить</a></li><li><a href="/kompyutery-i-noutbuki/o/op/operativnaya-pamyat-pc3l-12800s-dlya-noutbuka.html">Оперативная память PC3L 12800S для ноутбука: выбор и установка</a></li><li><a href="/kompyutery-i-noutbuki/g/go/goryachie-klavishi-chtoby-zakryt-okno.html">Горячие клавиши для закрытия окна: Полное руководство по Windows и macOS</a></li><li><a href="/kompyutery-i-noutbuki/a/ar/arkhitektura-evm-po-fon-nejmanu.html">Архитектура ЭВМ по фон Нейману: принцип работы ПК</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-podklyuchit-4-monitora-k-odnomu-kompyuteru.html">Как подключить 4 монитора к одному компьютеру: Полная инструкция</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>MBR или GPT: какую таблицу разделов выбрать для современного ПК</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#архитектурные-различия-mbr-и-gpt">Архитектурные различия MBR и GPT</a></li><li><a href="#совместимость-с-bios-и-uefi">Совместимость с BIOS и UEFI</a></li><li><a href="#ограничения-по-объему-и-количеству-разделов">Ограничения по объему и количеству разделов</a></li><li><a href="#безопасность-данных-и-восстановление">Безопасность данных и восстановление</a></li><li><a href="#конвертация-mbr-в-gpt-без-потери-данных">Конвертация MBR в GPT без потери данных</a></li><li><a href="#диагностика-и-проверка-текущей-схемы">Диагностика и проверка текущей схемы</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>При установке операционной системы или подключении нового жесткого диска пользователь неизбежно сталкивается с выбором схемы разделов. Это фундаментальное решение, определяющее, как <strong>компьютер</strong> будет хранить данные и взаимодействовать с загрузчиком. Ошибка на этом этапе может привести к тому, что система просто не увидит накопитель или откажется загружаться.</p>
+
+<p>Исторически сложилось так, что индустрия использовала стандарт <em>Master Boot Record</em> (MBR) на протяжении десятилетий. Однако с появлением современных интерфейсов <em>UEFI</em> и ростом объемов памяти стандарт <strong>GPT</strong> (GUID Partition Table) стал безальтернативным выбором для новых сборок. Понимание разницы между этими технологиями критически важно для грамотного администрирования.</p>
+
+<p>В этой статье мы детально разберем архитектурные отличия, ограничения и сценарии использования каждого формата. Вы узнаете, как проверить текущую схему диска и безопасно конвертировать данные без форматирования, если выбор был сделан неверно.</p>
+
+<h2 id="архитектурные-различия-mbr-и-gpt">Архитектурные различия MBR и GPT</h2>
+
+<p>Технология MBR была разработана в 1983 году для IBM PC совместимых систем. Она хранит информацию о загрузке и разделах в самом первом секторе диска. <strong>Главный недостаток</strong> этой схемы — ограниченная адресация. Из-за использования 32-битных адресов максимальный объем диска, который может распознать MBR, составляет всего 2 ТБ.</p>
+
+<p>В противовес старому стандарту пришел GPT, являющийся частью спецификации UEFI. Этот формат использует 64-битную адресацию, что теоретически позволяет работать с дисками объемом до 9,4 зеттабайт (ЗБ). На практике это означает, что вы можете подключить накопитель любого существующего размера и система его корректно распознает.</p>
+
+<p>Еще одним важным отличием является надежность хранения данных. В MBR таблица разделов находится в одном месте, и ее повреждение часто приводит к полной потере доступа к диску. GPT же хранит несколько копий таблицы по всему диску, что обеспечивает высокую устойчивость к сбоям.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если вы планируете использовать диск объемом более 2 ТБ в качестве системного, использование MBR сделает часть пространства недоступным для операционной системы.</p></aside>
+
+<ul>
+<li>🔹 MBR поддерживает только 4 первичных раздела, для создания большего количества требуется расширенный раздел.</li>
+<li>🔹 GPT позволяет создавать до 128 первичных разделов в Windows без необходимости создавать логические диски.</li>
+<li>🔹 GPT включает контрольные суммы CRC32 для обнаружения ошибок в таблице разделов и загрузочном секторе.</li>
+</ul>
+
+<h2 id="совместимость-с-bios-и-uefi">Совместимость с BIOS и UEFI</h2>
+
+<p>Выбор таблицы разделов напрямую зависит от режима работы материнской платы. Старые системы с классическим <strong>BIOS</strong> (Legacy) требуют наличия MBR для загрузки операционной системы. Попытка загрузиться с GPT-диска на таком оборудовании завершится ошибкой, так как прошивка просто не умеет читать этот формат.</p>
+
+<p>Современные компьютеры используют интерфейс <em>UEFI</em>, который был разработан специально для работы с GPT. Хотя многие платы UEFI поддерживают режим совместимости (CSM) для загрузки старых ОС с MBR, для полноценной работы новых функций безопасности и быстродействия необходим нативный режим UEFI + GPT.</p>
+
+<blockquote>⚠️ <strong>Внимание:</strong> При переключении режима загрузки в BIOS/UEFI с Legacy на UEFI (или наоборот) существующая операционная система может перестать загружаться, так как загрузочные записи несовместимы с новым режимом.</blockquote>
+
+<div class="pb-poll" id="poll-326bee98"><div class="pb-poll-question">📊 Какой режим загрузки используется на вашем основном ПК?</div><div class="pb-poll-option" data-poll="326bee98" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Только UEFI (GPT)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="326bee98" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Только Legacy BIOS (MBR)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="326bee98" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Режим совместимости CSM</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="326bee98" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Не знаю / Не проверял</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<p>Для установки Windows 11 наличие UEFI и GPT является обязательным требованием. Попытка обойти это ограничение на старом железе возможна, но может привести к нестабильной работе и отсутствию обновлений безопасности.</p>
+
+<h2 id="ограничения-по-объему-и-количеству-разделов">Ограничения по объему и количеству разделов</h2>
+
+<p>Когда речь заходит о (большой емкости) накопителях, различия становятся критическими. Если вы приобрели современный SSD или HDD объемом 4 ТБ или 8 ТБ, форматирование его в MBR обрежет доступную площадь ровно до 2 ТБ. Оставшееся пространство будет отображаться как неразмеченная область, которую нельзя использовать.</p>
+
+<p>Количество разделов также играет роль в сложных конфигураций серверов или рабочих станций. В MBR вы ограничены четырьмя основными разделами. Если вам нужно установить три разные ОС и иметь раздел для данных, придется идти на ухищрения с созданием расширенного раздела и логических томов внутри него.</p>
+
+<p>GPT снимает эти ограничения полностью. Вы можете создать отдельный раздел для каждой программы, игры или типа данных, не задумываясь о лимитах. Это упрощает организацию файловой системы и резервного копирования.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Характеристика</th>
+<th>MBR (Master Boot Record)</th>
+<th>GPT (GUID Partition Table)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Максимальный размер диска</td>
+<td>2 ТБ</td>
+<td>~9.4 ЗБ (практически безлимитно)</td>
+</tr>
+<tr>
+<td>Максимум разделов</td>
+<td>4 первичных</td>
+<td>128 первичных (в Windows)</td>
+</tr>
+<tr>
+<td>Расположение загрузчика</td>
+<td>Первый сектор диска</td>
+<td>Специальный EFI раздел</td>
+</tr>
+<tr>
+<td>Резервное копирование</td>
+<td>Отсутствует</td>
+<td>Дублирование в конце диска</td>
+</tr>
+<tr>
+<td>Требуемый режим BIOS</td>
+<td>Legacy BIOS</td>
+<td>UEFI</td>
+</tr>
+</tbody>
+</table></div>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для дисков объемом более 2 ТБ использование GPT является единственным способом задействовать весь доступный объем памяти.</p></aside>
+
+<h2 id="безопасность-данных-и-восстановление">Безопасность данных и восстановление</h2>
+
+<p>Надежность хранения метаданных — еще один конек нового стандарта. В структуре GPT заголовок таблицы разделов и сама таблица дублируются в начале и в конце диска. Это позволяет восстановить структуру разделов даже в случае повреждения первого сектора, что часто случается при сбоях питания или вирусных атаках.</p>
+
+<p>Кроме того, каждый блок данных в GPT защищен 32-битной контрольной суммой. При загрузке система проверяет целостность таблицы разделов. Если обнаруживается несоответствие, прошивка UEFI может предупредить пользователя о повреждении структуры диска до того, как операционная система начнет работать с ошибочными данными.</p>
+
+<p>В случае с MBR, повреждение загрузочного сектора (например, вирусом-шифровальщиком) часто делает диск невидимым для системы. Восстановление требует использования специализированных утилит и ручного вмешательства в hex-редакторе, что под силу далеко не каждому пользователю.</p>
+
+<blockquote>⚠️ <strong>Внимание:</strong> Несмотря на встроенную защиту GPT, это не заменяет регулярное резервное копирование файлов. Повреждение физической поверхности диска может затронуть и основную, и резервную копии таблицы.</blockquote>
+
+<details class="pb-accordion"><summary>Как работает самовосстановление GPT?</summary><div class="pb-accordion-body"><p>Если основной заголовок GPT поврежден, контроллер или прошивка могут считать резервную копию из конца диска и восстановить работоспособность структуры разделов автоматически при следующей загрузке.</p></div></details>
+
+<h2 id="конвертация-mbr-в-gpt-без-потери-данных">Конвертация MBR в GPT без потери данных</h2>
+
+<p>Часто пользователи хотят перейти на современный стандарт, не переустанавливая Windows и не удаляя файлы. В Windows 10 (версия 1703 и новее) и Windows 11 для этого существует встроенная утилита <code>mbr2gpt.exe</code>. Она позволяет преобразовать диск на лету, если он соответствует определенным требованиям.</p>
+
+<p>Перед началом процедуры необходимо убедиться, что на диске не более трех разделов (так как один будет занят под EFI), и что файловая система NTFS не имеет ошибок. Запуск конвертации происходит через командную строку с правами администратора.</p>
+
+<p>Процесс выглядит следующим образом:</p>
+<pre><code>mbr2gpt /validate /disk:0 /allowFullOS</code></pre>
+<p>Если проверка прошла успешно, выполняется сама конвертация:</p>
+<pre><code>mbr2gpt /convert /disk:0 /allowFullOS</code></pre>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к конвертации MBR в GPT</h4><label class="check-item"><input type="checkbox"><span>Сделать полную резервную копию важных данных</span></label><label class="check-item"><input type="checkbox"><span>Проверить диск на ошибки (chkdsk)</span></label><label class="check-item"><input type="checkbox"><span>Убедиться, что BIOS поддерживает UEFI</span></label><label class="check-item"><input type="checkbox"><span>Отключить сторонние антивирусы на время процесса</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>После завершения работы утилиты необходимо зайти в настройки BIOS/UEFI и переключить режим загрузки с <code>Legacy</code> (или <code>CSM</code>) на <code>UEFI</code>. Без этого шага система не сможет найти загрузчик в новом формате и выдаст ошибку"No bootable device".</p>
+
+<h2 id="диагностика-и-проверка-текущей-схемы">Диагностика и проверка текущей схемы</h2>
+
+<p>Прежде чем предпринимать какие-либо действия, нужно точно знать, какая схема используется на вашем диске сейчас. В Windows это можно сделать несколькими способами, не прибегая к стороннему софту. Самый быстрый метод — использование утилиты управления дисками.</p>
+
+<p>Нажмите комбинацию клавиш <code>Win + R</code>, введите команду <code>diskmgmt.msc</code> и нажмите Enter. В нижней части окна найдите нужный диск (например, Диск 0), кликните правой кнопкой мыши по области с названием диска и выберите"Свойства". Перейдите на вкладку"Тома".</p>
+
+<p>В строке"Стиль раздела" будет указано:"Таблица с главными загрузочными записями (MBR)" или"Таблица с GUID разделов (GPT)". Эта информация позволит вам понять, совместим ли ваш текущий диск с планируемой операционной системой или оборудованием.</p>
+
+<blockquote>⚠️ <strong>Внимание:</strong> Интерфейсы программ для управления дисками могут незначительно отличаться в разных версиях Windows или в сторонних утилитах вроде Acronis или AOMEI, но принцип отображения стиля раздела остается единым.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Также можно использовать командную строку: введите diskpart, затем list disk. Если в столбце GPT стоит звездочка (*), значит диск использует этот стандарт.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли загрузиться с GPT диска на старом компьютере с BIOS?</summary>
+<p>Нет, классический BIOS не умеет читать таблицу разделов GPT. Для загрузки с такого диска требуется материнская плата с поддержкой UEFI. Некоторые платы имеют режим совместимости, но он эмулирует MBR, а не работает с GPT нативно.</p>
+</details>
+
+<details>
+<summary>Потеряю ли я данные при конвертации MBR в GPT?</summary>
+<p>При использовании штатной утилиты <code>mbr2gpt</code> данные сохраняются. Однако риск сбоя всегда существует (например, при отключении электричества). Настоятельно рекомендуется сделать резервную копию важных файлов перед началом любых операций с разделами.</p>
+</details>
+
+<details>
+<summary>Какой формат лучше выбрать для флешки?</summary>
+<p>Для загрузочных флешек с Windows 10/11 в режиме UEFI выбирайте GPT. Если нужно совместить загрузку на старых и новых ПК (универсальная флешка), лучше использовать MBR, так как он поддерживается абсолютно всеми системами.</p>
+</details>
+
+<details>
+<summary>Почему установщик Windows пишет"Невозможно установить Windows на этот диск"?</summary>
+<p>Это сообщение появляется при несоответствии режима BIOS и стиля раздела. Если BIOS в режиме UEFI, диск должен быть GPT. Если BIOS в режиме Legacy, диск должен быть MBR. Решение: либо изменить настройку в BIOS, либо конвертировать диск.</p>
+</details>
+
+<details>
+<summary>Можно ли иметь на одном компьютере диски MBR и GPT одновременно?</summary>
+<p>Да, это возможно. Системный диск, с которого загружается ОС, должен соответствовать режиму BIOS (обычно GPT для UEFI). Второй диск для хранения данных может быть отформатирован в любом стиле, независимо от системного, и будет работать корректно.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/d/di/diskovod-na-noutbuke-gde.html" class="pb-related-card">
+                <span class="pb-related-title">Дисковод на ноутбуке: как найти, открыть или заменить</span>
+                <span class="pb-related-desc">Подробный гид по поиску дисковода на ноутбуке. Как открыть лоток без кнопки, подключить внешний прив</span>
+            </a><a href="/kompyutery-i-noutbuki/o/op/operativnaya-pamyat-pc3l-12800s-dlya-noutbuka.html" class="pb-related-card">
+                <span class="pb-related-title">Оперативная память PC3L 12800S для ноутбука: выбор и установка</span>
+                <span class="pb-related-desc">Полный гайд по модулям DDR3L PC3L-12800S. Совместимость, отличие от DDR3, проверка напряжения и поша</span>
+            </a><a href="/kompyutery-i-noutbuki/g/go/goryachie-klavishi-chtoby-zakryt-okno.html" class="pb-related-card">
+                <span class="pb-related-title">Горячие клавиши для закрытия окна: Полное руководство по Windows и macOS</span>
+                <span class="pb-related-desc">Узнайте все о горячих клавишах для закрытия окон приложений, вкладок и программ. Инструкция для Wind</span>
+            </a><a href="/kompyutery-i-noutbuki/a/ar/arkhitektura-evm-po-fon-nejmanu.html" class="pb-related-card">
+                <span class="pb-related-title">Архитектура ЭВМ по фон Нейману: принцип работы ПК</span>
+                <span class="pb-related-desc">Подробный разбор архитектуры фон Неймана: устройство памяти, процессора и шин. Как хранятся данные в</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-podklyuchit-4-monitora-k-odnomu-kompyuteru.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить 4 монитора к одному компьютеру: Полная инструкция</span>
+                <span class="pb-related-desc">Пошаговое руководство по организации рабочего места на 4 экрана. Выбор оборудования, настройка видео</span>
+            </a><a href="/kompyutery-i-noutbuki/p/pr/prolil-vodu-na-mekhanicheskuyu-klaviaturu.html" class="pb-related-card">
+                <span class="pb-related-title">Пролил воду на механическую клавиатуру: экстренная инструкция по спасению</span>
+                <span class="pb-related-desc">Что делать, если пролили жидкость на механику? Пошаговая инструкция по разборке, очистке переключате</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

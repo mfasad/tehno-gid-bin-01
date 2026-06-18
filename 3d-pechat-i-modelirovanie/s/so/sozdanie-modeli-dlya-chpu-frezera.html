@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Создание модели для ЧПУ фрезера: от CAD до G-кода — Техно Гид</title>
+    <meta name="description" content="Полное руководство по подготовке 3D-моделей для ЧПУ фрезеровки. Выбор софта, стратегии обработки, настройка постпроцессора и пошаговый алгоритм получения G-кода.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/3d-pechat-i-modelirovanie/s/so/sozdanie-modeli-dlya-chpu-frezera.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Создание модели для ЧПУ фрезера: от CAD до G-кода">
+    <meta property="og:description" content="Полное руководство по подготовке 3D-моделей для ЧПУ фрезеровки. Выбор софта, стратегии обработки, настройка постпроцессора и пошаговый алгоритм получения G-кода.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/3d-pechat-i-modelirovanie/">3D Печать и Моделирование</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Создание модели для ЧПУ фрезера: от CAD до G-кода</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-программного-обеспечения-для-проектирования">Выбор программного обеспечения для проектирования</a></li><li><a href="#геометрия-и-топология-модели-критические-нюансы">Геометрия и топология модели: критические нюансы</a></li><li><a href="#настройка-cam-системы-и-выбор-стратегии-обработки">Настройка CAM-системы и выбор стратегии обработки</a></li><li><a href="#расчет-траекторий-и-генерация-g-кода">Расчет траекторий и генерация G-кода</a></li><li><a href="#таблица-соответствия-параметров-обработки">Таблица соответствия параметров обработки</a></li><li><a href="#оптимизация-и-постобработка-файла">Оптимизация и постобработка файла</a></li><li><a href="#решение-распространенных-проблем">Решение распространенных проблем</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/3d-pechat-i-modelirovanie/p/pe/pechat-bolshikh-detalej-na-3d-printere.html">Печать больших деталей на 3D принтере: методы и советы</a></li><li><a href="/3d-pechat-i-modelirovanie/s/sa/samaya-legkaya-programma-dlya-3d-modelirovaniya.html">Самая легкая программа для 3D моделирования: ТОП-5 простых редакторов</a></li><li><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-qidi-plus-4.html">3D принтер Qidi Plus 4: обзор, характеристики, печать</a></li><li><a href="/3d-pechat-i-modelirovanie/g/gd/gde-risovat-modeli-dlya-3d-printera.html">Где рисовать модели для 3D принтера: выбор ПО</a></li><li><a href="/3d-pechat-i-modelirovanie/k/ka/kak-delat-3d-modeli-dlya-3d-printera.html">Как делать 3D модели для 3D принтера: полное руководство</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Создание модели для ЧПУ фрезера: от идеи до готовой детали</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-программного-обеспечения-для-проектирования">Выбор программного обеспечения для проектирования</a></li><li><a href="#геометрия-и-топология-модели-критические-нюансы">Геометрия и топология модели: критические нюансы</a></li><li><a href="#настройка-cam-системы-и-выбор-стратегии-обработки">Настройка CAM-системы и выбор стратегии обработки</a></li><li><a href="#расчет-траекторий-и-генерация-g-кода">Расчет траекторий и генерация G-кода</a></li><li><a href="#таблица-соответствия-параметров-обработки">Таблица соответствия параметров обработки</a></li><li><a href="#оптимизация-и-постобработка-файла">Оптимизация и постобработка файла</a></li><li><a href="#решение-распространенных-проблем">Решение распространенных проблем</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Подготовка файла к обработке на станке с <strong>числовым программным управлением</strong> — это не просто рисование картинки, а создание точной инструкции для инструмента. Процесс превращения <em>векторного чертежа</em> или <em>трехмерной поверхности</em> в управляющую программу требует понимания физики резания и возможностей конкретного оборудования. Ошибка на этапе моделирования может привести к поломке фрезы или браку дорогостоящей заготовки.</p>
+
+<p>Многие новички совершают фатальную ошибку, пытаясь загрузить в ЧПУ фрезер обычный <code>STL</code> файл без предварительной подготовки. Такой подход часто заканчивается неудачей, так как станок не понимает, как двигаться по сетке полигонов. Вам необходимо создать <strong>геометрически корректную модель</strong>, определить траектории движения и рассчитать параметры <em>стружкоудаления</em> еще до начала работы.</p>
+
+<p>В этой статье мы разберем полный цикл: от выбора <strong>CAD-системы</strong> до генерации <em>G-кода</em>. Вы узнаете, как правильно настроить <strong>постпроцессор</strong>, чтобы избежать коллизий, и какие стратегии обработки выбрать для тонких деталей или массивных заготовок.</p>
+
+<h2 id="выбор-программного-обеспечения-для-проектирования">Выбор программного обеспечения для проектирования</h2>
+
+<p>Первый шаг к успешной обработке — грамотный выбор <strong>инструмента моделирования</strong>. Рынок предлагает решения для профессионалов и любителей, различающиеся по функционалу и стоимости. Для простых плоских деталей часто достаточно 2D-редакторов, тогда как сложные объемные формы требуют полноценных <em>3D CAD систем</em>.</p>
+
+<p>Профессиональный уровень обычно представлен такими пакетами, как <em>Fusion 360</em>, <em>SolidWorks</em> или <em> Rhino</em>. Эти программы позволяют создавать параметрические модели, где любую размерность можно изменить после завершения рисования. Также в них встроены мощные <strong>CAM модули</strong> для расчета траекторий. Для энтузиастов отлично подойдут <em>FreeCAD</em> или <em>Blender</em> с плагинами, которые бесплатны и обладают широким функционалом.</p>
+
+<p>Если вы работаете с плоским листом фанеры или металла, специализированный <strong>2D CAD</strong> будет более эффективным выбором. Векторная графика здесь является основой для прокладки <em>контурных траекторий</em>. Важно убедиться, что выбранная программа экспортирует файлы в форматах, понятных вашему <strong>CAM-симулятору</strong>, например, <code>DXF</code> или <code>STEP</code>.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Убедитесь, что выбранная вами версия ПО поддерживает экспорт в форматы, совместимые с вашим контроллером станка. Некоторые старые системы не читают векторные файлы версий выше стандартов.</p>
+</blockquote>
+
+<h2 id="геометрия-и-топология-модели-критические-нюансы">Геометрия и топология модели: критические нюансы</h2>
+
+<p>Создание модели для ЧПУ фрезера накладывает жесткие ограничения на геометрию объекта. В отличие от 3D-печати, где можно создавать"висящие" структуры, фрезеровка требует <strong>твердотельного моделирования</strong>. Любая геометрия должна быть"водонепроницаемой" (manifold), то есть не иметь дырок в сетке или перекрывающихся граней.</p>
+
+<p>Особое внимание уделите <em>внутренним углам</em>. Фреза — это вращающийся инструмент, поэтому она не может вырезать идеальный прямой угол. В любом внутреннем углу останется <strong>радиус скругления</strong>, равный радиусу фрезы. Если ваш проект требует острого угла, необходимо предусмотреть это в чертеже или использовать <em>комбинированную обработку</em> с последующей ручной доводкой.</p>
+
+<p>Толщина стенок и глубина пазов также имеют значение. Для <strong>тонких стенок</strong> необходимо выбирать стратегию, исключающую вибрации фрезы, которые могут привести к ее излому. Глубина пропила за один проход должна быть ограничена, обычно не более 1.5-3 диаметров фрезы, в зависимости от материала.</p>
+
+<details class="pb-accordion"><summary>Как проверить модель на ошибки перед отправкой в CAM?
+<p>Для проверки используйте встроенные симуляторы или специализированные программы типа Netfabb. Загрузите модель и запустите диагностику"Mesh Repair". Программа подсветит не-manifold геометрию, дыры и перевернутые нормали, которые нужно исправить перед расчетом G-кода.--></p>
+
+<h2 id="настройка-cam-системы-и-выбор-стратегии-обработки">Настройка CAM-системы и выбор стратегии обработки</h2>
+
+<p>После создания модели наступает этап <strong>CAM-процессинга</strong>. Здесь вы определяете, как именно инструмент будет взаимодействовать с заготовкой. Это самый ответственный этап, где закладываются параметры <em>скорости подачи</em>, <strong>глубины реза</strong> и траектория движения.</p>
+
+<p>Стратегии обработки делятся на несколько типов. Для удаления основного объема материала используют <em>Черновое фрезерование</em> (Raster или Adaptive Clearing). Для получения чистовой поверхности применяется <strong>Чистовое фрезерование</strong> (Parallel или Contour). Для сложных рельефов незаменимы <em>3D-стратегии</em>, такие как Morphing или Scallop.</p>
+
+<p>Необходимо правильно задать <strong>запас на чистовую обработку</strong>. Оставляя небольшой слой материала (например, 0.2 мм) при черновом проходе, вы снижаете нагрузку на инструмент и повышаете точность конечной детали. Это также позволяет избежать дефектов поверхности из-за вибраций при грубом снятии металла.</p>
+
+<!--WIDGET</summary><div class="pb-accordion-body"><p>checklist:Настройка стратегии обработки:
+<p>Выбрать инструмент (диаметр, количество режущих кромок)|Определить глубину врезания (Z-step)|Установить шаг перекрытия (Stepover)|Задать скорость вращения шпинделя (RPM)</p></div></details></p>
+
+<p>Важно учитывать <em>направление резания</em>. При фрезеровании по часовой стрелке (Climb Milling) стружка удаляется"на себя", что дает лучшее качество поверхности для ЧПУ фрезеров. При обратном направлении (Conventional) инструмент может"затягиваться" в материал, что опасно для станков с люфтами.</p>
+
+<div class="pb-poll" id="poll-fa73b210"><div class="pb-poll-question">📊 Какой тип CAM-системы вы используете чаще всего?</div><div class="pb-poll-option" data-poll="fa73b210" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Встроенный в CAD (Fusion 360)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="fa73b210" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Специализированный (Mastercam)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="fa73b210" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Бесплатный (FreeCAD)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="fa73b210" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Онлайн калькуляторы</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="расчет-траекторий-и-генерация-g-кода">Расчет траекторий и генерация G-кода</h2>
+
+<p>После настройки всех параметров наступает момент <strong>генерации управляющей программы</strong>. На этом этапе CAM-система рассчитывает координаты для каждой точки траектории, преобразуя геометрические данные в команды для станка. Результатом является текстовый файл с расширением <code>.nc</code> или <code>.gcode</code>.</p>
+
+<p>Ключевым элементом здесь является <em>постпроцессор</em>. Это фильтр, который переводит внутренние расчеты CAM-системы на"язык", понятный конкретному контроллеру станка (Fanuc, Mach3, GRBL, Siemens). Использование неправильного постпроцессора может привести к тому, что станок выполнит хаотичные движения, что <strong>разрушит заготовку</strong> или оборудование.</p>
+
+<p>В процессе генерации программы стоит обратить внимание на наличие команд <em>смены инструмента</em> и <strong>смены координат</strong>. Для сложных деталей часто требуется несколько проходов с разным инструментом. Убедитесь, что код содержит правильные задержки и команды для <em>подхода к детали</em> с безопасной скоростью.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед отправкой G-кода на станок обязательно прогоните его через симулятор (визуализатор). Это позволит увидеть возможные столкновения шпинделя с зажимными приспособлениями и проверить правильность траектории в 3D.</p></aside>
+
+<h2 id="таблица-соответствия-параметров-обработки">Таблица соответствия параметров обработки</h2>
+
+<p>Ниже приведена таблица с ориентировочными значениями для распространенных материалов. Эти данные помогут вам быстрее настроить <strong>параметры резания</strong> в CAM-системе, но всегда сверяйтесь с рекомендациями производителя фрезы.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Материал</th>
+<th>Тип фрезы</th>
+<th>Скорость подачи (мм/мин)</th>
+<th>Глубина реза за проход (мм)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Фанера березовая</td>
+<td>Двухзаходная твердосплавная</td>
+<td>1500 - 2500</td>
+<td>3 - 5</td>
+</tr>
+<tr>
+<td>Алюминий (D16)</td>
+<td>Однозаходная (для алюминия)</td>
+<td>800 - 1200</td>
+<td>0.5 - 1.5</td>
+</tr>
+<tr>
+<td>Пластик ABS</td>
+<td>Одновитковая с большим спиралью</td>
+<td>2000 - 3000</td>
+<td>2 - 4</td>
+</tr>
+<tr>
+<td>Сталь 45</td>
+<td>Твердосплавная с покрытием</td>
+<td>200 - 400</td>
+<td>0.1 - 0.3</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Параметры в таблице зависят от диаметра инструмента и жесткости конструкции станка. <strong>Мягкие материалы</strong> требуют более высоких скоростей подачи, чтобы избежать наплавления стружки на режущую кромку. Твердые металлы, напротив, требуют медленного хода и малого шага, чтобы не перегреть фрезу.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Указанные значения являются усредненными. При работе с новыми материалами обязательно проводите тестовый рез на обрезке, постепенно увеличивая нагрузку до оптимальной.</p>
+</blockquote>
+
+<h2 id="оптимизация-и-постобработка-файла">Оптимизация и постобработка файла</h2>
+
+<p>Сгенерированный G-код часто содержит избыточные команды или неоптимальные перемещения. Для ускорения процесса обработки и экономии времени полезно провести <strong>оптимизацию кода</strong>. Это можно сделать вручную в текстовом редакторе или с помощью специализированных утилит.</p>
+
+<p>Одной из частых ошибок является отсутствие <em>комментариев</em> или неструктурированный код. Добавление понятных заголовков (например, `; START OF ROUGHING`) облегчает отладку. Также стоит проверить длину файла: если он слишком большой, возможно, нужно увеличить <strong>построение траектории</strong> (Tolerance) в настройках CAM.</p>
+
+<p>Иногда требуется <em>изменение нуля</em> или <strong>смещение координат</strong>. Если вы меняете заготовку на станке, вам может потребоваться сдвинуть весь код по оси X или Y. Современные контроллеры позволяют делать это"на лету", но для старых систем иногда придется править файл вручную.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Оптимальный G-код — это не просто набор команд, а сбалансированная программа, учитывающая кинематику станка, свойства материала и износ инструмента. Всегда проверяйте визуализацию перед запуском.</p></aside>
+
+<h2 id="решение-распространенных-проблем">Решение распространенных проблем</h2>
+
+<p>В процессе создания моделей и генерации кода вы можете столкнуться с ошибками. Самая частая проблема — <strong>пропуск шагов</strong> или вибрации. Это часто происходит из-за слишком агрессивных настроек подачи или неправильного выбора стратегии обработки для конкретной геометрии.</p>
+
+<p>Другая распространенная ошибка — <em>неверный расчет глубины</em>. Если CAM-система рассчитала проход глубже, чем позволяет физика станка, шпиндель может упереться в стол или зажим. Всегда оставляйте <strong>запас безопасности</strong> при настройке осей Z.</p>
+
+<p>Иногда проблема кроется в самом файле модели. Если в 3D-модели есть <em>пересекающиеся поверхности</em>, CAM-система может"потеряться" и выдать ошибку расчета. В этом случае используйте инструменты"Simplify" или"Heal Mesh" для исправления геометрии перед началом расчетов.</p>
+
+<details>
+<summary>Что делать, если G-код не загружается в станок?</summary>
+<p>Проверьте кодировку файла (должна быть ASCII или UTF-8 без BOM). Убедитесь, что конец строки соответствует стандарту вашего контроллера (LF или CRLF). Также проверьте, не превышает ли размер файла лимит памяти контроллера.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать 3D-модели из интернета для фрезеровки?</summary>
+<p>Можно, но с осторожностью. Часто модели из маркетплейсов имеют"дыры" в сетке или некорректные нормали. Перед импортом в CAD/CAM систему обязательно проведите репаразию (mesh repair) и проверку на"водонепроницаемость".</p>
+</details>
+
+<details>
+<summary>Как предотвратить"врезание" фрезы при повороте?</summary>
+<p>Используйте стратегию тангенциальных подходов (Tangent Entry) и выходов. В настройках CAM включите опцию"Arc Entry/Exit" или"Ramp Entry", чтобы инструмент входил в материал под углом, а не вертикально.</p>
+</details>
+
+<details>
+<summary>Почему угол на детали не острый?</summary>
+<p>Это физическое ограничение круглого инструмента. Внутренний угол всегда будет скруглен на радиус фрезы. Для острых углов используйте фрезу с меньшим диаметром или комбинируйте фрезеровку с ручной доводкой.</p>
+</details>
+
+<details>
+<summary>Как часто нужно менять фрезу при обработке?</summary>
+<p>Частота замены зависит от материала и нагрузки. Для алюминия — чаще, для дерева — реже. Следите за изменением звука работы и качеством поверхности. Если появляется нагар или шероховатость — затупилась режущая кромка.</p>
+</details>
+
+<p>Завершая обзор, стоит подчеркнуть: создание модели для ЧПУ фрезера — это итеративный процесс. Вам придется несколько раз возвращаться к чертежу, корректировать <strong>стратегии обработки</strong> и тестировать коды. Только такой подход гарантирует получение качественной детали.</p>
+
+<p>Не бойтесь экспериментировать с параметрами, но всегда делайте это на безопасном расстоянии от станка. <mark>Правильно настроенный постпроцессор является гарантией того, что ваши теоретические расчеты превратятся в точную физическую деталь без повреждений оборудования.</mark> Успешной вам обработки!</p></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/3d-pechat-i-modelirovanie/p/pe/pechat-bolshikh-detalej-na-3d-printere.html" class="pb-related-card">
+                <span class="pb-related-title">Печать больших деталей на 3D принтере: методы и советы</span>
+                <span class="pb-related-desc">Как печатать детали больше размера стола? Распил модели, склейка или сращивание. Выбор материалов, н</span>
+            </a><a href="/3d-pechat-i-modelirovanie/s/sa/samaya-legkaya-programma-dlya-3d-modelirovaniya.html" class="pb-related-card">
+                <span class="pb-related-title">Самая легкая программа для 3D моделирования: ТОП-5 простых редакторов</span>
+                <span class="pb-related-desc">Ищете простую программу для 3D моделирования? Сравнение легких редакторов для новичков, браузерных и</span>
+            </a><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-qidi-plus-4.html" class="pb-related-card">
+                <span class="pb-related-title">3D принтер Qidi Plus 4: обзор, характеристики, печать</span>
+                <span class="pb-related-desc">Подробный обзор 3D принтера Qidi Tech X-Plus 4. Характеристики, особенности печати ABS и PLA, сравне</span>
+            </a><a href="/3d-pechat-i-modelirovanie/g/gd/gde-risovat-modeli-dlya-3d-printera.html" class="pb-related-card">
+                <span class="pb-related-title">Где рисовать модели для 3D принтера: выбор ПО</span>
+                <span class="pb-related-desc">Обзор программ для создания 3D моделей с нуля. Где рисовать для печати: CAD, полигональные редакторы</span>
+            </a><a href="/3d-pechat-i-modelirovanie/k/ka/kak-delat-3d-modeli-dlya-3d-printera.html" class="pb-related-card">
+                <span class="pb-related-title">Как делать 3D модели для 3D принтера: полное руководство</span>
+                <span class="pb-related-desc">Узнайте, как создавать 3D модели для печати с нуля. Обзор софта, требований к сетке, типов файлов и </span>
+            </a><a href="/3d-pechat-i-modelirovanie/k/ka/kak-zarabotat-na-3d-printere.html" class="pb-related-card">
+                <span class="pb-related-title">Как заработать на 3D принтере: 7 рабочих способов в 2026 году</span>
+                <span class="pb-related-desc">Полный гайд по монетизации 3D печати. Узнайте, как начать бизнес на кастомных деталях, прототипах и </span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

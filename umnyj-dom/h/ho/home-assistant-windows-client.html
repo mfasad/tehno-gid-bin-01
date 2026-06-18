@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Home Assistant на Windows: установка и настройка клиента — Техно Гид</title>
+    <meta name="description" content="Как установить Home Assistant на Windows 10/11. Подробная инструкция по настройке клиента, WSL2 и Docker для управления умным домом на ПК.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/h/ho/home-assistant-windows-client.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Home Assistant на Windows: установка и настройка клиента">
+    <meta property="og:description" content="Как установить Home Assistant на Windows 10/11. Подробная инструкция по настройке клиента, WSL2 и Docker для управления умным домом на ПК.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Home Assistant на Windows: установка и настройка клиента</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-метода-установки-docker-против-wsl2">Выбор метода установки: Docker против WSL2</a></li><li><a href="#подготовка-среды-windows-и-установка-docker">Подготовка среды Windows и установка Docker</a></li><li><a href="#запуск-home-assistant-через-командную-строку">Запуск Home Assistant через командную строку</a></li><li><a href="#первичная-настройка-и-доступ-к-интерфейсу">Первичная настройка и доступ к интерфейсу</a></li><li><a href="#настройка-сети-и-статического-ip-адреса">Настройка сети и статического IP адреса</a></li><li><a href="#управление-обновлениями-и-резервное-копирование">Управление обновлениями и резервное копирование</a></li><li><a href="#решение-частых-проблем-и-ошибок">Решение частых проблем и ошибок</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/x/xi/xiaomi-uvlazhnitel-ochistitel-vozdukha.html">Xiaomi увлажнитель очиститель воздуха: рейтинг и инструкция</a></li><li><a href="/umnyj-dom/k/ka/kak-sproektirovat-teplyj-pol.html">Проектирование теплого пола: гид по расчету и выбору системы</a></li><li><a href="/umnyj-dom/g/gd/gde-posmotret-spisok-pokupok-alisa.html">Где посмотреть список покупок Алиса: полное руководство 2026</a></li><li><a href="/umnyj-dom/s/si/sistema-umnyj-dom-chto-v-nee-vkhodit.html">Система Умный дом: что входит в комплект и как собрать</a></li><li><a href="/umnyj-dom/p/po/podklyuchenie-umnogo-rele-bez-nulya.html">Подключение умного реле без нуля: схемы, нюансы и пошаговая инструкция</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Установка и настройка Home Assistant Client на Windows</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-метода-установки-docker-против-wsl2">Выбор метода установки: Docker против WSL2</a></li><li><a href="#подготовка-среды-windows-и-установка-docker">Подготовка среды Windows и установка Docker</a></li><li><a href="#запуск-home-assistant-через-командную-строку">Запуск Home Assistant через командную строку</a></li><li><a href="#первичная-настройка-и-доступ-к-интерфейсу">Первичная настройка и доступ к интерфейсу</a></li><li><a href="#настройка-сети-и-статического-ip-адреса">Настройка сети и статического IP адреса</a></li><li><a href="#управление-обновлениями-и-резервное-копирование">Управление обновлениями и резервное копирование</a></li><li><a href="#решение-частых-проблем-и-ошибок">Решение частых проблем и ошибок</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Интеграция системы <strong>умного дома</strong> в повседневную жизнь часто требует выделенного сервера, но не у всех есть возможность приобрести Raspberry Pi или мини-ПК на базе Linux. Для многих пользователей ПК становится естественной точкой входа в мир автоматизации. Однако, официальный <em>Home Assistant OS</em> не поддерживает прямую установку на Windows как нативное приложение, что создает определенные сложности для новичков. Тем не менее, существуют надежные методы, позволяющие запустить полноценный сервер <strong>Home Assistant</strong> в среде Windows, используя виртуализацию или подсистему WSL2.</p>
+
+<p>Понимание архитектуры <em>HA</em> критически важно перед началом работ. Вы не просто устанавливаете программу, вы разворачиваете изолированную операционную систему, которая будет управлять всеми вашими устройствами. <strong>Windows Client</strong> в данном контексте чаще всего означает использование браузера или мобильного приложения для доступа к интерфейсу, работающему локально на машине. Это решение идеально подходит для тестирования конфигураций, разработки аддонов или использования мощностей стационарного компьютера для тяжелых вычислений, таких как распознавание лиц или обработка видео с камер.</p>
+
+<p>В этой статье мы детально разберем наиболее стабильные способы развертывания экосистемы на базе Windows 10 и 11. Мы рассмотрим как использование <em>Docker Desktop</em>, так и установку через подсистему <strong>WSL2</strong>, которая на сегодняшний день является предпочтительным методом для энтузиастов. Вы узнаете, как настроить сеть, пробросить порты и обеспечить постоянную доступность вашего хаба, превратив обычный ноутбук или десктоп в мозг вашего умного жилища.</p>
+
+<h2 id="выбор-метода-установки-docker-против-wsl2">Выбор метода установки: Docker против WSL2</h2>
+
+<p>Первым шагом является определение подходящего способа развертывания. Прямая установка исполняемого файла <code>.exe</code> для сервера Home Assistant не предусмотрена разработчиками. Вместо этого сообщество предлагает использовать контейнеризацию. <strong>Docker</strong> позволяет запускать приложение в изолированном контейнере, что упрощает управление зависимостями и обновлениями. Это наиболее гибкий вариант, если вы планируете запускать рядом другие сервисы, например, базу данных <em>InfluxDB</em> или визуализатор <em>Grafana</em>.</p>
+
+<p>Альтернативный путь — использование <strong>WSL2</strong> (Windows Subsystem for Linux). Этот подход эмулирует полноценное ядро Linux внутри Windows, что обеспечивает лучшую производительность файловой системы и сетевой стек по сравнению с классическими виртуальными машинами. Для пользователя это означает, что <em>Home Assistant Container</em> будет работать быстрее и потреблять меньше ресурсов, чем при использовании тяжелого гипервизора типа VirtualBox. Однако, настройка WSL2 требует базовых знаний командной строки Linux.</p>
+
+<p>Стоит также упомянуть вариант установки через <em>VirtualBox</em> или <strong>Hyper-V</strong>, где разворачивается полный образ Home Assistant OS. Хотя этот метод максимально приближен к работе на выделенном железе, он создает дополнительную нагрузку на систему из-за эмуляции всего оборудования. Для большинства сценариев использования на ПК контейнерный метод является золотой серединой между производительностью и простотой обслуживания.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При использовании метода с Docker или WSL2 вы теряете возможность установки аддонов через графический интерфейс (Supervisor). Вам придется настраивать дополнительные сервисы (например, Mosquitto или Zigbee2MQTT) отдельно, также в виде контейнеров или нативных приложений Windows.</p>
+</blockquote>
+
+<div class="pb-poll" id="poll-d32acc8c"><div class="pb-poll-question">📊 Какой метод установки вы планируете использовать?</div><div class="pb-poll-option" data-poll="d32acc8c" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Docker Desktop</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d32acc8c" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">WSL2 (Linux подсистема)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d32acc8c" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Виртуальная машина (VirtualBox/Hyper-V)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d32acc8c" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Пока не решил, читаю статью</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="подготовка-среды-windows-и-установка-docker">Подготовка среды Windows и установка Docker</h2>
+
+<p>Для успешного запуска контейнера необходимо предварительно подготовить операционную систему. Убедитесь, что на вашем ПК включена виртуализация в BIOS/UEFI, так как без нее ни Docker, ни WSL2 не смогут функционировать корректно. В Windows 10 и 11 это обычно включено по умолчанию, но на некоторых сборках может быть отключено производителем ноутбука. Проверить статус можно через <code>Диспетчер задач → Производительность → ЦП</code>, где должно быть указано "Виртуализация: Включена".</p>
+
+<p>Следующим этапом станет установка <strong>Docker Desktop</strong>. Это официальное приложение, которое предоставляет удобный интерфейс для управления контейнерами. Скачайте установщик с сайта разработчика и следуйте инструкциям мастера. В процессе установки убедитесь, что выбрано использование бэкенда <em>WSL2</em>, а не устаревшего Hyper-V, если ваша версия Windows это поддерживает. Это критически важно для производительности дисковых операций.</p>
+
+<p>После установки и перезагрузки компьютера запустите Docker Desktop. Дождитесь появления зеленого индикатора в трее, сигнализирующего о том, что движок активен. Теперь система готова к приему команд. Для работы с Home Assistant вам не потребуется глубокое погружение в настройки Docker, достаточно базового понимания того, что такое <strong>образ</strong> (image) и <strong>контейнер</strong> (container).</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к установке Docker</h4><label class="check-item"><input type="checkbox"><span>Включить виртуализацию в BIOS</span></label><label class="check-item"><input type="checkbox"><span>Установить обновление Windows KB5004332 (если требуется)</span></label><label class="check-item"><input type="checkbox"><span>Скачать Docker Desktop для Windows</span></label><label class="check-item"><input type="checkbox"><span>Включить WSL2 в компонентах Windows</span></label><label class="check-item"><input type="checkbox"><span>Перезагрузить компьютер</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="запуск-home-assistant-через-командную-строку">Запуск Home Assistant через командную строку</h2>
+
+<p>Когда среда готова, можно приступать к развертыванию самого приложения. Самый надежный способ — использование команды <code>docker run</code>. Эта команда скачает актуальный образ с серверов Docker Hub и запустит его с необходимыми параметрами. Откройте PowerShell или командную строку от имени администратора. Вам потребуется создать директорию для хранения конфигурации, чтобы данные не потерялись при перезапуске контейнера.</p>
+
+<p>Введите следующую команду для создания папки и запуска контейнера. Обратите внимание на пути: если вы используете диск D, замените букву соответствующим образом. Параметр <code>--restart unless-stopped</code> гарантирует, что сервис автоматически поднимется после перезагрузки Windows, что является обязательным условием для стабильной работы <strong>умного дома</strong>.</p>
+
+<pre><code>mkdir C:\homeassistant
+<p>docker run -d --name homeassistant --restart=unless-stopped -v C:\homeassistant:/config --net=host ghcr.io/home-assistant/home-assistant:stable</code></pre></p>
+
+<p>Параметр <code>--net=host</code> является ключевым для правильной работы обнаружения устройств. Он позволяет контейнеру использовать сетевой интерфейс хоста напрямую, что необходимо для протоколов типа SSDP, mDNS и UPnP. Без этого флага Home Assistant может не увидеть ваши Chromecast, умные лампы или принтеры в локальной сети. После выполнения команды процесс загрузки может занять несколько минут в зависимости от скорости интернета.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте команду docker ps в терминале, чтобы проверить статус запущенного контейнера. Если в колонке STATUS написано "Up", значит сервер работает корректно и доступен по порту 8123.</p></aside>
+
+<h2 id="первичная-настройка-и-доступ-к-интерфейсу">Первичная настройка и доступ к интерфейсу</h2>
+
+<p>После успешного запуска контейнера доступ к системе осуществляется через любой веб-браузер. В адресной строке введите <code>http://localhost:8123</code> или используйте IP-адрес вашего компьютера в локальной сети, например, <code>http://192.168.1.50:8123</code>. Первый запуск может занять до 10-15 минут, так как система проводит первоначальную инициализацию базы данных и создание файлов конфигурации. Не закрывайте вкладку браузера, если видите экран загрузки.</p>
+
+<p>При первом входе вам будет предложено создать учетную запись администратора. Придумайте надежный пароль и укажите имя пользователя. Также система попросит указать ваше местоположение. Это необходимо для корректной работы автоматизаций, зависящих от времени восхода и заката солнца, а также для настройки часового пояса. Точность координат влияет на работу сценариев освещения и климат-контроля.</p>
+
+<p>На этапе настройки местоположения система автоматически попытается обнаружить устройства в сети. Благодаря использованию режима <strong>host network</strong>, вы с высокой вероятностью увидите свои устройства сразу же. Если обнаружение не сработало, проверьте настройки брандмауэра Windows. Необходимо создать правило для входящих подключений на порт <code>8123</code> для приложения <em>docker.exe</em> или для конкретного порта TCP.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Интерфейс Home Assistant постоянно обновляется. Расположение меню и название пунктов могут отличаться от скриншотов в старых руководствах. Всегда ориентируйтесь на актуальную документацию на официальном портале, если не можете найти нужную настройку.</p>
+</blockquote>
+
+<h2 id="настройка-сети-и-статического-ip-адреса">Настройка сети и статического IP адреса</h2>
+
+<p>Для стабильной работы умного дома критически важно, чтобы адрес вашего сервера не менялся. Если вы используете DHCP (автоматическое получение IP), роутер может выдать новый адрес после перезагрузки, и все привязки в мобильных приложениях перестанут работать. Решением является настройка статического IP-адреса непосредственно в Windows или резервирование адреса в настройках роутера.</p>
+
+<p>Рекомендуемый метод — настройка резервирования на маршрутизаторе. Зайдите в админ-панель роутера, найдите раздел DHCP Reservation или Static Lease. Найдите в списке ваше устройство (по MAC-адресу сетевой карты ПК) и закрепите за ним конкретный IP, например, <code>192.168.1.100</code>. Это гарантирует, что даже при смене сетевых настроек провайдером, локальный адрес останется неизменным.</p>
+
+<p>Если доступ к роутеру ограничен, можно настроить статический IP в самой Windows. Перейдите в <code>Параметры → Сеть и Интернет → Ethernet (или Wi-Fi) → Свойства оборудования</code>. В разделе назначения IP выберите "Вручную" и введите данные вашей сети: IP-адрес, маску подсети (обычно 255.255.255.0), шлюз (адрес роутера) и DNS-серверы. Будьте осторожны: ошибка в адресе шлюза приведет к потере доступа в интернет.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр сети</th>
+<th>Пример значения</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IP-адрес</td>
+<td>192.168.1.100</td>
+<td>Уникальный адрес вашего ПК в локальной сети</td>
+</tr>
+<tr>
+<td>Маска подсети</td>
+<td>255.255.255.0</td>
+<td>Определяет размер локальной сети</td>
+</tr>
+<tr>
+<td>Основной шлюз</td>
+<td>192.168.1.1</td>
+<td>Адрес вашего роутера для выхода в интернет</td>
+</tr>
+<tr>
+<td>DNS сервер</td>
+<td>8.8.8.8</td>
+<td>Сервер доменных имен (можно использовать Google)</td>
+</tr>
+</tbody>
+</table></div>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Резервирование IP-адреса на роутере является более надежным решением, чем ручная настройка в Windows, так как исключает конфликты адресов при подключении других устройств.</p></aside>
+
+<h2 id="управление-обновлениями-и-резервное-копирование">Управление обновлениями и резервное копирование</h2>
+
+<p>В отличие от версии Home Assistant OS, контейнерная версия не имеет встроенной кнопки обновления в интерфейсе. Обновление производится путем остановки старого контейнера, удаления его и запуска нового с тем же томом конфигурации. Так как папка <code>/config</code> проброшена на диск Windows, все ваши настройки, скрипты и базы данных сохраняются нетронутыми при замене образа.</p>
+
+<p>Для обновления выполните последовательность команд в PowerShell. Сначала остановите работающий контейнер, затем удалите его (это не удалит файлы конфигурации!) и запустите команду <code>docker run</code> заново, но уже с тегом новой версии или <code>latest</code>. Docker автоматически скачает свежий образ перед запуском.</p>
+
+<pre><code>docker stop homeassistant
+<p>docker rm homeassistant</p>
+<p>docker run -d --name homeassistant --restart=unless-stopped -v C:\homeassistant:/config --net=host ghcr.io/home-assistant/home-assistant:stable</code></pre></p>
+
+<p>Резервное копирование в данной конфигурации ложится на плечи пользователя. Самый простой способ — периодически копировать содержимое папки <code>C:\homeassistant</code> на внешний носитель или в облачное хранилище. Внутри этой папки находится файл <code>configuration.yaml</code> и подпапки с данными. Сохранность этой директории равносильна сохранности всей вашей системы умного дома.</p>
+
+<details class="pb-accordion"><summary>Как автоматизировать бэкап?</summary><div class="pb-accordion-body"><p>Вы можете использовать встроенный Планировщик заданий Windows. Создайте задачу, которая будет запускать скрипт PowerShell для архивации папки C:\homeassistant в ZIP-архив с датой в имени файла и отправки его в облако раз в неделю.</p></div></details>
+
+<h2 id="решение-частых-проблем-и-ошибок">Решение частых проблем и ошибок</h2>
+
+<p>При работе Home Assistant на Windows пользователи часто сталкиваются с проблемой доступа к USB-устройствам, например, Zigbee-стиком. Контейнер Docker по умолчанию не имеет прямого доступа к портам компьютера. Для решения этой проблемы необходимо пробросить устройство в контейнер при запуске, добавив параметр <code>--device /dev/ttyUSB0:/dev/ttyUSB0</code> (для Linux внутри WSL) или используя сложные маппинги портов COM в Windows, что часто требует установки дополнительных драйверов.</p>
+
+<p>Еще одна распространенная ошибка — высокая загрузка процессора. Это может быть связано с некорректной работой интеграций или постоянным сканированием сети. Проверьте логи через команду <code>docker logs homeassistant</code>. Если вы видите повторяющиеся ошибки подключения к какому-либо устройству, временно отключите эту интеграцию в файле конфигурации, чтобы снизить нагрузку на систему.</p>
+
+<p>Также стоит учитывать особенности энергопотребления. Если вы используете ноутбук в качестве сервера, настройте схему электропитания Windows на режим "Высокая производительность" и запретите отключение жесткого диска и сетевой карты в режиме сна. Идеальный вариант — настроить автоматический вход в систему и запуск Docker при старте Windows, чтобы сервер работал 24/7 даже без входа пользователя.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При обновлении драйверов сетевой карты или изменении настроек брандмауэра антивирусом доступ к порту 8123 может быть заблокирован. Если интерфейс перестал открываться, первым делом проверьте правила фаервола.</p>
+</blockquote>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли установить Home Assistant на Windows как обычную программу .exe?</summary>
+<p>Нет, официальной версии в виде исполняемого файла не существует. Home Assistant разработан для работы в среде Linux. На Windows он запускается либо в контейнере Docker, либо в виртуальной машине, либо через подсистему WSL2, эмулирующую Linux.</p>
+</details>
+
+<details>
+<summary>Будет ли работать Zigbee и Z-Wave напрямую через USB-стик на Windows в Docker?</summary>
+<p>Да, но это требует дополнительной настройки. Вам нужно пробросить COM-порт или USB-устройство внутрь контейнера. В среде WSL2 доступ к USB устроен сложнее, чем в нативном Linux, и может потребовать использования утилит типа <em>usbipd-win</em> для корректного проброса устройства из Windows в подсистему.</p>
+</details>
+
+<details>
+<summary>Что произойдет с моими настройками, если я удалю контейнер Docker?</summary>
+<p>Если вы правильно настроили том (параметр <code>-v</code>), то все ваши настройки, история и базы данных хранятся в папке на жестком диске Windows (например, <code>C:\homeassistant</code>). Удаление самого контейнера не затронет эти файлы, и при создании нового контейнера с тем же путем к папке все настройки восстановятся.</p>
+</details>
+
+<details>
+<summary>Можно ли управлять умным домом, если компьютер выключен?</summary>
+<p>Нет. В данной конфигурации ваш ПК выступает в роли сервера (хаба). Если компьютер выключен, спит или перезагружается, автоматизации не выполняются, и вы не сможете управлять устройствами через приложение. Для круглосуточной работы компьютер должен быть включен постоянно.</p>
+</details>
+
+<details>
+<summary>Как получить доступ к Home Assistant из интернета безопасно?</summary>
+<p>Напрямую открывать порт 8123 наружу роутера небезопасно. Рекомендуется использовать сервис <em>Nabu Casa</em> (официальный облачный сервис разработчиков) для безопасного туннелирования, либо настроить VPN (например, WireGuard или Tailscale) для доступа к домашней сети извне, а уже внутри сети обращаться к локальному адресу.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/x/xi/xiaomi-uvlazhnitel-ochistitel-vozdukha.html" class="pb-related-card">
+                <span class="pb-related-title">Xiaomi увлажнитель очиститель воздуха: рейтинг и инструкция</span>
+                <span class="pb-related-desc">Обзор 2-в-1 устройств Xiaomi. Как выбрать увлажнитель очиститель воздуха, настроить и обслуживать. Т</span>
+            </a><a href="/umnyj-dom/k/ka/kak-sproektirovat-teplyj-pol.html" class="pb-related-card">
+                <span class="pb-related-title">Проектирование теплого пола: гид по расчету и выбору системы</span>
+                <span class="pb-related-desc">Подробное руководство по проектированию теплого пола. Расчет шага трубы, выбор контуров, тепловая мо</span>
+            </a><a href="/umnyj-dom/g/gd/gde-posmotret-spisok-pokupok-alisa.html" class="pb-related-card">
+                <span class="pb-related-title">Где посмотреть список покупок Алиса: полное руководство 2026</span>
+                <span class="pb-related-desc">Узнайте, как быстро найти список покупок Алисы в приложении Яндекс и на умных колонках. Инструкция п</span>
+            </a><a href="/umnyj-dom/s/si/sistema-umnyj-dom-chto-v-nee-vkhodit.html" class="pb-related-card">
+                <span class="pb-related-title">Система Умный дом: что входит в комплект и как собрать</span>
+                <span class="pb-related-desc">Полный разбор системы Умный дом: что входит в состав, протоколы связи, датчики и хабы. Гид по выбору</span>
+            </a><a href="/umnyj-dom/p/po/podklyuchenie-umnogo-rele-bez-nulya.html" class="pb-related-card">
+                <span class="pb-related-title">Подключение умного реле без нуля: схемы, нюансы и пошаговая инструкция</span>
+                <span class="pb-related-desc">Узнайте, как подключить умное реле без нулевого провода. Разбор схем для Shelly, Sonoff, Tuya, выбор</span>
+            </a><a href="/umnyj-dom/m/mo/mozhno-li-v-umnuyu-rozetku-vklyuchit-trojnik.html" class="pb-related-card">
+                <span class="pb-related-title">Можно ли подключить тройник к умной розетке: безопасность и нагрузка</span>
+                <span class="pb-related-desc">Узнайте, безопасно ли включать удлинитель в умную розетку. Расчет мощности, риски перегрузки и прави</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

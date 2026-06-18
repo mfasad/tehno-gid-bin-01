@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Home Assistant MQTT настройка: Полное руководство по интеграции — Техно Гид</title>
+    <meta name="description" content="Пошаговая инструкция по настройке MQTT в Home Assistant. Установка брокера, автообнаружение устройств и создание автоматизаций для умного дома.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/h/ho/home-assistant-mqtt-nastrojka.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Home Assistant MQTT настройка: Полное руководство по интеграции">
+    <meta property="og:description" content="Пошаговая инструкция по настройке MQTT в Home Assistant. Установка брокера, автообнаружение устройств и создание автоматизаций для умного дома.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Home Assistant MQTT настройка: Полное руководство по интеграции</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-и-установка-mqtt-брокера-в-системе">Выбор и установка MQTT брокера в системе</a></li><li><a href="#подключение-клиентам-и-активация-интеграции">Подключение клиентам и активация интеграции</a></li><li><a href="#настройка-автообнаружения-устройств-auto-discovery">Настройка автообнаружения устройств (Auto Discovery)</a></li><li><a href="#ручная-конфигурация-через-configurationyaml">Ручная конфигурация через configuration.yaml</a></li><li><a href="#таблица-типов-устройств-и-соответствующих-топиков">Таблица типов устройств и соответствующих топиков</a></li><li><a href="#безопасность-и-мониторинг-трафика">Безопасность и мониторинг трафика</a></li><li><a href="#решение-частых-проблем-и-ошибок">Решение частых проблем и ошибок</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/k/ka/kak-razblokirovat-stantsiyu-alisa.html">Как разблокировать Алису: снятие ограничений и PIN-код</a></li><li><a href="/umnyj-dom/k/ka/kak-sdelat-samomu-klyuch-ot-domofona.html">Как сделать самодельный ключ от домофона: методы и инструкция</a></li><li><a href="/umnyj-dom/k/ka/kakoj-zvuk-otpugivaet-myshej.html">Какой ультразвук отпугивает мышей: разбор частот и приборов</a></li><li><a href="/umnyj-dom/g/gs/gsm-rozetka-itimer-instruktsiya.html">GSM розетка iTimer: Полная инструкция по настройке и управлению</a></li><li><a href="/umnyj-dom/0/05/0500-na-chasakh-znachenie.html">0500 на часах: значение, эзотерика и психология ангельских чисел</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Полное руководство по настройке MQTT в Home Assistant</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-и-установка-mqtt-брокера-в-системе">Выбор и установка MQTT брокера в системе</a></li><li><a href="#подключение-клиентам-и-активация-интеграции">Подключение клиентам и активация интеграции</a></li><li><a href="#настройка-автообнаружения-устройств-auto-discovery">Настройка автообнаружения устройств (Auto Discovery)</a></li><li><a href="#ручная-конфигурация-через-configurationyaml">Ручная конфигурация через configuration.yaml</a></li><li><a href="#таблица-типов-устройств-и-соответствующих-топиков">Таблица типов устройств и соответствующих топиков</a></li><li><a href="#безопасность-и-мониторинг-трафика">Безопасность и мониторинг трафика</a></li><li><a href="#решение-частых-проблем-и-ошибок">Решение частых проблем и ошибок</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Интеграция разнородных устройств в единую экосистему умного дома часто сталкивается с проблемой несовместимых протоколов. Именно здесь на сцену выходит <strong>MQTT</strong> — легковесный протокол обмена сообщениями, ставший стандартом де-факто для <em>Home Assistant</em>. Он позволяет датчикам, исполнительным механизмам и шлюзам общаться между собой быстро и с минимальной нагрузкой на сеть, обеспечивая стабильную работу всей системы.</p>
+
+<p>Настройка <strong>MQTT</strong> в <em>Home Assistant</em> требует наличия брокера, который выступает посредником в обмене данными. Без правильно настроенного брокера устройства не смогут передавать статусы или принимать команды. В этой статье мы разберем процесс установки <em>MQTT Broker</em>, подключение клиентов и настройку <strong>автообнаружения</strong> (Auto Discovery), которое радикально упрощает жизнь пользователю.</p>
+
+<h2 id="выбор-и-установка-mqtt-брокера-в-системе">Выбор и установка MQTT брокера в системе</h2>
+
+<p>Первым шагом является развертывание брокера сообщений. В экосистеме <em>Home Assistant</em> наиболее популярным и надежным решением является аддон <em>MQTT Broker</em> (ранее известный как Mosquitto). Он работает прямо внутри вашей системы, не требуя внешних серверов, что снижает задержки при передаче команд.</p>
+
+<p>Для установки перейдите в раздел <code>Добавки, обновления и резервные копии</code> в боковом меню интерфейса. В поиске введите <em>MQTT</em> и выберите вариант от <em>Home Assistant Community</em>. После установки необходимо открыть окно конфигурации, чтобы задать базовые параметры безопасности и логи.</p>
+
+<p>Критически важно настроить авторизацию. По умолчанию брокер может быть доступен без пароля, что недопустимо в домашней сети, где могут находиться посторонние устройства. Создайте логин и пароль в поле <code>Logins...</code> или через файл конфигурации, чтобы защитить каналы связи от несанкционированного доступа.</p>
+
+<blockquote>⚠️ Внимание: Если вы используете <em>MQTT</em> для управления критически важными устройствами, например, замками или системой отопления, убедитесь, что шифрование трафика включено, если устройства работают через внешнюю сеть.</blockquote>
+
+<p>После настройки сохраните файл и нажмите кнопку <code>Установить</code>, а затем <code>Запустить</code>. Система автоматически проверит конфигурацию и, в случае успеха, запустит сервис. В логах вы увидите сообщение об успешном запуске брокера, что является сигналом к переходу на следующий этап.</p>
+
+<h2 id="подключение-клиентам-и-активация-интеграции">Подключение клиентам и активация интеграции</h2>
+
+<p>Когда брокер запущен, необходимо подключить саму платформу <em>Home Assistant</em> к нему. Перейдите в раздел <code>Интеграции</code> и нажмите кнопку <code>Добавить интеграцию</code>. В списке выберите <em>MQTT</em>. Система предложит найти брокер в сети автоматически, но для надежности лучше указать вручную IP-адрес.</p>
+
+<p>Введите имя хоста (обычно это <code>core-mosquitto</code> или IP-адрес хоста), порт <code>1883</code> и учетные данные, которые вы создали ранее. Если все введено верно, интеграция будет добавлена, и в логах появятся сообщения о успешном подключении клиента <strong>Home Assistant</strong> к брокеру.</p>
+
+<p>Важно отметить, что после добавления интеграции система может потребовать перезагрузки для корректной работы всех компонентов. Не игнорируйте этот шаг, так как некоторые датчики могут не появиться в интерфейсе без полной инициализации сервисов.</p>
+
+<p>Проверьте статус подключения, открыв настройки интеграции <em>MQTT</em>. Там будет отображаться статус <code>Connected</code>. Если статус <code>Disconnected</code>, проверьте настройки фаервола и убедитесь, что порт <code>1883</code> не заблокирован сетевым оборудованием.</p>
+
+<div class="pb-poll" id="poll-c4b8f566"><div class="pb-poll-question">📊 Какой тип устройств вы планируете подключать через MQTT?</div><div class="pb-poll-option" data-poll="c4b8f566" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Датчики (температура, влажность)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c4b8f566" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Исполнительные механизмы (реле, моторы)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c4b8f566" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Свет и розетки</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c4b8f566" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Смешанные устройства</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="настройка-автообнаружения-устройств-auto-discovery">Настройка автообнаружения устройств (Auto Discovery)</h2>
+
+<p>Самая мощная функция протокола в связке с <em>Home Assistant</em> — это <strong>Auto Discovery</strong>. Она позволяет устройствам (например, <em>Tasmota</em> или <em>ESPhome</em>) самим объявлять о своем присутствии и конфигурации брокеру. Вам не нужно вручную прописывать каждую тему и тип сенсора в конфигурационных файлах.</p>
+
+<p>Для работы автообнаружения на самом устройстве (клиенте) необходимо включить опцию <code>discovery</code> и указать префикс темы, обычно <code>homeassistant</code>. Когда устройство подключается к брокеру, оно отправляет сообщение в топик <code>homeassistant/{тип_устройства}/{уникальный_id}/config</code> с JSON-описанием своих возможностей.</p>
+
+<p><em>Home Assistant</em> мониторит эти топики и мгновенно создает сущности в интерфейсе. Это кардинально упрощает добавление десятков датчиков: вы просто перепрошиваете устройство, и оно появляется в списке с иконкой и настройками.</p>
+
+<p>Однако, для корректной работы длина темы и формат JSON должны строго соответствовать спецификации. Ошибки в синтаксисе конфигурации на стороне устройства приведут к тому, что сущность не создастся или будет работать некорректно.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка устройства к автообнаружению</h4><label class="check-item"><input type="checkbox"><span>Установить Tasmota или ESPhome</span></label><label class="check-item"><input type="checkbox"><span>Включить опцию discovery в настройках</span></label><label class="check-item"><input type="checkbox"><span>Проверить доступность порта брокера</span></label><label class="check-item"><input type="checkbox"><span>Перезагрузить устройство</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<blockquote>⚠️ Внимание: Убедитесь, что префикс автообнаружения (<code>homeassistant</code>) совпадает на всех устройствах и в настройках интеграции. Разнобой в префиксах приведет к тому, что устройства не будут найдены системой.</blockquote>
+
+<p>Если вы используете старые прошивки или самописные скрипты, автообнаружение может не работать. В таких случаях потребуется ручная конфигурация через файл <code>configuration.yaml</code>, что требует более глубоких знаний структуры протокола.</p>
+
+<details class="pb-accordion"><summary>Как работает механизм Auto Discovery?</summary><div class="pb-accordion-body"><p>Устройство отправляет JSON-манифест в специальную тему. Home Assistant считывает его, создает сущность и подписывается на топики обновлений. При отключении устройства сущность может оставаться, но станет неактивной.</p></div></details>
+
+<h2 id="ручная-конфигурация-через-configurationyaml">Ручная конфигурация через configuration.yaml</h2>
+
+<p>В ситуациях, когда автообнаружение недоступно или недостаточно гибко, на помощь приходит ручная настройка в файле <code>configuration.yaml</code>. Это предыдущий метод, который до сих пор актуален для специфических сценариев, таких как создание виртуальных сенсоров или сложных автоматизаций.</p>
+
+<p>Для добавления устройства вручную необходимо прописать секцию <code>mqtt</code> и вложенные блоки <code>sensor</code>, <code>switch</code> или <code>light</code>. Каждое устройство описывается уникальным <code>name</code>, <code>topic</code> для получения данных и <code>payload_on/off</code> для управления.</p>
+
+<p>Пример конфигурации простого выключателя выглядит следующим образом:</p>
+
+<pre><code>mqtt:
+<p>switch:</p>
+<p>- name: "Кухня Свет"</p>
+<p>topic: "home/kitchen/light/set"</p>
+<p>state_topic: "home/kitchen/light/state"</p>
+<p>payload_on: "ON"</p>
+<p>payload_off: "OFF"</code></pre></p>
+
+<p>После edits в файле <code>configuration.yaml</code> необходимо проверить его синтаксис через кнопку <code>Проверить конфигурацию</code>. Если ошибок нет, нажмите <code>Перезагрузить</code>, чтобы применить изменения. Это надежный способ, но он требует больше времени на настройку каждого нового устройства.</p>
+
+<p>Обратите внимание, что при ручной настройке вам придется самостоятельно управлять состоянием устройства. Если устройство отключится от сети, его статус в интерфейсе может не обновиться автоматически без настройки <code>availability_topic</code>.</p>
+
+<h2 id="таблица-типов-устройств-и-соответствующих-топиков">Таблица типов устройств и соответствующих топиков</h2>
+
+<p>Понимание структуры тем (топиков) критично для успешной настройки. Ниже приведена таблица, описывающая стандартные префиксы для различных типов устройств в рамках автообнаружения.</p>
+
+<div class="pb-table-wrap"><table>
+  <thead>
+    <tr>
+      <th>Тип устройства</th>
+      <th>Префикс темы</th>
+      <th>Пример топика конфигурации</th>
+      <th>Пример топика данных</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Датчик температуры</td>
+      <td>sensor</td>
+      <td>homeassistant/sensor/room1/config</td>
+      <td>homeassistant/sensor/room1/state</td>
+    </tr>
+    <tr>
+      <td>Выключатель (Switch)</td>
+      <td>switch</td>
+      <td>homeassistant/switch/garage/config</td>
+      <td>homeassistant/switch/garage/state</td>
+    </tr>
+    <tr>
+      <td>Датчик движения</td>
+      <td>binary_sensor</td>
+      <td>homeassistant/binary_sensor/hall/config</td>
+      <td>homeassistant/binary_sensor/hall/state</td>
+    </tr>
+    <tr>
+      <td>Умная розетка</td>
+      <td>switch</td>
+      <td>homeassistant/switch/outlet1/config</td>
+      <td>homeassistant/switch/outlet1/state</td>
+    </tr>
+    <tr>
+      <td>Датчик влажности</td>
+      <td>sensor</td>
+      <td>homeassistant/sensor/bath/config</td>
+      <td>homeassistant/sensor/bath/state</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p>Использование правильных префиксов гарантирует, что <em>Home Assistant</em> корректно интерпретирует данные. Например, <code>binary_sensor</code> ожидает только состояния <code>ON</code> или <code>OFF</code>, тогда как <code>sensor</code> может принимать числовые значения.</p>
+
+<p>Если вы видите в логах сообщения об ошибках парсинга данных, проверьте, совпадает ли тип сущности с форматом передаваемых данных. Это частая причина некорректного отображения показаний на дашбордах.</p>
+
+<h2 id="безопасность-и-мониторинг-трафика">Безопасность и мониторинг трафика</h2>
+
+<p>После успешной настройки всех устройств необходимо обеспечить безопасность системы. <strong>MQTT</strong> по умолчанию не использует шифрование, поэтому в локальной сети это приемлемо, но при доступе извне требования ужесточаются.</p>
+
+<p>Рекомендуется включить аутентификацию на брокере и использовать сложные пароли. Также стоит ограничить права доступа: устройствам с датчиками не обязательно иметь право управлять реле, и наоборот.</p>
+
+<p>Для отладки и мониторинга трафика отлично подходит инструмент <em>MQTT Explorer</em>. Он позволяет визуально увидеть дерево всех топиков, их текущие значения и историю изменений. Это незаменимый инструмент при поиске проблем с подключением.</p>
+
+<p>Важно регулярно обновлять версию брокера <em>MQTT</em> через аддоны, чтобы закрывать уязвимости безопасности. Злоумышленники могут использовать незащищенный брокер для внедрения вредоносных команд в вашу сеть умного дома.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте MQTT Explorer для проверки того, какие данные реально отправляет ваше устройство, прежде чем настраивать интеграцию в Home Assistant.</p></aside>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Настройка безопасности — это не опция, а необходимость. Слабый пароль на брокере может привести к полному захвату управления вашим умным домом.</p></aside>
+
+<h2 id="решение-частых-проблем-и-ошибок">Решение частых проблем и ошибок</h2>
+
+<p>Даже при правильном следовании инструкциям могут возникнуть проблемы. Одна из самых частых — отсутствие сущностей в интерфейсе. В этом случае проверьте, не блокирует ли фаервол порт <code>1883</code> или <code>8883</code> (для SSL).</p>
+
+<p>Другая проблема — устройства появляются, но не меняют состояние. Это часто связано с тем, что <code>payload_on</code> и реальный сигнал от устройства не совпадают. Убедитесь, что строки <code>"ON"</code> и <code>ON</code> (без кавычек) интерпретируются брокером одинаково.</p>
+
+<p>Если интеграция постоянно переподключается, проверьте стабильность сети Wi-Fi для удаленных устройств. Частые разрывы связи могут приводить к перегрузке брокера и ошибкам в логах.</p>
+
+<p>Иногда помогает очистка старых тем. Удаленные устройства могут оставлять в брокере "призрачные" топики, которые мешают работе новых. Используйте <em>MQTT Explorer</em> для удаления устаревших конфигураций.</p>
+
+<blockquote>⚠️ Внимание: При очистке старых тем убедитесь, что вы не удалите активные конфигурации работающих устройств. Всегда делайте резервную копию базы данных брокера перед массовым удалением.</blockquote>
+
+<p>Не забывайте, что настройки могут меняться с выходом новых версий <em>Home Assistant</em>. Официальная документация — лучший источник актуальной информации по изменениям в API протокола.</p>
+
+<details class="pb-accordion"><summary>Как проверить лог брокера?</summary><div class="pb-accordion-body"><p>Откройте настройки аддона MQTT Broker, перейдите во вкладку "Log" и посмотрите на сообщения о подключениях и ошибках. Это поможет выявить проблемы с авторизацией или синтаксисом.</p></div></details>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+  <summary>Нужен ли отдельный сервер для MQTT?</summary>
+  <p>Нет, для большинства домашних систем достаточно встроенного аддона <em>MQTT Broker</em> (Mosquitto), который работает на том же хосте, что и <em>Home Assistant</em>. Это экономит ресурсы и упрощает настройку сети.</p>
+</details>
+
+<details>
+  <summary>Что делать, если устройства не находятся через автообнаружение?</summary>
+  <p>Проверьте, включена ли опция <code>discovery</code> на самом устройстве и совпадает ли префикс темы (обычно <code>homeassistant</code>) с настройками интеграции в <em>Home Assistant</em>. Также убедитесь, что устройство имеет доступ к сети и может достичь брокера.</p>
+</details>
+
+<details>
+  <summary>Можно ли использовать MQTT для управления медиацентрами?</summary>
+  <p>Да, многие медиаплееры и системы управления мультимедиа поддерживают <strong>MQTT</strong>. Это позволяет синхронизировать состояние воспроизведения, громкость и источники сигнала с общим интерфейсом умного дома.</p>
+</details>
+
+<details>
+  <summary>Как ограничить доступ к MQTT извне дома?</summary>
+  <p>Лучший способ — не открывать порт <code>1883</code> на роутере. Используйте безопасные туннели, такие как <em>Cloudflare Tunnel</em> или <em>WireGuard</em>, для доступа к внутренним сервисам из интернета, не открывая их напрямую в сеть.</p>
+</details>
+
+<details>
+  <summary>Какой порт использовать для защищенного соединения?</summary>
+  <p>Для защищенного соединения (TLS/SSL) используется порт <code>8883</code>. Однако в локальной сети это часто излишне усложняет настройку, если нет специфических требований безопасности.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/k/ka/kak-razblokirovat-stantsiyu-alisa.html" class="pb-related-card">
+                <span class="pb-related-title">Как разблокировать Алису: снятие ограничений и PIN-код</span>
+                <span class="pb-related-desc">Полное руководство: как разблокировать Яндекс Станцию, снять родительский контроль и сбросить PIN-ко</span>
+            </a><a href="/umnyj-dom/k/ka/kak-sdelat-samomu-klyuch-ot-domofona.html" class="pb-related-card">
+                <span class="pb-related-title">Как сделать самодельный ключ от домофона: методы и инструкция</span>
+                <span class="pb-related-desc">Подробное руководство: как изготовить дубликат ключа от домофона своими руками. Методы скриминга, пе</span>
+            </a><a href="/umnyj-dom/k/ka/kakoj-zvuk-otpugivaet-myshej.html" class="pb-related-card">
+                <span class="pb-related-title">Какой ультразвук отпугивает мышей: разбор частот и приборов</span>
+                <span class="pb-related-desc">Эффективные методы борьбы с грызунами. Узнайте, какая частота звука отпугивает мышей, как настроить </span>
+            </a><a href="/umnyj-dom/g/gs/gsm-rozetka-itimer-instruktsiya.html" class="pb-related-card">
+                <span class="pb-related-title">GSM розетка iTimer: Полная инструкция по настройке и управлению</span>
+                <span class="pb-related-desc">Подробная инструкция по подключению и настройке GSM-розетки iTimer. Настройка смс-команд, работа с S</span>
+            </a><a href="/umnyj-dom/0/05/0500-na-chasakh-znachenie.html" class="pb-related-card">
+                <span class="pb-related-title">0500 на часах: значение, эзотерика и психология ангельских чисел</span>
+                <span class="pb-related-desc">Расшифровка значения времени 05:00 на часах. Почему встречается эта комбинация? Влияние на судьбу, к</span>
+            </a><a href="/umnyj-dom/k/ka/kakuyu-kolonku-alisa-luchshe-kupit-dlya-rebenka.html" class="pb-related-card">
+                <span class="pb-related-title">Какую колонку Яндекс Станцию выбрать для ребенка: рейтинг 2026</span>
+                <span class="pb-related-desc">Полный гид по выбору умной колонки для детей. Сравнение моделей с Алисой, родительский контроль, нас</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Wemos D1 Mini Pro: Полный обзор и руководство по ESP8266 — Техно Гид</title>
+    <meta name="description" content="Подробный разбор платы Wemos D1 Mini Pro. Сравнение версий, схема пинов, прошивка через Arduino IDE и платы CP2102. Умный дом своими руками.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/w/we/wemos-d1-mini-pro.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Wemos D1 Mini Pro: Полный обзор и руководство по ESP8266">
+    <meta property="og:description" content="Подробный разбор платы Wemos D1 Mini Pro. Сравнение версий, схема пинов, прошивка через Arduino IDE и платы CP2102. Умный дом своими руками.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Wemos D1 Mini Pro: Полный обзор и руководство по ESP8266</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#архитектура-и-ключевые-отличия-версии-pro">Архитектура и ключевые отличия версии Pro</a></li><li><a href="#система-питания-и-работа-от-аккумуляторов">Система питания и работа от аккумуляторов</a></li><li><a href="#настройка-среды-разработки-arduino-ide">Настройка среды разработки Arduino IDE</a></li><li><a href="#распиновка-и-назначение-выводов-gpio">Распиновка и назначение выводов GPIO</a></li><li><a href="#прошивка-и-отладка-устройств">Прошивка и отладка устройств</a></li><li><a href="#практическое-применение-и-проекты">Практическое применение и проекты</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/s/sa/samyj-sovremennyj-robot-v-mire.html">Самый современный робот в мире: Обзор передовых технологий 2026</a></li><li><a href="/umnyj-dom/k/ka/kak-podklyuchit-kameru-ksiomi.html">Как подключить камеру Xiaomi: полная инструкция по настройке</a></li><li><a href="/umnyj-dom/k/ka/kak-otkryt-domofon-distantsionno.html">Методы дистанционного открытия домофона: способы для жителей и гостей</a></li><li><a href="/umnyj-dom/k/ka/kak-ustanovit-kondensator-v-sensornyj-vyklyuchatel-dvukhklavishnyj.html">Как установить конденсатор в сенсорный выключатель двухклавишный</a></li><li><a href="/umnyj-dom/k/ka/kak-delyatsya-sutki-na-utro-den-vecher-noch-po-chasam.html">Деление суток на части: точное время утра, дня, вечера и ночи</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Wemos D1 Mini Pro: Обзор платы ESP8266 и руководство по использованию</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#архитектура-и-ключевые-отличия-версии-pro">Архитектура и ключевые отличия версии Pro</a></li><li><a href="#система-питания-и-работа-от-аккумуляторов">Система питания и работа от аккумуляторов</a></li><li><a href="#настройка-среды-разработки-arduino-ide">Настройка среды разработки Arduino IDE</a></li><li><a href="#распиновка-и-назначение-выводов-gpio">Распиновка и назначение выводов GPIO</a></li><li><a href="#прошивка-и-отладка-устройств">Прошивка и отладка устройств</a></li><li><a href="#практическое-применение-и-проекты">Практическое применение и проекты</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>В мире любительской электроники и прототипирования устройств для интернета вещей (IoT) редко встретишь компонент, который смог бы завоевать такую популярность, как серия <em>Wemos D1</em>. Это компактные, дешевые и невероятно мощные микроконтроллеры, которые открывают безграничные возможности для автоматизации. Однако среди множества модификаций часто возникает путаница, особенно когда речь заходит о версии <em>Pro</em>. В этой статье мы детально разберем отличия этой платы от стандартной Mini, затронем вопросы питания, прошивки и практического применения.</p>
+
+<p>Почему разработчики и инженеры выбирают именно этот форм-фактор? Ответ кроется в идеальном балансе между размерами, функциональностью и стоимостью. Плата построена на чипе <strong>ESP8266</strong>, который обеспечивает полноценный Wi-Fi, что делает её идеальным кандидатом для создания датчиков, умных розеток и пультов управления. Версия <em>Pro</em> добавляет к этому набору важные аппаратные улучшения, которые критичны для проектов, требующих более глубокого сна или работы от автономных источников питания.</p>
+
+<p>Далее мы рассмотрим технические нюансы, которые позволят вам избежать распространенных ошибок при подключении. Вы узнаете, как правильно настроить среду разработки, какие драйверы необходимы для связи с компьютером и как оптимизировать энергопотребление вашего устройства. Независимо от того, являетесь ли вы новичком или опытным инженером, понимание архитектуры <em>Wemos D1 Mini Pro</em> станет фундаментом для ваших будущих успешных проектов.</p>
+
+<h2 id="архитектура-и-ключевые-отличия-версии-pro">Архитектура и ключевые отличия версии Pro</h2>
+
+<p>На первый взгляд, плата <em>Wemos D1 Mini Pro</em> практически идентична своей младшей сестре, но дьявол кроется в деталях схемотехники. Основное различие заключается в схеме питания и возможности управления режимом глубокого сна (Deep Sleep). В стандартной версии вывод <code>RST</code> (сброс) и вывод <code>D0</code> (GPIO16) не соединены аппаратно. Это означает, что для реализации функции будильника после глубокого сна пользователю приходилось вручную паять перемычку между этими контактами.</p>
+
+<p>Версия <em>Pro</em> решает эту проблему на уровне печатной платы. Между контактами <code>RST</code> и <code>D0</code> установлен специальный <strong>паяный джампер</strong> ( jumper pad). По умолчанию он разомкнут, но пользователю достаточно просто капнуть каплю припоя, чтобы активировать функцию автоматического пробуждения. Это критически важно для устройств, работающих от батареек, так как позволяет микроконтроллеру отключать почти все системы и просыпаться только для отправки данных.</p>
+
+<p>Кроме того, стоит обратить внимание на антенну. В версии <em>Pro</em> используется внешний разъем для антенны типа <em>IPEX</em> (или U.FL), либо более эффективная печатная антенна, в зависимости от ревизии платы. Это обеспечивает лучший уровень приема сигнала по сравнению с обычными моделями, где антенна часто бывает экранирована металлическим корпусом самого устройства. Для проектов, где плата будет спрятана внутри металлической коробки или далеко от роутера, это существенное преимущество.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если вы планируете использовать Deep Sleep, не забудьте замкнуть контактные площадки RST и D0 небольшим количеством припоя. Без этого соединения контроллер "уснет" навсегда и не проснется по таймеру.</p></aside>
+
+<h2 id="система-питания-и-работа-от-аккумуляторов">Система питания и работа от аккумуляторов</h2>
+
+<p>Вопрос энергоснабжения является одним из самых острых при разработке автономных устройств. Плата <em>Wemos D1 Mini Pro</em> оснащена встроенным стабилизатором напряжения, который позволяет подавать питание в широком диапазоне. Вы можете подключать источник напряжения от 5В до 12В напрямую на пин <code>5V</code> или через контакт <code>VIN</code> (если он распаян на вашей ревизии), и плата самостоятельно понизит его до необходимых 3.3В для работы чипа.</p>
+
+<p>Однако существует важный нюанс, о котором часто забывают новички. Пины <code>3.3V</code> на плате являются выходными, а не входными (за исключением специальных случаев с внешним LDO). Попытка подать 3.3В от внешней батареи напрямую на этот пин может привести к конфликту с внутренним стабилизатором и выходу платы из строя. Если вы хотите использовать литиевый аккумулятор 3.7В (типа 18650) без повышающего преобразователя, вам необходимо подать питание на пин <code>5V</code>, так как встроенный стабилизатор имеет минимальный порог падения напряжения (drop-out voltage).</p>
+
+<p>Для максимальной энергоэффективности рекомендуется использовать режим <strong>Deep Sleep</strong>. В этом режиме потребление тока падает до микроампер (около 10-20 мкА). Процессор останавливается, Wi-Fi отключается, и работает только таймер реального времени. Когда таймер истекает, он подает сигнал сброса, и устройство перезагружается, выполняя код заново. Это не то же самое, что "пробуждение" в классических микроконтроллерах, где выполнение кода продолжается с места остановки.</p>
+
+<blockquote>⚠️ <strong>Внимание:</strong> При использовании литиевых аккумуляторов убедитесь, что напряжение не превышает 4.2В. Прямое подключение заряженного аккумулятора к входу 5В допустимо, но если вы используете нестабилизированный источник, убедитесь, что его напряжение не превышает максимальный рейтинг встроенного LDO-стабилизатора (обычно до 12-15В, но лучше держать в пределах 5-9В для снижения тепловыделения).</blockquote>
+
+<div class="pb-poll" id="poll-e5dc250e"><div class="pb-poll-question">📊 От какого источника вы планируете питать свой проект?</div><div class="pb-poll-option" data-poll="e5dc250e" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">USB кабель 5В</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e5dc250e" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Батарейки AA/AAA</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e5dc250e" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Литий-ионный аккумулятор 18650</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e5dc250e" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Солнечная панель с контроллером</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e5dc250e" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Сетевой адаптер 12В</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="настройка-среды-разработки-arduino-ide">Настройка среды разработки Arduino IDE</h2>
+
+<p>Для начала работы с платой <em>Wemos D1 Mini Pro</em> наиболее удобным инструментом является среда <em>Arduino IDE</em>. По умолчанию она не содержит поддержки чипов ESP8266, поэтому необходимо добавить сторонний репозиторий. Это стандартная процедура, которая открывает доступ к сотням готовых библиотек и примеров кода.</p>
+
+<p>Сначала необходимо установить драйверы для USB-UART конвертера. В большинстве современных плат <em>Wemos</em> используется чип <strong>CP2102</strong> или <em>CH340</em>. Если при подключении платы к компьютеру в диспетчере устройств не появился новый COM-порт, скачайте и установите соответствующий драйвер с сайта производителя. Без этого шага загрузка скетчей будет невозможна.</p>
+
+<p>Далее в настройках Arduino IDE нужно добавить URL менеджера плат. Перейдите в меню <code>Файл → Настройки</code> и в поле "Дополнительные ссылки для менеджеров плат" вставьте следующую ссылку:</p>
+
+<pre><code>http://arduino.esp8266.com/stable/package_esp8266com_index.json</code></pre>
+
+<p>После сохранения настроек откройте <code>Инструменты → Плата → Менеджер плат</code>, найдите в поиске "esp8266" и установите пакет от <em>ESP8266 Community</em>. Теперь в списке плат появится возможность выбрать <code>LOLIN(WEMOS) D1 R2 & mini</code>. Обратите внимание, что отдельной опции именно для "Pro" версии в списке нет — выбирайте обычную <em>D1 Mini</em>, так как программно они идентичны. Различия только в аппаратной части, о которой мы говорили выше.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка Arduino IDE</h4><label class="check-item"><input type="checkbox"><span>Установить драйвер CP2102/CH340</span></label><label class="check-item"><input type="checkbox"><span>Добавить URL в настройки</span></label><label class="check-item"><input type="checkbox"><span>Установить пакет ESP8266</span></label><label class="check-item"><input type="checkbox"><span>Выбрать плату "LOLIN(WEMOS) D1 R2 & mini"</span></label><label class="check-item"><input type="checkbox"><span>Выбрать правильный COM-порт</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="распиновка-и-назначение-выводов-gpio">Распиновка и назначение выводов GPIO</h2>
+
+<p>Понимание распиновки (pinout) критически важно для правильного подключения периферии. Плата <em>Wemos D1 Mini Pro</em> имеет компактные размеры, но сохраняет доступ ко всем основным выводам ввода-вывода общего назначения (GPIO)..) не всегда совпадает с номерами GPIO внутри чипа ESP8266.</p>
+
+<p>Ниже приведена таблица соответствия выводов на плате и внутренних номеров GPIO, а также их особые функции при загрузке:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Вывод на плате</th>
+<th>GPIO номер</th>
+<th>Особая функция</th>
+<th>Назначение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D0</td>
+<td>GPIO 16</td>
+<td>Wake (RSV)</td>
+<td>Только вход/выход, используется для пробуждения из Deep Sleep</td>
+</tr>
+<tr>
+<td>D1</td>
+<td>GPIO 5</td>
+<td>I2C SCL</td>
+<td>Линия тактирования для шины I2C</td>
+</tr>
+<tr>
+<td>D2</td>
+<td>GPIO 4</td>
+<td>I2C SDA</td>
+<td>Линия данных для шины I2C</td>
+</tr>
+<tr>
+<td>D3</td>
+<td>GPIO 0</td>
+<td>Boot Mode</td>
+<td>Должен быть подтянут к VCC, заземление при загрузке входит в режим прошивки</td>
+</tr>
+<tr>
+<td>D4</td>
+<td>GPIO 2</td>
+<td>LED / Boot</td>
+<td>Встроенный светодиод, также подтянут к VCC при загрузке</td>
+</tr>
+<tr>
+<td>Tx</td>
+<td>GPIO 1</td>
+<td>UART TX</td>
+<td>Передача данных UART (не использовать для ввода при загрузке)</td>
+</tr>
+<tr>
+<td>Rx</td>
+<td>GPIO 3</td>
+<td>UART RX</td>
+<td>Прием данных UART (не использовать для вывода при загрузке)</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Обратите внимание на выводы <code>D3</code> (GPIO0) и <code>D4</code> (GPIO2). Они имеют внутренние подтягивающие резисторы и влияют на режим загрузки чипа. Если вы подключите к ним кнопки или датчики, убедитесь, что их состояние в момент включения питания не переводит плату в режим флеш-загрузки или не вызывает сбоя. Например, замыкание <code>D3</code> на землю при старте заставит плату ждать прошивку, а не выполнять ваш код.</p>
+
+<p>Также стоит упомянуть аналоговый вход. На плате есть только один пин <code>A0</code>, который подключен к внутреннему АЦП (аналого-цифровому преобразователю). Диапазон измеряемого напряжения строго ограничен от 0 до <strong>1.0 Вольта</strong>. Попытка подать на этот вход напряжение выше 1В (например, 3.3В от датчика) может повредить чип. Для измерения более высоких напряжений необходимо использовать делитель напряжения.</p>
+
+<details class="pb-accordion"><summary>Тонкости работы с АЦП</summary><div class="pb-accordion-body"><p>Внутренний АЦП ESP8266 имеет нелинейную характеристику на краях диапазона. Для точных измерений рекомендуется использовать диапазон от 0.1В до 0.9В и проводить калибровку в программном коде, используя функцию analogReadMilliVolts() в новых версиях ядра.</p></div></details>
+
+<h2 id="прошивка-и-отладка-устройств">Прошивка и отладка устройств</h2>
+
+<p>Процесс загрузки кода в <em>Wemos D1 Mini Pro</em> обычно происходит автоматически благодаря встроенной схеме обвязки. Вам не нужно вручную удерживать какие-либо кнопки, как это было с ранними платами NodeMCU. Достаточно подключить плату по USB, выбрать порт и нажать кнопку загрузки в IDE. Однако, если плата вдруг перестала определяться или код не загружается, может потребоваться ручной вход в режим бутлоадера.</p>
+
+<p>Для этого удерживайте кнопку (если она есть на вашей плате, часто это кнопка <code>RST</code> или отдельная кнопка <code>FLASH</code>) или программно замкните вывод <code>D3</code> (GPIO0) на землю, затем нажмите сброс <code>RST</code>. После этого отпустите <code>D3</code>. Плата перейдет в режим ожидания прошивки. В Arduino IDE это отразится как успешное соединение с чипом.</p>
+
+<p>При отладке часто возникает проблема с выводом отладочной информации в последовательный порт (Serial Monitor). Убедитесь, что скорость передачи (Baud Rate) в вашем коде <code>Serial.begin(115200);</code> совпадает со скоростью, выбранной в окне монитора порта. Также помните, что при загрузке новой прошивки вся старая программа стирается полностью. Для хранения постоянных данных (например, настроек Wi-Fi) используйте энергонезависимую память <strong>EEPROM</strong> или файловую систему <em>SPIFFS/LittleFS</em>.</p>
+
+<blockquote>⚠️ <strong>Внимание:</strong> Не отключайте плату от USB во время процесса компиляции и загрузки (статус "Uploading.."). Прерывание записи во флеш-память может привести к повреждению загрузчика, и плату придется восстанавливать через UART-программатор, что значительно сложнее обычной прошивки.</blockquote>
+
+<h2 id="практическое-применение-и-проекты">Практическое применение и проекты</h2>
+
+<p>Благодаря поддержке Wi-Fi и компактным размерам, сфера применения <em>Wemos D1 Mini Pro</em> огромна. Чаще всего её используют для создания узлов системы <strong>умного дома</strong>. Плата отлично интегрируется с популярными платформами, такими как <em>Home Assistant</em>, <em>OpenHAB</em> или облачными сервисами типа <em>Blynk</em> и <em>Adafruit IO</em>.</p>
+
+<p>Одним из самых популярных проектов является создание беспроводных датчиков температуры и влажности. Используя цифровые сенсоры типа <em>DHT11</em> или <em>DHT22</em>, подключенные к пинам <code>D1</code> или <code>D2</code>, устройство может раз в 10 минут просыпаться, снимать показания, отправлять их на сервер и снова уходить в спящий режим. На одном аккумуляторе 18650 такая система может работать месяцами.</p>
+
+<p>Другой вариант — управление реле и светом. Плата может выступать в роли умного выключателя, управляющим мощной нагрузкой через твердотельное реле или оптопару. Возможность работы с протоколом <em>MQTT</em> делает её идеальным шлюзом для передачи команд между вашим смартфоном и исполнительными механизмами в квартире.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Главное преимущество Wemos D1 Mini Pro в проектах умного дома — это возможность создания полностью беспроводных, автономных датчиков с длительным сроком службы батареи благодаря режиму Deep Sleep и удобному джамперу пробуждения.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>В чем главная разница между Wemos D1 Mini и версией Pro?</summary>
+<p>Основное отличие заключается в наличии распаянных контактных площадок для соединения выводов <code>RST</code> и <code>D0</code> (GPIO16). В версии Pro это позволяет легко активировать функцию автоматического пробуждения из режима глубокого сна (Deep Sleep) без необходимости пайки перемычек проводами. Также версия Pro часто имеет улучшенную антенну.</p>
+</details>
+
+<details>
+<summary>Можно ли питать плату напрямую от литиевого аккумулятора 3.7В?</summary>
+<p>Нет, нельзя подключать аккумулятор 3.7В напрямую на пин 3.3В. Необходимо подавать питание на пин <code>5V</code>. Встроенный стабилизатор платы понизит напряжение до нужного уровня. Прямое подключение к 3.3В может повредить стабилизатор или сам чип ESP8266 из-за нестабильности напряжения батареи (от 3.0В до 4.2В).</p>
+</details>
+
+<details>
+<summary>Какую плату выбирать в Arduino IDE для Wemos D1 Mini Pro?</summary>
+<p>В списке плат Arduino IDE нет отдельного пункта для версии "Pro". Вам необходимо выбрать опцию <code>LOLIN(WEMOS) D1 R2 & mini</code>. Программно эти платы идентичны, все различия касаются только аппаратной обвязки (джамперы, антенна), что не требует изменений в настройках компилятора.</p>
+</details>
+
+<details>
+<summary>Почему плата не определяется компьютером?</summary>
+<p>Скорее всего, не установлены драйверы для USB-UART конвертера. Определите модель чипа на плате (обычно это CP2102 или CH340) по маркировке на черном квадратном компоненте возле USB-разъема. Скачайте и установите соответствующий драйвер с официального сайта производителя чипа, затем переподключите кабель.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать пин A0 для измерения напряжения батареи?</summary>
+<p>Да, но с ограничениями. Вход A0 поддерживает напряжение только до 1.0 Вольта. Для измерения напряжения батареи (например, 3.7В или 5В) вам обязательно нужно собрать делитель напряжения из двух резисторов, чтобы понизить измеряемое напряжение до диапазона 0-1В перед подачей на пин.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/s/sa/samyj-sovremennyj-robot-v-mire.html" class="pb-related-card">
+                <span class="pb-related-title">Самый современный робот в мире: Обзор передовых технологий 2026</span>
+                <span class="pb-related-desc">Кто является самым современным роботом в мире? Полный разбор возможностей humanoid, искусственного и</span>
+            </a><a href="/umnyj-dom/k/ka/kak-podklyuchit-kameru-ksiomi.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить камеру Xiaomi: полная инструкция по настройке</span>
+                <span class="pb-related-desc">Пошаговая инструкция: как подключить камеру Xiaomi к телефону и Wi-Fi. Настройка приложения Mi Home,</span>
+            </a><a href="/umnyj-dom/k/ka/kak-otkryt-domofon-distantsionno.html" class="pb-related-card">
+                <span class="pb-related-title">Методы дистанционного открытия домофона: способы для жителей и гостей</span>
+                <span class="pb-related-desc">Методы дистанционного открытия домофона: использование мобильных приложений, облачных сервисов, вирт</span>
+            </a><a href="/umnyj-dom/k/ka/kak-ustanovit-kondensator-v-sensornyj-vyklyuchatel-dvukhklavishnyj.html" class="pb-related-card">
+                <span class="pb-related-title">Как установить конденсатор в сенсорный выключатель двухклавишный</span>
+                <span class="pb-related-desc">Пошаговая инструкция по монтажу конденсатора в двухклавишный сенсорный выключатель. Устранение мерца</span>
+            </a><a href="/umnyj-dom/k/ka/kak-delyatsya-sutki-na-utro-den-vecher-noch-po-chasam.html" class="pb-related-card">
+                <span class="pb-related-title">Деление суток на части: точное время утра, дня, вечера и ночи</span>
+                <span class="pb-related-desc">Разбираем, как правильно делить сутки по часам с научной и бытовой точки зрения. Узнайте точные гран</span>
+            </a><a href="/umnyj-dom/z/zo/zont-ne-na-svyazi-chto-delat.html" class="pb-related-card">
+                <span class="pb-related-title">Zont не на связи: причины сбоя и способы восстановления</span>
+                <span class="pb-related-desc">Почему котел Zont не выходит на связь? Полный гид по диагностике GSM, Wi-Fi и SIM-карт. Решаем пробл</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

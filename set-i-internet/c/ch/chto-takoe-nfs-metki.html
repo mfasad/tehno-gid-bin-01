@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Что такое NFS метки: полное руководство по настройке — Техно Гид</title>
+    <meta name="description" content="Подробный разбор NFS меток в сетевых файловых системах. Как настроить, чем отличаются от CIFS, устранение ошибок доступа и оптимизация скорости.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/c/ch/chto-takoe-nfs-metki.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Что такое NFS метки: полное руководство по настройке">
+    <meta property="og:description" content="Подробный разбор NFS меток в сетевых файловых системах. Как настроить, чем отличаются от CIFS, устранение ошибок доступа и оптимизация скорости.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Что такое NFS метки: полное руководство по настройке</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#архитектура-протокола-nfs-и-роль-идентификаторов">Архитектура протокола NFS и роль идентификаторов</a></li><li><a href="#типы-nfs-меток-и-методы-монтирования">Типы NFS меток и методы монтирования</a></li><li><a href="#конфигурация-серверной-части-файл-exports">Конфигурация серверной части: файл exports</a></li><li><a href="#процесс-монтирования-на-стороне-клиента">Процесс монтирования на стороне клиента</a></li><li><a href="#диагностика-проблем-и-устранение-ошибок-доступа">Диагностика проблем и устранение ошибок доступа</a></li><li><a href="#оптимизация-производительности-и-безопасность">Оптимизация производительности и безопасность</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/c/ch/chto-znachit-ne-zaregistrirovan-v-seti-bilajn.html">Ошибка «Не зарегистрирован в сети Билайн»: причины и способы решения</a></li><li><a href="/set-i-internet/r/ro/router-megafon-mr100-3.html">Роутер МегаФон MR100-3: Обзор, настройка и разбор технических характеристик</a></li><li><a href="/set-i-internet/k/ka/kak-perejti-v-tonovyj-rezhim-na-statsionarnom-telefone.html">Как перейти в тоновый режим на стационарном телефоне: полное руководство</a></li><li><a href="/set-i-internet/m/mi/mini-ats-na-4-nomera.html">Мини АТС на 4 номера: выбор и настройка для офиса</a></li><li><a href="/set-i-internet/b/be/bejdou-sputnikovaya-sistema-navigatsii.html">Система навигации Бэйдоу: обзор, возможности и отличие от GPS</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Что такое NFS метки и как их правильно настроить</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#архитектура-протокола-nfs-и-роль-идентификаторов">Архитектура протокола NFS и роль идентификаторов</a></li><li><a href="#типы-nfs-меток-и-методы-монтирования">Типы NFS меток и методы монтирования</a></li><li><a href="#конфигурация-серверной-части-файл-exports">Конфигурация серверной части: файл exports</a></li><li><a href="#процесс-монтирования-на-стороне-клиента">Процесс монтирования на стороне клиента</a></li><li><a href="#диагностика-проблем-и-устранение-ошибок-доступа">Диагностика проблем и устранение ошибок доступа</a></li><li><a href="#оптимизация-производительности-и-безопасность">Оптимизация производительности и безопасность</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Сетевые файловые системы стали неотъемлемой частью современной IT-инфраструктуры, позволяя множеству устройств обмениваться данными в реальном времени. В этом контексте <strong>NFS метки</strong> играют роль фундаментального механизма, обеспечивающего корректную идентификацию и монтирование удаленных ресурсов. Многие системные администраторы сталкиваются с проблемами доступа, не понимая, что корень зла часто кроется именно в неправильной интерпретации или настройке этих идентификаторов.</p>
+
+<p>Аббревиатура NFS расшифровывается как Network File System, и хотя сам протокол существует уже несколько десятилетий, принципы его работы остаются актуальными для Linux-серверов, NAS-хранилищ и даже некоторых встраиваемых систем. <em>NFS метки</em> в широком смысле могут обозначать как точки монтирования в конфигурационных файлах, так и специфические идентификаторы экспортируемых каталогов, которые клиентская машина использует для подключения. Понимание этой разницы критически важно для стабильной работы сети.</p>
+
+<p>В отличие от привычных пользователю Windows сетевых папок, работа с NFS требует более глубокого погружения в конфигурацию серверной части. Ошибки на этом этапе часто приводят к тому, что клиенты просто не видят ресурсы или получают отказ в доступе без внятных сообщений об ошибке. Далее мы детально разберем архитектуру работы протокола, типы используемых меток и способы их грамотной реализации в вашей инфраструктуре.</p>
+
+<h2 id="архитектура-протокола-nfs-и-роль-идентификаторов">Архитектура протокола NFS и роль идентификаторов</h2>
+
+<p>Протокол NFS работает по клиент-серверной модели, где сервер экспортирует определенные директории, а клиенты монтируют их в свою локальную файловую систему. Ключевым элементом здесь выступает процесс экспорта, который регулируется файлом конфигурации <code>/etc/exports</code> на стороне сервера. Именно в этом файле определяются <strong>NFS метки</strong> или пути, которые становятся доступными для сети.</p>
+
+<p>Каждая строка в файле экспорта содержит путь к каталогу и список клиентов, которым разрешен доступ, вместе с набором опций. Эти опции фактически и формируют поведенческие метки ресурса: определяют права чтения и записи, методы аутентификации и уровень безопасности. Неправильная настройка даже одного параметра может сделать весь ресурс недоступным для легитимных пользователей.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Синтаксис файла экспорта крайне чувствителен к пробелам. Отсутствие пробела между адресом клиента и опциями в скобках приведет к тому, что сервер не применит настройки безопасности корректно.</p>
+</blockquote>
+
+<p>При запросе на монтирование клиент отправляет серверу запрос, содержащий путь к ресурсу. Сервер сверяет этот путь со своими <strong>NFS метками</strong> экспорта и проверяет права доступа запрашивающего хоста. Если совпадение найдено и политики безопасности соблюдены, сервер возвращает файловый дескриптор, позволяющий клиенту работать с данными как с локальными.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Всегда используйте IP-адреса или диапазоны подсетей вместо имен хостов в файле экспорта, чтобы избежать проблем с разрешением имен при сбоях DNS.</p></aside>
+
+<h2 id="типы-nfs-меток-и-методы-монтирования">Типы NFS меток и методы монтирования</h2>
+
+<p>Существует несколько подходов к идентификации ресурсов при работе с NFS, и выбор конкретного метода зависит от версии протокола и требований безопасности. Традиционный метод предполагает использование абсолютного пути к директории, например <code>/srv/data</code>. Это наиболее понятный способ, где <strong>NFS метка</strong> фактически дублирует структуру файловой системы сервера.</p>
+
+<p>Однако в более сложных сценариях используются псевдо-файловые системы, особенно в NFSv4. Здесь вводится понятие корня экспорта (<code>fsid=0</code>), который позволяет скрывать реальную структуру диска от клиентов. Клиент видит единую иерархию, не подозревая, что данные могут физически располагаться на разных разделах или даже устройствах.</p>
+
+<ul>
+<li>📁 Абсолютные пути — прямое указание на директорию в файловой системе сервера.</li>
+<li>🔗 Псевдо-корень (NFSv4) — виртуальная точка входа, объединяющая несколько физических экспортов.</li>
+<li>🆔 UUID идентификаторы — использование уникальных идентификаторов томов для монтирования, что удобно при замене дисков.</li>
+</ul>
+
+<p>Использование UUID в качестве метки повышает отказоустойчивость системы. Если вы замените физический диск или измените порядок подключения устройств, путь <code>/dev/sdb1</code> может измениться, но UUID останется прежним. Это гарантирует, что <strong>NFS метки</strong> в конфигурации клиента останутся валидными.</p>
+
+<div class="pb-poll" id="poll-28e573b0"><div class="pb-poll-question">📊 Какой метод монтирования вы используете чаще?</div><div class="pb-poll-option" data-poll="28e573b0" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">По IP-адресу</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="28e573b0" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">По имени хоста</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="28e573b0" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Через DNS</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="28e573b0" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Использую только локальные диски</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="конфигурация-серверной-части-файл-exports">Конфигурация серверной части: файл exports</h2>
+
+<p>Настройка сервера начинается с редактирования основного конфигурационного файла. В дистрибутивах на базе Linux это обычно <code>/etc/exports</code>. Здесь администратор прописывает правила, связывающие локальные пути с сетевыми клиентами. Каждая строка представляет собой отдельное правило экспорта со своими параметрами доступа.</p>
+
+<p>Рассмотрим типичный пример записи: <code>/home/shared 192.168.1.0/24(rw,sync,no_subtree_check)</code>. В данном случае путь <code>/home/shared</code> выступает в роли <strong>NFS метки</strong> ресурса. Опция <code>rw</code> разрешает чтение и запись, <code>sync</code> гарантирует синхронную запись данных на диск перед подтверждением операции, что критично для целостности данных.</p>
+
+<pre><code>/var/www/html 192.168.1.10(rw,no_root_squash)
+<p>/data/backup *(ro,sync,all_squash)</code></pre></p>
+
+<p>В приведенном выше примере мы видим два разных подхода к безопасности. Первая строка разрешает доступ конкретному IP с правами суперпользователя (что рискованно, но иногда необходимо), а вторая строка открывает доступ всем (<code>*</code>), но только на чтение и с понижением прав всех пользователей до анонимных.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка конфигурации экспорта</h4><label class="check-item"><input type="checkbox"><span>Проверить синтаксис файла /etc/exports</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в наличии пробелов перед скобками</span></label><label class="check-item"><input type="checkbox"><span>Проверить права доступа на саму папку в ОС</span></label><label class="check-item"><input type="checkbox"><span>Перезапустить службу nfs-kernel-server</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>После внесения изменений необходимо применить их командой <code>exportfs -ra</code>. Эта команда заставляет сервер перечитать конфигурацию и обновить активные <strong>NFS метки</strong> без необходимости перезагрузки всей службы или сервера. Игнорирование этого шага — частая причина того, что новые настройки не вступают в силу.</p>
+
+<h2 id="процесс-монтирования-на-стороне-клиента">Процесс монтирования на стороне клиента</h2>
+
+<p>Для доступа к ресурсам клиентская машина должна выполнить процедуру монтирования. Это можно сделать вручную через терминал или автоматически при загрузке системы, добавив запись в файл <code>/etc/fstab</code>. В обоих случаях используется команда <code>mount</code> с указанием типа файловой системы <code>nfs</code>.</p>
+
+<p>Базовый синтаксис команды выглядит так: <code>mount -t nfs сервер:/путь /локальная/точка</code>. Здесь <code>сервер:/путь</code> является сетевой <strong>NFS меткой</strong>, которую клиент запрашивает. Локальная точка монтирования должна быть предварительно создана как пустая директория.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Описание</th>
+<th>Пример значения</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>server</td>
+<td>IP-адрес или имя хоста NFS сервера</td>
+<td>192.168.1.50</td>
+</tr>
+<tr>
+<td>remote_path</td>
+<td>Путь к экспортируемой директории на сервере</td>
+<td>/export/data</td>
+</tr>
+<tr>
+<td>local_mount</td>
+<td>Пустая директория на клиенте для подключения</td>
+<td>/mnt/nfs_share</td>
+</tr>
+<tr>
+<td>version</td>
+<td>Версия протокола (опционально)</td>
+<td>vers=4</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>При автоматическом монтировании через <code>fstab</code> важно указать опцию <code>_netdev</code>. Она сообщает системе инициализации, что данная файловая система зависит от сети, и монтирование следует выполнять только после поднятия сетевых интерфейсов. Без этой опции сервер может зависнуть при загрузке, если сеть еще не готова.</p>
+
+<details class="pb-accordion"><summary>Что делать если монтирование зависает?</summary><div class="pb-accordion-body"><p>Если команда mount зависает, проверьте доступность порта 2049 через telnet или nc. Часто проблема кроется в блокировке фаерволом или неверном разрешении имен. Попробуйте добавить опцию intr для возможности прерывания операции.</</p></div></details>
+
+<h2 id="диагностика-проблем-и-устранение-ошибок-доступа">Диагностика проблем и устранение ошибок доступа</h2>
+
+<p>Наиболее распространенной проблемой при работе с NFS является ошибка "Permission denied" или бесконечное ожидание при монтировании. Часто причина кроется в несоответствии UID (идентификаторов пользователей) на сервере и клиенте. NFS по умолчанию доверяет числовым ID пользователей, и если на клиенте пользователь имеет ID 1000, а на сервере этот ID принадлежит другому человеку, доступ будет заблокирован или данные окажутся под угрозой.</p>
+
+<p>Для диагностики используйте утилиту <code>showmount -e сервер</code>. Она отображает список экспортируемых директорий и разрешенных клиентов. Если ваша машина не отображается в списке или путь указан неверно, проблема находится на стороне серверной конфигурации <strong>NFS меток</strong>.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Убедитесь, что службы RPC (rpcbind) запущены на обеих сторонах. Без корректной работы RPC клиент не сможет узнать, на каких портах слушает демон NFS.</p>
+</blockquote>
+
+<p>Также стоит проверить логи сервера, обычно расположенные в <code>/var/log/syslog</code> или <code>/var/log/messages</code>. Там могут быть сообщения о попытках доступа от запрещенных хостов или ошибках маппинга пользователей. Использование опции <code>no_root_squash</code> может временно помочь в диагностике, но никогда не оставляйте её включенной в рабочей среде.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>90% проблем с доступом NFS решаются синхронизацией прав доступа (chmod/chown) на сервере и проверкой настроек фаервола для портов 111 и 2049.</p></aside>
+
+<h2 id="оптимизация-производительности-и-безопасность">Оптимизация производительности и безопасность</h2>
+
+<p>Производительность NFS сильно зависит от размера блока передачи данных и версии протокола. NFSv4 улучшает работу с брандмауэрами, используя единый порт, в то время как NFSv3 требует открытия диапазона динамических портов. Для высокоскоростных сетей рекомендуется увеличивать размер буфера чтения/записи через опции <code>rsize</code> и <code>wsize</code>.</p>
+
+<p>Безопасность <strong>NFS меток</strong> обеспечивается не только настройками экспорта, но и сетевым экранированием. Рекомендуется ограничивать доступ только доверенными подсетями. Для критически важных данных следует рассмотреть использование Kerberos для аутентификации и шифрования трафика, хотя это значительно усложняет настройку.</p>
+
+<ul>
+<li>🚀 Используйте NFSv4 для упрощения настройки фаервола и поддержки delegations.</li>
+<li>🛡️ Применяйте опцию <code>no_subtree_check</code> для ускорения доступа, если экспортируется весь том.</li>
+<li>⚙️ Настройте <code>async</code> только для кэшируемых данных, где потеря последних секунд записи допустима ради скорости.</li>
+</ul>
+
+<p>Регулярный мониторинг нагрузки на сеть и дисковую подсистему сервера поможет выявить узкие места. Если клиенты жалуются на медленную работу, проверьте, не перегружен ли сервер операциями ввода-вывода, и соответствует ли пропускная способность канала требованиям вашего приложения.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для проверки реальной скорости работы NFS используйте утилиту dd или fio, копируя большие файлы между клиентом и сервером, чтобы исключить влияние кэша операционной системы.</p></aside>
+
+<details>
+<summary>В чем главное отличие NFS от SMB/CIFS?</summary>
+<p>NFS изначально разработан для Unix-подобных систем и работает на уровне RPC, обеспечивая высокую производительность в гомогенных сетях. SMB/CIFS (используемый в Windows) более тяжеловесен, включает встроенную аутентификацию пользователей и лучше подходит для смешанных сред с Windows-клиентами.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать NFS через интернет?</summary>
+<p>Технически возможно, но крайне не рекомендуется без VPN или туннелирования. Протокол NFS не шифрует трафик по умолчанию, что делает передачу данных уязвимой для перехвата. Кроме того, прямая эксплуатация NFS через публичный интернет подвергает сервер серьезным атакам.</p>
+</details>
+
+<details>
+<summary>Что означает ошибка "Stale file handle"?</summary>
+<p>Эта ошибка возникает, когда сервер изменил файловую систему (например, файл был удален или перемещен), а клиент продолжает держать ссылку на старый объект. Обычно лечится размонтированием и повторным монтированием ресурса на клиенте командой <code>umount -f</code> и последующим <code>mount</code>.</p>
+</details>
+
+<details>
+<summary>Как проверить, какие NFS шары доступны?</summary>
+<p>Используйте команду <code>showmount -e &lt;ip-адрес-сервера&gt;</code> с клиентской машины. Она запросит у сервера список экспортируемых директорий. Если команда не возвращает результат, проверьте доступность порта 111 (rpcbind).</p>
+</details>
+
+<details>
+<summary>Безопасно ли использовать опцию no_root_squash?</summary>
+<p>Нет, это опасно в общих сетях. Эта опция позволяет пользователю root на клиентской машине действовать как root на сервере в пределах экспортированной папки. Используйте её только в изолированных доверенных сетях и только если это строго необходимо для работы специфического ПО.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/c/ch/chto-znachit-ne-zaregistrirovan-v-seti-bilajn.html" class="pb-related-card">
+                <span class="pb-related-title">Ошибка «Не зарегистрирован в сети Билайн»: причины и способы решения</span>
+                <span class="pb-related-desc">Разбираем, что значит ошибка регистрации в сети Билайн. Инструкция по устранению сбоя SIM-карты, нас</span>
+            </a><a href="/set-i-internet/r/ro/router-megafon-mr100-3.html" class="pb-related-card">
+                <span class="pb-related-title">Роутер МегаФон MR100-3: Обзор, настройка и разбор технических характеристик</span>
+                <span class="pb-related-desc">Полный разбор 4G-роутера МегаФон MR100-3. Инструкция по настройке, сравнение скоростей, устранение о</span>
+            </a><a href="/set-i-internet/k/ka/kak-perejti-v-tonovyj-rezhim-na-statsionarnom-telefone.html" class="pb-related-card">
+                <span class="pb-related-title">Как перейти в тоновый режим на стационарном телефоне: полное руководство</span>
+                <span class="pb-related-desc">Узнайте, как включить тоновый набор на стационарном телефоне. Инструкция для моделей с кнопками и ди</span>
+            </a><a href="/set-i-internet/m/mi/mini-ats-na-4-nomera.html" class="pb-related-card">
+                <span class="pb-related-title">Мини АТС на 4 номера: выбор и настройка для офиса</span>
+                <span class="pb-related-desc">Как выбрать мини АТС на 4 номера для малого бизнеса. Сравнение IP и аналоговых систем, схемы подключ</span>
+            </a><a href="/set-i-internet/b/be/bejdou-sputnikovaya-sistema-navigatsii.html" class="pb-related-card">
+                <span class="pb-related-title">Система навигации Бэйдоу: обзор, возможности и отличие от GPS</span>
+                <span class="pb-related-desc">Подробный анализ спутниковой системы Бэйдоу: архитектура, точность, применение в гаджетах и сравнени</span>
+            </a><a href="/set-i-internet/k/ka/kak-peredat-vaj-faj-na-bolshoe-rasstoyanie.html" class="pb-related-card">
+                <span class="pb-related-title">Как передать WiFi на большое расстояние: 5 рабочих методов</span>
+                <span class="pb-related-desc">Расширяем зону покрытия беспроводной сети: репитеры, мосты, антенны и настройки роутера. Сравнение м</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

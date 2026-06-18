@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Home Assistant REST API: полное руководство для новичков — Техно Гид</title>
+    <meta name="description" content="Управление умным домом через Home Assistant REST API. Аутентификация, вызов сервисов, получение данных и интеграция в скрипты.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/h/ho/home-assistant-rest-api.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Home Assistant REST API: полное руководство для новичков">
+    <meta property="og:description" content="Управление умным домом через Home Assistant REST API. Аутентификация, вызов сервисов, получение данных и интеграция в скрипты.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Home Assistant REST API: полное руководство для новичков</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-системы-и-включение-api">Подготовка системы и включение API</a></li><li><a href="#аутентификация-и-создание-токенов-доступа">Аутентификация и создание токенов доступа</a></li><li><a href="#получение-состояния-объектов-get-запросы">Получение состояния объектов (GET запросы)</a></li><li><a href="#управление-устройствами-через-вызов-сервисов">Управление устройствами через вызов сервисов</a></li><li><a href="#события-и-вебхуки-для-внешней-интеграции">События и вебхуки для внешней интеграции</a></li><li><a href="#обработка-ошибок-и-отладка-запросов">Обработка ошибок и отладка запросов</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/k/ka/kak-ustanovit-umnyj-vyklyuchatel-yandeks.html">Как установить умный выключатель Яндекс: пошаговая инструкция</a></li><li><a href="/umnyj-dom/s/se/sensornyj-vyklyuchatel-sveta-skhema-podklyucheniya-220.html">Сенсорный выключатель света: схема подключения 220В и настройка</a></li><li><a href="/umnyj-dom/p/pr/prosmotr-kamery-xiaomi-cherez-kompyuter.html">Просмотр камеры Xiaomi через компьютер: настройка, программы и доступ</a></li><li><a href="/umnyj-dom/a/al/alisa-vklyuchi-mne-umnuyu-kameru.html">Как включить умную камеру через Алису: Настройка и голосовое управление</a></li><li><a href="/umnyj-dom/k/ka/kak-rabotat-s-arduino.html">Как работать с Arduino: полное руководство для начинающих</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Полный гид по Home Assistant REST API</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-системы-и-включение-api">Подготовка системы и включение API</a></li><li><a href="#аутентификация-и-создание-токенов-доступа">Аутентификация и создание токенов доступа</a></li><li><a href="#получение-состояния-объектов-get-запросы">Получение состояния объектов (GET запросы)</a></li><li><a href="#управление-устройствами-через-вызов-сервисов">Управление устройствами через вызов сервисов</a></li><li><a href="#события-и-вебхуки-для-внешней-интеграции">События и вебхуки для внешней интеграции</a></li><li><a href="#обработка-ошибок-и-отладка-запросов">Обработка ошибок и отладка запросов</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Экосистема <strong>Home Assistant</strong> давно вышла за рамки простого управления освещением через локальный интерфейс. Для многих энтузиастов и разработчиков настоящим открытием становится возможность программного взаимодействия с системой. <em>REST API</em> (Representational State Transfer) предоставляет мощный инструмент для интеграции вашего умного дома с внешними сервисами, собственными скриптами или мобильными приложениями. Понимание принципов работы этого интерфейса открывает безграничные возможности автоматизации.</p>
+
+<p>Многие пользователи ограничиваются стандартными карточками и автоматизациями внутри системы, не догадываясь, что любой датчик или выключатель может стать частью сложной внешней логики. Например, вы можете отправлять данные о температуре на собственный сервер или управлять климатом в зависимости от расписания в корпоративной системе учета. <strong>REST API</strong> выступает в роли универсального переводчика, превращая внутренние события <em>Home Assistant</em> в понятные HTTP-запросы.</p>
+
+<p>В этой статье мы детально разберем процесс настройки доступа, методы аутентификации и основные сценарии использования <code>api/states</code> и <code>api/services</code>. Вы узнаете, как безопасно организовать обмен данными и какие подводные камни могут встретиться при работе с токенами. Это руководство поможет вам превратить вашу систему автоматизации в полноценный хаб для любых IoT-устройств.</p>
+
+<h2 id="подготовка-системы-и-включение-api">Подготовка системы и включение API</h2>
+
+<p>По умолчанию, интерфейс API в <em>Home Assistant</em> уже активен, однако для корректной работы извне или из сторонних скриптов необходимо убедиться в правильности конфигурации сети. Доступ к API осуществляется через порт <code>8123</code>, который должен быть открыт в брандмауэре, если вы планируете обращаться к системе не только с локального устройства. Проверьте файл <code>configuration.yaml</code>, где секция <code>http:</code> должна содержать корректные настройки IP-адресов.</p>
+
+<p>Если ваш сервер находится за NAT или вы используете Docker-контейнер, убедитесь, что порт проброшен на хост-машину. Безопасность здесь играет первостепенную роль: никогда не открывайте порт <code>8123</code> напрямую в интернет без использования VPN или надежного прокси-сервера вроде <em>Nginx Proxy Manager</em>. Локальный доступ по IP-адресу вида <code>http://192.168.1.X:8123</code> является базовым требованием для начала работы.</p>
+
+<p>Для проверки доступности API можно использовать простой браузерный запрос. Перейдите по адресу <code>http://IP-АДРЕС:8123/api/</code>. Если система отвечает JSON-объектом с сообщением "API running", значит, сетевая часть настроена верно. В противном случае, проверьте логи сервера на предмет ошибок привязки сокетов.</p>
+
+<blockquote>⚠️ Внимание: Прямой доступ к порту 8123 из внешней сети без шифрования (HTTPS) и дополнительной авторизации подвергает вашу домашнюю сеть серьезному риску взлома. Используйте туннелирование или облачные решения для удаленного доступа.</blockquote>
+
+<div class="pb-poll" id="poll-7dbc2497"><div class="pb-poll-question">📊 Как вы планируете использовать API?</div><div class="pb-poll-option" data-poll="7dbc2497" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Только локальные скрипты</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="7dbc2497" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Интеграция с Telegram</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="7dbc2497" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Отправка данных в облако</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="7dbc2497" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Создание своего мобильного приложения</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="аутентификация-и-создание-токенов-доступа">Аутентификация и создание токенов доступа</h2>
+
+<p>Самый важный этап настройки — получение ключа доступа. <strong>Home Assistant</strong> использует систему долгосрочных токенов (Long-Lived Access Tokens), которые не истекают, пока вы их явно не отзовете. Это предпочтительный метод для серверных приложений и скриптов, так как он не требует взаимодействия с пользователем при каждом запросе. Пароли от аккаунта передавать в заголовках запросов небезопасно и не рекомендуется.</p>
+
+<p>Для генерации токена войдите в веб-интерфейс под своей учетной записью. Перейдите в профиль пользователя, нажав на имя в нижнем левом углу, и выберите вкладку <code>Безопасность</code>. В разделе "Долгосрочные токены доступа" нажмите кнопку "Создать токен". Придумайте понятное имя, например, <em>Python Script</em> или <em>Server Monitor</em>, чтобы в будущем знать, какое приложение использует этот ключ.</p>
+
+<p>Скопируйте сгенерированную строку сразу после создания. Система покажет его только один раз, и восстановить утерянный токен без создания нового будет невозможно. Этот ключ необходимо передавать в заголовке HTTP-запроса <code>Authorization</code> в формате <code>Bearer ВАШ_ТОКЕН</code>. Храните токен в защищенном месте, например, в переменных окружения или защищенных файлах конфигурации.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте разные токены для разных скриптов. Если один из них будет скомпрометирован, вы сможете отозвать только его, не нарушая работу остальных автоматизаций.</p></aside>
+
+<p>Пример правильного заголовка для curl-запроса выглядит следующим образом:</p>
+<pre><code>curl -X GET \
+<p>http://localhost:8123/api/states \</p>
+<p>-H "Authorization: Bearer YOUR_LONG_LIVED_TOKEN" \</p>
+<p>-H "Content-Type: application/json"</code></pre></p>
+
+<h2 id="получение-состояния-объектов-get-запросы">Получение состояния объектов (GET запросы)</h2>
+
+<p>Основная функция API для чтения данных — это получение состояния сущностей (entities). Каждая лампочка, датчик движения или медиаплеер в <em>Home Assistant</em> имеет свой уникальный ID и текущее состояние. Запрос к эндпоинту <code>/api/states</code> возвращает полный список всех объектов системы в формате JSON. Это может быть полезно для создания дашбордов или резервного копирования конфигурации состояний.</p>
+
+<p>Однако загружать весь массив данных каждый раз неэффективно. Гораздо чаще требуется получить состояние конкретного устройства. Для этого используется адрес вида <code>/api/states/entity_id</code>. Например, чтобы узнать, включен ли свет в гостиной, вы обращаетесь к <code>light.living_room</code>. Ответ сервера будет содержать не только статус <code>on</code> или <code>off</code>, но и все атрибуты: яркость, цветовую температуру, время последнего обновления.</p>
+
+<p>Разберем структуру ответа. JSON-объект содержит поля <code>entity_id</code>, <code>state</code> и <code>attributes</code>. В атрибутах может храниться дополнительная информация, такая как уровень заряда батареи для датчиков или название трека для музыкальных плееров. Обработка этих данных в вашем коде позволяет принимать интеллектуальные решения.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Entity ID</th>
+<th>State</th>
+<th>Атрибуты (пример)</th>
+<th>Тип устройства</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sensor.living_room_temp</td>
+<td>22.5</td>
+<td>unit_of_measurement: °C</td>
+<td>Датчик температуры</td>
+</tr>
+<tr>
+<td>light.kitchen_led</td>
+<td>on</td>
+<td>brightness: 200, rgb_color: [255, 100, 0]</td>
+<td>Умная лента</td>
+</tr>
+<tr>
+<td>binary_sensor.door_front</td>
+<td>off</td>
+<td>device_class: door</td>
+<td>Датчик открытия</td>
+</tr>
+<tr>
+<td>media_player.lg_tv</td>
+<td>playing</td>
+<td>volume_level: 0.4, media_title: News</td>
+<td>Телевизор</td>
+</tr>
+</tbody>
+</table></div>
+
+<details class="pb-accordion"><summary>Фильтрация данных на стороне сервера</summary><div class="pb-accordion-body"><p>Вы можете использовать параметры query string для фильтрации, но стандартный API возвращает все данные, поэтому фильтрацию лучше выполнять на стороне клиента (в вашем скрипте) для снижения нагрузки.</p></div></details>
+
+<h2 id="управление-устройствами-через-вызов-сервисов">Управление устройствами через вызов сервисов</h2>
+
+<p>Чтение данных — это только половина дела. Гораздо интереснее возможность управлять устройствами программно. Для этого в <strong>Home Assistant REST API</strong> предусмотрен эндпоинт <code>/api/services</code>. Вызов сервиса требует указания домена (например, <code>light</code>), названия действия (например, <code>turn_on</code>) и целевого объекта. Это аналог нажатия кнопки в интерфейсе, но выполняемый внешним скриптом.</p>
+
+<p>Запрос должен быть выполнен методом <code>POST</code>. В теле запроса (body) необходимо передать JSON с параметрами действия. Самым важным параметром обычно является <code>entity_id</code>, указывающий, к какому устройству применяется команда. Если вы хотите включить свет во всей комнате, можно передать список ID или использовать псевдо-сущность <code>all</code>, если сервис это поддерживает.</p>
+
+<p>Рассмотрим пример включения лампы с конкретной яркостью. Вам нужно отправить запрос на <code>/api/services/light/turn_on</code>. В теле запроса укажите <code>entity_id</code> и параметр <code>brightness</code>. Система моментально выполнит команду и вернет ответ. Обратите внимание, что некоторые сложные сервисы могут требовать дополнительных параметров, специфичных для интеграции устройства.</p>
+
+<pre><code>curl -X POST \
+<p>http://localhost:8123/api/services/light/turn_on \</p>
+<p>-H "Authorization: Bearer YOUR_TOKEN" \</p>
+<p>-H "Content-Type: application/json" \</p>
+<p>-d '{"entity_id": "light.bedroom", "brightness": 128}'</code></pre></p>
+
+<blockquote>⚠️ Внимание: Некоторые сервисы выполняются асинхронно. Это значит, что API вернет ответ об успехе принятия команды сразу, но физическое устройство может отреагировать с задержкой в несколько секунд.</blockquote>
+
+<h2 id="события-и-вебхуки-для-внешней-интеграции">События и вебхуки для внешней интеграции</h2>
+
+<p>Одним из самых мощных инструментов для интеграции являются вебхуки (Webhooks). Они позволяют внешним системам отправлять данные в <em>Home Assistant</em> без необходимости постоянной авторизации через токен в каждом запросе. Вебхук создает уникальный URL, при обращении к которому в системе генерируется событие <code>homeassistant_webhook</code>. Это событие можно использовать в автоматизациях.</p>
+
+<p>Чтобы создать вебхук, добавьте в <code>configuration.yaml</code> соответствующую секцию. Укажите уникальный идентификатор <code>webhook_id</code>. После перезагрузки системы вы получите URL вида <code>/api/webhook/ВАШ_ID</code>. Любой, кто знает этот URL, может отправить POST-запрос с данными, и система отреагирует согласно настроенной автоматизации. Это идеально подходит для интеграции с IFTTT, Zapier или платежными шлюзами.</p>
+
+<ul>
+<li>🔥 <strong>Уведомления:</strong> Отправка данных о пожаре или протечке с внешнего датчика, не поддерживающего Home Assistant напрямую.</li>
+<li>💰 <strong>Оплата:</strong> Триггер на включение кофеварки после успешной оплаты через платежную систему.</li>
+<li>📍 <strong>Геолокация:</strong> Обновление зоны присутствия при въезде автомобиля на территорию предприятия через корпоративный шлагбаум.</li>
+</ul>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Настройка вебхука</h4><label class="check-item"><input type="checkbox"><span>Придумать уникальный ID</span></label><label class="check-item"><input type="checkbox"><span>Добавить в configuration.yaml</span></label><label class="check-item"><input type="checkbox"><span>Перезагрузить ядро</span></label><label class="check-item"><input type="checkbox"><span>Создать автоматизацию на событие webhook</span></label><label class="check-item"><input type="checkbox"><span>Протестировать curl-запросом</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<p>Данные, переданные в теле вебхук-запроса, становятся доступны в автоматизации через переменную <code>trigger.json</code>. Вы можете извлекать конкретные поля и использовать их для динамического изменения параметров устройств. Это делает вебхуки универсальным мостом между миром <strong>Home Assistant</strong> и любыми другими веб-сервисами.</p>
+
+<h2 id="обработка-ошибок-и-отладка-запросов">Обработка ошибок и отладка запросов</h2>
+
+<p>При работе с API неизбежно возникнут ситуации, когда запрос не выполняется. Понимание кодов состояния HTTP поможет быстро диагностировать проблему. Код <code>401 Unauthorized</code> почти всегда означает неверный токен или его отсутствие в заголовке. Код <code>404 Not Found</code> говорит о том, что указанный <code>entity_id</code> не существует в системе или путь к сервису введен с ошибкой.</p>
+
+<p>Код <code>400 Bad Request</code> указывает на ошибку в формате передаваемых данных. Чаще всего это невалидный JSON или отсутствие обязательных полей в теле запроса. Для отладки удобно использовать инструменты вроде <em>Postman</em> или консольную утилиту <code>curl</code> с флагом <code>-v</code> (verbose), который показывает подробный обмен заголовками между клиентом и сервером.</p>
+
+<p>Логи самого <em>Home Assistant</em> также содержат ценную информацию. Включите режим отладки для компонента <code>http</code> или <code>api</code>, чтобы видеть входящие запросы и ответы сервера в реальном времени. Это поможет понять, доходит ли запрос до ядра системы и как оно его интерпретирует.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильная обработка ошибок в вашем коде (try-catch блоки) критически важна для стабильности внешних скриптов, управляющих умным домом.</p></aside>
+
+<details>
+<summary>Можно ли использовать API без токена?</summary>
+<p>Технически, некоторые публичные эндпоинты (например, карта или состояние без атрибутов) могут быть доступны без авторизации, если это явно разрешено в настройках. Однако для любых действий управления (вызов сервисов) токен обязателен. Работать без токена небезопасно и не рекомендуется.</p>
+</details>
+
+<details>
+<summary>Как обновить токен, если я его потерял?</summary>
+<p>Токены нельзя восстановить. Вам необходимо зайти в профиль пользователя в интерфейсе Home Assistant, найти список долгосрочных токенов, удалить старый (если он там есть) и сгенерировать новый. После этого обновите новый ключ во всех ваших скриптах и приложениях.</p>
+</details>
+
+<details>
+<summary>Поддерживает ли API отправку изображений с камер?</summary>
+<p>Да, вы можете получить снимок с камеры через эндпоинт <code>/api/camera_proxy/camera.entity_id</code>. Ответом будет бинарный поток изображения (image/jpeg или image/png), который можно сохранить в файл или отобразить в интерфейсе.</p>
+</details>
+
+<details>
+<summary>Есть ли ограничение на количество запросов в секунду?</summary>
+<p>Да, существует встроенный механизм защиты от перегрузки (Rate Limiting). Если вы будете отправлять сотни запросов в секунду, API временно заблокирует ваш IP-адрес. Для обычных сценариев автоматизации эти лимиты практически недостижимы.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/k/ka/kak-ustanovit-umnyj-vyklyuchatel-yandeks.html" class="pb-related-card">
+                <span class="pb-related-title">Как установить умный выключатель Яндекс: пошаговая инструкция</span>
+                <span class="pb-related-desc">Полное руководство по монтажу и настройке умного выключателя Яндекс. Узнайте, как подключить устройс</span>
+            </a><a href="/umnyj-dom/s/se/sensornyj-vyklyuchatel-sveta-skhema-podklyucheniya-220.html" class="pb-related-card">
+                <span class="pb-related-title">Сенсорный выключатель света: схема подключения 220В и настройка</span>
+                <span class="pb-related-desc">Подробная инструкция по подключению сенсорного выключателя к сети 220 вольт. Схемы монтажа, выбор пр</span>
+            </a><a href="/umnyj-dom/p/pr/prosmotr-kamery-xiaomi-cherez-kompyuter.html" class="pb-related-card">
+                <span class="pb-related-title">Просмотр камеры Xiaomi через компьютер: настройка, программы и доступ</span>
+                <span class="pb-related-desc">Как подключить и смотреть камеру Xiaomi на ПК. Настройка Mi Home, ONVIF, RTSP, сторонние приложения </span>
+            </a><a href="/umnyj-dom/a/al/alisa-vklyuchi-mne-umnuyu-kameru.html" class="pb-related-card">
+                <span class="pb-related-title">Как включить умную камеру через Алису: Настройка и голосовое управление</span>
+                <span class="pb-related-desc">Подробная инструкция по управлению умными камерами с помощью Яндекса. Настройка сценариев, привязка </span>
+            </a><a href="/umnyj-dom/k/ka/kak-rabotat-s-arduino.html" class="pb-related-card">
+                <span class="pb-related-title">Как работать с Arduino: полное руководство для начинающих</span>
+                <span class="pb-related-desc">Пошаговая инструкция по настройке среды, подключению плат и написанию кода для Arduino. Советы по вы</span>
+            </a><a href="/umnyj-dom/o/ob/obkhod-regionalnoj-blokirovki-dreame.html" class="pb-related-card">
+                <span class="pb-related-title">Обход региональной блокировки роботов-пылесосов Dreame: полное руководство</span>
+                <span class="pb-related-desc">Как разблокировать функции робота-пылесоса Dreame при смене региона. Инструкция по смене аккаунта, п</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

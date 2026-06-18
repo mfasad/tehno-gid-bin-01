@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Прошивка для 3D принтера: выбор, установка и настройка Marlin — Техно Гид</title>
+    <meta name="description" content="Полное руководство по прошивке 3D принтера. Обзор Marlin, Klipper и Repetier. Инструкция по компиляции, настройке EEPROM и устранению ошибок.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/3d-pechat-i-modelirovanie/p/pr/proshivka-dlya-3d-printera.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Прошивка для 3D принтера: выбор, установка и настройка Marlin">
+    <meta property="og:description" content="Полное руководство по прошивке 3D принтера. Обзор Marlin, Klipper и Repetier. Инструкция по компиляции, настройке EEPROM и устранению ошибок.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/3d-pechat-i-modelirovanie/">3D Печать и Моделирование</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Прошивка для 3D принтера: выбор, установка и настройка Marlin</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-оптимального-микрокода-для-вашей-задачи">Выбор оптимального микрокода для вашей задачи</a></li><li><a href="#подготовка-окружения-для-компиляции-marlin">Подготовка окружения для компиляции Marlin</a></li><li><a href="#настройка-конфигурационных-файлов">Настройка конфигурационных файлов</a></li><li><a href="#процесс-переноса-прошивки-на-контроллер">Процесс переноса прошивки на контроллер</a></li><li><a href="#первичная-калибровка-и-настройка-eeprom">Первичная калибровка и настройка EEPROM</a></li><li><a href="#частые-проблемы-и-методы-их-решения">Частые проблемы и методы их решения</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/3d-pechat-i-modelirovanie/s/so/sozdanie-up-dlya-3d-modeli-v-artcam.html">Создание УП для 3D модели в ArtCAM: пошаговая инструкция</a></li><li><a href="/3d-pechat-i-modelirovanie/i/iz/izgotovlenie-detali-na-3d-printere.html">Изготовление детали на 3д принтере: полное руководство по процессу</a></li><li><a href="/3d-pechat-i-modelirovanie/k/ka/kak-podgotovit-model-k-3d-pechati.html">Как подготовить модель к 3D печати: полное руководство</a></li><li><a href="/3d-pechat-i-modelirovanie/p/pe/pechat-detali-na-3d-printere.html">Печать деталей на 3D принтере: полное руководство</a></li><li><a href="/3d-pechat-i-modelirovanie/p/pr/printer-kotoryj-delaet-igrushki.html">3D-принтер для игрушек: выбор, технологии и инструкция по печати</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Прошивка для 3D принтера: выбор, настройка и обновление</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-оптимального-микрокода-для-вашей-задачи">Выбор оптимального микрокода для вашей задачи</a></li><li><a href="#подготовка-окружения-для-компиляции-marlin">Подготовка окружения для компиляции Marlin</a></li><li><a href="#настройка-конфигурационных-файлов">Настройка конфигурационных файлов</a></li><li><a href="#процесс-переноса-прошивки-на-контроллер">Процесс переноса прошивки на контроллер</a></li><li><a href="#первичная-калибровка-и-настройка-eeprom">Первичная калибровка и настройка EEPROM</a></li><li><a href="#частые-проблемы-и-методы-их-решения">Частые проблемы и методы их решения</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Многие владельцы настольных 3D принтеров сталкиваются с ситуацией, когда заводская конфигурация не позволяет раскрыть потенциал оборудования. Стандартное программное обеспечение часто ограничивает скорость печати, точность перемещения или доступ к уникальным функциям, таким как автокалибровка стола или управление нагревом.</p>
+
+<p>Именно здесь на сцену выходит <strong>прошивка для 3D принтера</strong> — низкоуровневое программное обеспечение, которое превращает набор механических деталей в умную машину. Смена микрокода позволяет адаптировать устройство под специфические задачи, улучшить качество слоев и даже подключить принтер к удаленному управлению через веб-интерфейс.</p>
+
+<p>Процесс обновления может показаться сложным для новичка, но при детальном рассмотрении он сводится к правильной подготовке файлов и последовательному переносу данных на контроллер. В этой статье мы разберем основные типы микрокода, этапы их сборки и установки, а также обсудим критически важные нюансы настройки.</p>
+
+<h2 id="выбор-оптимального-микрокода-для-вашей-задачи">Выбор оптимального микрокода для вашей задачи</h2>
+
+<p>На рынке существует несколько основных решений, каждое из которых имеет свои преимущества и недостатки. Самым популярным вариантом является <em>Marlin</em> — проект с открытым исходным кодом, который поддерживается большинством производителей и сообществом энтузиастов.</p>
+
+<p>Если же ваша цель — максимальная скорость печати и использование продвинутых алгоритмов сглаживания траекторий, стоит обратить внимание на <em>Klipper</em>. Эта система переносит основную вычислительную нагрузку на внешний одноплатный компьютер (например, Raspberry Pi), оставляя микроконтроллеру только управление шаговыми двигателями.</p>
+
+<p>Для пользователей, предпочитающих стабильность и простоту настройки, подойдет <em>Repetier-Firmware</em>. Она отличается понятным интерфейсом настроек и хорошей совместимостью с различными платформами, хотя и уступает лидерам рынка в скорости обработки команд.</p>
+
+<ul>
+<li>🔹 <strong>Marlin</strong> — классическое решение для большинства DIY-принтеров и бюджетных моделей.</li>
+<li>🔹 <em>Klipper</em> — выбор профессионалов для высокоскоростной печати и сложных геометрий.</li>
+<li>🔹 <strong>Repetier</strong> — отличный вариант для стабильной работы на старых контроллерах.</li>
+</ul>
+
+<p>Важно учитывать, что выбор прошивки зависит от мощности вашего микроконтроллера. Попытка установить тяжелый <em>Klipper</em> на слабый процессор старого принтера приведет к сбоям и ошибкам буфера команд.</p>
+
+<h2 id="подготовка-окружения-для-компиляции-marlin">Подготовка окружения для компиляции Marlin</h2>
+
+<p>Процесс настройки <strong>Marlin</strong> начинается с подготовки программного окружения на компьютере. Вам потребуется установить среду разработки <code>Arduino IDE</code> или более современный <code>PlatformIO</code> внутри редактора <em>VS Code</em>.</p>
+
+<p>После установки инструментов необходимо скачать актуальную версию исходного кода с официального репозитория. Не используйте старые архивы, так как они могут содержать устаревшие библиотеки драйверов двигателей, что критично для стабильной работы.</p>
+
+<p>В папке с исходным кодом найдите конфигурационные файлы <code>Configuration.h</code> и <code>Configuration_adv.h</code>. Именно здесь вы будете менять параметры, отвечающие за размеры стола, тип термистора, количество экструдеров и другие физические характеристики вашего устройства.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Ошибка в указании типа термистора может привести к перегреву сопла и возгоранию! Всегда сверяйте маркировку детали на плате с параметрами в конфиге.</p>
+</blockquote>
+
+<p>Если вы не уверены в значениях некоторых параметров, лучше оставить их по умолчанию или обратиться к документации производителя контроллера. <mark>Изменение параметров без понимания их физического смысла является основной причиной выхода из строя электроники.</mark></p>
+
+<p>Для корректной компиляции также нужно загрузить все необходимые <strong>библиотеки</strong> через менеджер инструментов. Без них код не скомпилируется, и процесс прошивки не начнется.</p>
+
+<div class="pb-poll" id="poll-e87ef40e"><div class="pb-poll-question">📊 Какой микрокод вы используете?</div><div class="pb-poll-option" data-poll="e87ef40e" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Marlin</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e87ef40e" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Klipper</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e87ef40e" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Repetier</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e87ef40e" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Другой</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="настройка-конфигурационных-файлов">Настройка конфигурационных файлов</h2>
+
+<p>Работа с файлами <code>Configuration.h</code> требует внимательности и аккуратности. Вам предстоит указать размеры рабочего пространства <code>X_MAX_POS</code>, <code>Y_MAX_POS</code> и <code>Z_MAX_POS</code>, чтобы принтер знал границы своей рабочей зоны.</p>
+
+<p>Особое внимание уделите настройке шаговых двигателей. Параметр <code>DEFAULT_AXIS_STEPS_PER_UNIT</code> должен точно соответствовать передаточным числам вашей механики. Ошибка здесь приведет к тому, что модель будет напечатана в неправильном масштабе.</p>
+
+<p>Не забудьте активировать функции, необходимые для вашего оборудования. Если у вас установлен автоуровень стола, включите опцию <code>AUTO_BED_LEVELING_BILINEAR</code>. Если есть датчик концевика на оси Z, активируйте <code>Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN</code>.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка конфигурации</h4><label class="check-item"><input type="checkbox"><span>Размеры стола (X/Y/Z)</span></label><label class="check-item"><input type="checkbox"><span>Тип термистора</span></label><label class="check-item"><input type="checkbox"><span>Шаги на мм (Steps/mm)</span></label><label class="check-item"><input type="checkbox"><span>Максимальные токи</span></label><label class="check-item"><input type="checkbox"><span>Подключенные датчики</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<p>Для пользователей <em>Marlin</em> существует удобный инструмент — Marlin Firmware Updater, который помогает автоматически подтянуть настройки, но полная ручная проверка обязательна.</p>
+
+<p>Вот основные параметры, которые требуют обязательной сверки с характеристикой вашего принтера:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Описание</th>
+<th>Где проверить</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MOTHERBOARD</code></td>
+<td>Тип используемой материнской платы</td>
+<td>Схема принтера</td>
+</tr>
+<tr>
+<td><code>THERMISTOR</code></td>
+<td>Тип датчика температуры</td>
+<td>Маркировка на плате</td>
+</tr>
+<tr>
+<td><code>ENDSTOPPULLUPS</code></td>
+<td>Подтяжка концевиков</td>
+<td>Физическая схема</td>
+</tr>
+<tr>
+<td><code>EEPROM</code></td>
+<td>Включение энергонезависимой памяти</td>
+<td>Тип контроллера</td>
+</tr>
+</tbody>
+</table></div>
+
+<h2 id="процесс-переноса-прошивки-на-контроллер">Процесс переноса прошивки на контроллер</h2>
+
+<p>После того как вы скомпилировали код и получили файл с расширением <code>.hex</code> или <code>.bin</code>, наступает этап его загрузки в память микроконтроллера. Подключите принтер к компьютеру через USB-кабель, убедившись, что драйверы CH340, CP2102 или FTDI установлены корректно.</p>
+
+<p>В среде <code>Arduino IDE</code> выберите правильный порт и платформу в меню <code>Инструменты</code>. Для многих китайских плат необходимо выбрать архитектуру <code>AVR</code> или <code>STM32</code> в зависимости от чипа. Неправильный выбор приведет к ошибке "Verification error" при записи.</p>
+
+<p>Нажмите кнопку загрузки <code>Upload</code>. В этот момент важно не трогать кабель и не выключать питание. Процесс занимает от 30 секунд до 2 минут, в зависимости от объема кода.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Если во время прошивки питание отключится, контроллер может превратиться в "кирпич". Для восстановления потребуется программатор SWD или UART.</p>
+</blockquote>
+
+<p>Если вы используете <em>Klipper</em>, процесс отличается: вы загружаете файл <code>klipper.bin</code> на карту microSD, вставляете её в плату, включаете принтер и ждете появления нового файла <code>klipper.bin.recover</code>, что сигнализирует об успешной записи.</p>
+
+<details class="pb-accordion"><summary>Что делать, если компиляция не проходит?</summary><div class="pb-accordion-body"><p>Чаще всего ошибка возникает из-за отсутствия одной из библиотек или неверного пути. Проверьте консоль компилятора, найдите строку с красным текстом и попробуйте установить или обновить указанную библиотеку через менеджер.</p></div></details>
+
+<h2 id="первичная-калибровка-и-настройка-eeprom">Первичная калибровка и настройка EEPROM</h2>
+
+<p>После успешной загрузки прошивки принтер не сразу готов к работе. Вам необходимо выполнить первичную калибровку и сохранить настройки в энергонезависимую память. Это делается через команду <code>M500</code> в консоли управления или через веб-интерфейс.</p>
+
+<p>Если вы не сохраните настройки, все изменения, которые вы сделали в меню (например, смещение Z-offet или скорость обдува), пропадут после перезагрузки. Убедитесь, что функция <code>EEPROM_INIT_ON_BOOT</code> включена в конфигурации.</p>
+
+<p>Проверьте работу всех осей и нагревательных элементов. Убедитесь, что температура растет и падает корректно, а двигатели не пропускают шаги при резких ускорениях.</p>
+
+<p>Для пользователей <em>Marlin</em> важно настроить безопасный диапазон температур (Thermal Runaway Protection), чтобы принтер выключался, если датчик показывает нереалистичные значения.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед первым запуском новой прошивки снимите сопло и убедитесь, что нагревательный блок чист, а термистор плотно прижат. Это исключит ложные срабатывания защиты от перегрева.</p></aside>
+
+<h2 id="частые-проблемы-и-методы-их-решения">Частые проблемы и методы их решения</h2>
+
+<p>При обновлении прошивки пользователи часто сталкиваются с рядом типичных проблем. Самой распространенной является ошибка "Buffer error" или "Watchdog reset", которая возникает при попытке принтера выполнить команду быстрее, чем он может её обработать.</p>
+
+<p>Другая частая проблема — отсутствие реакции на кнопки управления или некорректное отображение температуры. Это обычно связано с несовместимостью прошивки с версией дисплея или неправильной распиновкойSHC.</p>
+
+<p>Если принтер перестал печатать слои правильной толщины, скорее всего, изменились калибровочные значения шагов. Проверьте параметр <code>M92</code> и сравните его с эталонным значением для вашей механики.</p>
+
+<ul>
+<li>🔹 <strong>Ошибка компиляции</strong> — проверьте версии библиотек и наличие лишних символов в конфиге.</li>
+<li>🔹 <em>Принтер не видит</em> USB — попробуйте другой кабель или порт, обновите драйверы.</li>
+<li>🔹 <strong>Плохая печать</strong> — сбросьте настройки в заводские и проведите калибровку заново.</li>
+</ul>
+
+<p>Иногда бывает достаточно просто перепрошить контроллер заново, чтобы устранить программные сбои, вызванные "битыми" ячейками памяти.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Регулярное обновление прошивки позволяет не только добавлять новые функции, но и закрывать уязвимости системы безопасности и улучшать стабильность работы контроллера.</p></aside>
+
+<p> Сообщество разработчиков регулярно выпускает патчи, исправляющие ошибки и добавляющие поддержку нового оборудования.</p>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Можно ли вернуть заводскую прошивку после установки Marlin?</summary>
+<p>Да, это возможно, если у вас сохранился оригинальный файл прошивки или если он доступен на сайте производителя. Процесс обратного перепрошивания ничем не отличается от установки новой версии, главное — выбрать правильный файл.</p>
+</details>
+
+<details>
+<summary>Нужно ли менять прошивку, если принтер работает стабильно?</summary>
+<p>Если вас полностью устраивает качество печати и скорость работы, менять прошивку необязательно. Однако новые версии могут добавлять полезные функции, такие как Mesh Bed Leveling или улучшенные алгоритмы управления температурой.</p>
+</details>
+
+<details>
+<summary>Что делать, если после прошивки принтер не включается?</summary>
+<p>Сначала проверьте подключение питания и предохранители. Если проблема не решается, возможно, вы записали файл для другого типа контроллера. В этом случае потребуется подключение программатора (USBasp или ST-Link) для восстановления загрузчика.</p>
+</details>
+
+<details>
+<summary>Влияет ли прошивка на гарантию производителя?</summary>
+<p>В большинстве случаев самостоятельная замена микрокода лишает гарантии на электронику. Однако программное обеспечение часто восстанавливается заменой на "оригинальный" файл, если это необходимо для предъявления претензии по другим вопросам.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/3d-pechat-i-modelirovanie/s/so/sozdanie-up-dlya-3d-modeli-v-artcam.html" class="pb-related-card">
+                <span class="pb-related-title">Создание УП для 3D модели в ArtCAM: пошаговая инструкция</span>
+                <span class="pb-related-desc">Как создать управляющую программу в ArtCAM для фрезеровки 3D-моделей. Стратегии обработки, выбор инс</span>
+            </a><a href="/3d-pechat-i-modelirovanie/i/iz/izgotovlenie-detali-na-3d-printere.html" class="pb-related-card">
+                <span class="pb-related-title">Изготовление детали на 3д принтере: полное руководство по процессу</span>
+                <span class="pb-related-desc">Как происходит изготовление детали на 3д принтере от модели до пластика. Разбор технологий FDM и SLA</span>
+            </a><a href="/3d-pechat-i-modelirovanie/k/ka/kak-podgotovit-model-k-3d-pechati.html" class="pb-related-card">
+                <span class="pb-related-title">Как подготовить модель к 3D печати: полное руководство</span>
+                <span class="pb-related-desc">Пошаговая инструкция: проверка геометрии, слайсинг, выбор поддержек и устранение ошибок STL файлов д</span>
+            </a><a href="/3d-pechat-i-modelirovanie/p/pe/pechat-detali-na-3d-printere.html" class="pb-related-card">
+                <span class="pb-related-title">Печать деталей на 3D принтере: полное руководство</span>
+                <span class="pb-related-desc">Как напечатать деталь на 3D принтере. Выбор пластика, настройка слайсера и устранение дефектов. Прак</span>
+            </a><a href="/3d-pechat-i-modelirovanie/p/pr/printer-kotoryj-delaet-igrushki.html" class="pb-related-card">
+                <span class="pb-related-title">3D-принтер для игрушек: выбор, технологии и инструкция по печати</span>
+                <span class="pb-related-desc">Как выбрать 3D-принтер для создания игрушек? Обзор технологий FDM и SLA, выбор пластика, настройка и</span>
+            </a><a href="/3d-pechat-i-modelirovanie/c/cr/creality-ender-3-neo.html" class="pb-related-card">
+                <span class="pb-related-title">Обзор Creality Ender 3 Neo: характеристики и настройка</span>
+                <span class="pb-related-desc">Полный разбор 3D-принтера Creality Ender 3 Neo. Обзор автолевелинга CR Touch, горячего стола, интерф</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

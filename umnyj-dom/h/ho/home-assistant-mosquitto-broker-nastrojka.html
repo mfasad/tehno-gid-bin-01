@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Настройка Mosquitto Broker в Home Assistant: Полное руководство — Техно Гид</title>
+    <meta name="description" content="Пошаговая инструкция по установке и конфигурации Mosquitto Broker для Home Assistant. Настройка MQTT, TLS, аутентификации и безопасное подключение устройств.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/h/ho/home-assistant-mosquitto-broker-nastrojka.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Настройка Mosquitto Broker в Home Assistant: Полное руководство">
+    <meta property="og:description" content="Пошаговая инструкция по установке и конфигурации Mosquitto Broker для Home Assistant. Настройка MQTT, TLS, аутентификации и безопасное подключение устройств.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Настройка Mosquitto Broker в Home Assistant: Полное руководство</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-mqtt-и-роль-брокера">Введение в MQTT и роль брокера</a></li><li><a href="#установка-компонента-mosquitto-broker">Установка компонента Mosquitto Broker</a></li><li><a href="#базовая-конфигурация-и-запуск">Базовая конфигурация и запуск</a></li><li><a href="#настройка-безопасности-и-tls">Настройка безопасности и TLS</a></li><li><a href="#подключение-внешних-устройств-и-датчиков">Подключение внешних устройств и датчиков</a></li><li><a href="#интеграция-с-home-assistant">Интеграция с Home Assistant</a></li><li><a href="#решение-частых-проблем-и-отладка">Решение частых проблем и отладка</a></li><li><a href="#расширенные-сценарии-использования">Расширенные сценарии использования</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/k/ka/kak-razblokirovat-yandeks-stantsiyu-po-podpiske-razlochit.html">Как официально разблокировать подписку Яндекс Станции без взлома</a></li><li><a href="/umnyj-dom/s/sa/samsung-dukhovka-s-svch.html">Духовка Самсунг с СВЧ: виды, выбор и настройка</a></li><li><a href="/umnyj-dom/t/tr/treshchit-robot-pylesos-xiaomi.html">Почему трещит робот-пылесос Xiaomi и как это исправить</a></li><li><a href="/umnyj-dom/s/so/so-skolki-nachinaetsya-vecher-i-do-skolki.html">Во сколько начинается вечер: время суток, законы и световой день</a></li><li><a href="/umnyj-dom/n/ne/net-dostupa-k-sd-karte-xiaomi-kamera.html">Нет доступа к SD карте Xiaomi камера: причины и решение</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Полный гайд по настройке Mosquitto Broker в Home Assistant</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-mqtt-и-роль-брокера">Введение в MQTT и роль брокера</a></li><li><a href="#установка-компонента-mosquitto-broker">Установка компонента Mosquitto Broker</a></li><li><a href="#базовая-конфигурация-и-запуск">Базовая конфигурация и запуск</a></li><li><a href="#настройка-безопасности-и-tls">Настройка безопасности и TLS</a></li><li><a href="#подключение-внешних-устройств-и-датчиков">Подключение внешних устройств и датчиков</a></li><li><a href="#интеграция-с-home-assistant">Интеграция с Home Assistant</a></li><li><a href="#решение-частых-проблем-и-отладка">Решение частых проблем и отладка</a></li><li><a href="#расширенные-сценарии-использования">Расширенные сценарии использования</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-mqtt-и-роль-брокера">Введение в MQTT и роль брокера</h2>
+<p>Система умного дома <em>Home Assistant</em> становится по-настоящему мощной, когда вы подключаете к ней тысячи разнородных устройств от разных производителей. Для этой цели идеально подходит протокол <strong>MQTT</strong>, который обеспечивает мгновенную передачу данных между гаджетами без лишних задержек. Однако сам по себе протокол не может работать без центрального узла, который будет принимать сообщения от одних устройств и пересылать их другим.</p>
+<p>Именно такую функцию выполняет <strong>брокер MQTT</strong>.Mosquitto является самым популярным и надежным решением для этой задачи благодаря своей легковесности и высокой производительности. Подключение этого компонента позволяет объединить в единую сеть лампочки, датчики, камеры и голосовые помощники, создавая слаженную экосистему.</p>
+
+<h2 id="установка-компонента-mosquitto-broker">Установка компонента Mosquitto Broker</h2>
+<p>Процесс установки начинается с перехода в панель управления вашей системы. Вам необходимо открыть раздел <code>Настройки</code> и выбрать пункт <code>Дополнения</code>. В открывшемся окне нажмите на значок магазина в правом нижнем углу, чтобы перейти в репозиторий доступных надстроек.</p>
+<p>В поисковой строке введите название <strong>Mosquitto broker</strong>. Вы увидите официальный компонент от разработчиков Home Assistant. Важно не путать его с сторонними версиями, так как официальная надстройка обеспечивает лучшую интеграцию и автоматическое обновление.</p>
+<p>После открытия страницы дополнения нажмите кнопку <code>Установить</code>. Дождитесь завершения процесса, который может занять от 30 секунд до нескольких минут в зависимости от скорости вашего интернета и мощности устройства.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед запуском</h4><label class="check-item"><input type="checkbox"><span>Проверить доступность порта 1883</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в наличии свободного места</span></label><label class="check-item"><input type="checkbox"><span>Включить администраторские права</span></label><label class="check-item"><input type="checkbox"><span>Создать резервную копию системы</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="базовая-конфигурация-и-запуск">Базовая конфигурация и запуск</h2>
+<p>После успешной установки компонент появится в списке надстроек, но он еще не запущен. Нажмите на него, чтобы перейти в окно управления. Обратите внимание на вкладки <code>Информация</code>, <code>Конфигурация</code> и <code>Логи</code>.</p>
+<p>Перед тем как нажать кнопку <code>Запустить</code>, необходимо провести минимальную настройку. По умолчанию брокер может работать в тестовом режиме без пароля, что категорически недопустимо для домашней сети. Вам нужно задать уникальное имя пользователя и сложный пароль.</p>
+<p>В поле <code>Конфигурация</code> найдите секцию настроек аутентификации. Введите желаемое имя пользователя в поле <code>username</code> и придумайте надежный пароль в поле <code>password</code>. Эти данные понадобятся позже для подключения ваших устройств к сети.</p>
+<p>Не забудьте сохранить изменения кнопкой <code>Сохранить</code> внизу страницы. Только после этого можно безопасно запускать службу, нажав кнопку <code>Запустить</code> в верхнем меню.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Никогда не используйте стандартные пароли типа "admin" или "password". Взломанный MQTT-брокер может позволить злоумышленникам полностью захватить контроль над вашим умным домом.</p>
+</blockquote>
+
+<div class="pb-poll" id="poll-39c24bd4"><div class="pb-poll-question">📊 Какое количество устройств у вас подключено?</div><div class="pb-poll-option" data-poll="39c24bd4" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">До 10</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="39c24bd4" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">От 10 до 50</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="39c24bd4" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">От 50 до 100</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="39c24bd4" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Более 100</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="настройка-безопасности-и-tls">Настройка безопасности и TLS</h2>
+<p>Для максимальной защиты данных рекомендуется включить шифрование связи. Стандартный протокол MQTT использует открытый порт, что делает передачу данных уязвимой для перехвата. Включение <strong>TLS</strong> (Transport Layer Security) решает эту проблему, зашифровывая весь трафик.</p>
+<p>В конфигурационном файле вам нужно прописать путь к сертификатам. Если у вас нет своих сертификатов, Mosquitto может сгенерировать самоподписанные, но для домашней сети часто достаточно просто включить шифрование с использованием встроенных механизмов безопасности.</p>
+<p>Важно настроить правильные права доступа к файлам конфигурации. Ошибки в правах доступа могут привести к тому, что брокер не сможет запуститься или будет работать некорректно. Используйте команду проверки конфигурации перед перезапуском службы.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Значение по умолчанию</th>
+<th>Рекомендуемое значение</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>port</td>
+<td>1883</td>
+<td>1883</td>
+<td>Стандартный порт для нешифрованного MQTT</td>
+</tr>
+<tr>
+<td>listener</td>
+<td>8883</td>
+<td>8883</td>
+<td>Порт для зашифрованного соединения с TLS</td>
+</tr>
+<tr>
+<td>allow_anonymous</td>
+<td>true</td>
+<td>false</td>
+<td>Запретить анонимное подключение (обязательно)</td>
+</tr>
+<tr>
+<td>password_file</td>
+<td>-</td>
+<td>/share/mosquitto/passwd</td>
+<td>Файл с паролями пользователей</td>
+</tr>
+</tbody>
+</table></div>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Включите шифрование TLS для всех критически важных устройств, таких как камеры видеонаблюдения и системы контроля доступа, чтобы защитить видеопоток и команды от перехвата.</p></aside>
+
+<h2 id="подключение-внешних-устройств-и-датчиков">Подключение внешних устройств и датчиков</h2>
+<p>После настройки брокера можно приступать к подключению устройств. Большинство современных гаджетов для умного дома имеют встроенную поддержку MQTT. Вам нужно зайти в настройки каждого устройства и ввести данные вашего <strong>брокера</strong>.</p>
+<p>В поле "Адрес" укажите IP-адрес вашего сервера <em>Home Assistant</em> или доменное имя, если вы настроили доступ извне. Порт обычно остается стандартным <code>1883</code>, если вы не меняли его вручную. Введите созданные ранее логин и пароль для авторизации.</p>
+<p>Если устройство не подключается, проверьте, открыт ли нужный порт на вашем роутере. Иногда фаерволы блокируют входящие соединения, даже если они идут внутри локальной сети. Перезагрузка устройства после ввода данных часто помогает установить связь.</p>
+
+<p>Для устройств, которые не имеют встроенной поддержки MQTT, используются специальные шлюзы или прошивки. Например, популярная прошивка <em>Tasmota</em> или <em>ESPHome</em> позволяет превратить любой микроконтроллер в MQTT-клиент. Это открывает безграничные возможности для создания собственных датчиков.</p>
+
+<details class="pb-accordion"><summary>Что такое Topic и зачем он нужен?</summary><div class="pb-accordion-body"><p>Topic (тема) — это адрес, по которому устройство отправляет или получает сообщения. Например, "home/livingroom/temp". Устройства подписываются на темы, чтобы получать обновления, или публикуют данные на свои темы.</p></div></details>
+
+<h2 id="интеграция-с-home-assistant">Интеграция с Home Assistant</h2>
+<p>Самое приятное то, что после запуска брокера вам не нужно вручную прописывать интеграцию для каждого устройства. Home Assistant автоматически обнаруживает новые устройства, работающие через <strong>MQTT Discovery</strong>.</p>
+<p>Этот механизм позволяет устройствам автоматически регистрироваться в системе, создавая соответствующие сущности и отображая их на панели управления. Вам останется только дать им понятные имена и разместить в удобных зонах.</p>
+<p>Если автоматическое обнаружение не сработало, вы можете добавить устройство вручную через <code>Настройки → Устройства и службы → Добавить интеграцию → MQTT</code>. Здесь вы можете задать конкретные топы для отправки и получения данных.</p>
+
+<h2 id="решение-частых-проблем-и-отладка">Решение частых проблем и отладка</h2>
+<p>Иногда при настройке возникают ошибки подключения. Самая частая причина — неверный пароль или отсутствие прав доступа к файлам конфигурации. Проверьте логи в разделе <code>Логи</code> внутри надстройки <strong>Mosquitto</strong>.</p>
+<p>Если вы видите сообщения об ошибке "Connection Refused" или "Not Authorized", убедитесь, что вы ввели правильные учетные данные. Также проверьте, не занят ли порт другим приложением на вашем сервере.</p>
+<p>Для глубокой диагностики можно включить режим отладки, который выводит подробную информацию о каждом пакете данных. Это поможет понять, на каком этапе разрывается соединение и почему.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Если вы используете сторонние плагины для шифрования, убедитесь, что они совместимы с текущей версией <em>Mosquitto</em>. Несовместимость версий может привести к падению службы после обновления системы.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильная настройка аутентификации и шифрования — это фундамент безопасности вашего умного дома, без которого использование облачных сервисов и внешних устройств становится рискованным.</p></aside>
+
+<h2 id="расширенные-сценарии-использования">Расширенные сценарии использования</h2>
+<p>Для продвинутых пользователей доступны сценарии с использованием правил обработки сообщений. Вы можете настроить автоматические правила, которые будут фильтровать или изменять данные перед их доставкой получателю.</p>
+<p>Например, вы можете создать правило, которое конвертирует температуру из Цельсия в Фаренгейты автоматически на уровне брокера. Или настроить передачу данных только определенным устройствам, создавая сложные цепочки автоматизации.</p>
+<p>Также можно использовать <strong>MQTT</strong> для резервного копирования данных. Настройте отправку всех важных событий на внешний сервер, чтобы в случае сбоя локальной системы у вас всегда была копия истории изменений.</p>
+
+<details class="pb-accordion"><summary>Как изменить порт брокера?</summary><div class="pb-accordion-body"><p>Чтобы изменить порт, отредактируйте файл конфигурации <code>mosquitto.conf</code> и измените строку <code>port 1883</code> на нужное значение. Не забудьте перезапустить службу и открыть новый порт в фаерволе.</p></div></details>
+
+<h2 id="часто-задаваемые-вопросы">Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Нужно ли мне устанавливать Mosquitto, если я использую Home Assistant OS?</summary>
+<p>Да, даже в версии Home Assistant OS рекомендуется устанавливать официальный компонент Mosquitto Broker. Он обеспечивает лучшую производительность и безопасность по сравнению с встроенными решениями, а также позволяет гибко настраивать права доступа для разных устройств.</p>
+</details>
+
+<details>
+<summary>Как проверить, что брокер работает корректно?</summary>
+<p>Вы можете использовать утилиту <code>mosquitto_pub</code> и <code>mosquitto_sub</code> с любого устройства в сети. Попробуйте отправить тестовое сообщение и проверить его получение. Также смотрят логи в интерфейсе надстройки на наличие ошибок.</p>
+</details>
+
+<details>
+<summary>Можно ли подключать устройства из интернета?</summary>
+<p>Технически это возможно через проброс портов на роутере, но это небезопасно. Лучше использовать VPN-доступ к домашней сети или облачные сервисы, специально предназначенные для безопасного удаленного управления умным домом.</p>
+</details>
+
+<details>
+<summary>Что делать, если устройства отключаются?</summary>
+<p>Частые отключения могут быть вызваны нестабильным Wi-Fi сигналом или перегрузкой брокера. Проверьте уровень сигнала, попробуйте подключить устройства по проводу Ethernet или увеличьте интервалы отправки данных, если нагрузка слишком высока.</p>
+</details>
+
+<blockquote>
+<p>⚠️ Внимание: При изменении настроек безопасности или переносе сервера не забудьте обновить конфигурацию всех подключенных устройств, иначе они потеряют связь с новым брокером.</p>
+</blockquote></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/k/ka/kak-razblokirovat-yandeks-stantsiyu-po-podpiske-razlochit.html" class="pb-related-card">
+                <span class="pb-related-title">Как официально разблокировать подписку Яндекс Станции без взлома</span>
+                <span class="pb-related-desc">Инструкция по активации Premium сервиса на колонках Алисы. Разбор тарифов, перевода устройств и мето</span>
+            </a><a href="/umnyj-dom/s/sa/samsung-dukhovka-s-svch.html" class="pb-related-card">
+                <span class="pb-related-title">Духовка Самсунг с СВЧ: виды, выбор и настройка</span>
+                <span class="pb-related-desc">Обзор духовых шкафов Samsung с функцией микроволн. Плюсы, минусы, технологии HotBlast, Dual Cook и с</span>
+            </a><a href="/umnyj-dom/t/tr/treshchit-robot-pylesos-xiaomi.html" class="pb-related-card">
+                <span class="pb-related-title">Почему трещит робот-пылесос Xiaomi и как это исправить</span>
+                <span class="pb-related-desc">Определите причину шума: трещит робот-пылесос Xiaomi из-за мусора, износа щеток или дефекта мотора. </span>
+            </a><a href="/umnyj-dom/s/so/so-skolki-nachinaetsya-vecher-i-do-skolki.html" class="pb-related-card">
+                <span class="pb-related-title">Во сколько начинается вечер: время суток, законы и световой день</span>
+                <span class="pb-related-desc">Узнайте, с какого часа начинается вечер по закону, астрономии и расписанию коммунальных служб. Табли</span>
+            </a><a href="/umnyj-dom/n/ne/net-dostupa-k-sd-karte-xiaomi-kamera.html" class="pb-related-card">
+                <span class="pb-related-title">Нет доступа к SD карте Xiaomi камера: причины и решение</span>
+                <span class="pb-related-desc">Почему Xiaomi Smart Camera не видит карту памяти? Полный разбор ошибок FAT32, форматов и совместимос</span>
+            </a><a href="/umnyj-dom/t/tu/tuya-smart-life-wifi.html" class="pb-related-card">
+                <span class="pb-related-title">Tuya Smart Life Wi-Fi: настройка, управление и особенности экосистемы</span>
+                <span class="pb-related-desc">Полный гайд по интеграции устройств Tuya Smart Life в Wi-Fi сеть. Обзор совместимости, настройка сце</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

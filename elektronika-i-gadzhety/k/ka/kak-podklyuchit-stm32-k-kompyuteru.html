@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как подключить STM32 к компьютеру: USB, COM и драйверы — Техно Гид</title>
+    <meta name="description" content="Полное руководство: как подключить STM32 к ПК через USB или UART. Установка драйверов (ST-Link, CDC), поиск COM-порта и отладка.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/elektronika-i-gadzhety/k/ka/kak-podklyuchit-stm32-k-kompyuteru.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как подключить STM32 к компьютеру: USB, COM и драйверы">
+    <meta property="og:description" content="Полное руководство: как подключить STM32 к ПК через USB или UART. Установка драйверов (ST-Link, CDC), поиск COM-порта и отладка.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/elektronika-i-gadzhety/">Электроника и Гаджеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как подключить STM32 к компьютеру: USB, COM и драйверы</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#физическое-подключение-и-выбор-интерфейса">Физическое подключение и выбор интерфейса</a></li><li><a href="#установка-драйверов-в-среде-windows">Установка драйверов в среде Windows</a></li><li><a href="#настройка-режима-загрузки-boot-mode">Настройка режима загрузки (Boot Mode)</a></li><li><a href="#работа-через-интерфейс-swd-и-отладчики">Работа через интерфейс SWD и отладчики</a></li><li><a href="#организация-связи-через-uart-com-порт">Организация связи через UART (COM-порт)</a></li><li><a href="#диагностика-проблем-и-частые-ошибки">Диагностика проблем и частые ошибки</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/elektronika-i-gadzhety/c/ch/chto-delat-esli-kamera-ne-podklyuchaetsya-k-telefonu.html">Камера не подключается к телефону? Полное руководство по решению</a></li><li><a href="/elektronika-i-gadzhety/s/si/simens-a-52-god-vypuska.html">Siemens A52: Год выпуска, характеристики и история модели</a></li><li><a href="/elektronika-i-gadzhety/a/ar/arduino-nano-kakoj-programmator-vybrat-v-nastrojkakh-ide.html">Arduino Nano: выбор программатора в Arduino IDE</a></li><li><a href="/elektronika-i-gadzhety/s/so/solnechnaya-panel-dlya-zaryadki-poverbanka.html">Солнечная панель для повербанка: выбор, эффективность и нюансы зарядки</a></li><li><a href="/elektronika-i-gadzhety/c/ch/chem-otlichaetsya-lampochka-ot-solntsa-vopros-psikhiatra.html">Лампочка против Солнца: вопрос психиатра и физика света</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как подключить STM32 к компьютеру: USB, COM и драйверы</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#физическое-подключение-и-выбор-интерфейса">Физическое подключение и выбор интерфейса</a></li><li><a href="#установка-драйверов-в-среде-windows">Установка драйверов в среде Windows</a></li><li><a href="#настройка-режима-загрузки-boot-mode">Настройка режима загрузки (Boot Mode)</a></li><li><a href="#работа-через-интерфейс-swd-и-отладчики">Работа через интерфейс SWD и отладчики</a></li><li><a href="#организация-связи-через-uart-com-порт">Организация связи через UART (COM-порт)</a></li><li><a href="#диагностика-проблем-и-частые-ошибки">Диагностика проблем и частые ошибки</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Подключение микроконтроллеров семейства <em>STM32</em> к персональному компьютеру — это фундаментальный этап, с которого начинается любая разработка встраиваемых систем. Без этого шага невозможно загрузить прошивку, отладить код или организовать обмен данными по последовательному интерфейсу. Однако начинающие инженеры часто сталкиваются с трудностями, когда операционная система просто не видит устройство после соединения кабелем.</p>
+
+<p>Существует несколько основных способов коммуникации, зависящих от аппаратной реализации вашей платы. Это может быть прямой <strong>USB-интерфейс</strong> через встроенный контроллер, использование внешнего программатора-отладчика <em>ST-Link</em> или классический последовательный порт <em>UART</em> через преобразователь. Выбор метода диктуется вашей задачей: нужно ли вам просто «прошить» чип или организовать постоянный канал обмена данными с терминалом.</p>
+
+<p>В этой статье мы подробно разберем все нюансы подключения, от выбора правильного кабеля до настройки драйверов в среде Windows и Linux. Вы узнаете, почему компьютер может не реагировать на устройство и как быстро диагностировать проблему, используя диспетчер задач и специализированный софт.</p>
+
+<h2 id="физическое-подключение-и-выбор-интерфейса">Физическое подключение и выбор интерфейса</h2>
+
+<p>Первым делом необходимо определить, какой именно интерфейс доступен на вашей плате разработки. Самые популярные отладочные платы, такие как <em>STM32 Nucleo</em> или <em>Discovery</em>, имеют встроенный мост <em>ST-Link/V2-1</em>, который эмулирует как программатор, так и виртуальный COM-порт. В этом случае достаточно использовать качественный кабель <code>Micro-USB</code> или <code>USB Type-C</code>.</p>
+
+<p>Если вы используете минимальную систему (Blue Pill, Black Pill) или самопальную плату, ситуация усложняется. Часто на таких платах распаян только разъем <code>SWD</code> для отладки, но нет физического USB-разъема для связи с ПК. В таком случае вам потребуется внешний адаптер <em>USB-to-TTL</em> на базе чипов <em>CP2102</em> или <em>FT232</em>.</p>
+
+<blockquote>⚠️ Внимание: Никогда не подключайте линии питания <code>5V</code> от USB-адаптера к пину <code>3.3V</code> на плате STM32. Это гарантированно выведет микроконтроллер из строя из-за превышения напряжения.</blockquote>
+
+<p>Качество кабеля играет критическую роль. Многие дешевые кабели, идущие в комплекте с китайскими гаджетами, являются «зарядными» и не имеют линий передачи данных. Если компьютер издает звук подключения, но устройство не определяется, попробуйте заменить провод на заведомо исправный дата-кабель.</p>
+
+<div class="pb-poll" id="poll-4b2a5aba"><div class="pb-poll-question">📊 Какой тип платы вы используете?</div><div class="pb-poll-option" data-poll="4b2a5aba" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Официальная Nucleo/Discovery</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="4b2a5aba" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Китайская Blue Pill/Black Pill</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="4b2a5aba" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Самодельная плата</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="4b2a5aba" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Другая</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="установка-драйверов-в-среде-windows">Установка драйверов в среде Windows</h2>
+
+<p>Операционная система Windows не всегда имеет встроенные драйверы для специфических USB-устройств микроконтроллеров. При первом подключении платы <em>STM32</em> система может попытаться найти драйвер автоматически, но этот процесс часто завершается неудачей. Вам потребуется вручную установить пакет <strong>STM32 CubeMX</strong> или отдельные драйверы от STMicroelectronics.</p>
+
+<p>Для работы с отладчиком <em>ST-Link</em> необходим драйвер, который обычно устанавливается вместе со средой разработки <em>STM32CubeIDE</em> или утилитой <em>STM32CubeProgrammer</em>. После установки проверьте диспетчер устройств. В разделе «Контроллеры универсальной последовательной шины USB» должно появиться устройство <code>ST-LINK USB</code>.</p>
+
+<ul>
+<li>🔌 Если устройство отображается с желтым восклицательным знаком, попробуйте обновить драйвер вручную, указав путь к папке <code>Drivers</code> в директории установки ПО.</li>
+<li>💻 Для работы с виртуальным COM-портом (VCP) убедитесь, что установлен драйвер <em>ST Virtual COM Port</em>.</li>
+<li>⚙️ В редких случаях требуется отключить проверку подписи драйверов в Windows, если вы используете старые версии ПО.</li>
+</ul>
+
+<p>Пользователи Linux и macOS обычно избавлены от этих проблем, так как необходимые модули ядра часто встроены в систему по умолчанию. Однако в некоторых дистрибутивах может потребоваться добавление пользователя в группу <code>dialout</code> для получения прав доступа к порту.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте утилиту Zadig только в крайних случаях для замены системного драйвера на libusb-win32, если стандартные методы не работают, но помните, что это может нарушить работу других программ.</p></aside>
+
+<h2 id="настройка-режима-загрузки-boot-mode">Настройка режима загрузки (Boot Mode)</h2>
+
+<p>Микроконтроллеры <em>STM32</em> обладают гибкой системой загрузки, которая определяется состоянием пинов <code>BOOT0</code> и <code>BOOT1</code> в момент сброса (Reset). По умолчанию большинство плат настроены на запуск пользовательской программы из флеш-памяти. Чтобы прошить устройство через системную память (System Memory) с помощью UART, необходимо изменить конфигурацию перемычек.</p>
+
+<p>Для перехода в режим системной памяти (System Memory) нужно установить перемычку <code>BOOT0</code> в положение логической единицы (подтянуть к <code>3.3V</code>), а <code>BOOT1</code> оставить на земле. После этого необходимо нажать кнопку сброса <code>NRST</code> или переподать питание.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Состояние BOOT0</th>
+<th>Состояние BOOT1</th>
+<th>Режим загрузки</th>
+<th>Источник</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>Основная память</td>
+<td>Flash (User Code)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>Системная память</td>
+<td>System Memory (Bootloader)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>Встроенная SRAM</td>
+<td>RAM</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>Основная память</td>
+<td>Flash (как при 0-0)</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>После успешной прошивки через загрузчик не забудьте вернуть перемычку <code>BOOT0</code> в положение 0, иначе микроконтроллер при каждом включении будет ждать команду из компьютера, а не выполнять вашу программу. Это частая ошибка новичков, приводящая к мысли, что прошивка «слетела».</p>
+
+<details class="pb-accordion"><summary>Что делать, если плата не отвечает в режиме Bootloader?</summary><div class="pb-accordion-body"><p>Убедитесь, что питание стабильно (3.3V). Проверьте целостность линий TX/RX. Попробуйте подать сигнал Reset именно в момент, когда программа-прошивщик начинает сканировать порты.</p></div></details>
+
+<h2 id="работа-через-интерфейс-swd-и-отладчики">Работа через интерфейс SWD и отладчики</h2>
+
+<p>Интерфейс <strong>SWD</strong> (Serial Wire Debug) является современным стандартом для отладки и прошивки <em>ARM Cortex-M</em>. Он требует всего двух сигнальных линий: <code>SWDIO</code> (данные) и <code>SWCLK</code> (тактирование), плюс питание и земля. Это делает его идеальным для плат с ограниченным количеством выводов.</p>
+
+<p>Подключение осуществляется через разъем <code>SWD</code> на плате к программатору <em>ST-Link</em>, <em>J-Link</em> или <em>DAPLink</em>. Важно соблюдать порядок пинов, так как универсального стандарта распиновки для разъемов 2x3 или 2x4 не существует. Всегда сверяйтесь со схемой вашей конкретной платы.</p>
+
+<p>В программном обеспечении, таком как <em>STM32CubeProgrammer</em>, необходимо выбрать тип подключения <code>ST-LINK</code> и нажать кнопку подключения. Если соединение установлено успешно, вы увидите информацию о версии чипа, объеме памяти и текущей прошивке.</p>
+
+<blockquote>⚠️ Внимание: При использовании длинных проводов для подключения SWD (>15 см) могут возникать помехи. Используйте экранированные кабели или уменьшите частоту тактирования отладчика в настройках ПО.</blockquote>
+
+<p>Скорость работы через SWD значительно выше, чем через UART. Это позволяет не только быстро записывать большие объемы кода, но и осуществлять пошаговую отладку с просмотром переменных в реальном времени, что невозможно при использовании простого последовательного загрузчика.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка соединения SWD</h4><label class="check-item"><input type="checkbox"><span>Проверить питание 3.3V на разъеме</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в наличии линии GND</span></label><label class="check-item"><input type="checkbox"><span>Проверить подключение SWDIO и SWCLK</span></label><label class="check-item"><input type="checkbox"><span>Запустить сканирование в STM32CubeProgrammer</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="организация-связи-через-uart-com-порт">Организация связи через UART (COM-порт)</h2>
+
+<p>Для обмена данными между микроконтроллером и компьютером в режиме реального времени часто используется протокол <em>UART</em>. В системе Windows он отображается как виртуальный COM-порт. Чтобы увидеть данные от <em>STM32</em>, вам понадобится терминальная программа, например, <em>PuTTY</em>, <em>Tera Term</em> или встроенный монитор порта в <em>Arduino IDE</em>.</p>
+
+<p>Настройка соединения требует совпадения параметров на обоих концах линии. Наиболее распространенная конфигурация: скорость <code>9600</code> или <code>115200</code> бод, 8 бит данных, без бита четности и 1 стоп-бит (8N1). Если вы видите «кракозябры» вместо текста, значит, скорость (Baud Rate) выбрана неверно.</p>
+
+<pre><code>Подключение проводов UART:
+<p>Плата STM32  <-->  Адаптер USB-TTL</p>
+<p>TX (A9)      <-->  RX</p>
+<p>RX (A10)     <-->  TX</p>
+<p>GND          <-->  GND</p>
+</code></pre>
+
+<p>Обратите внимание на перекрестное подключение линий: передающий пин <code>TX</code> микроконтроллера должен быть соединен с приемным пином <code>RX</code> адаптера, и наоборот. Соединение <code>TX-TX</code> не будет работать. Также обязательно соединение земель (<code>GND</code>), иначе уровни сигналов будут некорректны относительно друг друга.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильное соединение земель (GND) между платой и адаптером является обязательным условием работы UART, даже если устройство питается от разных источников.</p></aside>
+
+<h2 id="диагностика-проблем-и-частые-ошибки">Диагностика проблем и частые ошибки</h2>
+
+<p>Даже при соблюдении всех инструкций могут возникнуть ситуации, когда подключение не устанавливается. Первым делом проверьте диспетчер устройств. Если устройство вообще не отображается при подключении кабеля, проблема скорее всего физическая: неисправный порт USB, плохой кабель или отсутствие питания на плате.</p>
+
+<p>Если устройство определяется, но драйвер не ставится, попробуйте удалить его из диспетчера устройств и нажать «Обновить конфигурацию оборудования». Иногда помогает отключение функции быстрого запуска Windows, которая может кэшировать состояние USB-контроллеров при гибернации.</p>
+
+<ul>
+<li>🛠 Проверьте, не заблокирован ли порт антивирусом или брандмауэром (редко, но бывает для виртуальных COM-портов).</li>
+<li>🔋 Убедитесь, что плата получает достаточный ток; некоторые мощные периферийные модули могут «сажать» напряжение USB-порта.</li>
+<li>🔄 Попробуйте подключить устройство к другому USB-порту, желательно напрямую к материнской плате, а не через USB-хаб.</li>
+</ul>
+
+<p>В случае проблем с прошивкой через SWD, убедитесь, что чип не защищен функцией <strong>Readout Protection</strong> (RDP). Если уровень защиты установлен в Full, отладчик не сможет подключиться к чипу без полной стирания памяти, что может быть неочевидно для новичка.</p>
+
+<blockquote>⚠️ Внимание: Интерфейсы и названия меню в программах типа STM32CubeProgrammer могут меняться с обновлениями. Всегда сверяйтесь с официальной документацией к используемой версии софта, если привычные кнопки переместились.</blockquote>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Компьютер издает звук подключения, но устройство не появляется в диспетчере задач. Что делать?</summary>
+<p>Это признак того, что устройство определилось физически, но для него нет драйвера или оно находится в режиме ожидания. Зайдите в «Диспетчер устройств», найдите раздел «Другие устройства» или «Контроллеры USB». Если там есть устройство с вопросом, нажмите правой кнопкой -> Обновить драйвер. Если устройства нет нигде, проверьте кабель на возможность передачи данных.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать обычный кабель от смартфона для подключения STM32?</summary>
+<p>Только если этот кабель поддерживает передачу данных. Многие дешевые кабели имеют только две жилы для питания (+5V и GND) и не имеют линий D+ и D-. Визуально отличить их сложно, поэтому лучше использовать оригинальные кабели от техники или специализированные кабели для отладки.</p>
+</details>
+
+<details>
+<summary>Какой программатор лучше выбрать для начала: ST-Link V2 или J-Link?</summary>
+<p>Для старта идеально подойдет клон <em>ST-Link V2</em> или оригинал, так как он дешев и полностью поддерживается экосистемой <em>STM32</em>. <em>J-Link</em> мощнее и быстрее, но значительно дороже и требует лицензии для коммерческого использования в некоторых случаях. Для обучения разницы вы почти не заметите.</p>
+</details>
+
+<details>
+<summary>Почему терминал показывает пустой экран, хотя код отправляет данные?</summary>
+<p>Проверьте три вещи: 1) Совпадает ли скорость (Baud Rate) в коде и в терминале. 2) Правильно ли подключены провода TX/RX (они должны быть перекрещены). 3) Инициализирован ли UART в вашем коде до начала цикла отправки данных. Также убедитесь, что выбран правильный COM-порт в настройках терминала.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/elektronika-i-gadzhety/c/ch/chto-delat-esli-kamera-ne-podklyuchaetsya-k-telefonu.html" class="pb-related-card">
+                <span class="pb-related-title">Камера не подключается к телефону? Полное руководство по решению</span>
+                <span class="pb-related-desc">Камера не видит телефон? Узнайте причины сбоя: от отсутствия прав доступа до поломки шлейфа. Пошагов</span>
+            </a><a href="/elektronika-i-gadzhety/s/si/simens-a-52-god-vypuska.html" class="pb-related-card">
+                <span class="pb-related-title">Siemens A52: Год выпуска, характеристики и история модели</span>
+                <span class="pb-related-desc">Полный обзор Siemens A52: год выпуска, технические параметры, особенности модели. Узнайте историю од</span>
+            </a><a href="/elektronika-i-gadzhety/a/ar/arduino-nano-kakoj-programmator-vybrat-v-nastrojkakh-ide.html" class="pb-related-card">
+                <span class="pb-related-title">Arduino Nano: выбор программатора в Arduino IDE</span>
+                <span class="pb-related-desc">Какой программатор выбрать для Arduino Nano в настройках IDE? Разбор CH340 и FT232, драйверы и решен</span>
+            </a><a href="/elektronika-i-gadzhety/s/so/solnechnaya-panel-dlya-zaryadki-poverbanka.html" class="pb-related-card">
+                <span class="pb-related-title">Солнечная панель для повербанка: выбор, эффективность и нюансы зарядки</span>
+                <span class="pb-related-desc">Полный гид по выбору солнечной панели для повербанка. Разбор типов фотоэлементов, расчета мощности и</span>
+            </a><a href="/elektronika-i-gadzhety/c/ch/chem-otlichaetsya-lampochka-ot-solntsa-vopros-psikhiatra.html" class="pb-related-card">
+                <span class="pb-related-title">Лампочка против Солнца: вопрос психиатра и физика света</span>
+                <span class="pb-related-desc">Разбор популярного вопроса психиатров: отличие лампочки от солнца. Диагностика когнитивных нарушений</span>
+            </a><a href="/elektronika-i-gadzhety/m/ma/massazher-dlya-shei-xiaomi-otzyvy.html" class="pb-related-card">
+                <span class="pb-related-title">Массажер для шеи Xiaomi: отзывы, обзор и сравнение моделей</span>
+                <span class="pb-related-desc">Честные отзывы о массажере для шеи Xiaomi. Сравнение моделей, плюсы и минусы, инструкция по применен</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

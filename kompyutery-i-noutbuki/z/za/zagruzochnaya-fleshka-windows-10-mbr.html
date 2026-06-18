@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Создание загрузочной флешки Windows 10 на MBR: инструкция и тонкости — Техно Гид</title>
+    <meta name="description" content="Пошаговое руководство по записи образа Windows 10 на флешку с разметкой MBR. Инструкция для Legacy BIOS, устранение ошибок и выбор правильного режима загрузки.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/z/za/zagruzochnaya-fleshka-windows-10-mbr.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Создание загрузочной флешки Windows 10 на MBR: инструкция и тонкости">
+    <meta property="og:description" content="Пошаговое руководство по записи образа Windows 10 на флешку с разметкой MBR. Инструкция для Legacy BIOS, устранение ошибок и выбор правильного режима загрузки.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Создание загрузочной флешки Windows 10 на MBR: инструкция и тонкости</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#почему-mbr-актуален-в-2026-году">Почему MBR актуален в 2026 году</a></li><li><a href="#выбор-инструментов-для-создания-носителя">Выбор инструментов для создания носителя</a></li><li><a href="#пошаговая-инструкция-по-настройке-в-rufus">Пошаговая инструкция по настройке в Rufus</a></li><li><a href="#настройка-bios-для-загрузки-с-mbr-носителя">Настройка BIOS для загрузки с MBR-носителя</a></li><li><a href="#сравнение-mbr-и-gpt-таблица-характеристик">Сравнение MBR и GPT: таблица характеристик</a></li><li><a href="#типичные-ошибки-и-способы-их-устранения">Типичные ошибки и способы их устранения</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/k/ka/kak-vosstanovit-dostup-k-vneshnemu-zhestkomu-disku-bez-formatirovaniya.html">Как восстановить данные с внешнего жесткого диска без форматирования</a></li><li><a href="/kompyutery-i-noutbuki/k/kh/khab-chto-eto-v-kompyutere.html">Что такое хаб в компьютере: виды, подключение и отличие от свитча</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-bystro-zakryt-okno-na-kompyutere.html">Как быстро закрыть окно на компьютере: горячие клавиши и методы</a></li><li><a href="/kompyutery-i-noutbuki/c/ch/chto-znachit-vasha-kopiya-vindovs-ne-yavlyaetsya-podlinnoj.html">Ошибка «Ваша копия Windows не является подлинной»: причины и решение</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-sobrat-sistemnyj-blok-iz-komplektuyushchikh.html">Как собрать системный блок: пошаговая инструкция по выбору и монтажу</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Создание загрузочной флешки Windows 10 с разметкой MBR</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#почему-mbr-актуален-в-2026-году">Почему MBR актуален в 2026 году</a></li><li><a href="#выбор-инструментов-для-создания-носителя">Выбор инструментов для создания носителя</a></li><li><a href="#пошаговая-инструкция-по-настройке-в-rufus">Пошаговая инструкция по настройке в Rufus</a></li><li><a href="#настройка-bios-для-загрузки-с-mbr-носителя">Настройка BIOS для загрузки с MBR-носителя</a></li><li><a href="#сравнение-mbr-и-gpt-таблица-характеристик">Сравнение MBR и GPT: таблица характеристик</a></li><li><a href="#типичные-ошибки-и-способы-их-устранения">Типичные ошибки и способы их устранения</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Ошибки загрузки при попытке установки Windows 10 на устройствах с классическим BIOS возникают из-за некорректного применения таблицы разделов GPT, которая не поддерживается legacy-режимом. Для успешного запуска инсталлятора необходимо создать загрузочную флешку с разметкой MBR, так как старые контроллеры способны считывать только этот формат. Игнорирование требования к файловой системе и структуре секторов приведет к тому, что система просто не увидит установочный носитель или выдаст сообщение об отсутствии загрузочного устройства.</p>
+
+<p>Если вы попытаетесь записать образ системы в режиме, несовместимом с вашим оборудованием, компьютер просто не увидит накопитель при попытке загрузиться. Именно поэтому понимание разницы между <strong>MBR</strong> (Master Boot Record) и <strong>GPT</strong> (GUID Partition Table) является фундаментом для успешной установки <em>Windows 10</em>. В этом материале мы подробно разберем, как подготовить носитель именно под требования старых и некоторых специфических современных материнских плат.</p>
+
+<h2 id="почему-mbr-актуален-в-2026-году">Почему MBR актуален в 2026 году</h2>
+
+<p>Несмотря на то, что стандарт UEFI давно завоевал рынок, он не вытеснил полностью своего предшественника. Огромный парк вычислительной техники, выпущенный в период с 2005 по 2015 год, по-прежнему работает на базе классического <strong>BIOS</strong>. Для таких систем использование схемы разделов MBR является обязательным условием. Попытка загрузиться с носителя, размеченного как GPT, на старом оборудовании приведет к ошибке "Boot Device Not Found" или бесконечному циклу перезагрузки.</p>
+
+<p>Кроме того, многие пользователи специализированного оборудования, такого как промышленные контроллеры или старое медицинское оборудование, зафиксированы на <strong>Legacy</strong> режиме для обеспечения совместимости со старым драйверным обеспечением. В таких сценариях создание <em>загрузочной флешки</em> с поддержкой MBR — это не архаизм, а необходимость. Важно понимать, что лимит в 2 ТБ на один раздел, характерный для MBR, для большинства системных дисков уже не является проблемой, так как операционная система обычно устанавливается на диск объемом 500-1000 ГБ.</p>
+
+<p>Стоит также отметить, что даже на новых компьютерах иногда требуется отключить <strong>Secure Boot</strong> и переключить режим загрузки в BIOS на <code>Legacy/CSM</code> для установки специфических версий ОС или для работы с определенными утилитами восстановления. Именно в этот момент схема разметки MBR становится ключевым фактором успеха.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Современные версии <em>Rufus</em> и других утилит по умолчанию предлагают режим UEFI. Если вы не видите в настройках выбора схемы разделов MBR, скорее всего, утилита пытается подстроиться под ваш текущий загрузочный образ или настройки сессии. Всегда проверяйте выпадающий список перед началом записи.</p>
+</blockquote>
+
+<h2 id="выбор-инструментов-для-создания-носителя">Выбор инструментов для создания носителя</h2>
+
+<p>Для создания загрузочной флешки существует множество программ, но не все они позволяют гибко управлять типом таблицы разделов. Самым надежным и проверенным решением является утилита <em>Rufus</em>. Она обладает простым интерфейсом и позволяет явно указать, какую схему раздела использовать: MBR для компьютеров с BIOS или UEFI, или GPT для компьютеров с UEFI. Это дает пользователю полный контроль над процессом создания загрузочного носителя.</p>
+
+<p>Альтернативой может служить официальный Media Creation Tool от Microsoft, однако он имеет существенный недостаток: он автоматически определяет режим загрузки и часто не дает пользователю выбора, принудительно записывая образ в режиме, который, по мнению алгоритма, является правильным. Это может создать проблемы, если ваш BIOS настроен специфически. Поэтому для ручного управления схемой MBR лучше использовать стороннее ПО, такое как <em>Rufus</em> или <em>Etcher</em> (хотя Etcher требует дополнительного вмешательства в настройки перед записью).</p>
+
+<p>Также можно использовать командную строку, но этот метод требует глубокого понимания структуры разделов и повышает риск ошибки при вводе команд. Для рядового пользователя визуальный интерфейс <em>Rufus</em> является оптимальным выбором, так как он наглядно показывает выбранные параметры. Убедитесь, что вы скачиваете последнюю версию программы с официального сайта, чтобы избежать багов, связанных с поддержкой новых файловых систем.</p>
+
+<div class="pb-poll" id="poll-6403bb3f"><div class="pb-poll-question">📊 Какой способ создания флешки вы используете чаще всего?</div><div class="pb-poll-option" data-poll="6403bb3f" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Официальный Media Creation Tool</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6403bb3f" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Rufus</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6403bb3f" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Командная строка (Diskpart)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6403bb3f" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Другие утилиты (Ventoy и др.)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="пошаговая-инструкция-по-настройке-в-rufus">Пошаговая инструкция по настройке в Rufus</h2>
+
+<p>Процесс начинается с подготовки образа. Вам необходимо скачать ISO-образ <em>Windows 10</em>. Убедитесь, что файл не поврежден, сверив контрольную сумму. Далее подключите флешку к компьютеру. Обратите внимание, что все данные на ней будут безвозвратно удалены, поэтому заранее сохраните важную информацию на другой носитель.</p>
+
+<p>Запустите утилиту <em>Rufus</em>. В поле "Устройство" выберите вашу флешку. Самый важный момент — настройка параметров загрузочного диска. В разделе "Схема раздела" обязательно выберите <strong>MBR</strong>. В поле "Целевая система" программа должна автоматически выбрать <strong>BIOS (или UEFI-CSM)</strong>. Если вы выберете GPT, а ваш компьютер не поддерживает UEFI, загрузка не начнется.</p>
+
+<p>Важно обратить внимание на файловую систему. Для MBR-разметки чаще всего используется <strong>FAT32</strong>, однако в новых версиях Rufus при выборе образа Windows 10 с файлами размером более 4 ГБ (что характерно для образа <em>install.wim</em>) программа может предложить форматирование в <strong>NTFS</strong> с эмуляцией загрузки через <em>UEFI:NTFS</em>. Для чистого режима Legacy (старый BIOS) лучше использовать <strong>FAT32</strong>, если размер файла не превышает 4 ГБ, или <strong>NTFS</strong>, если программа сама предложит этот вариант как единственный для данного образа в режиме MBR.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка флешки</h4><label class="check-item"><input type="checkbox"><span>Выбрать правильный накопитель</span></label><label class="check-item"><input type="checkbox"><span>Установить схему MBR</span></label><label class="check-item"><input type="checkbox"><span>Выбрать файловую систему (FAT32/NTFS)</span></label><label class="check-item"><input type="checkbox"><span>Нажать кнопку СТАРТ</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<blockquote>
+<p>⚠️ Внимание: Если вы выберете <strong>NTFS</strong> для режима MBR на очень старом компьютере (более 10 лет), BIOS может не иметь встроенных драйверов для чтения этой файловой системы. В таком случае флешка будет видна, но загрузиться с нее не получится. В этом случае попробуйте разбить образ на части или использовать утилиту с поддержкой специальных драйверов.</p>
+</blockquote>
+
+<p>После настройки параметров нажмите кнопку <code>СТАРТ</code>. Программа запросит подтверждение удаления данных. Согласитесь. Если Rufus предложит скачать обновленный образ загрузчика, разрешите это. Процесс записи займет от 5 до 20 минут в зависимости от скорости USB-порта. Не отключайте носитель до появления надписи "ГОТОВО".</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед началом записи в Rufus, проверьте, что в выпадающем списке "Схема раздела" отображается именно MBR, а не GPT. Если там стоит GPT, а вам нужен старый режим, нажмите "Выбрать" рядом с полем образа и загрузите ISO файл заново, чтобы сбросить настройки по умолчанию утилиты.</p></aside>
+
+<h2 id="настройка-bios-для-загрузки-с-mbr-носителя">Настройка BIOS для загрузки с MBR-носителя</h2>
+
+<p>Создание флешки — это только половина дела. Чтобы компьютер увидел и загрузился с вашего носителя, необходимо правильно настроить <strong>BIOS</strong> материнской платы. Зайдите в BIOS, нажав клавишу <code>Del</code>, <code>F2</code> или <code>F10</code> при включении. Найдите раздел <code>Boot</code> или <code>Advanced BIOS Features</code>.</p>
+
+<p>Вам необходимо найти параметр <code>Boot Mode</code> или <code>UEFI/Legacy Boot</code>. Если там стоит <strong>UEFI Only</strong>, смените его на <strong>Legacy Only</strong> или <strong>Legacy First</strong>. Иногда также требуется отключить функцию <code>Secure Boot</code>, так как она блокирует загрузку неподписанных загрузчиков, к которым относятся многие старые или кастомные образы Windows 10 в MBR.</p>
+
+<p>Если у вас современный BIOS с графическим интерфейсом, ищите раздел <code>CSM (Compatibility Support Module)</code>. Включите этот модуль и установите <code>Boot Device Control</code> в значение <code>Legacy Only</code>. Это позволит системе эмулировать старую среду загрузки для ваших MBR-носителей. Без включения CSM, даже при наличии MBR на флешке, система увидит только UEFI-устройства.</p>
+
+<details class="pb-accordion"><summary>Что делать, если BIOS не видит флешку?</summary><div class="pb-accordion-body"><p>1. Попробуйте другой порт USB (лучше USB 2.0, так как драйверы USB 3.0 в BIOS могут отсутствовать). 2. Убедитесь, что в настройках Boot Priority флешка стоит первой. 3. Если используется USB-хаб, подключите флешку напрямую к материнской плате. 4. Проверьте, не включен ли режим "Fast Boot", который игнорирует периферийные устройства при старте.</p></div></details>
+
+<p>После изменения настроек сохраните изменения и выйдите, обычно это делается клавишей <code>F10</code>. Компьютер перезагрузится. Если все сделано верно, вы увидите экран установки Windows. Если появляется черный экран или надпись "No bootable device", значит, настройки BIOS не соответствуют типу разметки вашей флешки.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Ключевым моментом является включение поддержки CSM (Legacy) в BIOS. Без этого даже идеально созданная MBR-флешка не будет видна современной материнской плате в списке загрузочных устройств.</p></aside>
+
+<h2 id="сравнение-mbr-и-gpt-таблица-характеристик">Сравнение MBR и GPT: таблица характеристик</h2>
+
+<p>Для наглядности сравним основные параметры двух популярных схем разметки. Это поможет вам окончательно понять, какой вариант подходит именно для вашей задачи. Выбор зависит не только от возраста компьютера, но и от размера диска и требований к надежности.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>MBR (Master Boot Record)</th>
+<th>GPT (GUID Partition Table)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Максимальный размер диска</td>
+<td>2 ТБ</td>
+<td>9,4 Зеттабайт</td>
+</tr>
+<tr>
+<td>Максимальное количество разделов</td>
+<td>4 основных</td>
+<td>128 и более</td>
+</tr>
+<tr>
+<td>Требования к BIOS</td>
+<td>Legacy BIOS или CSM</td>
+<td>Только UEFI</td>
+</tr>
+<tr>
+<td>Надежность данных</td>
+<td>Выше риск повреждения загрузочной записи</td>
+<td>Резервные копии заголовков на диске</td>
+</tr>
+<tr>
+<td>Скорость загрузки</td>
+<td>Чуть медленнее на старых системах</td>
+<td>Быстрее благодаря параллельной проверке</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Исходя из таблицы, если ваш системный диск имеет объем более 2 ТБ, использование MBR физически невозможно без потери части пространства. Однако для установки операционной системы на диск до 2 ТБ в режиме Legacy, MBR является стандартом де-факто. Многие пользователи ошибочно пытаются использовать GPT на старых ПК, что является тупиковым путем.</p>
+
+<p>Также стоит учитывать, что при использовании <strong>MBR</strong> в составе одной системы могут быть как первичные, так и логические разделы, тогда как <em>GPT</em> рассматривает все разделы как равные. Это упрощает управление дисками в современных ОС, но добавляет сложности при работе с устаревшим ПО, требующим "активного" раздела в начале диска.</p>
+
+<h2 id="типичные-ошибки-и-способы-их-устранения">Типичные ошибки и способы их устранения</h2>
+
+<p>Одной из самых частых проблем является ошибка "Windows cannot be installed to this disk. The selected disk has an MBR partition table". Это происходит, когда вы пытаетесь установить систему в режиме UEFI на диск с разметкой MBR. Решение простое: либо переформатировать диск в GPT (что удалит данные), либо сменить режим загрузки в BIOS на Legacy. Если вы не хотите терять данные, смена режима в BIOS — единственный выход.</p>
+
+<p>Другая распространенная проблема — отсутствие флешки в списке загрузочных устройств. Это часто случается, если вы выбрали <strong>MBR</strong> в Rufus, но забыли отключить <code>Secure Boot</code> или включить <code>CSM</code>. Также проверьте, не включен ли режим <code>Fast Boot</code>, который может игнорировать USB-устройства при старте. В этом случае нужно зайти в BIOS и временно отключить эту функцию.</p>
+
+<p>Иногда пользователи сталкиваются с тем, что установщик Windows выдает ошибку "Нет драйверов DVD-привода" или "Не найдены разделы". Это может быть связано с тем, что флешка записана в режиме UEFI, а BIOS настроен на Legacy. В таких случаях пересоздание носителя с правильной схемой разделов MBR является обязательным условием. Не пытайтесь обходить это ограничение установкой драйверов вручную, так как проблема кроется на уровне загрузчика.</p>
+
+<details class="pb-accordion"><summary>Как проверить текущую схему разделов на диске?</summary><div class="pb-accordion-body"><p>1. Нажмите Win+X и выберите "Управление дисками". 2. Нажмите правой кнопкой мыши на название диска (например, Диск 0) вверху. 3. Выберите "Свойства". 4. Перейдите на вкладку "Volumes". 5. В строке "Тип таблицы разделов" будет указано: MBR или GPT. Если MBR — вам подходитLegacy BIOS.</p></div></details>
+
+<blockquote>
+<p>⚠️ Внимание: Если при попытке установки вы видите, что диск имеет размер 0 ГБ или не виден вовсе, возможно, ваш контроллер диска (SATA) работает в режиме <code>Raid</code> или <code>IDE</code>, а не <code>AHCI</code>. Попробуйте сменить режим работы SATA в BIOS на <code>AHCI</code>, но будьте готовы к тому, что старая система может не загрузиться без предварительной подготовки реестра.</p>
+</blockquote>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Можно ли использовать флешку с MBR на компьютере с UEFI?</summary>
+<p>Да, это возможно, но только при условии, что в настройках BIOS включен режим совместимости <em>CSM (Compatibility Support Module)</em> или <em>Legacy Boot</em>. Если CSM отключен, UEFI система не сможет загрузиться с MBR-носителя.</p>
+</details>
+
+<details>
+<summary>Что делать, если Rufus не дает выбрать MBR?</summary>
+<p>Это может происходить, если вы выбрали загрузочный образ, который автоматически подстраивается под UEFI (например, некоторые дистрибутивы Linux). Попробуйте выбрать другой образ ISO или вручную сбросить настройки утилиты. Убедитесь, что в поле "Схема раздела" стоит галочка напротив MBR.</p>
+</details>
+
+<details>
+<summary>Влияет ли скорость USB-порта на выбор MBR или GPT?</summary>
+<p>Нет, скорость порта (USB 2.0 или 3.0) не влияет на выбор схемы разделов. Однако на очень старых компьютерах (до 2010 года) драйверы для USB 3.0 в BIOS могут отсутствовать, поэтому для MBR-флешки лучше использовать порт USB 2.0, чтобы избежать проблем с загрузкой.</p>
+</details>
+
+<details>
+<summary>Как узнать, поддерживает ли мой компьютер MBR?</summary>
+<p>Если вашему компьютеру более 10-12 лет, он почти наверняка поддерживает MBR. Для более новых моделей зайдите в BIOS и поищите настройки <code>CSM</code> или <code>Legacy Boot</code>. Если такие пункты есть — поддержка есть. Если их нет и включен только <code>UEFI</code> — MBR не будет работать без дополнительных эмуляций.</p>
+</details>
+
+<details>
+<summary>Нужно ли форматировать флешку перед записью?</summary>
+<p>Программа Rufus сделает это автоматически при нажатии кнопки "Старт". Однако, если вы используете другие методы, например, командную строку, ручное форматирование в <code>NTFS</code> или <code>FAT32</code> является обязательным этапом. Важно, чтобы файловая система соответствовала требованиям образа Windows 10.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/k/ka/kak-vosstanovit-dostup-k-vneshnemu-zhestkomu-disku-bez-formatirovaniya.html" class="pb-related-card">
+                <span class="pb-related-title">Как восстановить данные с внешнего жесткого диска без форматирования</span>
+                <span class="pb-related-desc">Полная инструкция по восстановлению доступа к внешнему HDD без потери файлов. Проверка подключения, </span>
+            </a><a href="/kompyutery-i-noutbuki/k/kh/khab-chto-eto-v-kompyutere.html" class="pb-related-card">
+                <span class="pb-related-title">Что такое хаб в компьютере: виды, подключение и отличие от свитча</span>
+                <span class="pb-related-desc">Полный гид по компьютерным хабу. Разбор отличий от свитчей, типы портов, инструкция по выбору и подк</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-bystro-zakryt-okno-na-kompyutere.html" class="pb-related-card">
+                <span class="pb-related-title">Как быстро закрыть окно на компьютере: горячие клавиши и методы</span>
+                <span class="pb-related-desc">Узнайте, как мгновенно закрыть зависшее или активное окно на ПК. Горячие клавиши для Windows и macOS</span>
+            </a><a href="/kompyutery-i-noutbuki/c/ch/chto-znachit-vasha-kopiya-vindovs-ne-yavlyaetsya-podlinnoj.html" class="pb-related-card">
+                <span class="pb-related-title">Ошибка «Ваша копия Windows не является подлинной»: причины и решение</span>
+                <span class="pb-related-desc">Что делать, если Windows пишет, что копия не подлинная? Разбор ошибок 0x8007007B, активация, легализ</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-sobrat-sistemnyj-blok-iz-komplektuyushchikh.html" class="pb-related-card">
+                <span class="pb-related-title">Как собрать системный блок: пошаговая инструкция по выбору и монтажу</span>
+                <span class="pb-related-desc">Полное руководство по сборке ПК своими руками. Выбор комплектующих, совместимость, пошаговая инструк</span>
+            </a><a href="/kompyutery-i-noutbuki/p/pe/perezagruzhaetsya-noutbuk-sam-po-sebe.html" class="pb-related-card">
+                <span class="pb-related-title">Ноутбук сам по себе перезагружается: 7 причин и способы решения</span>
+                <span class="pb-related-desc">Почему ноутбук перезагружается сам по себе? Разбираем причины: от перегрева и вирусов до сбоев драйв</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

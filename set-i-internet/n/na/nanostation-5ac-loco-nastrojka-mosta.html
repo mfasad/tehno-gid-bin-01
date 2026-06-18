@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Настройка моста AirMax AC на Ubiquiti NanoStation 5AC Loco — Техно Гид</title>
+    <meta name="description" content="Пошаговая инструкция по соединению двух точек доступа Ubiquiti NanoStation 5AC Loco в мост PtP. Настройка IP, AirMax, частот и безопасности.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/n/na/nanostation-5ac-loco-nastrojka-mosta.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Настройка моста AirMax AC на Ubiquiti NanoStation 5AC Loco">
+    <meta property="og:description" content="Пошаговая инструкция по соединению двух точек доступа Ubiquiti NanoStation 5AC Loco в мост PtP. Настройка IP, AirMax, частот и безопасности.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Настройка моста AirMax AC на Ubiquiti NanoStation 5AC Loco</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-оборудования-и-физическое-подключение">Подготовка оборудования и физическое подключение</a></li><li><a href="#первичная-настройка-интерфейса-airos">Первичная настройка интерфейса airOS</a></li><li><a href="#конфигурация-режима-access-point-ведущее-устройство">Конфигурация режима Access Point (Ведущее устройство)</a></li><li><a href="#настройка-режима-station-ведомое-устройство">Настройка режима Station (Ведомое устройство)</a></li><li><a href="#оптимизация-сигнала-и-выравнивание-антенн">Оптимизация сигнала и выравнивание антенн</a></li><li><a href="#дополнительные-настройки-сети-и-безопасность">Дополнительные настройки сети и безопасность</a></li><li><a href="#диагностика-проблем-и-устранение-неполадок">Диагностика проблем и устранение неполадок</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/n/ne/net-interneta-router-tp-link.html">Нет интернета на роутере TP-Link: Полное руководство по поиску и устранению неисправностей</a></li><li><a href="/set-i-internet/s/s-/s-kakogo-vremeni-zakanchivaetsya-noch.html">С какого времени заканчивается ночь: астрономический и бытовой взгляд</a></li><li><a href="/set-i-internet/p/pe/perevod-po-sms-sberbank-na-telefon.html">Перевод по СМС Сбербанк: инструкция, лимиты и риски</a></li><li><a href="/set-i-internet/k/ka/kak-ustanovit-hiddify-na-linux.html">Как установить Hiddify на Linux: полная инструкция</a></li><li><a href="/set-i-internet/m/ma/markirovka-setevogo-kabelya-dlya-interneta.html">Маркировка сетевого кабеля: расшифровка и выбор для интернета</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как настроить мост на Ubiquiti NanoStation 5AC Loco</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-оборудования-и-физическое-подключение">Подготовка оборудования и физическое подключение</a></li><li><a href="#первичная-настройка-интерфейса-airos">Первичная настройка интерфейса airOS</a></li><li><a href="#конфигурация-режима-access-point-ведущее-устройство">Конфигурация режима Access Point (Ведущее устройство)</a></li><li><a href="#настройка-режима-station-ведомое-устройство">Настройка режима Station (Ведомое устройство)</a></li><li><a href="#оптимизация-сигнала-и-выравнивание-антенн">Оптимизация сигнала и выравнивание антенн</a></li><li><a href="#дополнительные-настройки-сети-и-безопасность">Дополнительные настройки сети и безопасность</a></li><li><a href="#диагностика-проблем-и-устранение-неполадок">Диагностика проблем и устранение неполадок</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Организация беспроводного соединения между двумя удаленными точками — классическая задача для оборудования <em>Ubiquiti Networks</em>. Модель <strong>NanoStation 5AC Loco</strong> идеально подходит для создания канала <em>Point-to-Point (PtP)</em> на расстояниях до 5-8 километров. Это компактное устройство пятого поколения с поддержкой стандарта <em>airMAX AC</em> обеспечивает высокую пропускную способность и стабильность сигнала даже в условиях городского шума.</p>
+
+<p>Процесс настройки моста требует последовательного подхода: от физической установки антенн до тонкой калибровки радиочастотных параметров в веб-интерфейсе <em>airOS 8</em>. <strong>Ключевым моментом</strong> является правильная инициализация ведущего и ведомого устройств, а также выбор свободной частоты для минимизации интерференции. В этой инструкции мы разберем все этапы конфигурации, чтобы вы могли получить максимально быстрый и надежный канал связи.</p>
+
+<h2 id="подготовка-оборудования-и-физическое-подключение">Подготовка оборудования и физическое подключение</h2>
+
+<p>Перед началом программной настройки убедитесь, что оба устройства <em>NanoStation 5AC Loco</em> установлены на мачтах или кронштейнах с прямой видимостью друг друга. Отсутствие препятствий в зоне Френеля критически важно для стабильной работы канала. Для первоначальной конфигурации вам потребуется подключить каждое устройство к компьютеру или ноутбуку с помощью Ethernet-кабеля.</p>
+
+<p>Используйте оригинальные PoE-инжекторы, входящие в комплект поставки. Подключите кабель от LAN-порта инжектора к сетевой карте вашего ПК, а порт PoE соедините с разъемом на антенне. <strong>Внимание:</strong> убедитесь, что ваш сетевой адаптер настроен на получение IP-адреса автоматически или имеет статический адрес в подсети 192.168.1.x, так как заводской IP адрес устройств Ubiquiti по умолчанию равен <code>192.168.1.20</code>.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Не подключайте кабель интернета (WAN) от провайдера напрямую к порту PoE антенны до завершения базовой настройки. Это может вызвать конфликт IP-адресов или блокировку доступа к интерфейсу управления.</p>
+</blockquote>
+
+<p>После подачи питания дождитесь загрузки устройства (около 60 секунд). Индикаторы на корпусе должны загореться, сигнализируя о готовности. Теперь вы можете перейти в браузер и ввести адрес устройства в строку поиска. Если подключение прошло успешно, вы увидите экран авторизации системы <em>airOS</em>.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Готовность к настройке</h4><label class="check-item"><input type="checkbox"><span>Проверена прямая видимость между антеннами</span></label><label class="check-item"><input type="checkbox"><span>Используется оригинальный PoE-инжектор</span></label><label class="check-item"><input type="checkbox"><span>Сетевая карта ПК настроена верно</span></label><label class="check-item"><input type="checkbox"><span>Кабели исправны и надежно подключены</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="первичная-настройка-интерфейса-airos">Первичная настройка интерфейса airOS</h2>
+
+<p>Войдите в систему, используя стандартные учетные данные: логин <code>ubnt</code> и пароль <code>ubnt</code>. При первом входе система может предложить сменить пароль — сделайте это немедленно для обеспечения безопасности вашего канала. Интерфейс <em>airOS 8</em> интуитивно понятен, но требует внимательности при выборе режима работы.</p>
+
+<p>Перейдите на вкладку <code>Wireless</code>. Здесь необходимо выбрать режим работы устройства. Для построения моста одно из устройств должно работать в режиме <strong>Access Point</strong> (Точка доступа), а второе — в режиме <strong>Station</strong> (Клиент). Обычно ведущее устройство (подключенное к основному роутеру или серверу) настраивают как AP, а удаленное — как Station.</p>
+
+<p>В поле <code>SSID</code> задайте уникальное имя вашей беспроводной сети. Это имя будет использоваться вторым устройством для поиска и подключения к первой точке. Рекомендуется использовать сложные названия, не содержащие личной информации. Также в этом разделе выбирается ширина канала: для максимальной скорости в диапазоне 5 ГГц лучше установить значение <code>40 MHz</code> или <code>80 MHz</code>, если эфир не перегружен.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для проверки занятости частот используйте встроенный инструмент Spectrum Analyzer в меню airOS. Он покажет уровень шума и поможет выбрать наименее загруженный канал.</p></aside>
+
+<p>Не забудьте изменить IP-адрес устройства, если в вашей сети уже есть устройство с адресом 192.168.1.20. Перейдите в вкладку <code>Network</code> и задайте статический IP, например, <code>192.168.1.10</code> для первой точки и <code>192.168.1.11</code> для второй. Маску подсети оставьте <code>255.255.255.0</code>.</p>
+
+<h2 id="конфигурация-режима-access-point-ведущее-устройство">Конфигурация режима Access Point (Ведущее устройство)</h2>
+
+<p>Настройка ведущего устройства является фундаментом всего моста. В режиме <strong>Access Point</strong> устройство генерирует сигнал и управляет подключением клиентов. После выбора режима вкладки <code>Wireless</code>, обратите внимание на секцию <em>Wireless Mode</em>. Убедитесь, что выбран протокол <em>airMAX AC</em>, а не смешанный режим, чтобы избежать падения скорости из-за старых устройств.</p>
+
+<p>Важным параметром является <code>Channel Width</code> (Ширина канала). Чем шире канал, тем выше потенциальная скорость, но больше подверженность помехам. Для NanoStation 5AC Loco оптимальным балансом часто становится <code>40 MHz</code>. Если вы находитесь в сельской местности с чистым эфиром, можно попробовать <code>80 MHz</code>. Частоту (<code>Frequency</code>) лучше зафиксировать вручную, выбрав конкретное значение из списка, например, 5200 или 5700 МГц, чтобы устройство не "прыгало" по каналам.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Рекомендуемое значение</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wireless Mode</td>
+<td>Access Point</td>
+<td>Режим работы ведущей точки</td>
+</tr>
+<tr>
+<td>Channel Width</td>
+<td>40 MHz</td>
+<td>Баланс скорости и стабильности</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>WPA2-AES</td>
+<td>Протокол шифрования трафика</td>
+</tr>
+<tr>
+<td>Output Power</td>
+<td>20-23 dBm</td>
+<td>Мощность передатчика (зависит от расстояния)</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>В разделе безопасности <code>Security</code> обязательно включите шифрование. Выберите тип <strong>WPA2-AES</strong> и задайте сложный пароль (Pre-Shared Key). Это предотвратит подключение посторонних устройств к вашему мосту и защитит передаваемые данные от перехвата. Без пароля сеть будет открыта для всех в радиусе действия.</p>
+
+<div class="pb-poll" id="poll-eb12b2a9"><div class="pb-poll-question">📊 Какое расстояние между вашими точками?</div><div class="pb-poll-option" data-poll="eb12b2a9" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">До 1 км</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="eb12b2a9" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">1-3 км</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="eb12b2a9" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">3-5 км</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="eb12b2a9" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Более 5 км</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="настройка-режима-station-ведомое-устройство">Настройка режима Station (Ведомое устройство)</h2>
+
+<p>Второе устройство настраивается аналогично, но с ключевым отличием в режиме работы. Выберите режим <strong>Station</strong>. В этом режиме антенна будет искать сигнал от ведущей точки. В поле <code>SSID</code> необходимо ввести то же самое имя сети, которое вы задали на Access Point, либо воспользоваться кнопкой <code>Select</code> для поиска доступных сетей в эфире.</p>
+
+<p>Убедитесь, что частота и ширина канала на ведомом устройстве совпадают с настройками ведущего. Хотя протокол <em>airMAX</em> обладает определенной гибкостью, ручная фиксация параметров на обоих концах канала гарантирует отсутствие рассинхронизации при перезагрузках или скачках напряжения.</p>
+
+<p>Введите тот же пароль безопасности (WPA2 Key), что и на первой точке. После применения настроек (<code>Change</code> -> <code>Save</code>) устройство попытается подключиться. Статус соединения можно отследить по индикатору <code>Link</code> в верхней части интерфейса или на корпусе устройства. Если связь установлена, индикатор станет зеленым, а в статусе появится значение <code>Connected</code>.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Если устройства не видят друг друга, проверьте поляризацию антенн. Разъемы на NanoStation должны смотреть в одну сторону (оба вверх или оба вбок). Несовпадение поляризации резко снижает уровень сигнала.</p>
+</blockquote>
+
+<h2 id="оптимизация-сигнала-и-выравнивание-антенн">Оптимизация сигнала и выравнивание антенн</h2>
+
+<p>После логической настройки наступает этап физической юстировки. Даже идеальные настройки программного обеспечения не спасут, если антенны направлены неточно. Используйте встроенный инструмент <code>AirView</code> или страницу состояния <code>Main</code> в веб-интерфейсе для мониторинга уровня сигнала (<code>Signal Strength</code>) и уровня шума (<code>Noise Floor</code>).</p>
+
+<p>Цель настройки — достичь максимального значения сигнала (чем ближе к 0, тем лучше, например, -55 dBm лучше, чем -70 dBm) и минимального уровня шума. Медленно поворачивайте антенну по горизонтали и вертикали, наблюдая за изменениями цифр в реальном времени. Зафиксируйте крепление только после достижения пиковых значений.</p>
+
+<details class="pb-accordion"><summary>Что такое CCQ?</summary><div class="pb-accordion-body"><p>CCQ (Client Connection Quality) — это показатель качества соединения, выраженный в процентах. Значение ниже 90% указывает на проблемы с эфиром, интерференцию или неточное наведение антенн, что приведет к падению реальной скорости ниже физической.</p></div></details>
+
+<p>Обратите внимание на параметр <strong>CCQ</strong>. Он отражает качество связи с учетом повторных передач пакетов. Стабильный мост должен показывать CCQ выше 95-98%. Если показатель скачет, возможно, в эфире есть помехи от других передатчиков или радаров, и стоит сменить частоту на более чистую.</p>
+
+<h2 id="дополнительные-настройки-сети-и-безопасность">Дополнительные настройки сети и безопасность</h2>
+
+<p>Для полноценной работы моста необходимо настроить сетевой шлюз. На обоих устройствах в разделе <code>Network</code> укажите IP-адрес вашего основного роутера в поле <code>Gateway</code>. Это позволит устройствам за мостом выходить в интернет. Также пропишите адреса DNS-серверов (например, от Google <code>8.8.8.8</code> или вашего провайдера).</p>
+
+<p>Если вы планируете передавать видеотрафик или использовать VoIP, рекомендуется включить функцию <code>Priority Queue</code> (при наличии в прошивке) или настроить QoS для приоритизации важного трафика. Однако для простого моста PtP стандартных настроек <em>airMAX</em> обычно достаточно, так как этот протокол сам эффективно управляет временем передачи (TDMA).</p>
+
+<p>Не забудьте обновить прошивку устройств до последней стабильной версии. Производители регулярно выпускают обновления, улучшающие стабильность соединения и закрывающие уязвимости безопасности. Скачайте актуальный файл с официального сайта и загрузите его через вкладку <code>System</code> -> <code>Firmware Update</code>.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Финальным шагом всегда должен быть reboot (перезагрузка) обоих устройств после сохранения всех настроек, чтобы убедиться в корректном старте конфигурации.</p></aside>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Интерфейс и доступные функции могут незначительно отличаться в зависимости от версии прошивки airOS. Всегда сверяйтесь с официальным руководством пользователя (User Guide) для вашей конкретной версии ПО перед изменением продвинутых настроек.</p>
+</blockquote>
+
+<h2 id="диагностика-проблем-и-устранение-неполадок">Диагностика проблем и устранение неполадок</h2>
+
+<p>Если мост не работает или скорость нестабильна, начните диагностику с проверки кабелей и PoE-инжекторов. Частой проблемой является использование некачественных обжимных коннекторов RJ-45, которые могут окисляться на улице. Используйте экранированные кабели (FTP/STP) с металлическими коннекторами для уличной прокладки.</p>
+
+<p>Проверьте логи системы в разделе <code>Logs</code>. Там могут быть сообщения о потере синхронизации или ошибках аутентификации. Если уровень сигнала хороший, но скорости нет, попробуйте снизить ширину канала с 80 до 40 или 20 МГц. Это увеличит запас прочности сигнала (Link Budget) и стабильность соединения.</p>
+
+<p>В случае полной потери доступа к устройству после неудачной настройки, выполните аппаратный сброс. На корпусе NanoStation 5AC Loco есть кнопка Reset. Удерживайте её около 10-15 секунд при включенном питании, пока индикаторы не мигнут одновременно. Устройство вернется к заводским настройкам.</p>
+
+<details>
+<summary>Почему мост работает медленно, хотя сигнал сильный?</summary>
+<p>Низкая скорость при высоком уровне сигнала часто вызвана высокой зашумленностью эфира (высокий Noise Floor) или низкой величиной CCQ. Попробуйте сменить частоту на менее загруженную, используя инструмент AirView, или уменьшить ширину канала.</p>
+</details>
+
+<details>
+<summary>Можно ли соединить три точки в кольцо?</summary>
+<p>NanoStation 5AC Loco предназначена для архитектуры Point-to-Point (одна к одной) или Point-to-MultiPoint (одна ко многим). Создание кольца из трех устройств потребует более сложной настройки VLAN и маршрутизации, либо использования оборудования с двумя радиомодулями.</p>
+</details>
+
+<details>
+<summary>Какое максимальное расстояние для этой модели?</summary>
+<p>Технически устройство может работать на расстояниях до 15+ км при идеальных условиях, но модель <em>Loco</em> оптимизирована для коротких дистанций до 5-8 км. Для больших расстояний лучше использовать модели с более узким лучом и высокой мощностью, например, NanoStation 5AC или PowerBeam.</p>
+</details>
+
+<details>
+<summary>Нужно ли заземлять антенну?</summary>
+<p>Да, заземление крайне желательно для уличного оборудования. Это защищает устройство от статического электричества и снижает риск повреждения при близких разрядах молнии. Используйте специальную шину заземления и кабель для заземления экрана витой пары.</p>
+</details>
+
+<details>
+<summary>Что делать, если устройство не пингуется?</summary>
+<p>Проверьте, находится ли ваш компьютер в той же подсети, что и устройство (192.168.1.x). Отключите брандмауэр Windows на время настройки. Убедитесь, что кабель исправен и индикаторы порта на компьютере горят.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/n/ne/net-interneta-router-tp-link.html" class="pb-related-card">
+                <span class="pb-related-title">Нет интернета на роутере TP-Link: Полное руководство по поиску и устранению неисправностей</span>
+                <span class="pb-related-desc">Пропал интернет на роутере TP-Link? Разбираем причины, настройки WAN, сброс и обновление прошивки. П</span>
+            </a><a href="/set-i-internet/s/s-/s-kakogo-vremeni-zakanchivaetsya-noch.html" class="pb-related-card">
+                <span class="pb-related-title">С какого времени заканчивается ночь: астрономический и бытовой взгляд</span>
+                <span class="pb-related-desc">Узнайте точное время окончания ночи по астрономическим, гражданским и навигационным стандартам. Разб</span>
+            </a><a href="/set-i-internet/p/pe/perevod-po-sms-sberbank-na-telefon.html" class="pb-related-card">
+                <span class="pb-related-title">Перевод по СМС Сбербанк: инструкция, лимиты и риски</span>
+                <span class="pb-related-desc">Пошаговая инструкция по переводу денег через СМС Сбербанк. Лимиты, комиссия, коды подтверждения и ме</span>
+            </a><a href="/set-i-internet/k/ka/kak-ustanovit-hiddify-na-linux.html" class="pb-related-card">
+                <span class="pb-related-title">Как установить Hiddify на Linux: полная инструкция</span>
+                <span class="pb-related-desc">Пошаговое руководство: установка Hiddify Next на Ubuntu, Debian и Arch. Настройка, выбор протокола и</span>
+            </a><a href="/set-i-internet/m/ma/markirovka-setevogo-kabelya-dlya-interneta.html" class="pb-related-card">
+                <span class="pb-related-title">Маркировка сетевого кабеля: расшифровка и выбор для интернета</span>
+                <span class="pb-related-desc">Полный гид по маркировке витой пары. Узнайте, как читать обозначения CAT5e, CAT6, экранирование и ма</span>
+            </a><a href="/set-i-internet/t/te/tele-2-ne-prikhodyat-sms-na-telefon.html" class="pb-related-card">
+                <span class="pb-related-title">Почему не приходят СМС от Теле2: причины и способы решения</span>
+                <span class="pb-related-desc">СМС от оператора Теле2 не приходят на телефон? Узнайте реальные причины блокировки, как настроить ба</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

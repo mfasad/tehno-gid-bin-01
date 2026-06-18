@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Настройка шаговых двигателей в Mach3: полное руководство — Техно Гид</title>
+    <meta name="description" content="Пошаговая инструкция по настройке шаговых двигателей в Mach3. Расчет шагов, тестирование, устранение сбоев и калибровка для станков ЧПУ.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/3d-pechat-i-modelirovanie/n/na/nastrojka-shagovykh-dvigatelej-v-mach3.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Настройка шаговых двигателей в Mach3: полное руководство">
+    <meta property="og:description" content="Пошаговая инструкция по настройке шаговых двигателей в Mach3. Расчет шагов, тестирование, устранение сбоев и калибровка для станков ЧПУ.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/3d-pechat-i-modelirovanie/">3D Печать и Моделирование</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Настройка шаговых двигателей в Mach3: полное руководство</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-аппаратной-части-и-драйверов">Подготовка аппаратной части и драйверов</a></li><li><a href="#базовая-конфигурация-портов-и-пинов">Базовая конфигурация портов и пинов</a></li><li><a href="#расчет-шагов-на-миллиметр-steps-per-unit">Расчет шагов на миллиметр (Steps Per Unit)</a></li><li><a href="#настройка-скоростей-и-ускорений">Настройка скоростей и ускорений</a></li><li><a href="#тестирование-и-калибровка-осей">Тестирование и калибровка осей</a></li><li><a href="#устранение-распространенных-проблем">Устранение распространенных проблем</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/3d-pechat-i-modelirovanie/c/ch/chem-krasyat-figurki-iz-3d-printera.html">Чем красить 3D печати: краски, грунт и технологии для идеальной фигурки</a></li><li><a href="/3d-pechat-i-modelirovanie/p/pe/petg-kakuyu-temperaturu-vyderzhivaet.html">Температурный режим PETG: от какой до какой работает пластик</a></li><li><a href="/3d-pechat-i-modelirovanie/3/3d/3d-modeli-dlya-proverki-3d-printera.html">Топ 10 3D моделей для проверки и калибровки 3D принтера</a></li><li><a href="/3d-pechat-i-modelirovanie/k/ka/kalibrovka-3d-printera-creality.html">Калибровка 3D принтера Creality: Полное руководство по настройке</a></li><li><a href="/3d-pechat-i-modelirovanie/e/en/ender-3-v3-se-pechat-petg.html">Печать PETG на Creality Ender 3 V3 SE: Настройки, проблемы и советы</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Настройка шаговых двигателей в Mach3: пошаговое руководство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-аппаратной-части-и-драйверов">Подготовка аппаратной части и драйверов</a></li><li><a href="#базовая-конфигурация-портов-и-пинов">Базовая конфигурация портов и пинов</a></li><li><a href="#расчет-шагов-на-миллиметр-steps-per-unit">Расчет шагов на миллиметр (Steps Per Unit)</a></li><li><a href="#настройка-скоростей-и-ускорений">Настройка скоростей и ускорений</a></li><li><a href="#тестирование-и-калибровка-осей">Тестирование и калибровка осей</a></li><li><a href="#устранение-распространенных-проблем">Устранение распространенных проблем</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Программное обеспечение <em>Mach3</em> остается одним из самых популярных решений для управления станками с ЧПУ, несмотря на появление более современных аналогов. Однако его гибкость требует от оператора глубокого понимания принципов работы кинематики. Неправильная конфигурация драйверов или неверный расчет передаточных чисел могут привести к браку деталей или даже поломке механики станка.</p>
+
+<p>Процесс настройки начинается задолго до запуска самой программы. Вам необходимо точно знать характеристики ваших <strong>шаговых двигателей</strong>, параметры микрошага драйверов и механические передачи вашего оборудования. Игнорирование этих базовых данных сделает любую последующую тонкую настройку бессмысленной.</p>
+
+<p>В этой статье мы подробно разберем весь цикл ввода станка в эксплуатацию через интерфейс Mach3. Мы затронем не только математические расчеты, но и нюансы электрических подключений, а также методы диагностики распространенных проблем при движении осей.</p>
+
+<h2 id="подготовка-аппаратной-части-и-драйверов">Подготовка аппаратной части и драйверов</h2>
+
+<p>Прежде чем открывать настройки в Windows, убедитесь, что физическое подключение выполнено корректно. Сигнальные провода от параллельного порта (LPT) или USB-контроллера должны быть надежно зафиксированы в разъемах драйверов. Любая "болтанка" контактов может спровоцировать ложные срабатывания или пропуски шагов.</p>
+
+<p>Критически важным этапом является настройка самого драйвера шагового двигателя. Современные модели, такие как <em>TB6600</em> или <em>DMA860H</em>, имеют переключатели микрошага (DIP-переключатели). Вы должны выбрать значение, которое обеспечит достаточную плавность хода, но не перегрузит процессор генерацией импульсов.</p>
+
+<ul>
+<li>🔌 Проверьте полярность подключения обмоток двигателя (A+, A-, B+, B-) согласно даташиту.</li>
+<li>⚙️ Установите ток удержания на драйвере в соответствии с номиналом двигателя, чтобы избежать перегрева.</li>
+<li>📡 Убедитесь, что длина сигнального кабеля не превышает 2 метров без использования экранирования.</li>
+</ul>
+
+<blockquote>⚠️ Внимание: Никогда не подключайте или не отключайте провода двигателя при включенном питании драйвера. Это гарантированно приведет к выгоранию силовых ключей.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если двигатель гудит, но не вращается, попробуйте изменить фазировку одной из пар проводов (поменяйте местами A+ и A-). Это частая ошибка при первом запуске.</p></aside>
+
+<h2 id="базовая-конфигурация-портов-и-пинов">Базовая конфигурация портов и пинов</h2>
+
+<p>Запустив <em>Mach3</em>, первым делом необходимо сообщить программе, какие физические пины отвечают за управление осями. Для этого перейдите в меню <code>Config → Ports and Pins</code>. Здесь задается адрес порта (обычно 0x378 для LPT) и номер пина для каждого сигнала.</p>
+
+<p>Вкладка <code>Motor Outputs</code> требует особого внимания. Для каждой оси (X, Y, Z, A) нужно указать Step Pin (пин шага) и Dir Pin (пин направления). Стандартная нумерация для параллельного порта часто начинается с 2 для шага и 3 для направления, но это зависит от вашей платы интерфейса.</p>
+
+<p>Не забудьте проверить галочку <strong>Active Low</strong> (Активный низкий уровень). Если ваш драйвер инвертирует сигнал, отсутствие этой галочки приведет к тому, что ось будет двигаться только в одну сторону или не реагировать на команды вовсе. Логика работы должна совпадать с документацией на ваш контроллер.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка конфигурации портов</h4><label class="check-item"><input type="checkbox"><span>Указан верный адрес LPT-порта</span></label><label class="check-item"><input type="checkbox"><span>Заданы Step и Dir пины для всех осей</span></label><label class="check-item"><input type="checkbox"><span>Проверена логика Active Low</span></label><label class="check-item"><input type="checkbox"><span>Нажата кнопка OK для сохранения</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="расчет-шагов-на-миллиметр-steps-per-unit">Расчет шагов на миллиметр (Steps Per Unit)</h2>
+
+<p>Самый важный математический этап — определение параметра <strong>Steps Per</strong>. Ошибка здесь приведет к тому, что станок пройдет не 100 мм, а, например, 98 мм, что недопустимо для точной обработки. Формула расчета универсальна, но требует точных вводных данных.</p>
+
+<p>Для винтовой передачи (ШВП) формула выглядит так: (Шаги двигателя × Микрошаг) / Шаг винта. Если у вас двигатель 1.8° (200 шагов), драйвер настроен на 1/8 микрошага (1600 шагов/об), а шаг винта 5 мм, то расчет будет: (200 × 8) / 5 = 320 шагов на мм.</p>
+
+<p>В случае с зубчатой рейкой расчет усложняется модулем зацепления. Здесь используется формула: (Шаги двигателя × Микрошаг) / (Модуль × Число зубьев шестерни × π). Результаты расчетов для разных механик сведены в таблицу ниже для наглядности.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Тип передачи</th>
+<th>Параметры</th>
+<th>Формула расчета</th>
+<th>Пример результата</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ШВП</td>
+<td>Винт 5мм, 1/8 микр.</td>
+<td>(200*8)/5</td>
+<td>320 steps/mm</td>
+</tr>
+<tr>
+<td>Рейка</td>
+<td>Модуль 1.5, 20 зуб.</td>
+<td>(200*8)/(1.5*20*3.14)</td>
+<td>≈16.98 steps/mm</td>
+</tr>
+<tr>
+<td>Ремень</td>
+<td>Шкив GT2, 20 зуб.</td>
+<td>(200*8)/(20*2)</td>
+<td>80 steps/mm</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Полученное значение вводится в поле <code>Steps Per</code> в разделе <code>Config → Motor Tuning</code>. Не округляйте дробные числа слишком сильно, особенно для реечных передач, где погрешность накапливается на больших длинах.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Точность расчета Steps Per Unit напрямую влияет на геометрическую точность изготавливаемой детали. Перепроверьте математику дважды перед вводом значений.</p></aside>
+
+<h2 id="настройка-скоростей-и-ускорений">Настройка скоростей и ускорений</h2>
+
+<p>После ввода шагов необходимо настроить динамические характеристики осей. Вкладка <code>Motor Tuning</code> позволяет задать максимальную скорость (<strong>Velocity</strong>) и ускорение (<strong>Acceleration</strong>). Эти параметры зависят от инерции вашей механики и мощности двигателей.</p>
+
+<p>Слишком высокое ускорение приведет к срыву шагов на старте и характерному визгу двигателей. Слишком низкое — сделает обработку неоправданно долгой. Начните с консервативных значений, например, 500 мм/мин и ускорения 100-200 мм/мин², постепенно увеличивая их в ходе тестов.</p>
+
+<p>Обратите внимание на параметр <em>Step Pulse</em> и <em>Step Space</em> в настройках портов. Для быстрых драйверов и современных процессоров обычно достаточно 2-4 микросекунд. Однако старые драйверы могут требовать увеличения длительности импульса до 6-10 мкс для надежного срабатывания.</p>
+
+<blockquote>⚠️ Внимание: Если при резком старте ось дергается или пропускает шаги, немедленно снизьте параметр Acceleration. Игнорирование этого признака ведет к потере координат.</blockquote>
+
+<details class="pb-accordion"><summary>Почему нельзя сразу ставить максимальную скорость?</summary><div class="pb-accordion-body"><p>Мгновенный разгон до высокой скорости требует огромного крутящего момента. Шаговый двигатель не может обеспечить его на низких оборотах, что приводит к остановке ротора (stall).</p></div></details>
+
+<h2 id="тестирование-и-калибровка-осей">Тестирование и калибровка осей</h2>
+
+<p>Теоретические расчеты всегда требуют практической проверки. Используйте встроенный инструмент калибровки в Mach3 или ручной метод с штангенциркулем. Задайте перемещение на фиксированное расстояние, например, ровно 100 мм, и измерьте фактический проход оси.</p>
+
+<p>Если реальное расстояние отличается от заданного, используйте корректирующий коэффициент. Новая величина Steps Per рассчитывается по формуле: (Текущие Steps Per × Заданное расстояние) / Измеренное расстояние. Внесите новое значение и повторите тест до достижения идеальной точности.</p>
+
+<ul>
+<li>📏 Проводите замеры на всей длине хода оси, чтобы выявить люфты или прогибы винта.</li>
+<li>🔄 Проверяйте возврат в исходную точку после серии перемещений.</li>
+<li>🔊 Слушайте звук двигателей: ровное гудение — норма, треск — признак проблем.</li>
+</ul>
+
+<p>Для окончательной фиксации настроек нажмите кнопку <code>Save XML</code> в главном экране. Программа хранит конфигурацию в XML-файле, и без явного сохранения все изменения исчезнут после перезагрузки.</p>
+
+<div class="pb-poll" id="poll-ca04066b"><div class="pb-poll-question">📊 С каким типом передачи вы работаете чаще всего?</div><div class="pb-poll-option" data-poll="ca04066b" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Шарико-винтовая пара (ШВП)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="ca04066b" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Зубчатая рейка</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="ca04066b" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Зубчатый ремень</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="ca04066b" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Ходовой винт (трапеция)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="ca04066b" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другое</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="устранение-распространенных-проблем">Устранение распространенных проблем</h2>
+
+<p>Даже при правильной настройке могут возникать специфические сбои. Часто пользователи сталкиваются с ситуацией, когда ось движется рывками или в неправильном направлении. Это может быть следствием электромагнитных наводок или неверной логики сигналов.</p>
+
+<p>Проблема "дрожания" оси на месте часто решается снижением тока удержания (Hold Current) на драйвере. Двигателю не нужно полное усилие, когда он стоит, а лишний ток лишь греет обмотки и создает вибрации, передающиеся на инструмент.</p>
+
+<p>Если станок теряет координаты после длительной работы, проверьте систему заземления. Разность потенциалов между компьютером и станком может создавать паразитные импульсы, которые Mach3 воспринимает как команды движения. Использование опторазвязки в интерфейсной плате решает эту проблему радикально.</p>
+
+<blockquote>⚠️ Внимание: Интерфейсы на базе параллельного порта чувствительны к энергосберегающим режимам BIOS. Отключите C-States и EIST в настройках процессора, чтобы избежать зависаний генерации импульсов.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте ферритовые кольца на кабелях управления, если замечаете хаотичные движения осей при включении шпинделя. Это признак помех по цепям питания.</p></aside>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Почему двигатель гудит, но вал не вращается?</summary>
+<p>Чаще всего это означает неправильную фазировку обмоток (перепутаны пары A и B) или слишком высокий ток удержания при низком напряжении питания. Также проверьте, не заклинила ли механика.</p>
+</details>
+
+<details>
+<summary>Как изменить направление вращения оси без перепайки проводов?</summary>
+<p>В меню <code>Config → Ports and Pins → Motor Outputs</code> установите галочку <strong>Dir Low Active</strong> для соответствующей оси. Это программно инвертирует сигнал направления.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать Mach3 с USB контроллерами?</summary>
+<p>Да, но стандартная версия Mach3 работает с LPT портами. Для USB необходима специальная платная версия Mach3 USB или использование внешних контроллеров, эмулирующих LPT через USB.</p>
+</details>
+
+<details>
+<summary>Что делать, если станок проходит меньше, чем задано в программе?</summary>
+<p>Необходимо увеличить параметр <strong>Steps Per</strong> в настройках калибровки. Если станок проходит 90 мм вместо 100 мм, увеличьте количество шагов на 10-11%.</p>
+</details>
+
+<details>
+<summary>Почему сбиваются настройки после выключения компьютера?</summary>
+<p>Вы не сохранили файл конфигурации. Нажмите кнопку <code>Save XML</code> на главном экране программы перед закрытием, чтобы записать текущие параметры в постоянную память.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/3d-pechat-i-modelirovanie/c/ch/chem-krasyat-figurki-iz-3d-printera.html" class="pb-related-card">
+                <span class="pb-related-title">Чем красить 3D печати: краски, грунт и технологии для идеальной фигурки</span>
+                <span class="pb-related-desc">Полный гид по выбору красок для 3D принтера. Сравнение акрила, эмали, аэрозолей. Подготовка, грунтов</span>
+            </a><a href="/3d-pechat-i-modelirovanie/p/pe/petg-kakuyu-temperaturu-vyderzhivaet.html" class="pb-related-card">
+                <span class="pb-related-title">Температурный режим PETG: от какой до какой работает пластик</span>
+                <span class="pb-related-desc">Подробный разбор температурной стойкости PETG. Рабочие диапазоны, температура печати, деформация и с</span>
+            </a><a href="/3d-pechat-i-modelirovanie/3/3d/3d-modeli-dlya-proverki-3d-printera.html" class="pb-related-card">
+                <span class="pb-related-title">Топ 10 3D моделей для проверки и калибровки 3D принтера</span>
+                <span class="pb-related-desc">Полный гид по тестовым моделям: от базовых калибровок до сложных механических тестов. Узнайте, как н</span>
+            </a><a href="/3d-pechat-i-modelirovanie/k/ka/kalibrovka-3d-printera-creality.html" class="pb-related-card">
+                <span class="pb-related-title">Калибровка 3D принтера Creality: Полное руководство по настройке</span>
+                <span class="pb-related-desc">Пошаговая инструкция по калибровке 3D принтеров Creality. Настройка первого слоя, ступеней двигателя</span>
+            </a><a href="/3d-pechat-i-modelirovanie/e/en/ender-3-v3-se-pechat-petg.html" class="pb-related-card">
+                <span class="pb-related-title">Печать PETG на Creality Ender 3 V3 SE: Настройки, проблемы и советы</span>
+                <span class="pb-related-desc">Полное руководство по печати PETG на Ender 3 V3 SE. Идеальные температуры, калибровка стола, устране</span>
+            </a><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-kak-sozdat-model.html" class="pb-related-card">
+                <span class="pb-related-title">Как создать 3D модель для принтера: гайд по моделированию</span>
+                <span class="pb-related-desc">Пошаговая инструкция по созданию 3D модели для печати. Обзор программ, типов файлов и методов модели</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

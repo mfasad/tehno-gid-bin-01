@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>ESP8266 и часы реального времени: схемы, прошивка, NTP — Техно Гид</title>
+    <meta name="description" content="Подробный гайд по подключению RTC к ESP8266. Настройка модуля DS3231, работа с библиотекой TimeLib и синхронизация через NTP сервер.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/elektronika-i-gadzhety/e/es/esp8266-chasy-realnogo-vremeni.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ESP8266 и часы реального времени: схемы, прошивка, NTP">
+    <meta property="og:description" content="Подробный гайд по подключению RTC к ESP8266. Настройка модуля DS3231, работа с библиотекой TimeLib и синхронизация через NTP сервер.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/elektronika-i-gadzhety/">Электроника и Гаджеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">ESP8266 и часы реального времени: схемы, прошивка, NTP</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-аппаратного-решения-ds3231-против-ds1302">Выбор аппаратного решения: DS3231 против DS1302</a></li><li><a href="#схема-подключения-модуля-rtc-к-esp8266">Схема подключения модуля RTC к ESP8266</a></li><li><a href="#настройка-программной-среды-и-библиотек">Настройка программной среды и библиотек</a></li><li><a href="#синхронизация-времени-через-ntp-сервер">Синхронизация времени через NTP сервер</a></li><li><a href="#написание-кода-гибридная-система-времени">Написание кода: гибридная система времени</a></li><li><a href="#отладка-и-устранение-неполадок">Отладка и устранение неполадок</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/elektronika-i-gadzhety/p/pr/proshivka-baofeng-uv-5r.html">Прошивка Baofeng UV-5R: выбор ПО, инструкции и частоты</a></li><li><a href="/elektronika-i-gadzhety/d/d-/d-trigger-na-tranzistorakh-skhema.html">D-триггер на транзисторах: схема, принцип работы и руководство по сборке</a></li><li><a href="/elektronika-i-gadzhety/w/wi/wifi-endoscope-hd720p-instruktsiya-na-russkom.html">WiFi эндоскоп HD720p: русская инструкция, подключение и настройка</a></li><li><a href="/elektronika-i-gadzhety/a/ai/air-tag-apple-kak-rabotaet.html">Как работает AirTag: полный разбор технологии Apple</a></li><li><a href="/elektronika-i-gadzhety/1/16/1600-na-chasakh-znachenie.html">1600 на часах: значение ошибки и коды поломок</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Часы реального времени на базе ESP8266: от железа до кода</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-аппаратного-решения-ds3231-против-ds1302">Выбор аппаратного решения: DS3231 против DS1302</a></li><li><a href="#схема-подключения-модуля-rtc-к-esp8266">Схема подключения модуля RTC к ESP8266</a></li><li><a href="#настройка-программной-среды-и-библиотек">Настройка программной среды и библиотек</a></li><li><a href="#синхронизация-времени-через-ntp-сервер">Синхронизация времени через NTP сервер</a></li><li><a href="#написание-кода-гибридная-система-времени">Написание кода: гибридная система времени</a></li><li><a href="#отладка-и-устранение-неполадок">Отладка и устранение неполадок</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Интеграция модуля <em>ESP8266</em> в проекты умного дома часто сталкивается с одной фундаментальной проблемой: этот микроконтроллер не обладает встроенными часами реального времени. После каждого перезапуска питания или потери соединения Wi-Fi устройство «забывает» текущее время, что делает невозможным выполнение задач по расписанию без дополнительных решений. Именно здесь на сцену выходят внешние модули <strong>RTC (Real-Time Clock)</strong>.</p>
+
+<p>Реализация точного учета времени необходима для управления освещением, реле, сбора логов событий или отображения данных на дисплеях. Существует два основных подхода к решению этой задачи: использование автономного аппаратного модуля с батарейкой или синхронизация с интернет-серверами через протокол <em>NTP</em>. Выбор конкретного метода зависит от требований к автономности вашего проекта и наличия постоянного доступа к сети.</p>
+
+<p>В этом материале мы детально разберем оба способа, рассмотрим популярные микросхемы вроде <em>DS3231</em> и <em>DS1302</em>, а также напишем программный код для платформы <em>Arduino IDE</em>. Вы узнаете, как избежать распространенных ошибок при пайке и настройке библиотек, чтобы ваши часы шли точно даже при сбоях электропитания.</p>
+
+<h2 id="выбор-аппаратного-решения-ds3231-против-ds1302">Выбор аппаратного решения: DS3231 против DS1302</h2>
+
+<p>На рынке компонентов для DIY-электроники доминируют две основные микросхемы для организации RTC. Самым доступным вариантом является <em>DS1302</em>, который часто встречается в дешевых наборах. Однако его точность сильно зависит от качества кварцевого резонатора и температуры окружающей среды. Погрешность может достигать нескольких минут в месяц, что недопустимо для серьезных проектов автоматизации.</p>
+
+<p>Гораздо более предпочтительным выбором считается модуль на базе <strong>DS3231</strong>. Эта микросхема оснащена встроенным термокомпенсированным кварцевым генератором (<em>TCXO</em>), что обеспечивает высочайшую стабильность хода независимо от перепадов температур. Точность такого модуля составляет всего несколько секунд в месяц. Кроме того, <em>DS3231</em> часто комплектуется разъемом для батарейки типа <em>CR2032</em>, позволяющим сохранять время при полном обесточивании платы.</p>
+
+<p>При выборе модуля обратите внимание на наличие подтягивающих резисторов на линиях данных. Некоторые дешевые китайские платы требуют их установки вручную, иначе связь по шине <code>I2C</code> будет нестабильной. Для ESP8266, который работает с логическими уровнями 3.3В, большинство готовых модулей RTC подходят напрямую благодаря встроенным делителям напряжения или толерантности входов.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Модули DS1302 крайне чувствительны к наводкам на длинных проводах. Если вы используете этот чип, старайтесь максимально сократить длину соединительных шлейфов между ним и микроконтроллером.</p>
+</blockquote>
+
+<ul>
+<li>🔋 <strong>DS3231</strong>: Высокая точность, встроенная термокомпенсация, интерфейс I2C, идеален для уличных проектов.</li>
+<li>💰 <strong>DS1302</strong>: Низкая цена, интерфейс SPI, требует точного кварца, подходит для учебных макетов.</li>
+<li>⚡ <strong>PCF8563</strong>: Низкое энергопотребление, интерфейс I2C, часто используется в портативных устройствах.</li>
+</ul>
+
+<div class="pb-poll" id="poll-0269ed8c"><div class="pb-poll-question">📊 Какой модуль RTC вы планируете использовать?</div><div class="pb-poll-option" data-poll="0269ed8c" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">DS3231 (Точный)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0269ed8c" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">DS1302 (Дешевый)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0269ed8c" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Только NTP (Без батарейки)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0269ed8c" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">У меня уже есть другой модуль</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="схема-подключения-модуля-rtc-к-esp8266">Схема подключения модуля RTC к ESP8266</h2>
+
+<p>Подключение большинства современных RTC-модулей к плате <em>NodeMCU</em> или <em>Wemos D1 Mini</em> осуществляется через двухпроводной интерфейс <strong>I2C</strong>. Это значительно упрощает разводку печатной платы, так как требуется всего четыре провода: питание, земля и две линии данных. Важно правильно определить пины SDA и SCL на вашей конкретной версии ESP8266, так как они могут отличаться в зависимости от производителя платы.</p>
+
+<p>Стандартная распиновка для популярных плат выглядит следующим образом: пин <code>D1</code> (GPIO5) отвечает за линию <em>SCL</em>, а пин <code>D2</code> (GPIO4) — за линию <em>SDA</em>. Питание следует брать с пина <code>3.3V</code>, ни в коем случае не подключая модуль к 5В, если на плате RTC нет встроенного стабилизатора. Землю (<code>GND</code>) необходимо объединить с общим проводом микроконтроллера для корректной работы логики.</p>
+
+<p>Если вы используете модуль <em>DS1302</em>, схема будет отличаться, так как он работает по протоколу <strong>SPI</strong>. В этом случае вам потребуется подключить три сигнальных провода: <em>CLK</em>, <em>DAT</em> и <em>CE</em> (или <em>RST</em>) к любым свободным GPIO-пинам, которые вы затем пропишете в коде. Преимущество SPI заключается в возможности подключения нескольких устройств на разные пины выбора, тогда как I2C ограничивает количество устройств уникальными адресами на одной шине.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте цветные провода для соединения: красный для VCC, черный для GND, желтый для SCL и зеленый для SDA. Это упростит отладку и поиск ошибок в будущем.</p></aside>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Пин RTC Модуля</th>
+<th>Пин ESP8266 (NodeMCU)</th>
+<th>Назначение</th>
+<th>Цвет провода (рекоменд.)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VCC</td>
+<td>3.3V</td>
+<td>Питание 3.3 Вольта</td>
+<td>Красный</td>
+</tr>
+<tr>
+<td>GND</td>
+<td>GND</td>
+<td>Общая земля</td>
+<td>Черный</td>
+</tr>
+<tr>
+<td>SCL</td>
+<td>D1 (GPIO5)</td>
+<p>Тактовая линия I2C</td></p>
+<td>Желтый</td>
+</tr>
+<tr>
+<td>SDA</td>
+<td>D2 (GPIO4)</td>
+<td>Линия данных I2C</td>
+<td>Зеленый</td>
+</tr>
+</tbody>
+</table></div>
+
+<h2 id="настройка-программной-среды-и-библиотек">Настройка программной среды и библиотек</h2>
+
+<p>Для работы с часами реального времени в экосистеме <em>Arduino IDE</em> существует несколько проверенных библиотек. Наиболее универсальной и мощной считается библиотека <strong>TimeLib</strong> от Пола Стоффрегена. Она предоставляет единый интерфейс для работы со временем, независимо от того, получаете ли вы данные от аппаратного RTC, через NTP или задаете их вручную. Установка производится через менеджер библиотек по запросу "Time".</p>
+
+<p>Для непосредственного общения с микросхемой <em>DS3231</em> рекомендуется использовать библиотеку <em>Rtc_by_Makuna</em> или классическую <em>DS3231</em> от Rinky-Dink Electronics. Первая отличается более современным подходом к объектно-ориентированному программированию и лучшей поддержкой различных типов часов. После установки библиотеки необходимо включить заголовочный файл <code>#include &lt;Wire.h&gt;</code> для инициализации шины I2C.</p>
+
+<p>Перед загрузкой основного скетча крайне полезно запустить пример <code>I2C Scanner</code>. Эта небольшая утилита просканирует шину и выведет в последовательный порт (<em>Serial Monitor</em>).hex-адрес подключенного устройства. Для модуля DS3231 стандартным адресом является <code>0x68</code>. Если сканер не находит устройство, проверьте качество пайки и наличие подтягивающих резисторов на 4.7 кОм.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка подключения RTC</h4><label class="check-item"><input type="checkbox"><span>Установлен драйвер CH340/CP2102</span></label><label class="check-item"><input type="checkbox"><span>Выбрана правильная плата в IDE</span></label><label class="check-item"><input type="checkbox"><span>Загружен скетч I2C Scanner</span></label><label class="check-item"><input type="checkbox"><span>В мониторе порта виден адрес 0x68</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="синхронизация-времени-через-ntp-сервер">Синхронизация времени через NTP сервер</h2>
+
+<p>Альтернативой аппаратным часам является использование протокола <strong>NTP (Network Time Protocol)</strong>. ESP8266, обладая встроенным Wi-Fi модулем, может запрашивать точное время у удаленных серверов, таких как <em>pool.ntp.org</em> или специализированных серверов вашего региона. Этот метод не требует покупки дополнительных компонентов и обеспечивает точность до миллисекунд, пока устройство подключено к интернету.</p>
+
+<p>Реализация NTP-клиента в Arduino IDE возможна через библиотеку <em>NTPClient</em> или стандартные функции класса <code>WiFiUdp</code>. При старте устройство подключается к сети, отправляет запрос и получает текущее время в формате Unix Timestamp (количество секунд с 1 января 1970 года). Далее это значение конвертируется в привычный формат часов, минут и секунд.</p>
+
+<p>Главный недостаток метода — зависимость от наличия сети. Если роутер перезагрузится или пропадет интернет, часы остановятся или начнут отсчитывать время с момента последнего перезапуска ESP8266. Поэтому в критически важных системах часто используют гибридный подход: NTP для первичной установки времени, а RTC-модуль с батарейкой для поддержания хода во время сбоев.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Часовые пояса в библиотеках NTP часто задаются смещением в секундах или часах относительно UTC. Не забудьте указать правильное смещение для вашего региона (например, +3 часа для Москвы), иначе часы будут врать на несколько часов.</p>
+</blockquote>
+
+<details class="pb-accordion"><summary>Список надежных NTP серверов</summary><div class="pb-accordion-body"><p>ru.pool.ntp.org (Россия), europe.pool.ntp.org (Европа), time.google.com (Глобальный, требует доступа к UDP порту 123).</p></div></details>
+
+<h2 id="написание-кода-гибридная-система-времени">Написание кода: гибридная система времени</h2>
+
+<p>Создание надежной системы времени подразумевает объединение преимуществ обоих методов. Логика работы такого скетча строится следующим образом: при включении ESP8266 пытается подключиться к Wi-Fi и запросить время у NTP-сервера. Если успех достигнут, полученное время записывается в регистры модуля <em>DS3231</em>. Если сети нет, микроконтроллер считывает время непосредственно из RTC.</p>
+
+<p>В цикле <code>loop()</code> программа должна периодически (например, раз в час или раз в сутки) сверять время RTC с NTP-сервером для коррекции накопленной погрешности, хотя для DS3231 эта погрешность минимальна. Также важно реализовать процедуру сохранения времени в энергонезависимую память или установку флага инициализации, чтобы не опрашивать сервер при каждом кратковременном разрыве связи.</p>
+
+<p>Ниже приведен фрагмент кода, демонстрирующий инициализацию и чтение времени. Обратите внимание на использование функций <code>Wire.begin()</code> и проверку возврата значения от функции получения времени.</p>
+
+<pre><code>#include &lt;Wire.h&gt;
+<p>#include &lt;TimeLib.h&gt;</p>
+<p>#include &lt;DS3231.h&gt;</p>
+
+<p>DS3231 rtc(SDA, SCL);</p>
+<p>Time t;</p>
+
+<p>void setup() {</p>
+<p>Serial.begin(9600);</p>
+<p>Wire.begin();</p>
+<p>rtc.begin();</p>
+<p>// Установка времени только если оно сбросилось (1.01.2000)</p>
+<p>if (rtc.getDateStr() == "2000-01-01") {</p>
+<p>rtc.setTime(12, 0, 0);</p>
+<p>rtc.setDate(01, 01, 2026);</p>
+<p>}</p>
+<p>}</p>
+
+<p>void loop() {</p>
+<p>t = rtc.getTime();</p>
+<p>Serial.print("Time: ");</p>
+<p>Serial.print(t.hour);</p>
+<p>Serial.print(":");</p>
+<p>Serial.println(t.min);</p>
+<p>delay(1000);</p>
+<p>}</code></pre></p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Гибридная система (NTP + RTC) является золотым стандартом для IoT устройств, обеспечивая точность сети и автономность оборудования.</p></aside>
+
+<h2 id="отладка-и-устранение-неполадок">Отладка и устранение неполадок</h2>
+
+<p>Самая частая проблема при работе с ESP8266 и периферией — это нехватка питания. В момент включения Wi-Fi модуль потребляет ток до 300 мА, что может вызывать просадку напряжения на шине I2C и сбои в работе RTC. Если часы сбрасываются или показывают некорректные данные, попробуйте подключить ESP8266 к мощному источнику питания через качественный USB-кабель, избегая длинных тонких проводов.</p>
+
+<p>Другой распространенной ошибкой является конфликт адресов на шине I2C. Некоторые дисплеи (например, OLED 0.96") также используют адрес <code>0x3C</code> или <code>0x3D</code>, что обычно не конфликтует с RTC (<code>0x68</code>), но при подключении множества датчиков (барометров, акселерометров) адреса могут пересекаться. Всегда проверяйте карту адресов с помощью сканера перед написанием основного кода.</p>
+
+<p>Если время «уплывает» быстрее, чем заявлено в характеристиках DS3231, проверьте наличие конденсаторов по питанию. Иногда высокочастотные помехи от работы Wi-Fi передатчика влияют на точность кварцевого генератора. В таких случаях помогает установка керамического конденсатора на 100 нФ максимально близко к выводам питания модуля часов.</p>
+
+<details>
+<summary>Почему после перепрошивки время сбрасывается на 2000 год?</summary>
+<p>Микросхемы RTC часто имеют бит сброса или при первом подключении без батарейки инициализируются дефолтными значениями. Убедитесь, что в коде есть проверка на дату "2000-01-01" и процедура установки актуального времени при первом запуске.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать ESP8266 в глубоком сне (Deep Sleep) с RTC?</summary>
+<p>Да, это отличная связка для автономных датчиков. ESP8266 уходит в сон, а RTC (если у него есть вывод прерывания Alarm) может подать сигнал на пин RST (GPIO16) для пробуждения микроконтроллера в заданное время.</p>
+</details>
+
+<details>
+<summary>Как перевести время из Unix Timestamp в читаемый формат?</summary>
+<p>Библиотека TimeLib предоставляет функции <code>hour()</code>, <code>minute()</code>, <code>day()</code>, которые автоматически конвертируют переданный timestamp. Просто передайте полученное значение в эти функции для вывода.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/elektronika-i-gadzhety/p/pr/proshivka-baofeng-uv-5r.html" class="pb-related-card">
+                <span class="pb-related-title">Прошивка Baofeng UV-5R: выбор ПО, инструкции и частоты</span>
+                <span class="pb-related-desc">Полное руководство по обновлению прошивки для радиостанции Baofeng UV-5R. Программы CHIRP, настройка</span>
+            </a><a href="/elektronika-i-gadzhety/d/d-/d-trigger-na-tranzistorakh-skhema.html" class="pb-related-card">
+                <span class="pb-related-title">D-триггер на транзисторах: схема, принцип работы и руководство по сборке</span>
+                <span class="pb-related-desc">Подробный разбор схемы D-триггера на дискретных транзисторах. Изучите принцип работы, расчет номинал</span>
+            </a><a href="/elektronika-i-gadzhety/w/wi/wifi-endoscope-hd720p-instruktsiya-na-russkom.html" class="pb-related-card">
+                <span class="pb-related-title">WiFi эндоскоп HD720p: русская инструкция, подключение и настройка</span>
+                <span class="pb-related-desc">Полная инструкция на русском для WiFi эндоскопа HD720p. Как подключить, настроить, скачать приложени</span>
+            </a><a href="/elektronika-i-gadzhety/a/ai/air-tag-apple-kak-rabotaet.html" class="pb-related-card">
+                <span class="pb-related-title">Как работает AirTag: полный разбор технологии Apple</span>
+                <span class="pb-related-desc">Подробный гид: как работает AirTag Apple, поиск через сеть Find My, точное определение, защита от сл</span>
+            </a><a href="/elektronika-i-gadzhety/1/16/1600-na-chasakh-znachenie.html" class="pb-related-card">
+                <span class="pb-related-title">1600 на часах: значение ошибки и коды поломок</span>
+                <span class="pb-related-desc">Что означает 1600 на часах? Расшифровка кодов ошибок и сбоев для разных брендов. Почему мигает 1600 </span>
+            </a><a href="/elektronika-i-gadzhety/d/dl/dlya-zaversheniya-sozdaniya-pary-chasy-apple-watch-dolzhny-byt-na-zapyaste-sboj-podklyucheniya.html" class="pb-related-card">
+                <span class="pb-related-title">Apple Watch: сбой подключения и требование надеть часы</span>
+                <span class="pb-related-desc">Ошибка подключения: часы Apple Watch должны быть на запястье. Как исправить сбой при создании пары, </span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>ПДУ анализатор своими руками: схемы, схемы и настройка — Техно Гид</title>
+    <meta name="description" content="Как сделать анализатор ПДУ на базе Arduino или смартфона. Полные схемы, список компонентов, прошивка и таблица частот для ремонта пультов.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/remont-i-diagnostika/p/pd/pdu-analizator-svoimi-rukami.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ПДУ анализатор своими руками: схемы, схемы и настройка">
+    <meta property="og:description" content="Как сделать анализатор ПДУ на базе Arduino или смартфона. Полные схемы, список компонентов, прошивка и таблица частот для ремонта пультов.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/remont-i-diagnostika/">Ремонт и Диагностика</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">ПДУ анализатор своими руками: схемы, схемы и настройка</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#принцип-работы-и-типы-детекторов">Принцип работы и типы детекторов</a></li><li><a href="#сборка-анализатора-на-базе-arduino">Сборка анализатора на базе Arduino</a></li><li><a href="#профессиональная-диагностика-с-осциллографом">Профессиональная диагностика с осциллографом</a></li><li><a href="#таблица-частот-и-протоколов-ик-сигналов">Таблица частот и протоколов ИК-сигналов</a></li><li><a href="#поиск-неисправностей-в-схеме-пульта">Поиск неисправностей в схеме пульта</a></li><li><a href="#альтернативные-методы-и-программное-обеспечение">Альтернативные методы и программное обеспечение</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/remont-i-diagnostika/n/ni/nizhnij-podogrev-plat-kupit.html">Нижний подогрев плат купить: выбор и цены</a></li><li><a href="/remont-i-diagnostika/s/sm/smena-termopasty-na-noutbuke.html">Смена термопасты на ноутбуке: пошаговая инструкция и ошибки</a></li><li><a href="/remont-i-diagnostika/n/ne/ne-rabotaet-pylesos-samsung.html">Не работает пылесос Самсунг: причины и ремонт своими руками</a></li><li><a href="/remont-i-diagnostika/z/za/zamena-polyarizatsionnoj-plenki-na-televizore-samsung.html">Замена поляризационной пленки на телевизоре Samsung: пошаговая инструкция</a></li><li><a href="/remont-i-diagnostika/p/pa/payalnyj-stol-s-podogrevom.html">Паяльный стол с подогревом: выбор, типы и особенности эксплуатации</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>ПДУ анализатор своими руками: диагностика и ремонт</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#принцип-работы-и-типы-детекторов">Принцип работы и типы детекторов</a></li><li><a href="#сборка-анализатора-на-базе-arduino">Сборка анализатора на базе Arduino</a></li><li><a href="#профессиональная-диагностика-с-осциллографом">Профессиональная диагностика с осциллографом</a></li><li><a href="#таблица-частот-и-протоколов-ик-сигналов">Таблица частот и протоколов ИК-сигналов</a></li><li><a href="#поиск-неисправностей-в-схеме-пульта">Поиск неисправностей в схеме пульта</a></li><li><a href="#альтернативные-методы-и-программное-обеспечение">Альтернативные методы и программное обеспечение</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Внезапный отказ пульта дистанционного управления способен превратить современный телевизор или кондиционер в бесполезный кусок пластика. Часто проблема кроется не в самом устройстве, а в сгоревшем инфракрасном диоде или нарушенном контакте, что невозможно увидеть невооруженным глазом. Создание простого <strong>ПДУ анализатора своими руками</strong> становится необходимостью для радиолюбителей и мастеров, занимающихся ремонтом бытовой электроники. Это устройство позволяет не только выявить неисправность, но и расшифровать протокол передачи данных.</p>
+
+<p>Существует несколько подходов к реализации такого девайса: от использования веб-камеры до сборки специализированной схемы на микроконтроллере. Выбор метода зависит от ваших навыков пайки и доступных компонентов. В этой статье мы детально разберем конструкции анализаторов, которые можно собрать за один вечер из подручных средств, и рассмотрим тонкости диагностики <em>инфракрасных излучателей</em>.</p>
+
+<h2 id="принцип-работы-и-типы-детекторов">Принцип работы и типы детекторов</h2>
+<p>Основная задача любого детектора — преобразовать невидимое для человеческого глаза инфракрасное излучение в видимый сигнал или электрический импульс. Большинство бытовых пультов работают на длине волны <code>940 нм</code>, модулируя сигнал несущей частотой от <code>30 до 56 кГц</code>. Простой фотодиод без фильтрации увидит лишь постоянный шум от ламп освещения, поэтому критически важно использовать правильные компоненты.</p>
+
+<p>Самый доступный вариант для начинающих — использование цифровых камер. Матрицы смартфонов и веб-камер чувствительны к ИК-спектру, хотя производители часто устанавливают фильтры. Если направить работающий пульт в объектив, на экране вы увидите мигающую фиолетовую или белую точку. Это простейший <strong>визуальный анализатор</strong>, который подходит для быстрой проверки наличия сигнала, но не дает информации о его качестве или коде.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Некоторые современные смартфоны (особенно флагманские модели) оснащены усиленными ИК-фильтрами. Если вы не видите свечения диода, попробуйте использовать старую веб-камеру или камеру видеонаблюдения без фильтра Cut-off.</p>
+</blockquote>
+
+<p>Более профессиональный подход предполагает использование специализированных ИК-приемников, таких как серия <em>TSOP</em>. Эти компоненты уже содержат встроенный демодулятор и фильтр, отсекающий помехи от люминесцентных ламп. Подключив такой приемник к осциллографу или логическому анализатору, можно увидеть чистую форму сигнала и измерить длительность импульсов. Это необходимо для точной диагностики <strong>протоколов передачи</strong>, таких как NEC или RC5.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для быстрой проверки пульта без схем можно использовать камеру старого мобильного телефона без вспышки — у них часто отсутствуют жесткие ИК-фильтры.</p></aside>
+
+<h2 id="сборка-анализатора-на-базе-arduino">Сборка анализатора на базе Arduino</h2>
+<p>Создание полноценного анализатора на базе платформы <em>Arduino</em> открывает широкие возможности для диагностики. Вы сможете не только видеть факт излучения, но и считывать HEX-коды кнопок, определять протокол и даже эмулировать сигналы других пультов. Для сборки вам потребуется минимальный набор компонентов, доступный в любом магазине радиодеталей.</p>
+
+<p>Схема подключения предельно проста и не требует сложных расчетов. Сигнальный выход ИК-приемника подключается к цифровому пину микроконтроллера, а питание подается напрямую от шины <code>5V</code>. Важно соблюдать полярность подключения приемника, так как обратное включение может вывести компонент из строя. После загрузки специальной библиотеки устройство превращается в универсальный инструмент.</p>
+
+<ul>
+<li>🔌 <strong>Arduino Uno</strong> или Nano — мозг устройства, обрабатывающий входящие сигналы.</li>
+<li>📡 ИК-приемник <em>TSOP1738</em> (или аналог на 38 кГц) — сенсор, принимающий излучение.</li>
+<li>💡 Светодиод и резистор <code>220 Ом</code> — для визуальной индикации приема сигнала.</li>
+<li>🔋 Макетная плата и соединительные провода — для быстрой сборки без пайки.</li>
+</ul>
+
+<p>Программная часть реализуется с помощью библиотеки <code>IRremote</code>. Она автоматически определяет тип протокола и выводит данные в последовательный порт компьютера. Это позволяет анализировать <strong>кодовые посылки</strong> в реальном времени и сравнивать их с эталонными значениями. Если пульт выдает разные коды при одном нажатии, значит, проблема в садящихся батарейках или окисленных контактах.</p>
+
+<div class="pb-poll" id="poll-fdb7da47"><div class="pb-poll-question">📊 Какой микроконтроллер вы планируете использовать?</div><div class="pb-poll-option" data-poll="fdb7da47" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Arduino Uno</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="fdb7da47" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Arduino Nano</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="fdb7da47" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">ESP8266</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="fdb7da47" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">ESP32</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="fdb7da47" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другой</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="профессиональная-диагностика-с-осциллографом">Профессиональная диагностика с осциллографом</h2>
+<p>Для углубленного ремонта электроники визуального подтверждения работы диода недостаточно. Инженерам часто требуется увидеть форму огибающей сигнала и измерить скважность импульсов. Здесь на помощь приходит <strong>цифровой осциллограф</strong> или логический анализатор, подключенный напрямую к выходу фотодиода или приемника.</p>
+
+<p>При подключении щупа к цепи питания ИК-диода пульта (через токоизмерительный резистор) можно наблюдать всплески тока в момент нажатия кнопок. Это помогает выявить проблемы с драйвером внутри самого пульта. Если форма импульсов искажена или имеет большую длительность фронта, это указывает на неисправность транзисторного ключа или конденсатора фильтра.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При подключении осциллографа к пульту убедитесь, что общая земля прибора и устройства соединена корректно, чтобы избежать короткого замыкания через USB-порт компьютера.</p>
+</blockquote>
+
+<p>Анализ временных диаграмм позволяет точно определить частоту несущей. Некоторые старые кондиционеры и аудиосистемы используют нестандартные частоты, например <code>40 кГц</code> или <code>56 кГц</code>, которые не воспринимаются универсальными приемниками. Измерив этот параметр, вы сможете подобрать правильный сенсор для создания копии пульта или ремонта приемного тракта телевизора.</p>
+
+<details class="pb-accordion"><summary>Почему форма сигнала важна?</summary><div class="pb-accordion-body"><p>Идеальный сигнал имеет прямоугольную форму. Если вершины импульсов "просаживаются" или имеют наклон, это говорит о недостаточной емкости батарей или высоком внутреннем сопротивлении источника питания.</p></div></details>
+
+<h2 id="таблица-частот-и-протоколов-ик-сигналов">Таблица частот и протоколов ИК-сигналов</h2>
+<p>Разные производители бытовой техники используют различные стандарты кодирования сигналов. Понимание этих различий критически важно при создании универсальных пультов или анализаторов. Ниже приведена справочная информация по наиболее распространенным протоколам, с которыми вы столкнетесь при диагностике.</p>
+
+<p>Знание несущей частоты помогает выбрать правильный фотоприемник. Например, приемник на 36 кГц может некорректно работать с пультом, работающим на 30 кГц, выдавая ложные срабатывания или пропуская команды. В таблице указаны основные параметры для популярных брендов.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Протокол</th>
+<th>Несущая частота</th>
+<th>Бренды</th>
+<th>Особенности</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NEC</td>
+<td>38 кГц</td>
+<td>Samsung, LG, Toshiba</td>
+<td>Самый популярный, адрес + команда</td>
+</tr>
+<tr>
+<td>RC5</td>
+<td>36 кГц</td>
+<td>Philips, Grundig</td>
+<td>Манчестерское кодирование</td>
+</tr>
+<tr>
+<td>Sony SIRC</td>
+<td>40 кГц</td>
+<td>Sony</td>
+<td>Пакеты по 12, 15 или 20 бит</td>
+</tr>
+<tr>
+<td>RC6</td>
+<td>36 кГц</td>
+<td>Microsoft, Philips</td>
+<td>Используется в Xbox, сложный формат</td>
+</tr>
+<tr>
+<td>Panasonic</td>
+<td>37-38 кГц</td>
+<td>Panasonic, Technics</td>
+<td>Длинный преамбульный импульс</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>При анализе сигналов обратите внимание на длину кодового слова. Протокол <strong>NEC</strong> обычно использует 32 бита данных, в то время как старые системы могут обходиться 12 битами. Это влияет на выбор библиотеки для микроконтроллера и метод декодирования. Несоответствие длины пакета часто приводит к тому, что пульт работает нестабильно или выполняет неверные команды.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Всегда сверяйте частоту несущей сигнала с паспортом фотоприемника — разница даже в 2-3 кГц может сделать устройство неработоспособным.</p></aside>
+
+<h2 id="поиск-неисправностей-в-схеме-пульта">Поиск неисправностей в схеме пульта</h2>
+<p>Если анализатор показывает, что пульт не излучает сигнал вообще, необходимо провести внутреннюю диагностику устройства. В 80% случаев проблема банальна: окислившиеся контакты батарейного отсека или севшие элементы питания. Однако, если замена батареек не помогла, требуется разборка и прозвонка компонентов.</p>
+
+<p>Первым делом осмотрите печатную плату под увеличением. Ищите трещины в пайке, особенно в местах крепления кварцевого резонатора и выводов ИК-диода. Вибрация при падении часто приводит к микротрещинам, которые нарушают контакт. Используйте мультиметр в режиме прозвонки для проверки целостности дорожек и переходных отверстий.</p>
+
+<ul>
+<li>🔋 Проверьте напряжение на контактах батарейного отсека под нагрузкой.</li>
+<li>🔍 Осмотрите <strong>кварцевый резонатор</strong> на предмет сколов и трещин корпуса.</li>
+<li>⚡ Прозвоните ИК-диод — в прямом направлении он должен показывать падение напряжения около <code>1.2-1.5 В</code>.</li>
+<li>🧹 Очистите токопроводящие резиновые контакты спиртом или специальным очистителем.</li>
+</ul>
+
+<p>Частой поломкой является выход из строя транзистора, управляющего ИК-диодом. В дешевых пультах используются биполярные транзисторы, которые могут пробиваться при скачках напряжения. Замена транзистора на аналогичный по характеристикам обычно восстанавливает работоспособность устройства. Также стоит проверить электролитический конденсатор фильтра питания — его высыхание приводит к нестабильной работе схемы.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Диагностика неработающего пульта</h4><label class="check-item"><input type="checkbox"><span>Заменить батарейки на новые</span></label><label class="check-item"><input type="checkbox"><span>Очистить контакты спиртом</span></label><label class="check-item"><input type="checkbox"><span>Проверить пайку диода</span></label><label class="check-item"><input type="checkbox"><span>Прозвонить транзистор ключа</span></label><label class="check-item"><input type="checkbox"><span>Замерить частоту кварца</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="альтернативные-методы-и-программное-обеспечение">Альтернативные методы и программное обеспечение</h2>
+<p>Помимо аппаратных решений, существуют программные методы анализа, позволяющие использовать компьютер в качестве измерительного прибора. Подключив ИК-приемник к микрофонному входу или USB-порту (через адаптер), можно визуализировать сигнал с помощью специализированного ПО. Это удобно для быстрой проверки без пайки сложных схем.</p>
+
+<p>Одной из популярных программ является <em>IrScrutinizer</em>, которая работает в связке с различными аппаратными интерфейсами, включая Arduino и специализированные USB-адаптеры. Она не только отображает временные диаграммы, но и позволяет генерировать сигналы для проверки приемной техники. Это превращает ваш компьютер в мощную лабораторию для <strong>отладки ИК-протоколов</strong>.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При подключении самодельных схем к аудиовходу компьютера убедитесь, что уровень сигнала не превышает допустимые значения (обычно 1-2 В), чтобы не повредить звуковую карту. Используйте делитель напряжения.</p>
+</blockquote>
+
+<p>Для продвинутых пользователей доступна возможность записи "сырых" данных (Raw Data) и их последующего анализа в редакторах сигналов. Это позволяет восстанавливать коды утерянных пультов, анализируя сигналы от работающих аналогов. Такой подход требует понимания структуры пакетов данных, но дает максимальную гибкость в ремонте и модификации техники.</p>
+
+<details class="pb-accordion"><summary>Можно ли использовать смартфон как анализатор?</summary><div class="pb-accordion-body"><p>Существуют приложения, использующие ИК-порт смартфона (если он есть) для приема сигналов, но их функционал ограничен базовой проверкой наличия излучения.</p></div></details>
+
+<details>
+<summary>Какой ИК-приемник лучше выбрать для Arduino?</summary>
+<p>Для большинства задач идеально подходит серия <em>TSOP1738</em> (38 кГц), так как это самый распространенный стандарт. Если вы работаете с техникой Sony или старыми аудио-системами, может потребоваться приемник на 40 кГц, например <em>TSOP1740</em>. Важно выбирать приемник с напряжением питания 5В, совместимым с логикой Arduino.</p>
+</details>
+
+<details>
+<summary>Почему пульт работает через камеру, но не управляет техникой?</summary>
+<p>Это означает, что ИК-диод исправен и излучает сигнал, но нарушена модуляция или кодировка. Возможные причины: севшие батарейки (сигнал есть, но слабый), неисправность кварцевого резонатора (сбилась частота) или повреждение управляющего транзистора. Требуется замена элементов питания или компонентов схемы.</p>
+</details>
+
+<details>
+<summary>Можно ли проверить пульт без анализатора?</summary>
+<p>Да, самый простой способ — использовать камеру смартфона. Наведите диод пульта в объектив и нажмите кнопку. Если на экране видно мигание фиолетовым светом, диод работает. Однако этот метод не покажет правильность кода и частоту сигнала.</p>
+</details>
+
+<details>
+<summary>Как узнать протокол пульта без оборудования?</summary>
+<p>Точно определить протокол без анализатора сложно. Можно попробовать найти маркировку на кварцевом резонаторе (частота часто кратна несущей) или поискать модель пульта в базе данных <em>Remote Central</em>. Визуально протоколы не отличаются.</p>
+</details>
+
+<details>
+<summary>Безопасно ли подключать самодельный анализатор к ПК?</summary>
+<p>Да, если вы используете гальванически развязанные интерфейсы (например, Arduino через USB) или аудиовход с ограничительными резисторами. Избегайте прямого подключения цепей питания пульта к портам компьютера без согласования уровней напряжения.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/remont-i-diagnostika/n/ni/nizhnij-podogrev-plat-kupit.html" class="pb-related-card">
+                <span class="pb-related-title">Нижний подогрев плат купить: выбор и цены</span>
+                <span class="pb-related-desc">Где купить нижний подогрев для пайки плат. Рейтинг моделей, сравнение цен, советы по выбору для ремо</span>
+            </a><a href="/remont-i-diagnostika/s/sm/smena-termopasty-na-noutbuke.html" class="pb-related-card">
+                <span class="pb-related-title">Смена термопасты на ноутбуке: пошаговая инструкция и ошибки</span>
+                <span class="pb-related-desc">Подробный гайд по замене термопасты на ноутбуке. Разбор ошибок, выбор материала, инструменты для раз</span>
+            </a><a href="/remont-i-diagnostika/n/ne/ne-rabotaet-pylesos-samsung.html" class="pb-related-card">
+                <span class="pb-related-title">Не работает пылесос Самсунг: причины и ремонт своими руками</span>
+                <span class="pb-related-desc">Почему не работает пылесос Samsung? Полный гид по диагностике: мотор не гудит, нет тяги, не вращаетс</span>
+            </a><a href="/remont-i-diagnostika/z/za/zamena-polyarizatsionnoj-plenki-na-televizore-samsung.html" class="pb-related-card">
+                <span class="pb-related-title">Замена поляризационной пленки на телевизоре Samsung: пошаговая инструкция</span>
+                <span class="pb-related-desc">Как заменить поляризатор на ТВ Samsung своими руками. Причины помутнения экрана, список инструментов</span>
+            </a><a href="/remont-i-diagnostika/p/pa/payalnyj-stol-s-podogrevom.html" class="pb-related-card">
+                <span class="pb-related-title">Паяльный стол с подогревом: выбор, типы и особенности эксплуатации</span>
+                <span class="pb-related-desc">Полный гид по паяльным столам с подогревом. Обзор типов термостатов, критерии выбора, правила безопа</span>
+            </a><a href="/remont-i-diagnostika/k/ka/kak-dostat-telefon-iz-pod-divana.html" class="pb-related-card">
+                <span class="pb-related-title">Как достать телефон из-под дивана: 10 проверенных способов</span>
+                <span class="pb-related-desc">Практическое руководство, как извлечь смартфон из-под мебели. Инструменты, лайфхаки, риски для техни</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

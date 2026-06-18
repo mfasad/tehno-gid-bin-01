@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Установка Home Assistant на Armbian: Полное руководство для Raspberry Pi и SBC — Техно Гид</title>
+    <meta name="description" content="Пошаговая инструкция по установке Home Assistant OS на Armbian. Настройка Docker, добавление аддонов и оптимизация работы умного дома на одноплатных ПК.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/u/us/ustanovka-home-assistant-na-armbian.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Установка Home Assistant на Armbian: Полное руководство для Raspberry Pi и SBC">
+    <meta property="og:description" content="Пошаговая инструкция по установке Home Assistant OS на Armbian. Настройка Docker, добавление аддонов и оптимизация работы умного дома на одноплатных ПК.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Установка Home Assistant на Armbian: Полное руководство для Raspberry Pi и SBC</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-и-подготовка-одноплатной-платы">Выбор и подготовка одноплатной платы</a></li><li><a href="#установка-и-базовая-настройка-armbian">Установка и базовая настройка Armbian</a></li><li><a href="#подготовка-окружения-и-установка-docker">Подготовка окружения и установка Docker</a></li><li><a href="#развертывание-home-assistant-в-контейнере">Развертывание Home Assistant в контейнере</a></li><li><a href="#оптимизация-производительности-и-безопасность">Оптимизация производительности и безопасность</a></li><li><a href="#работа-с-аддонами-и-интеграциями">Работа с аддонами и интеграциями</a></li><li><a href="#частые-проблемы-и-их-решение">Частые проблемы и их решение</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/r/re/remont-ochistitelya-vozdukha-xiaomi.html">Ремонт очистителя воздуха Xiaomi: неисправности и устранение</a></li><li><a href="/umnyj-dom/n/ne/ne-udalos-poluchit-videofajl-xiaomi-kamera.html">Ошибка получения видеофайла на Xiaomi камере: решение проблемы</a></li><li><a href="/umnyj-dom/k/ka/kak-otpravit-soobshchenie-na-yandeks-stantsiyu-s-telefona.html">Как отправить сообщение на Яндекс Станцию с телефона: полное руководство</a></li><li><a href="/umnyj-dom/s/sm/smart-lajf-ne-podklyuchaetsya-k-alise.html">Смарт Лайф не подключается к Алисе: полные способы решения</a></li><li><a href="/umnyj-dom/w/ww/www-smart-azsirbis-ru.html">Поиск и настройка сайта www.smart.asirbis.ru: обзор возможностей</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Установка Home Assistant на Armbian: Полный гайд по настройке</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-и-подготовка-одноплатной-платы">Выбор и подготовка одноплатной платы</a></li><li><a href="#установка-и-базовая-настройка-armbian">Установка и базовая настройка Armbian</a></li><li><a href="#подготовка-окружения-и-установка-docker">Подготовка окружения и установка Docker</a></li><li><a href="#развертывание-home-assistant-в-контейнере">Развертывание Home Assistant в контейнере</a></li><li><a href="#оптимизация-производительности-и-безопасность">Оптимизация производительности и безопасность</a></li><li><a href="#работа-с-аддонами-и-интеграциями">Работа с аддонами и интеграциями</a></li><li><a href="#частые-проблемы-и-их-решение">Частые проблемы и их решение</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Создание системы <strong>умного дома</strong> на базе <em>Home Assistant</em> открывает невероятные возможности для автоматизации жилья. Однако, использование официального образа ОС часто ограничивает вас в выборе аппаратной платформы, особенно если вы хотите развернуть систему на мощной одноплатной плате, не поддерживаемой напрямую разработчиками. Именно здесь на сцену выходит <em>Armbian</em> — легковесная операционная система для <em>ARM</em>-процессоров, которая обеспечивает стабильную работу и широкий выбор конфигураций.</p>
+
+<p>Развертывание <strong>Home Assistant</strong> поверх <em>Armbian</em> требует более глубокого понимания работы с <strong>Docker</strong> и контейнеризацией, чем установка стандартного дистрибутива. Этот подход дает вам полный контроль над ресурсами системы, позволяет легко обновлять отдельные компоненты и использовать аппаратное ускорение для задач, связанных с <strong>видеоаналитикой</strong> или обработкой звука. Вы получаете гибкость Linux-сервера с функциональностью самой популярной платформы автоматизации.</p>
+
+<h2 id="выбор-и-подготовка-одноплатной-платы">Выбор и подготовка одноплатной платы</h2>
+
+<p>Первый шаг — это правильный подбор"железа". Не все одноплатные компьютеры (SBC) одинаково хорошо подходят для работы <strong>Home Assistant</strong>. Ключевым фактором является наличие достаточного объема <strong>ОЗУ</strong> и производительного процессора, способного обрабатывать множество одновременных запросов от датчиков и устройств. Для комфортной работы с <em>аддонами</em> и <strong>базами данных</strong> лучше выбирать платы с минимум 2 ГБ памяти.</p>
+
+<p>Наиболее популярные модели, поддерживаемые <em>Armbian</em>, включают устройства на базе <em>Rockchip</em>, <em>Allwinner</em> и <em>Amlogic</em>. Важно убедиться, что выбранная плата имеет устойчивую поддержку в репозитории <em>Armbian</em>, так как это гарантирует получение регулярных обновлений безопасности и драйверов. Если вы планируете использовать <strong>Zigbee-координатор</strong> или <em>USB-хаб</em> с множеством устройств, проверьте наличие достаточного количества портов USB 3.0.</p>
+
+<ul>
+<li>🔌 <strong>Orange Pi 5</strong> или <strong>NanoPi R5</strong> — отличные варианты для мощных систем с поддержкой NVMe.</li>
+<li>💾 <strong>Raspberry Pi 4/5</strong> — классический выбор с огромным сообществом и готовыми драйверами.</li>
+<li>⚡ <strong>Odroid N2+</strong> — надежное решение с хорошим охлаждением и высокой производительностью.</li>
+</ul>
+
+<p>Перед началом работы убедитесь, что у вас есть карта памяти класса <strong>A2</strong> или, что еще лучше, внешний <strong>NVMe SSD</strong> для хранения базы данных событий. Использование обычной SD-карты может привести к быстрому износу памяти и потере данных приных записях логов.</p>
+
+<blockquote>⚠️ Внимание: Обязательно проверьте совместимость ядра Linux и драйверов Wi-Fi/Bluetooth для вашей конкретной модели платы на официальном форуме Armbian перед покупкой. Некоторые модули могут требовать дополнительной прошивки или манипуляций с boot-разделом.</blockquote>
+
+<h2 id="установка-и-базовая-настройка-armbian">Установка и базовая настройка Armbian</h2>
+
+<p>Процесс установки начинается со скачивания образа операционной системы. Перейдите на официальный сайт <em>Armbian</em> и выберите образ, соответствующий вашей плате. Рекомендуется брать версию с минимальным набором пакетов (CLI only), чтобы не нагружать систему лишними службами. Запишите образ на карту памяти или SSD, используя утилиту <strong>balenaEtcher</strong> или команду <code>dd</code> в терминале Linux.</p>
+
+<p>После первой загрузки системы вам будет предложено создать нового пользователя и настроить пароль. Не забудьте сразу сменить пароль по умолчанию и настроить <strong>SSH-доступ</strong> для удобного удаленного управления. Если вы используете <strong>Docker</strong>, система может потребовать включения определенных модулей ядра, таких как <em>overlay</em> и <em>br_netfilter</em>.</p>
+
+<p>Особое внимание уделите обновлению системы перед установкой контейнеров. Это гарантирует, что все зависимости будут актуальны. Выполните команду <pre><code>sudo apt update && sudo apt upgrade -y</code></pre> и подождите окончания процесса. После обновления рекомендуется перезагрузить устройство, чтобы применить все изменения ядра.</p>
+
+<div class="pb-poll" id="poll-c5365241"><div class="pb-poll-question">📊 Какую плату вы планируете использовать для Home Assistant?</div><div class="pb-poll-option" data-poll="c5365241" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Raspberry Pi 4/5</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c5365241" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Orange Pi 5</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c5365241" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Rock Pi 4</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c5365241" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Другая модель</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="подготовка-окружения-и-установка-docker">Подготовка окружения и установка Docker</h2>
+
+<p>Сердцем вашей системы станет <strong>Docker</strong>, который позволит изолировать <em>Home Assistant</em> от остальной системы. Установка Docker на <em>Armbian</em> осуществляется через официальный скрипт получения. Это быстрый и надежный способ развернуть среду контейнеризации без лишних зависимостей. Убедитесь, что ваша учетная запись добавлена в группу <code>docker</code>, чтобы не вводить <em>sudo</em> при каждом запуске контейнера.</p>
+
+<p>Для корректной работы <strong>Home Assistant</strong> необходимо также установить <strong>Docker Compose</strong>, который упростит управление конфигурациями и зависимостями. Этот инструмент позволяет описать всю инфраструктуру в одном файле и запускать её одной командой. Без него управление контейнерами превратится в рутину с вводом длинных команд запуска.</p>
+
+<p>После установки проверьте версии установленных компонентов, чтобы убедиться в корректности работы. Введите <code>docker --version</code> и <code>docker compose version</code> в терминале. Если команды возвращают версии, значит, окружение готово к развертыванию основных сервисов. <mark>Именно на этом этапе критически важно проверить доступность портов 8123 и 22, так как конфликты могут заблокировать доступ к панели управления.</mark></p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка готовности Docker</h4><label class="check-item"><input type="checkbox"><span>Установлен Docker Engine</span></label><label class="check-item"><input type="checkbox"><span>Установлен Docker Compose</span></label><label class="check-item"><input type="checkbox"><span>Пользователь в группе docker</span></label><label class="check-item"><input type="checkbox"><span>Доступны порты 8123 и 22</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<blockquote>⚠️ Внимание: При использовании <strong>Docker</strong> убедитесь, что файловая система, на которой размещаются контейнеры, поддерживает <strong>привязку имен</strong> (named volumes) и персистентное хранение. Это критично для сохранения конфигурации при перезагрузке.</blockquote>
+
+<h2 id="развертывание-home-assistant-в-контейнере">Развертывание Home Assistant в контейнере</h2>
+
+<p>Теперь пришло время запустить само ядро системы. Мы создадим файл конфигурации <code>docker-compose.yml</code>, который определит все параметры работы <em>Home Assistant</em>. Этот файл должен быть размещен в отдельной директории, например, <code>/opt/homeassistant</code>. В конфигурации указываем образ <em>homeassistant/home-assistant</em>, маппинг портов и монтирование томов для хранения данных.</p>
+
+<p>Особое внимание уделите параметру <code>devices</code>. Если вы планируете использовать <strong>Zigbee-координатор</strong> через USB или <em>Bluetooth-адаптер</em> платы, необходимо передать эти устройства внутрь контейнера. Это делается путем добавления путей к устройствам (например, <code>/dev/ttyUSB0</code>) в соответствующий раздел конфигурации. Без этого <strong>Home Assistant</strong> не увидит ваши внешние модули.</p>
+
+<p>Для корректной работы времени и часовых поясов также необходимо передать переменные окружения и смонтировать системную папку <code>/etc/localtime</code>. Это предотвратит ошибки в логах и обеспечит правильную работу <strong>автоматизаций</strong>, зависящих от времени суток. Запустите контейнер командой <pre><code>docker compose up -d</code></pre>.</p>
+
+<details class="pb-accordion"><summary>Как проверить статус контейнера?</summary><div class="pb-accordion-body"><p>Используйте команду"docker compose ps" для просмотра состояния. Если статус"Up", значит система работает. Если"Exited", проверьте логи командой"docker compose logs -f".</p></div></details>
+
+<h2 id="оптимизация-производительности-и-безопасность">Оптимизация производительности и безопасность</h2>
+
+<p>После первого запуска важно настроить <strong>базу данных</strong> для минимизации нагрузки на диск. По умолчанию <em>Home Assistant</em> использует SQLite, но для мощных плат на <em>Armbian</em> рекомендуется переключиться на <strong>PostgreSQL</strong>. Это ускорит работу с историей событий и сделает систему более отзывчивой при большом количестве данных. Также стоит ограничить объем истории, чтобы не забивать диск старыми логами.</p>
+
+<p>Безопасность системы не менее важна. Настройте <strong>брандмауэр</strong> (iptables или ufw), чтобы закрыть доступ к порту <em>Docker</em> извне. Доступ к панели управления должен быть возможен только из локальной сети или через защищенный <strong>VPN</strong>. Никогда не открывайте порт <code>8123</code> напрямую в интернет без настройки <strong>SSL-сертификатов</strong> и сложного пароля.</p>
+
+<ul>
+<li>🔒 Настройте <strong>автосертификаты Let's Encrypt</strong> для защиты трафика.</li>
+<li>📉 Ограничьте <strong>CPU-лимиты</strong> контейнера, чтобы система не подвисала при пиковых нагрузках.</li>
+<li>🔄 Настройте автоматическое <strong>резервное копирование</strong> данных на внешний носитель.</li>
+</ul>
+
+<p>Регулярная очистка базы данных и перезагрузка системы раз в неделю помогут поддерживать высокую производительность. Используйте инструменты мониторинга, такие как <strong>Netdata</strong> или <em>Glances</em>, чтобы отслеживать состояние ресурсов в реальном времени.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Компонент</th>
+<th>Рекомендуемая версия</th>
+<th>Роль в системе</th>
+<th>Зависимости</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docker Engine</td>
+<td>Latest 24.x+</td>
+<td>Запуск контейнеров</td>
+<td>Linux Kernel 4.19+</td>
+</tr>
+<tr>
+<td>Home Assistant</td>
+<td>Latest stable</td>
+<td>Ядро умного дома</td>
+<td>Docker, Python 3.10+</td>
+</tr>
+<tr>
+<td>PostgreSQL</td>
+<td>15.x</td>
+<td>Хранение истории</td>
+<td>Docker, 2GB+ RAM</td>
+</tr>
+<tr>
+<td>Zigbee2MQTT</td>
+<td>Latest</td>
+<td>Поддержка Zigbee</td>
+<td>MQTT Broker (Mosquitto)</td>
+</tr>
+</tbody>
+</table></div>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для ускорения работы базы данных используйте SSD-накопитель NVMe вместо SD-карты. Это увеличит скорость записи логов в 10-20 раз и продлит жизнь системе.</p></aside>
+
+<h2 id="работа-с-аддонами-и-интеграциями">Работа с аддонами и интеграциями</h2>
+
+<p>Одним из главных преимуществ <strong>Home Assistant</strong> является экосистема <strong>аддонов</strong>. В отличие от версии <em>Core</em>, где аддоны не поддерживаются нативно, при развертывании на <em>Armbian</em> вы можете запустить их как отдельные <strong>Docker-контейнеры</strong> или использовать <em>Hass.io Supervisor</em>. Последний вариант проще, но требует установки Supervisor, что может усложнить настройку ядра.</p>
+
+<p>Для большинства пользователей оптимальным решением будет запуск необходимых сервисов отдельно. Например, <strong>Mosquitto Broker</strong> для <em>MQTT</em> можно запустить в своем контейнере, а <strong>Node-RED</strong> — для визуализации логики. Это дает гибкость: если один сервис упадет, остальные продолжат работать. Однако, это требует более тонкой настройки сетевых подключений между контейнерами.</p>
+
+<p>При выборе <strong>интеграций</strong> обращайте внимание на их требования к ресурсам. Некоторые интеграции, такие как <em>Google Assistant</em> или <strong>HomeKit</strong>, могут потреблять много памяти. Убедитесь, что у вашей платы достаточно <strong>ОЗУ</strong> для одновременной работы всех сервисов. Используйте <code>htop</code> для мониторинга потребления памяти в реальном времени.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Запуск аддонов в отдельных контейнерах обеспечивает лучшую стабильность и управляемость, чем использование Supervisor, но требует навыков работы с Docker Compose.</p></aside>
+
+<blockquote>⚠️ Внимание: Версии аддонов и интеграций могут быстро устаревать. Всегда проверяйте совместимость версий <em>Home Assistant Core</em> и <strong>аддонов</strong> перед обновлением, чтобы избежать потери функционала.</blockquote>
+
+<h2 id="частые-проблемы-и-их-решение">Частые проблемы и их решение</h2>
+
+<p>При работе с <strong>Home Assistant</strong> на <em>Armbian</em> пользователи часто сталкиваются с проблемами <strong>времени</strong> или <strong>сетевой доступности</strong>. Если время в системе отстает, проверьте синхронизацию NTP и правильность передачи системного времени в контейнер. Также убедитесь, что сетевой режим <strong>host</strong> настроен корректно, если вы используете его для обнаружения устройств.</p>
+
+<p>Другая частая проблема — это права доступа к USB-устройствам. Если <em>Home Assistant</em> не видит Zigbee-ключ, проверьте, добавлен ли пользователь в группу <code>dialout</code> или <code>plugdev</code>. Иногда требуется создание правил <strong>udev</strong> для правильного назначения прав доступа к порту. Это особенно актуально для устройств на базе <em>CC2531</em> или <em>ConBee II</em>.</p>
+
+<p>Если система работает нестабильно и часто перезагружается, проверьте <strong>температуру</strong> процессора. Одноплатные компьютеры могут перегреваться без активного охлаждения. Используйте <code>vcgencmd measure_temp</code> (для Raspberry Pi) или аналогичные утилиты для других плат. Установите термальный мониторинг и автоматическое отключение при перегреве.</p>
+
+<p>Для решения проблем с памятью используйте утилиту <code>free -h</code>. Если <strong>swap</strong> постоянно используется, система будет работать очень медленно. Рассмотрите возможность увеличения <strong>swap-файла</strong> или добавления физической памяти, если это возможно для вашей модели платы.</p>
+
+<details>
+<summary>Как настроить автоматическое обновление?</summary>
+<p>Используйте скрипт cron или systemd timer для проверки обновлений Docker-образов. Команда <code>docker compose pull</code> обновит образы, а <code>docker compose up -d</code> перезапустит контейнеры. Настройте это на ночное время, чтобы не мешать работе системы.</p>
+</details>
+
+<details>
+<summary>Что делать, если Home Assistant не стартует?</summary>
+<p>Проверьте логи контейнера командой <code>docker compose logs -f</code>. Ошибки часто связаны с правами доступа к файлам или нехваткой памяти. Убедитесь, что папка с данными имеет правильные права владения (chown) и доступность.</p>
+</details>
+
+<details>
+<summary>Можно ли установить Supervisor на Armbian?</summary>
+<p>Технически это возможно, но не рекомендуется. Установка Supervisor превращает систему в <em>Home Assistant OS</em>, что может вызвать конфликты с ядром Armbian. Лучше использовать чистый Docker-подход для стабильности.</p>
+</details>
+
+<details>
+<summary>Как ускорить работу базы данных?</summary>
+<p>Переключитесь на PostgreSQL или MariaDB. Установите аддон <strong>Recorder</strong> с оптимизированными настройками. Очистите историю событий за период более 30 дней и используйте <strong>принудительную очистку</strong> раз в неделю.</p>
+</details>
+
+<details>
+<summary>Нужен ли SSD для Home Assistant?</summary>
+<p>Для базовой работы достаточно SD-карты класса A2. Но для больших систем с историей и множеством устройств SSD критически важен для скорости и надежности. Избегайте износа SD-карты записью логов.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/r/re/remont-ochistitelya-vozdukha-xiaomi.html" class="pb-related-card">
+                <span class="pb-related-title">Ремонт очистителя воздуха Xiaomi: неисправности и устранение</span>
+                <span class="pb-related-desc">Как починить очиститель воздуха Xiaomi своими руками? Диагностика, ошибки HEPA-фильтра, замена мотор</span>
+            </a><a href="/umnyj-dom/n/ne/ne-udalos-poluchit-videofajl-xiaomi-kamera.html" class="pb-related-card">
+                <span class="pb-related-title">Ошибка получения видеофайла на Xiaomi камере: решение проблемы</span>
+                <span class="pb-related-desc">Почему Xiaomi камера не получает видеофайл? Исправление ошибок записи, настроек SD-карты, форматов к</span>
+            </a><a href="/umnyj-dom/k/ka/kak-otpravit-soobshchenie-na-yandeks-stantsiyu-s-telefona.html" class="pb-related-card">
+                <span class="pb-related-title">Как отправить сообщение на Яндекс Станцию с телефона: полное руководство</span>
+                <span class="pb-related-desc">Узнайте, как отправлять личные и голосовые сообщения на Яндекс Станцию через приложение Яндекс. Поша</span>
+            </a><a href="/umnyj-dom/s/sm/smart-lajf-ne-podklyuchaetsya-k-alise.html" class="pb-related-card">
+                <span class="pb-related-title">Смарт Лайф не подключается к Алисе: полные способы решения</span>
+                <span class="pb-related-desc">Умный дом не работает? Разбираем, почему приложение Smart Life не подключается к Алисе. Пошаговая ин</span>
+            </a><a href="/umnyj-dom/w/ww/www-smart-azsirbis-ru.html" class="pb-related-card">
+                <span class="pb-related-title">Поиск и настройка сайта www.smart.asirbis.ru: обзор возможностей</span>
+                <span class="pb-related-desc">Подробный разбор функционала сайта www.smart.asirbis.ru. Узнайте, как найти ресурс, настроить доступ</span>
+            </a><a href="/umnyj-dom/m/mo/moes-termostat-podklyuchenie-k-wifi.html" class="pb-related-card">
+                <span class="pb-related-title">Moes термостат: подключение к WiFi и настройка приложения</span>
+                <span class="pb-related-desc">Полная инструкция по подключению термостата Moes к WiFi. Настройка приложения Tuya, устранение ошибо</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

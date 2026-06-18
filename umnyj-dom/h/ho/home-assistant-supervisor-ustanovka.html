@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Home Assistant Supervisor: полное руководство по установке и настройке — Техно Гид</title>
+    <meta name="description" content="Пошаговая инструкция по установке Home Assistant Supervisor на OS, Docker и Raspberry Pi. Разбор методов, частые ошибки и советы по оптимизации.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/h/ho/home-assistant-supervisor-ustanovka.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Home Assistant Supervisor: полное руководство по установке и настройке">
+    <meta property="og:description" content="Пошаговая инструкция по установке Home Assistant Supervisor на OS, Docker и Raspberry Pi. Разбор методов, частые ошибки и советы по оптимизации.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Home Assistant Supervisor: полное руководство по установке и настройке</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-архитектуры-os-или-docker-supervisor">Выбор архитектуры: OS или Docker Supervisor</a></li><li><a href="#установка-home-assistant-os-через-образ">Установка Home Assistant OS через образ</a></li><li><a href="#установка-supervisor-в-контейнере-docker">Установка Supervisor в контейнере Docker</a></li><li><a href="#требования-к-ресурсам-и-сетевой-конфигурации">Требования к ресурсам и сетевой конфигурации</a></li><li><a href="#работа-с-аддонами-и-обновлениями">Работа с аддонами и обновлениями</a></li><li><a href="#решение-типичных-проблем-при-установке">Решение типичных проблем при установке</a></li><li><a href="#интеграция-с-внешними-сервисами">Интеграция с внешними сервисами</a></li><li><a href="#заключение-и-дальнейшие-шаги">Заключение и дальнейшие шаги</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/r/ra/rabochee-mesto-vstroennoe-v-shkaf.html">Рабочее место встроенное в шкаф: идеи, размеры и дизайн</a></li><li><a href="/umnyj-dom/n/ne/ne-rabotaet-sensornyj-vyklyuchatel-sveta.html">Не работает сенсорный выключатель света: причины, ремонт и замена</a></li><li><a href="/umnyj-dom/r/ro/robot-pylesos-ne-vidit-kontejner-s-vodoj.html">Робот-пылесос не видит контейнер с водой: причины и решение</a></li><li><a href="/umnyj-dom/p/po/port-home-assistant-po-umolchaniyu.html">Порт Home Assistant по умолчанию: настройка и безопасность</a></li><li><a href="/umnyj-dom/m/mo/mozhno-li-pereproshit-kolonku-alisu.html">Можно ли перепрошить Яндекс Станцию с Алисой: Модификация и альтернативы</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Установка Home Assistant Supervisor: от нуля до умного дома</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-архитектуры-os-или-docker-supervisor">Выбор архитектуры: OS или Docker Supervisor</a></li><li><a href="#установка-home-assistant-os-через-образ">Установка Home Assistant OS через образ</a></li><li><a href="#установка-supervisor-в-контейнере-docker">Установка Supervisor в контейнере Docker</a></li><li><a href="#требования-к-ресурсам-и-сетевой-конфигурации">Требования к ресурсам и сетевой конфигурации</a></li><li><a href="#работа-с-аддонами-и-обновлениями">Работа с аддонами и обновлениями</a></li><li><a href="#решение-типичных-проблем-при-установке">Решение типичных проблем при установке</a></li><li><a href="#интеграция-с-внешними-сервисами">Интеграция с внешними сервисами</a></li><li><a href="#заключение-и-дальнейшие-шаги">Заключение и дальнейшие шаги</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Создание полноценной системы автоматизации начинается с правильной архитектуры ядра. <em>Home Assistant Supervisor</em> выступает в роли критически важного администратора, который управляет контейнерами, обеспечивает обновления и предоставляет удобный веб-интерфейс для работы с надстройками. Без него вы получите лишь базовую функцию без возможности расширения функционала через плагины или аддоны.</p>
+
+<p>Многие пользователи сталкиваются с трудностями на этапе первичной развертки среды, путаясь между образом операционной системы и установкой поверх Linux. Выбор правильного метода зависит от вашего <strong>железа</strong> и целей проекта: для стабильной домашней станции лучше всего подходит изолированная <em>Home Assistant OS</em>, тогда как для опытных энтузиастов подойдет установка Supervisor в контейнере Docker на существующем сервере.</p>
+
+<p>Неправильная конфигурация на старте может привести к невозможности обновления системы в будущем или потере доступа к управляющему интерфейсу. Разберем детально, как корректно установить Supervisor, какие системные требования необходимо соблюсти и как избежать распространенных ошибок при инициализации среды.</p>
+
+<h2 id="выбор-архитектуры-os-или-docker-supervisor">Выбор архитектуры: OS или Docker Supervisor</h2>
+
+<p>Перед началом установки необходимо четко определить, какой метод развертывания подходит именно вам. <strong>Home Assistant OS</strong> — это полноценная операционная система, основанная на Linux, которая устанавливается прямо на карту памяти или жесткий диск. Это "родной" и самый простой путь, где Supervisor, ядро и база данных уже идеально настроены разработчиками.</p>
+
+<p>Альтернативный вариант — установка <em>Supervisor</em> поверх существующей операционной системы, например, Ubuntu или Debian, используя Docker. Этот метод дает больше гибкости в управлении ресурсами, но требует глубоких знаний системного администрирования и ручного решения конфликтов версий библиотек. Выбор зависит от того, хотите ли вы "установил и забыл" или готовы тратить время на тонкую настройку окружения.</p>
+
+<p>Если вы планируете использовать устройство исключительно как центр умного дома, нет смысла усложнять задачу. <strong>Home Assistant OS</strong> берет на себя все рутинные задачи по безопасности и обновлению. Для серверов, где также запущены медиа-серверы или веб-сайты, вариант с Docker может быть предпочтительнее для изоляции процессов.</p>
+
+<h2 id="установка-home-assistant-os-через-образ">Установка Home Assistant OS через образ</h2>
+
+<p>Самый надежный способ получить работающий <em>Supervisor</em> из коробки — это записать специальный образ операционной системы на ваш носитель. Этот процесс полностью стирает все данные на диске, поэтому убедитесь, что вы не храните важных файлов на целевом устройстве. Вам потребуется загрузчик <code>balenaEtcher</code> или аналогичный инструмент для прошивки образов.</p>
+
+<p>Сначала скачайте актуальный образ с официального сайта, выбрав правильную архитектуру для вашего процессора: <code>qemux86-64</code> для виртуальных машин, <code>raspberrypi4-64</code> для Raspberry Pi 4 или <code>odroid-n2</code> для одноплатных компьютеров Hardkernel. Запишите файл образа на карту памяти или SSD, после чего вставьте носитель в устройство и включите его.</p>
+
+<p>После загрузки система автоматически получит IP-адрес от вашего роутера. Введите этот адрес в браузере, чтобы попасть на страницу первого входа. Здесь вы создадите учетную запись администратора и увидите статус <strong>Supervisor</strong>, который сразу же станет доступен для управления. Первый запуск может занять несколько минут, так как система инициализирует базы данных и сервисы.</p>
+
+<blockquote>⚠️ Внимание: Процесс прошивки образа уничтожит все существующие данные на диске. Убедитесь, что вы выбрали правильный физический диск, если используете компьютер с несколькими накопителями.</blockquote>
+
+<div class="pb-poll" id="poll-79c6a853"><div class="pb-poll-question">📊 Какую платформу вы планируете использовать для Home Assistant?</div><div class="pb-poll-option" data-poll="79c6a853" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Raspberry Pi</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="79c6a853" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Обычный ПК/Ноутбук</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="79c6a853" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Виртуальная машина (Proxmox/ESXi)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="79c6a853" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Одноплатник (Orange Pi, ODROID)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="установка-supervisor-в-контейнере-docker">Установка Supervisor в контейнере Docker</h2>
+
+<p>Если у вас уже есть работающий сервер на базе Linux, вы можете добавить <em>Supervisor</em> в виде контейнера Docker. Это требует наличия установленного Docker Engine и Docker Compose. Данный метод не дает такой степени изоляции, как OS, но позволяет интегрировать умный дом в сложную инфраструктуру без выделенного железа.</p>
+
+<p>Для запуска необходимо создать файл конфигурации <code>docker-compose.yml</code> с правильными параметрами монтирования томов и сетевых интерфейсов. Ключевым моментом является предоставление контейнеру доступа к системным ресурсам, иначе аддоны не смогут работать корректно. В частности, необходим доступ к <strong>DBUS</strong> и сетевым интерфейсам.</p>
+
+<p>Создайте директорию <code>/opt/hassio</code> и поместите туда необходимые файлы конфигурации. Запуск осуществляется командой <code>docker-compose up -d</code>. После инициализации процесс <em>Supervisor</em> начнет работу, но вам придется вручную настроить сетевые правила фаервола для корректной работы мультимедийных протоколов.</p>
+
+<pre><code>sudo docker run -d \
+<p>--name=hassio \</p>
+<p>--privileged \</p>
+<p>--restart=unless-stopped \</p>
+<p>--volume=/var/run/docker.sock:/var/run/docker.sock:rw \</p>
+<p>--volume=/etc:/etc:ro \</p>
+<p>--volume=/run/dbus:/run/dbus:ro \</p>
+<p>--volume=/run/udev:/run/udev:ro \</p>
+<p>--cap-add=SYS_ADMIN \</p>
+<p>--network=host \</p>
+<p>homeassistant/home-assistant:stable</code></pre></p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка хоста для Docker Supervisor</h4><label class="check-item"><input type="checkbox"><span>Установить Docker Engine</span></label><label class="check-item"><input type="checkbox"><span>Проверить права доступа root</span></label><label class="check-item"><input type="checkbox"><span>Настроить переменные окружения</span></label><label class="check-item"><input type="checkbox"><span>Создать структуру папок для томов</span></label><label class="check-item"><input type="checkbox"><span>Открыть порты для доступа</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<p>Обратите внимание, что при использовании Docker-метода обновление системы происходит иначе. Вам нужно будет вручную обновлять образ контейнера, так как встроенный механизм обновлений в Supervisor может работать некорректно без полной изоляции OS.</p>
+
+<blockquote>⚠️ Внимание: При установке поверх Docker доступ к системным устройствам (UUID, сетевые карты) может быть ограничен. Это часто приводит к сбоям в работе аддонов, требующих прямого доступа к железу, например, шлюзов Zigbee.</blockquote>
+
+<h2 id="требования-к-ресурсам-и-сетевой-конфигурации">Требования к ресурсам и сетевой конфигурации</h2>
+
+<p>Стабильная работа <em>Supervisor</em> напрямую зависит от вычислительной мощности и объема памяти. Минимальные требования для комфортной работы включают процессор с двумя ядрами и минимум 2 ГБ оперативной памяти. Для систем с большим количеством датчиков и аддонов рекомендуется закладывать 4 ГБ и более.</p>
+
+<p>Сетевая конфигурация играет роль не менее важную. <strong>Home Assistant</strong> должен быть доступен по локальной сети, но доступ извне должен быть строго регламентирован. Использование статического IP-адреса для сервера обязательно, так как смена адреса роутера может привести к потере связи с устройствами умного дома.</p>
+
+<p>Некоторые аддоны требуют специфических сетевых настроек, таких как режим моста или хоста. Если вы используете виртуализацию, убедитесь, что сетевой адаптер настроен в режиме <code>Bridged</code>, а не NAT. Это критично для обнаружения устройств по протоколам <code>mDNS</code> и <code>UPnP</code> в локальной сети.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Минимальное значение</th>
+<th>Рекомендуемое значение</th>
+<th>Примечание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ОЗУ (RAM)</td>
+<td>2 ГБ</td>
+<td>4 ГБ</td>
+<td>Для работы аддонов типа Home Assistant Core</td>
+<tr>
+<td>Тип диска</td>
+<td>eMMC / SD</td>
+<td>SSD NVMe</td>
+<td>Скорость записи влияет на обновление базы данных</td>
+</tr>
+<tr>
+<td>Процессор</td>
+<td>2 ядра</td>
+<td>4 ядра / 64 бита</td>
+<td>Необходимо для кодирования видео в аддонах</td>
+</tr>
+<tr>
+<td>Сеть</td>
+<td>100 Мбит/с</td>
+<td>1 Гбит/с + статика</td>
+<td>Для стабильной работы шлюзов и камер</td>
+</tr>
+</tbody>
+</table></div>
+
+<details class="pb-accordion"><summary>Как проверить доступность ресурсов?Для проверки использования ресурсов в реальном времени используйте команду <code>htop</code> в терминале Linux или посмотрите вкладку "Система" в интерфейсе Supervisor. Там отображается загрузка CPU, использование памяти и свободное место на диске.-->
+
+<h2 id="работа-с-аддонами-и-обновлениями">Работа с аддонами и обновлениями</h2>
+
+<p>Основное преимущество <em>Supervisor</em> заключается в возможности установки <strong>аддонов</strong>. Это дополнительные сервисы, такие как серверы баз данных, мониторинг сети или голосовые помощники. Установка происходит в один клик через соответствующую вкладку в интерфейсе, что значительно упрощает развертывание сложных конфигураций.</p>
+
+<p>Обновление системы должно происходить регулярно для обеспечения безопасности и получения новых функций. Supervisor автоматически проверяет наличие обновлений ядра, самого менеджера и установленных аддонов. Однако, перед обновлением ядра всегда рекомендуется создавать резервную копию конфигурации.</p>
+
+<p>Иногда обновления могут вызвать конфликты версий, если аддон не поддерживает новую версию ядра. В таких случаях <em>Supervisor</em> может временно отключить проблемный аддон. В таких ситуациях необходимо проверить совместимость в официальном репозитории разработчика аддона.</p>
+
+<!--WIDGET</summary><div class="pb-accordion-body"><p>tip:Перед обновлением системы обязательно создайте полную резервную копию через меню "Reserve" в интерфейсе Supervisor. Сохраните файл бэкапа на внешний носитель, чтобы иметь возможность отката в случае сбоя.</p></div></details>
+
+<h2 id="решение-типичных-проблем-при-установке">Решение типичных проблем при установке</h2>
+
+<p>При установке часто возникают проблемы с правами доступа к файловой системе или сетевым интерфейсам. Если вы видите ошибку <code>"Permission denied"</code> при попытке запуска аддона, проверьте, что Docker-контейнер запущен с флагом <code>--privileged</code> или имеет необходимые <strong>capabilities</code>. Это частая проблема при кастомной сборке системы.</p>
+
+<p>Другой распространенной ошибкой является отсутствие интернет-соединения внутри контейнера. Это случается, если настройки DNS на хостовой машине не передаются корректно. Попробуйте перезапустить сетевой интерфейс или прописать статические DNS-серверы в конфигурации Docker.</p>
+
+<p>Если интерфейс Supervisor не загружается, проверьте логи службы. Используйте команду <code>journalctl -u hassos-supervisor -f</code> для просмотра ошибок в реальном времени. Часто проблема кроется в нехватке места на диске, особенно если лог-файлы переполнили том хранения.</p>
+
+<blockquote>⚠️ Внимание: Не игнорируйте предупреждения о нехватке места на диске. Если системный раздел заполнится более чем на 90%, процесс записи базы данных может остановиться, что приведет к потере истории и сбое работы всей системы.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Ключевой момент: стабильность работы Supervisor зависит от целостности файловой системы и наличия свободного места. Регулярно очищайте старые логи и бэкапы, чтобы предотвратить критические сбои.</p></aside>
+
+<h2 id="интеграция-с-внешними-сервисами">Интеграция с внешними сервисами</h2>
+
+<p>После успешной установки и настройки <em>Supervisor</em> можно переходить к интеграции с внешними сервисами. Это может быть облачное хранилище для бэкапов, платформы умного дома от других производителей или сервисы телеметрии. <strong>API</em> Home Assistant позволяет автоматизировать эти процессы.</p>
+
+<p>Для безопасного подключения внешних сервисов используйте локальную сеть и VPN, если доступ требуется извне. Открывать порты напрямую на роутере без защиты не рекомендуется. Настройте <code>Cloudflare Tunnel</code> или <em>Tailscale</em> для безопасного удаленного доступа к панели управления.</p>
+
+<p> В среде Supervisor это решается через обновление базового образа, но в Docker-версии может потребоваться ручная настройка зависимостей аддонов.</p>
+
+<h2 id="заключение-и-дальнейшие-шаги">Заключение и дальнейшие шаги</h2>
+
+<p>Установка <em>Home Assistant Supervisor</em> — это фундамент для построения надежной системы умного дома. Правильный выбор архитектуры и соблюдение требований к ресурсам обеспечат стабильную работу на долгие годы. Регулярное обновление и мониторинг ресурсов помогут избежать неожиданных сбоев.</p>
+
+<p>После базовой настройки стоит уделить внимание оптимизации энергосбережения и безопасности. Настройте автоматическое выключение неиспользуемых устройств, обновите пароли и включите двухфакторную аутентификацию. Это значительно повысит уровень защиты вашей домашней сети.</p>
+
+<p>Экспериментируйте с аддонами и настройками, но всегда делайте это на основе резервных копий. Сообщество разработчиков постоянно обновляет репозитории, предлагая новые решения для автоматизации. Изучайте документацию и адаптируйте систему под свои уникальные потребности.</p>
+
+<details>
+<summary>Какая версия Home Assistant OS самая стабильная?</summary>
+<p>Самой стабильной считается версия из канала "Stable". Избегайте бета-версий на критически важных узлах, если вы не готовы к возможным багам.</p>
+</details>
+
+<details>
+<summary>Можно ли установить Supervisor на обычную Windows?</summary>
+<p>Нет, напрямую установить Supervisor на Windows не получится. Вам потребуется виртуальная машина (Hyper-V, VMware) с Linux-образом, либо использование подсистемы WSL2 с Docker, но это менее надежно.</p>
+</details>
+
+<details>
+<summary>Почему аддоны не устанавливаются?</summary>
+<p>Чаще всего это связано с отсутствием доступа к интернету внутри контейнера или нехваткой места на диске. Проверьте логи Supervisor в разделе "Система" для точной причины.</p>
+</details>
+
+<details>
+<summary>Как восстановить доступ, если забыл пароль?</summary>
+<p>Используйте команду восстановления пароля через терминал доступа к консоли системы или восстановите систему из резервной копии, где пароль был известен.</p>
+</details>
+
+<details>
+<summary>Нужен ли внешний роутер для работы?</summary>
+<p>Для работы умного дома достаточно локальной сети, роутер нужен только для подключения к интернету. Многие функции работают полностью локально без внешнего подключения.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/r/ra/rabochee-mesto-vstroennoe-v-shkaf.html" class="pb-related-card">
+                <span class="pb-related-title">Рабочее место встроенное в шкаф: идеи, размеры и дизайн</span>
+                <span class="pb-related-desc">Как организовать рабочее место встроенное в шкаф: выбор конструкций, эргономика, освещенность и сове</span>
+            </a><a href="/umnyj-dom/n/ne/ne-rabotaet-sensornyj-vyklyuchatel-sveta.html" class="pb-related-card">
+                <span class="pb-related-title">Не работает сенсорный выключатель света: причины, ремонт и замена</span>
+                <span class="pb-related-desc">Свет не включается? Узнайте, почему не работает сенсорный выключатель света. Пошаговая диагностика, </span>
+            </a><a href="/umnyj-dom/r/ro/robot-pylesos-ne-vidit-kontejner-s-vodoj.html" class="pb-related-card">
+                <span class="pb-related-title">Робот-пылесос не видит контейнер с водой: причины и решение</span>
+                <span class="pb-related-desc">Робот-пылесос отказывается мыть пол? Разбираем, почему устройство не видит резервуар с водой, и поша</span>
+            </a><a href="/umnyj-dom/p/po/port-home-assistant-po-umolchaniyu.html" class="pb-related-card">
+                <span class="pb-related-title">Порт Home Assistant по умолчанию: настройка и безопасность</span>
+                <span class="pb-related-desc">Узнайте, какой порт Home Assistant используется по умолчанию. Подробная инструкция по смене порта бр</span>
+            </a><a href="/umnyj-dom/m/mo/mozhno-li-pereproshit-kolonku-alisu.html" class="pb-related-card">
+                <span class="pb-related-title">Можно ли перепрошить Яндекс Станцию с Алисой: Модификация и альтернативы</span>
+                <span class="pb-related-desc">Разбираем возможность перепрошивки Яндекс Станции. Почему замена ПО невозможна и как получить новый </span>
+            </a><a href="/umnyj-dom/k/ka/kak-podklyuchit-datchik-otkrytiya-dveri-k-alise.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить датчик открытия двери к Алисе: инструкция</span>
+                <span class="pb-related-desc">Полное руководство по настройке датчика открытия двери для Яндекс Станции. Выбор оборудования, сцена</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

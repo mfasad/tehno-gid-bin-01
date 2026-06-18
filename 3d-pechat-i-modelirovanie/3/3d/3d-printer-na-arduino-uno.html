@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>3д принтер на Ардуино Уно: сборка, прошивка и настройка — Техно Гид</title>
+    <meta name="description" content="Пошаговое руководство по созданию 3д принтера на базе Arduino Uno. Выбор кинематики, драйверов, прошивка Marlin и калибровка экструдера.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/3d-pechat-i-modelirovanie/3/3d/3d-printer-na-arduino-uno.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="3д принтер на Ардуино Уно: сборка, прошивка и настройка">
+    <meta property="og:description" content="Пошаговое руководство по созданию 3д принтера на базе Arduino Uno. Выбор кинематики, драйверов, прошивка Marlin и калибровка экструдера.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/3d-pechat-i-modelirovanie/">3D Печать и Моделирование</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">3д принтер на Ардуино Уно: сборка, прошивка и настройка</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-архитектуры-и-механических-компонентов">Выбор архитектуры и механических компонентов</a></li><li><a href="#электронная-начинка-плата-драйверы-и-питание">Электронная начинка: плата, драйверы и питание</a></li><li><a href="#сборка-экструдера-и-горячего-конца">Сборка экструдера и горячего конца</a></li><li><a href="#прошивка-marlin-настройка-конфигурации">Прошивка Marlin: настройка конфигурации</a></li><li><a href="#калибровка-шагов-и-точность-позиционирования">Калибровка шагов и точность позиционирования</a></li><li><a href="#первый-запуск-и-устранение-неисправностей">Первый запуск и устранение неисправностей</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/3d-pechat-i-modelirovanie/p/pr/press-forma-na-3d-printere.html">Создание пресс-формы на 3D принтере: Технологии и материалы</a></li><li><a href="/3d-pechat-i-modelirovanie/t/te/temperatury-dlya-pechati-petg.html">Температуры печати PETG: настройки для идеального качества</a></li><li><a href="/3d-pechat-i-modelirovanie/k/ka/kak-renderit-v-sketchape.html">Как рендерить в Скетчапе: лучшие плагины и настройки</a></li><li><a href="/3d-pechat-i-modelirovanie/c/ca/cad-dlya-3d-printera.html">CAD для 3D-печати: выбор софта и особенности</a></li><li><a href="/3d-pechat-i-modelirovanie/k/ko/kompas-kak-sdelat-rezbu-na-modeli.html">Как сделать резьбу на 3D-модели: Полное руководство</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Создание 3д принтера на базе Arduino Uno своими руками</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-архитектуры-и-механических-компонентов">Выбор архитектуры и механических компонентов</a></li><li><a href="#электронная-начинка-плата-драйверы-и-питание">Электронная начинка: плата, драйверы и питание</a></li><li><a href="#сборка-экструдера-и-горячего-конца">Сборка экструдера и горячего конца</a></li><li><a href="#прошивка-marlin-настройка-конфигурации">Прошивка Marlin: настройка конфигурации</a></li><li><a href="#калибровка-шагов-и-точность-позиционирования">Калибровка шагов и точность позиционирования</a></li><li><a href="#первый-запуск-и-устранение-неисправностей">Первый запуск и устранение неисправностей</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Сборка собственного 3д принтера на базе микроконтроллера <em>Arduino Uno</em> — это идеальный входной билет в мир аддитивных технологий для энтузиастов и инженеров. В отличие от покупки готового устройства, самостоятельная конструкция позволяет досконально понять механику движения осей, принципы работы экструдера и логику управления шаговыми двигателями. Плата <strong>Arduino Uno</strong>, несмотря на свою простоту и ограниченное количество пинов, остается самым популярным выбором для бюджетных проектов благодаря огромному сообществу и совместимости с прошивкой <em>Marlin</em>.</p>
+
+<p>Процесс создания такого устройства требует не только пайки компонентов, но и грамотного подбора кинематической схемы. Вы сможете выбрать между классической <em>RepRap Prusa i3</em>, более компактной <em>CoreXY</em> или дельта-роботом, каждый из которых имеет свои преимущества в скорости и качестве печати. Главное преимущество использования платформы <strong>Arduino</strong> заключается в возможности бесконечной модификации (firmware) под конкретные задачи вашего станка.</p>
+
+<p>В этой статье мы разберем все этапы: от выбора «железа» до первой успешной экструзии пластика. Вы узнаете, как правильно подключить драйверы, настроить концевые выключатели и откалибровать шаги на миллиметр, чтобы получить устройство, способное конкурировать с коммерческими аналогами начального уровня.</p>
+
+<h2 id="выбор-архитектуры-и-механических-компонентов">Выбор архитектуры и механических компонентов</h2>
+
+<p>Перед закупкой деталей необходимо определиться с кинематикой. Для новичков, использующих <em>Arduino Uno</em>, наиболее рекомендованной схемой является <strong>Cartesian</strong> (декартова система координат), реализованная в дизайне <em>Prusa i3</em>. В этой схеме стол двигается только по оси Y, а печатающая голова перемещается по осям X и Z. Это упрощает механику и снижает нагрузку на шаговые двигатели, что критично при использовании стандартных драйверов.</p>
+
+<p>Основу конструкции составляют алюминиевые профили или акриловые пластины, которые служат направляющими. Для передачи вращения используются гладкие валы диаметром 8 мм или линейные рельсы MGN12. Последние обеспечивают значительно меньший люфт и более высокое качество печати, но требуют более точной сборки. Не забывайте, что жесткость рамы напрямую влияет на отсутствие артефактов типа <em>ringing</em> (звон) на готовых моделях.</p>
+
+<p>Для вращения валов необходимы шаговые двигатели стандарта <strong>NEMA 17</strong>. Обычно требуется три или четыре мотора: по одному на оси X, Y и Z, и четвертый для подачи филамента в экструдере. Важно выбирать двигатели с углом шага 1.8 градуса и током удержания не менее 40 Н*см. Слабые моторы могут пропускать шаги при быстрых перемещениях, что приведет к смещению слоев.</p>
+
+<div class="pb-poll" id="poll-0b178a80"><div class="pb-poll-question">📊 Какую кинематику вы планируете собрать?</div><div class="pb-poll-option" data-poll="0b178a80" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Классическая i3 (стол Y)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0b178a80" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">CoreXY (портал)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0b178a80" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Дельта-робот</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0b178a80" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Сканирующая голова (CoreXZ)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="электронная-начинка-плата-драйверы-и-питание">Электронная начинка: плата, драйверы и питание</h2>
+
+<p>Сердцем системы является плата <em>Arduino Uno</em>, однако она не может управлять мощными двигателями напрямую. Для этого используются специальные платы-расширения (шилды), такие как <strong>CNC Shield</strong>, или отдельные модули драйверов, подключаемые через макетную плату. Наиболее популярными и тихими решениями на сегодняшний день являются драйверы серии <em>TMC2208</em> или <em>TMC2209</em>, работающие в режиме <code>UART</code> или <code>Step/Dir</code>.</p>
+
+<p>Блок питания играет критическую роль в стабильности работы. Для домашнего принтера оптимальным выбором будет импульсный источник питания напряжением 12В или 24В с током не менее 15-20 Ампер. Напряжение 24В предпочтительнее для хотэндов, так как позволяет быстрее нагревать сопло и снижает силу тока в проводах, уменьшая их нагрев. Обязательно используйте предохранитель в цепи питания хотэнда для защиты от короткого замыкания.</p>
+
+<p>Система охлаждения электроники часто недооценивается начинающими сборщиками. Драйверы шаговых двигателей и транзисторы (MOSFET), управляющие нагревателями, выделяют значительное количество тепла. Установка активных радиаторов и хотя бы одного корпусного вентилятора на обдув платы <strong>Arduino</strong> и драйверов обязательна. Перегрев драйвера приведет к срабатыванию тепловой защиты и остановке принтера посередине печати.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> При подключении нагревательного элемента (хотэнда) и нагревательного стола напрямую к плате через MOSFET убедитесь, что транзисторы рассчитаны на ток минимум 15А. Дешевые китайские модули часто имеют завышенные характеристики, и транзистор может сгореть, расплавив пластиковый разъем.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте термопасту между корпусом драйвера шагового двигателя и радиатором охлаждения. Это снизит температуру чипа на 10-15 градусов и продлит срок службы электроники.</p></aside>
+
+<h2 id="сборка-экструдера-и-горячего-конца">Сборка экструдера и горячего конца</h2>
+
+<p>Экструдер — это узел, отвечающий за подачу пластика, и его надежность определяет успех печати. Существует два основных типа: <strong>Direct</strong> (прямая подача, мотор стоит над хотэндом) и <em>Bowden</em> (мотор на раме, пластик подается через тефлоновую трубку). Для <em>Arduino Uno</em> и печати гибкими материалами (TPU, Flex) настоятельно рекомендуется схема Direct, так как она исключает проблемы с застреванием филамента в трубке.</p>
+
+<p>Горячий конец (хотэнд) состоит из теплобарьера, нагревательного блока и сопла. Стандартным решением является клон <em>E3D V6</em> или цельнометаллические версии для высокотемпературных пластиков. Критически важно обеспечить герметичность соединения между тефлоновой трубкой (если она есть внутри) и соплом. Малейшая щель приведет к вытеканию расплавленного пластика наружу и закупорке канала.</p>
+
+<p>Для контроля температуры используются термисторы (обычно 100к Ом) или термопары. Термистор вставляется в специальное гнездо на нагревательном блоке и фиксируется винтом. Ошибка в подключении или плохой контакт приведут к ошибке <code>MINTEMP</code> или <code>MAXTEMP</code> в прошивке, что заблокирует работу принтера в целях пожарной безопасности.</p>
+
+<pre><code>Типичная распиновка термистора для Arduino + CNC Shield:
+<p>Сигнал -> Аналоговый пин (например, A0)</p>
+<p>Земля -> GND</p>
+<p>Питание -> 5V (через подтягивающий резистор на плате)</code></pre></p>
+
+<h2 id="прошивка-marlin-настройка-конфигурации">Прошивка Marlin: настройка конфигурации</h2>
+
+<p>После сборки «железа» необходимо загрузить управляющее программное обеспечение. Стандартом де-факто является прошивка <strong>Marlin</strong>. Процесс начинается с распаковки архива прошивки и открытия файла <code>Configuration.h</code> в среде <em>Arduino IDE</em>. Здесь задаются все физические параметры вашего устройства: количество экструдеров, размеры области печати и типы датчиков.</p>
+
+<p>В разделе настройки материнской платы необходимо указать правильный идентификатор. Для связки <em>Arduino Uno</em> + <em>CNC Shield v3</em> обычно используется определение <code>#define MOTHERBOARD BOARD_RAMPS_14_EFB</code>. Если вы используете другую комбинацию плат, найдите соответствующее значение в файле <code>boards.h</code>. Ошибка на этом этапе приведет к тому, что плата просто не запустится или будет управлять осями хаотично.</p>
+
+<p>Особое внимание уделите настройке концевых выключателей. В прошивке нужно определить, нормально-замкнутые (<em>NC</em>) или нормально-разомкнутые (<em>NO</em>) у вас датчики, а также инвертировать ли логику их срабатывания. Это делается через директивы <code>#define X_MIN_ENDSTOP_INVERTING</code> и аналогичные для осей Y и Z. Неправильная настройка заставит принтер думать, что он врезался в предел сразу после включения.</p>
+
+<details class="pb-accordion"><summary>Где скачать последнюю версию Marlin?</summary><div class="pb-accordion-body"><p>Официальный репозиторий прошивки находится на GitHub. Ищите ветку"bugfix-2.1.x" или стабильную версию 2.1.2, так как они наиболее протестированы для плат на базе AVR (Arduino Uno).</p></div></details>
+
+<h2 id="калибровка-шагов-и-точность-позиционирования">Калибровка шагов и точность позиционирования</h2>
+
+<p>После первой загрузки прошивки принтер еще не знает, сколько шагов двигателя соответствует одному миллиметру движения. Этот параметр называется <strong>Steps per mm</strong> и рассчитывается индивидуально для каждой оси. Формула расчета зависит от угла шага двигателя, настройки микрошага на драйвере и шага винта (или диаметра шестерни).</p>
+
+<p>Для калибровки оси X или Y подайте команду перемещения на известное расстояние, например, 100 мм, и измерьте реальное перемещение штангенциркулем. Если принтер проехал 95 мм, необходимо увеличить количество шагов. Корректировка производится командой <code>M92</code> через терминал или путем редактирования значений <code>DEFAULT_AXIS_STEPS_PER_UNIT</code> в прошивке.</p>
+
+<p>Калибровка экструдера (E-steps) — самый важный этап для качества печати. Выньте сопло, нагрейте хотэнд, отметьте на филаменте 100 мм от входа в экструдер и подайте команду на экструзию 100 мм. Измерьте остаток. Разница покажет, недоэкструдирует или переэкструдирует ваш механизм. Точная настройка этого параметра избавит от проблем с адгезией слоев и недостатком материала.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Описание</th>
+<th>Типичное значение (для NEMA 17)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DEFAULT_X_STEPS_PER_UNIT</code></td>
+<td>Шаги на мм оси X</td>
+<td>80.0 (ремень GT2, 20 зубьев)</td>
+</tr>
+<tr>
+<td><code>DEFAULT_Y_STEPS_PER_UNIT</code></td>
+<td>Шаги на мм оси Y</td>
+<td>80.0 (ремень GT2, 20 зубьев)</td>
+</tr>
+<tr>
+<td><code>DEFAULT_Z_STEPS_PER_UNIT</code></td>
+<td>Шаги на мм оси Z</td>
+<td>400.0 (винт T8, шаг 2мм)</td>
+</tr>
+<tr>
+<td><code>DEFAULT_E_STEPS_PER_UNIT</code></td>
+<td>Шаги на мм экструдера</td>
+<td>93.0 - 105.0 (зависит от редуктора)</td>
+</tr>
+</tbody>
+</table></div>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Точность калибровки экструдера влияет на прочность изделия сильнее, чем скорость печати. Потратьте время на замер реального расхода филамента.</p></aside>
+
+<h2 id="первый-запуск-и-устранение-неисправностей">Первый запуск и устранение неисправностей</h2>
+
+<p>Когда все параметры внесены и прошивка скомпилирована, наступает момент истины. Подключите принтер к компьютеру через USB и откройте программу для управления (например, <em>Pronterface</em> или <em>Cura</em>). Первым делом проверьте направление движения осей. Если мотор оси X крутится в обратную сторону при команде <code>G1 X10</code>, это исправляется изменением направления сигнала в прошивке или физической перестановкой контактов на драйвере.</p>
+
+<p>Проверка концевиков осуществляется командой <code>M119</code>. В ответ вы должны увидеть статус <code>open</code> для ненажатых датчиков и <code>TRIGGERED</code> для нажатых. Если статус инвертирован (показывает срабатывание, когда датчик свободен), проверьте настройки инверсии в <code>Configuration.h</code>. Игнорирование этого этапа может привести к тому, что ось Z поедет вверх до упора и сломает механику, так как «не увидит» нижний предел.</p>
+
+<p>Нагрев элементов проверяется командами <code>M104 S200</code> (для хотэнда) и <code>M140 S60</code> (для стола). Следите за показаниями температуры в реальном времени. Если температура растет бесконтрольно после отключения питания или команды остановки, немедленно отключите устройство от сети — это признак неисправности MOSFET-транзистора, который «пробило» в открытое состояние.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Никогда не оставляйте включенный принтер без присмотра во время первых тестов нагрева. Риск возгорания из-за плохой скрутки проводов или неисправного термистора наиболее высок именно на этапе отладки новой сборки.</p>
+</blockquote>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Диагностика перед первой печатью</h4><label class="check-item"><input type="checkbox"><span>Проверить затяжку всех винтов рамы</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в отсутствии КЗ на плате</span></label><label class="check-item"><input type="checkbox"><span>Проверить натяжение ремней</span></label><label class="check-item"><input type="checkbox"><span>Выровнять стол по уровню</span></label><label class="check-item"><input type="checkbox"><span>Загрузить тестовый G-код</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли использовать Arduino Nano вместо Uno?</summary>
+<p>Да, <em>Arduino Nano</em> полностью совместима с прошивкой Marlin и имеет тот же процессор ATmega328P. Однако у нее нет стандартного разъема USB-B, и для подключения к CNC Shield может потребоваться пайка или использование переходников. Функционально разницы для 3D принтера нет.</p>
+</details>
+
+<details>
+<summary>Почему принтер издает сильный гул при движении?</summary>
+<p>Гул свидетельствует о том, что драйверы шаговых двигателей работают в полношаговом режиме или ток на моторах выставлен слишком высоко. Для снижения шума рекомендуется использовать драйверы серии TMC с включенным режимом <code>StealthChop</code> и правильно подобрать ток удержания потенциометром на плате.</p>
+</details>
+
+<details>
+<summary>Какой слайсер лучше подходит для самодельного принтера?</summary>
+<p>Наиболее гибкими настройками обладает <em>Cura</em> и <em>PrusaSlicer</em>. В них можно создать собственный профиль принтера, задав точные размеры области печати, скорость и типы поддерживаемых филаментов, что критично для нестандартных сборок на Arduino.</p>
+</details>
+
+<details>
+<summary>Что делать, если слой смещается в процессе печати?</summary>
+<p>Смещение слоя (layer shift) чаще всего вызвано проскальзыванием ремня на шкиве двигателя, слишком высокой скоростью ускорений или механическим препятствием. Проверьте винты-фиксаторы на шкивах NEMA 17 и снизьте значения ускорения (<code>DEFAULT_MAX_ACCELERATION</code>) в прошивке.</p>
+</details>
+
+<details>
+<summary>Достаточно ли памяти Arduino Uno для сложных моделей?</summary>
+<p>Памяти AVR-процессора достаточно для интерпретации G-кода в реальном времени. Однако объем буфера ограничен. Для печати очень сложных моделей с тысячами мелких движений лучше использовать карту памяти SD, встроенную в CNC Shield, чтобы разгрузить USB-канал и избежать рывков из-за задержек передачи данных с ПК.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/3d-pechat-i-modelirovanie/p/pr/press-forma-na-3d-printere.html" class="pb-related-card">
+                <span class="pb-related-title">Создание пресс-формы на 3D принтере: Технологии и материалы</span>
+                <span class="pb-related-desc">Как напечатать пресс-форму для литья пластика, резины или металла. Обзор материалов, технологий FDM/</span>
+            </a><a href="/3d-pechat-i-modelirovanie/t/te/temperatury-dlya-pechati-petg.html" class="pb-related-card">
+                <span class="pb-related-title">Температуры печати PETG: настройки для идеального качества</span>
+                <span class="pb-related-desc">Полный гид по температурам PETG: сопло, стол, обдув. Решаем проблемы адгезии, нитей и помутнения. Та</span>
+            </a><a href="/3d-pechat-i-modelirovanie/k/ka/kak-renderit-v-sketchape.html" class="pb-related-card">
+                <span class="pb-related-title">Как рендерить в Скетчапе: лучшие плагины и настройки</span>
+                <span class="pb-related-desc">Полное руководство по созданию фотореалистичных изображений в SketchUp. Обзор V-Ray, Lumion, Enscape</span>
+            </a><a href="/3d-pechat-i-modelirovanie/c/ca/cad-dlya-3d-printera.html" class="pb-related-card">
+                <span class="pb-related-title">CAD для 3D-печати: выбор софта и особенности</span>
+                <span class="pb-related-desc">Обзор лучших CAD-программ для 3D-принтеров. Сравнение параметрического и полигонального моделировани</span>
+            </a><a href="/3d-pechat-i-modelirovanie/k/ko/kompas-kak-sdelat-rezbu-na-modeli.html" class="pb-related-card">
+                <span class="pb-related-title">Как сделать резьбу на 3D-модели: Полное руководство</span>
+                <span class="pb-related-desc">Пошаговая инструкция по созданию внутренней и внешней резьбы в компасе и CAD-программах. Методы выда</span>
+            </a><a href="/3d-pechat-i-modelirovanie/r/ra/rabota-na-3-d-printere.html" class="pb-related-card">
+                <span class="pb-related-title">Работа на 3D принтере: руководство по настройке и печати</span>
+                <span class="pb-related-desc">Полный гид по работе на 3D принтере: выбор филамента, слайсинг, настройка стола и устранение дефекто</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

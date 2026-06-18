@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Шаблоны в Home Assistant: создание своих сенсоров и автоматизации — Техно Гид</title>
+    <meta name="description" content="Полное руководство по шаблонам в Home Assistant. Изучите шаблонные сенсоры, условия и действия. Настройте сложные сценарии умного дома самостоятельно.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/s/sh/shablony-v-home-assistant.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Шаблоны в Home Assistant: создание своих сенсоров и автоматизации">
+    <meta property="og:description" content="Полное руководство по шаблонам в Home Assistant. Изучите шаблонные сенсоры, условия и действия. Настройте сложные сценарии умного дома самостоятельно.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Шаблоны в Home Assistant: создание своих сенсоров и автоматизации</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#основы-синтаксиса-jinja2-в-экосистеме-home-assistant">Основы синтаксиса Jinja2 в экосистеме Home Assistant</a></li><li><a href="#создание-и-настройка-шаблонных-сенсоров">Создание и настройка шаблонных сенсоров</a></li><li><a href="#условия-и-действия-логика-автоматизации">Условия и действия: логика автоматизации</a></li><li><a href="#работа-с-атрибутами-устройств-и-метаданными">Работа с атрибутами устройств и метаданными</a></li><li><a href="#оптимизация-производительности-и-избежание-ошибок">Оптимизация производительности и избежание ошибок</a></li><li><a href="#таблица-основных-фильтров-и-функций-jinja2">Таблица основных фильтров и функций Jinja2</a></li><li><a href="#практические-примеры-использования">Практические примеры использования</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/b/be/besprovodnoj-termoregulyator-dlya-elektrokotla.html">Беспроводной терморегулятор для электрокотла: выбор, установка и экономия</a></li><li><a href="/umnyj-dom/r/ra/razdelenie-utro-den-vecher-noch-po-chasam.html">Разделение суток по часам: Тарифы, биоритмы и настройки техники</a></li><li><a href="/umnyj-dom/g/go/golosovoj-vyklyuchatel-sveta-bez-interneta.html">Голосовой выключатель света без интернета: выбор и настройка</a></li><li><a href="/umnyj-dom/o/oc/ochistitel-vozdukha-dlya-doma-xiaomi.html">Очиститель воздуха Xiaomi для дома: обзор топ-моделей и выбор</a></li><li><a href="/umnyj-dom/u/um/umnaya-rozetka-yandeks-s-alisoj-kupit.html">Купить умную розетку Яндекс с Алисой: выбор и настройка</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Шаблоны в Home Assistant: полное руководство по созданию и настройке</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#основы-синтаксиса-jinja2-в-экосистеме-home-assistant">Основы синтаксиса Jinja2 в экосистеме Home Assistant</a></li><li><a href="#создание-и-настройка-шаблонных-сенсоров">Создание и настройка шаблонных сенсоров</a></li><li><a href="#условия-и-действия-логика-автоматизации">Условия и действия: логика автоматизации</a></li><li><a href="#работа-с-атрибутами-устройств-и-метаданными">Работа с атрибутами устройств и метаданными</a></li><li><a href="#оптимизация-производительности-и-избежание-ошибок">Оптимизация производительности и избежание ошибок</a></li><li><a href="#таблица-основных-фильтров-и-функций-jinja2">Таблица основных фильтров и функций Jinja2</a></li><li><a href="#практические-примеры-использования">Практические примеры использования</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Система автоматизации <em>Home Assistant</em> предлагает пользователям невероятную гибкость, позволяя объединять устройства разных производителей в единую экосистему. Однако базовый функционал часто оказывается недостаточным для реализации сложных сценариев управления, которые требуют вычислений, условной логики или агрегации данных с нескольких источников. Именно здесь на сцену выходят шаблоны — мощный инструмент, который трансформирует сырые данные датчиков в информативные метрики и создает логику, недоступную стандартным интерфейсам.</p>
+
+<p>Используя язык <strong>Jinja2</strong>, вы можете программировать поведение вашего умного дома, создавая виртуальные сенсоры, которые существуют только в памяти системы. Это позволяет вам видеть не просто температуру в комнате, а среднюю температуру за последние три часа, вычислять энергопотребление по косвенным признакам или создавать сложные условия для включения света, учитывающие время суток, наличие людей и статус охраны. Шаблоны открывают двери в мир истинной автоматизации, где система думает, а не просто реагирует.</p>
+
+<h2 id="основы-синтаксиса-jinja2-в-экосистеме-home-assistant">Основы синтаксиса Jinja2 в экосистеме Home Assistant</h2>
+
+<p>Понимание структуры языка <strong>Jinja2</strong> является фундаментом для работы с любыми продвинутыми функциями платформы. В отличие от простых скриптов, шаблоны здесь работают как фильтры, которые преобразуют входные данные в нужный формат вывода. Каждый шаблон начинается с двойной фигурной скобки, которая указывает системе на необходимость обработки выражения внутри нее.</p>
+
+<p>Вы можете обращаться к состоянию любого устройства в вашей системе, используя функцию <code>states('entity_id')</code>. Это позволяет извлекать текущие значения, такие как уровень заряда батареи, температура или статус включения. Например, чтобы получить температуру с датчика в гостиной, вы пишете <code>{{ states('sensor.garden_temperature') }}</code>. </p>
+
+<p>Для работы с числами и математическими вычислениями используются стандартные операторы, доступные в Python. Вы можете складывать, вычитать, умножать и делить значения, полученные от разных сенсорных устройств. Это особенно полезно при создании виртуальных датчиков, которые рассчитывают потребление энергии путем вычитания показаний базового счетчика от общего потребления дома.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Синтаксис шаблонов чувствителен к пробелам и кавычкам. Ошибка в одной фигурной скобке или пропущенная кавычка в имени сущности приведет к тому, что весь шаблон не сработает и в логах системы появится критическая ошибка парсинга.</p>
+</blockquote>
+
+<p>Часто возникает необходимость преобразовать строковые данные в числа для дальнейших расчетов. Для этого в <strong>Jinja2</strong> существует фильтр <code>float</code> или <code>int</code>. Если датчик передает значение "24.5", то для сложения его нужно привести к числовому типу. Без этого фильтра попытка сложить строку и число вызовет сбой в работе <em>Home Assistant</em>.</p>
+
+<h2 id="создание-и-настройка-шаблонных-сенсоров">Создание и настройка шаблонных сенсоров</h2>
+
+<p>Самый частый сценарий использования шаблонов — это создание <strong>шаблонных сенсоров</strong>. В отличие от физических устройств, эти сенсоры не измеряют реальные параметры, а вычисляют их на основе других данных. Они могут отображать сложные метрики, такие как эффективность работы кондиционера, прогноз влажности или расчет стоимости электроэнергии в реальном времени.</p>
+
+<p>Для добавления такого сенсора необходимо перейти в настройки и создать новую сущность типа Template Sensor. В интерфейсе конфигурации вы увидите поле для ввода кода, где можно прописать логику получения значения. Вы можете использовать значения от нескольких источников, применять фильтры и даже вызывать встроенные функции системы.</p>
+
+<p>Вот пример того, как можно создать сенсор, который вычисляет разницу температур между улицей и комнатой:
+<pre><code>value_template: "{{ (states('sensor.outdoor_temp') | float - states('sensor.indoor_temp') | float) | round(1) }}"
+</code></pre>
+<p>Такой подход позволяет вам видеть в интерфейсе не два отдельных показателя, а одну понятную величину, которая напрямую влияет на ваши решения об открытии окон или включении отопления.</p></p>
+
+<p>Важно учитывать, что шаблонные сенсоры обновляются только при изменении состояния устройств, на которые они ссылаются. Если вы хотите, чтобы сенсор обновлялся по расписанию, например, каждую минуту для расчета среднего значения, вам потребуется использовать часы или таймеры в качестве триггеров обновления. Это обеспечивает эффективность работы системы, так как лишние вычисления не производятся без необходимости.</p>
+
+<div class="pb-poll" id="poll-2c809218"><div class="pb-poll-question">📊 Какой тип сценариев вам нужен чаще всего?</div><div class="pb-poll-option" data-poll="2c809218" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Сложная логика кондиционирования</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="2c809218" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Расчет энергопотребления</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="2c809218" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Агрегация данных с датчиков</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="2c809218" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Перевод единиц измерения</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="условия-и-действия-логика-автоматизации">Условия и действия: логика автоматизации</h2>
+
+<p>Автоматизация в <em>Home Assistant</em> строится на трех китах: триггеры, условия и действия. Шаблоны играют ключевую роль в разделе <strong>Условия</strong>, позволяя проверять сложные логические выражения перед выполнением команды. Вы можете запретить включение света, если на улице темно, но никого нет дома, или включить вентиляцию только если влажность превышает 60%, а температура ниже 20 градусов.</p>
+
+<p>В секции условий вы можете использовать блок <code>condition: template</code>. Внутри него пишется логическое выражение, которое должно вернуть <code>true</code> для прохождения проверки. Это позволяет создавать гибкие правила, которые невозможно реализовать через стандартный визуальный редактор. Например, вы можете проверить, является ли текущее время рабочим днем, и если да, то применить один сценарий освещения, а если это выходной — другой.</p>
+
+<p>В действиях (Actions) шаблоны используются для динамической подстановки значений. Представьте, что вы хотите отправить уведомление в мессенджер, содержащее текущую температуру и имя комнаты. Вместо статического текста вы можете вставить переменные, которые подтянутся из состояния сенсоров в момент срабатывания. Это делает уведомления персонализированными и информативными.</p>
+
+<p>Иногда требуется выполнить действие только если сумма значений нескольких датчиков превышает определенный порог. Для этого используется оператор <code>sum</code> или <code>mean</code> внутри выражения условия.
+<pre><code>condition:
+<p>- condition: template</p>
+<p>value_template: "{{ state_attr('sensor.energy_meter', 'current_power') | float > 5000 }}"</p>
+</code></pre>
+<p>Такая проверка позволяет мгновенно реагировать на пиковые нагрузки в электросети и отключать ненужные приборы.</p></p>
+
+<details class="pb-accordion"><summary>Что делать, если шаблон вернул ошибку?
+<p>Если в логах вы видите ошибку "Template rendering failed", проверьте все имена сущностей. Часто пользователи забывают, что ID сущности должен быть полностью в нижнем регистре, а пробелы в именах заменяются на подчеркивания. Также убедитесь, что вы не пытаетесь использовать несуществующие атрибуты, такие как <code>state_attr</code> для объекта, у которого их нет.--></p>
+
+<h2 id="работа-с-атрибутами-устройств-и-метаданными">Работа с атрибутами устройств и метаданными</h2>
+
+<p>Каждое устройство в <strong>Home Assistant</strong> не только имеет состояние (on/off, значение), но и набор <strong>атрибутов</strong>. Это дополнительные данные</summary><div class="pb-accordion-body"><p> список цен на electricity rate, настройки режима работы кондиционера, список подключенных клиентов к точке доступа Wi-Fi. Доступ к этим атрибутам осуществляется через функцию <code>state_attr('entity_id', 'attribute_name')</code>.</p>
+
+<p>Использование атрибутов позволяет извлекать скрытую информацию. Например, вы можете создать шаблон, который показывает не просто статус "работает", а текущий режим работы кондиционера (cool, heat, fan) или скорость вентилятора. Это критически важно для создания детальных дашбордов, где пользователь хочет видеть полную картину работы системы.</p>
+
+<p>Особый интерес представляет работа со списком атрибутов. Если у вас есть список клиентов Wi-Fi, вы можете создать шаблон, который подсчитывает количество активных устройств в сети. Это можно использовать для создания простого датчика "кто дома", который срабатывает при появлении хотя бы одного гостя.
+<pre><code>value_template: "{{ state_attr('sensor.wifi_clients', 'clients') | count }}"
+</code></pre>
+<p>Такой подход дает возможности для интеллектуального управления без установки дополнительных датчиков присутствия.</p></p>
+
+<p>Некоторые устройства предоставляют сложные атрибуты в формате JSON или словарей. В таких случаях необходимо использовать фильтры <code>json</code> или <code>select</code> для извлечения нужных вложенных значений. Это требует более глубокого знания синтаксиса, но открывает доступ к управлению сложными устройствами, такими как умные замки с историей событий или камеры с детекцией движения.</p>
+
+
+<p>- Убедитесь, что все ID устройств написаны правильно</p>
+<p>- Проверьте наличие всех необходимых атрибутов</p>
+<p>- Протестируйте логику в режиме "Предпросмотр"</p>
+<p>- Избегайте сложных циклов, которые могут замедлить систему</p></div></details></p>
+
+<h2 id="оптимизация-производительности-и-избежание-ошибок">Оптимизация производительности и избежание ошибок</h2>
+
+<p>Неоптимизированные шаблоны могут существенно замедлить работу <em>Home Assistant</em>, особенно если они вызываются часто или содержат тяжелые вычисления. Система обновляет состояние сенсоров при каждом изменении любого из ссылаемых объектов, поэтому избыточные зависимости могут вызвать "шторм событий" и перегрузку процессора.</p>
+
+<p>Важно избегать использования тяжеловесных функций внутри шаблонов, таких как сложные циклы или вызовы внешних API, если в этом нет острой необходимости. Если вам нужно выполнить сложную логику, лучше вынести её в отдельный <strong>скрипт</strong> или <strong>автоматизацию</strong>, которая будет запускаться только по необходимости, а не при каждом изменении состояния.</p>
+
+<p>Используйте фильтры <code>default</code>, чтобы обеспечить стабильность работы сенсоров при отсутствии данных. Это предотвращает появление ошибок в логах и сохраняет корректное отображение значений даже если датчик временно отключился.
+<pre><code>{{ states('sensor.temp') | float(default=0) }}
+</code></pre>
+<p>Такой подход делает систему более устойчивой к сбоям сети и временным недоступностям устройств.</p></p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед применением сложного шаблона в продакшн, протестируйте его в инструменте "Developer Tools" -> "Template". Это позволит увидеть результат отрисовки в реальном времени без перезагрузки всей системы и риска вызвать ошибки в рабочих автоматизациях.</p></aside>
+
+<p>Существуют специальные фильтры для работы со временем и датами, которые часто используются в автоматизациях. Фильтр <code>timestamp_custom</code> позволяет преобразовывать Unix-время в понятный формат, а <code>timedelta</code> помогает рассчитывать разницу между моментами времени. Это незаменимо для создания датчиков "время с последнего события" или "осталось до конца тарифного периода".</p>
+
+<h2 id="таблица-основных-фильтров-и-функций-jinja2">Таблица основных фильтров и функций Jinja2</h2>
+
+<div class="pb-table-wrap"><table>
+ <thead>
+  <tr>
+   <th>Фильтр / Функция</th>
+   <th>Описание</th>
+   <th>Пример использования</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td><code>float</code></td>
+   <td>Преобразует строку в число с плавающей точкой</td>
+   <td><code>{{ states('sensor.temp') | float }}</code></td>
+  </tr>
+  <tr>
+   <td><code>round</code></td>
+   <td>Округляет число до заданного количества знаков</td>
+   <td><code>{{ value | round(1) }}</code></td>
+  </tr>
+  <tr>
+   <td><code>default</code></td>
+   <td>Возвращает значение по умолчанию, если переменная пуста</td>
+   <td><code>{{ value | default('N/A') }}</code></td>
+  </tr>
+  <tr>
+   <td><code>timestamp_custom</code></td>
+   <td>Форматирует временную метку в строку</td>
+   <td><code>{{ now() | timestamp_custom('%H:%M') }}</code></td>
+  </tr>
+  <tr>
+   <td><code>is_defined</code></td>
+   <td>Проверяет, определена ли переменная</td>
+   <td><code>{{ 'yes' if value is defined else 'no' }}</code></td>
+  </tr>
+ </tbody>
+</table></div>
+
+<p>Понимание этих инструментов позволяет создавать практически любые виды сущностей в системе. От простых датчиков температуры до сложных систем мониторинга энергопотребления с прогнозированием затрат. Главное — не бояться экспериментировать и использовать функцию предпросмотра для проверки логики.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Оптимизация шаблонов — это баланс между функциональностью и производительностью. Избегайте лишних вызовов и используйте триггеры по времени только там, где это действительно необходимо.</p></aside>
+
+<h2 id="практические-примеры-использования">Практические примеры использования</h2>
+
+<p>Давайте рассмотрим несколько реальных сценариев, где шаблоны меняют подход к управлению домом. Первый пример — создание <strong>виртуального датчика "Ночное время"</strong>. Вместо того чтобы настраивать отдельные таймеры, вы можете создать условие, которое проверяет, находится ли текущее время в диапазоне от 23:00 до 06:00, и одновременно темно на улице.</p>
+
+<p>Второй пример — расчет стоимости электроэнергии. Если у вас есть умная розетка с тарифами, вы можете создать шаблон, который суммирует потребление за каждый час и умножает на текущую ставку. Это даст вам точную картину расходов в реальном времени, позволяя экономить, перераспределяя нагрузку на ночное время.</p>
+
+<p>Третий пример — создание <strong>датчика "Кто дома"</strong> на основе списка подключенных устройств Wi-Fi. Шаблон будет проверять наличие определенных MAC-адресов в списке клиентов роутера. Если все устройства отключены, система автоматически переведет дом в режим "Никто не дома", отключив ненужное освещение и снизив нагрев.</p>
+
+<p>Четвертый пример — динамическое управление яркостью подсветки в зависимости от времени суток и уровня естественного освещения. Шаблон будет вычислять коэффициент затемнения, используя данные с датчика освещенности, и плавно менять яркость ленты, создавая комфортную атмосферу без резких скачков света.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> При создании сложных зависимостей между множеством устройств убедитесь, что вы не создаете "циклические" ссылки. Если Сенсор А зависит от Сенсора Б, а Сенсор Б от Сенсора А, система может войти в бесконечный цикл обновления, что приведет к зависанию.</p>
+</blockquote>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+ <summary>Как проверить, работает ли шаблон корректно?</summary>
+ <p>Используйте инструмент "Developer Tools" -> "Template" в меню <em>Home Assistant</em>. Введите туда ваш код, и система покажет результат отрисовки в реальном времени. Это лучший способ отладки без риска сломать работу системы.</p>
+</details>
+
+<details>
+ <summary>Можно ли использовать Python-библиотеки внутри шаблонов?</summary>
+ <p>Нет, в стандартных шаблонах Jinja2 доступны только встроенные фильтры и функции. Для использования сторонних библиотек (например, для работы с API или сложной математикой) необходимо писать отдельные скрипты на Python или использовать интеграции.</p>
+</details>
+
+<details>
+ <summary>Почему шаблонный сенсор не обновляется?</summary>
+ <p>Шаблоны обновляются автоматически при изменении состояния ссылаемых сущностей. Если вы хотите принудительное обновление, добавьте триггер по времени или используйте функцию <code>force_update</code> в автоматизации, но это не рекомендуется делать слишком часто из-за нагрузки на процессор.</p>
+</details>
+
+<details>
+ <summary>Как оформить длинный код шаблона, чтобы он читался лучше?</summary>
+ <p>Вы можете использовать переносы строк и пробелы внутри фигурных скобок. Jinja2 игнорирует лишние пробелы, поэтому разбивайте сложные выражения на несколько строк для удобства чтения и редактирования.</p>
+</details>
+
+<details>
+ <summary>Можно ли экспортировать шаблоны в другие файлы?</summary>
+ <p>Да, вы можете вынести сложные шаблоны в отдельный YAML-файл (например, <code>templates.yaml</code>) и импортировать их в основную конфигурацию. Это упрощает управление и позволяет использовать одни и те же логики в разных местах.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/b/be/besprovodnoj-termoregulyator-dlya-elektrokotla.html" class="pb-related-card">
+                <span class="pb-related-title">Беспроводной терморегулятор для электрокотла: выбор, установка и экономия</span>
+                <span class="pb-related-desc">Как выбрать и установить беспроводной термостат для электрокотла. Обзор технологий, расчет экономии </span>
+            </a><a href="/umnyj-dom/r/ra/razdelenie-utro-den-vecher-noch-po-chasam.html" class="pb-related-card">
+                <span class="pb-related-title">Разделение суток по часам: Тарифы, биоритмы и настройки техники</span>
+                <span class="pb-related-desc">Подробный гид по делению дня на утро, день, вечер и ночь. Тарифы ЖКХ, биоритмы и настройки умного до</span>
+            </a><a href="/umnyj-dom/g/go/golosovoj-vyklyuchatel-sveta-bez-interneta.html" class="pb-related-card">
+                <span class="pb-related-title">Голосовой выключатель света без интернета: выбор и настройка</span>
+                <span class="pb-related-desc">Как работает голосовое управление светом без Wi-Fi. Обзор Zigbee и радиоканальных систем. Инструкция</span>
+            </a><a href="/umnyj-dom/o/oc/ochistitel-vozdukha-dlya-doma-xiaomi.html" class="pb-related-card">
+                <span class="pb-related-title">Очиститель воздуха Xiaomi для дома: обзор топ-моделей и выбор</span>
+                <span class="pb-related-desc">Как выбрать очиститель воздуха Xiaomi? Сравнение моделей Pro, S и 4 Lite. Разбор фильтров, шума и ум</span>
+            </a><a href="/umnyj-dom/u/um/umnaya-rozetka-yandeks-s-alisoj-kupit.html" class="pb-related-card">
+                <span class="pb-related-title">Купить умную розетку Яндекс с Алисой: выбор и настройка</span>
+                <span class="pb-related-desc">Полный гид по умным розеткам Яндекс с поддержкой Алисы. Обзор моделей, где купить, настройка сценари</span>
+            </a><a href="/umnyj-dom/s/sl/slabotochnyj-shchit-svoimi-rukami.html" class="pb-related-card">
+                <span class="pb-related-title">Слаботочный щит своими руками: сборка, монтаж и схемы</span>
+                <span class="pb-related-desc">Полное руководство по самостоятельной сборке слаботочного щита. Выбор места, монтаж модулей, разводк</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

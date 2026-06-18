@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Настройка BLTouch на Marlin 2.1: Полное руководство — Техно Гид</title>
+    <meta name="description" content="Пошаговая инструкция по калибровке датчика BLTouch в прошивке Marlin 2.1. Настройка Z-offset, автоуровня и устранение ошибок.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/3d-pechat-i-modelirovanie/n/na/nastrojka-bltouch-marlin-21.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Настройка BLTouch на Marlin 2.1: Полное руководство">
+    <meta property="og:description" content="Пошаговая инструкция по калибровке датчика BLTouch в прошивке Marlin 2.1. Настройка Z-offset, автоуровня и устранение ошибок.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/3d-pechat-i-modelirovanie/">3D Печать и Моделирование</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Настройка BLTouch на Marlin 2.1: Полное руководство</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-конфигурационных-файлов-и-активация-модулей">Подготовка конфигурационных файлов и активация модулей</a></li><li><a href="#настройка-параметров-выравнивания-и-сетки-probing">Настройка параметров выравнивания и сетки probing</a></li><li><a href="#конфигурация-пинов-и-электрическая-схема-подключения">Конфигурация пинов и электрическая схема подключения</a></li><li><a href="#компиляция-прошивки-и-загрузка-в-контроллер">Компиляция прошивки и загрузка в контроллер</a></li><li><a href="#первичная-калибровка-и-настройка-z-offset">Первичная калибровка и настройка Z-offset</a></li><li><a href="#тестирование-автовыравнивания-и-устранение-ошибок">Тестирование автовыравнивания и устранение ошибок</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/3d-pechat-i-modelirovanie/s/st/stanok-dlya-protyazhki-filamenta-iz-pet-butylok.html">Станок для протяжки филамента из ПЭТ бутылок: обзор и выбор</a></li><li><a href="/3d-pechat-i-modelirovanie/b/ba/bambu-lab-x1-obzor.html">Bambu Lab X1 Review: Полный обзор и тесты</a></li><li><a href="/3d-pechat-i-modelirovanie/f/fl/flyingbear-ghost-5-kharakteristiki.html">FlyingBear Ghost 5 характеристики: полный обзор 3D принтера</a></li><li><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-kupit-dlya-doma-kakoj-luchshe.html">Какой 3D принтер купить для дома: выбор лучшей модели</a></li><li><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-creality-ender-3-pro.html">Creality Ender 3 Pro: Полный обзор, характеристики и настройка</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Настройка BLTouch в Marlin 2.1: от прошивки до первого слоя</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-конфигурационных-файлов-и-активация-модулей">Подготовка конфигурационных файлов и активация модулей</a></li><li><a href="#настройка-параметров-выравнивания-и-сетки-probing">Настройка параметров выравнивания и сетки probing</a></li><li><a href="#конфигурация-пинов-и-электрическая-схема-подключения">Конфигурация пинов и электрическая схема подключения</a></li><li><a href="#компиляция-прошивки-и-загрузка-в-контроллер">Компиляция прошивки и загрузка в контроллер</a></li><li><a href="#первичная-калибровка-и-настройка-z-offset">Первичная калибровка и настройка Z-offset</a></li><li><a href="#тестирование-автовыравнивания-и-устранение-ошибок">Тестирование автовыравнивания и устранение ошибок</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Интеграция датчика автоматического выравнивания стола <em>BLTouch</em> в прошивку <em>Marlin 2.1</em> — это ключевой этап модернизации любого FDM 3D-принтера. Правильная конфигурация позволяет компенсировать неровности платформы и забыть о ручной подкрутке винтов перед каждым запуском печати. Однако процесс настройки требует внимательности к деталям, так как малейшая ошибка в параметрах может привести к столкновению сопла со столом или некорректному первому слою.</p>
+
+<p>В этой статье мы детально разберем все этапы: от изменения конфигурационных файлов до финальной калибровки смещения по оси Z. Особое внимание будет уделено новым функциям и изменениям в синтаксисе, которые появились в версии <strong>Marlin 2.1</strong> по сравнению с предыдущими релизами. Вы узнаете, как активировать необходимые модули, настроить пины и провести точную настройку <code>Z-offset</code> для идеального прилипания пластика.</p>
+
+<h2 id="подготовка-конфигурационных-файлов-и-активация-модулей">Подготовка конфигурационных файлов и активация модулей</h2>
+
+<p>Первым шагом является получение актуальной исходной кода прошивки. Скачайте последнюю стабильную версию <em>Marlin 2.1.x</em> с официального репозитория GitHub. После распаковки архива откройте папку <code>Marlin</code> и найдите два основных файла конфигурации: <code>Configuration.h</code> и <code>Configuration_adv.h</code>. Именно в них сосредоточены все настройки оборудования.</p>
+
+<p>Для активации поддержки <em>BLTouch</em> необходимо раскомментировать соответствующие директивы в файле <code>Configuration.h</code>. Найдите строку <code>#define BLTOUCH</code> и удалите символы комментария в начале строки. Это сообщит компилятору о необходимости включить драйвер для управления сервоприводом датчика. Также убедитесь, что выбран правильный тип зонда, если у вас используется его модификация, например, <em>3D Touch</em>.</p>
+
+<p>Далее следует проверить настройки количества экстраудеров и типа кровати. В <strong>Marlin 2.1</strong> логика определения типа кровати стала строже. Убедитесь, что определена константа <code>#define CUSTOM_MENUS</code>, если вы планируете использовать расширенное меню для калибровки через экран. Без этого некоторые пункты в интерфейсе могут быть недоступны, что усложнит первичную настройку.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Всегда делайте резервную копию оригинальных файлов Configuration.h перед внесением изменений. Это позволит быстро откатиться к рабочему состоянию в случае ошибки компиляции.</p></aside>
+
+<p>Не забудьте проверить назначение пинов. В большинстве современных плат, таких как <em>SKR Mini E3</em> или <em>BigTreeTech</em>, пины уже предопределены, но для кастомных сборок может потребоваться ручное указание в файле <code>pins_MYBOARD.h</code>. Ошибка в назначении пина <code>SERVO0_PIN</code> приведет к тому, что датчик просто не будет реагировать на команды развертывания.</p>
+
+<h2 id="настройка-параметров-выравнивания-и-сетки-probing">Настройка параметров выравнивания и сетки probing</h2>
+
+<p>После активации самого датчика необходимо настроить алгоритм, который будет использовать полученные данные. В <em>Marlin 2.1</em> основным методом является <strong>Unified Bed Leveling (UBL)</strong> или упрощенный <strong>Auto Bed Leveling (ABL)</strong> с методом <code>BILINEAR</code>. Для большинства пользователей bilinear-сетка является оптимальным балансом между скоростью и точностью.</p>
+
+<p>В файле <code>Configuration.h</code> найдите секцию <code>Auto Bed Leveling</code>. Раскомментируйте строку <code>#define AUTO_BED_LEVELING_BILINEAR</code>. Здесь же задаются параметры сетки probing. Ключевым параметром является <code>GRID_MAX_POINTS_X</code>, который определяет количество точек измерения по оси X. Значение по умолчанию обычно равно 3 или 5, но для более точной компенсации кривизны стола можно увеличить его до 7 или 9.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Увеличение количества точек сетки значительно замедляет процесс автовыравнивания. Для быстрых повседневных печатей значение 5x5 часто является избыточным, достаточно 3x3 или 4x4.</p>
+</blockquote>
+
+<p>Важно настроить границы области сканирования, чтобы сопло не ударилось о зажимы стола или винты. Параметры <code>LEFT_PROBE_BED_POSITION</code>, <code>RIGHT_PROBE_BED_POSITION</code>, <code>FRONT_PROBE_BED_POSITION</code> и <code>BACK_PROBE_BED_POSITION</code> ограничивают зону, в которой будет работать <em>BLTouch</em>. Значения указываются в миллиметрах от центра стола (0,0) или от левого нижнего угла, в зависимости от настройки <code>HOMING_ORIGIN</code>.</p>
+
+<details class="pb-accordion"><summary>Разница между MESH и BILINEAR</summary><div class="pb-accordion-body"><p> MESH создает полноценную 3D-карту поверхности и позволяет компенсировать сильные искривления, в то время как BILINEAR строит упрощенную модель, достаточную для небольших неровностей.</p></div></details>
+
+<p>Также стоит обратить внимание на скорость перемещения зонда. Параметр <code>XY_PROBE_FEEDRATE</code> задает скорость движения между точками измерения. Слишком высокая скорость может вызвать пропуск шагов моторами, что исказит карту высот. Оптимальным значением считается 4000-5000 мм/мин для стандартных принтеров.</p>
+
+<h2 id="конфигурация-пинов-и-электрическая-схема-подключения">Конфигурация пинов и электрическая схема подключения</h2>
+
+<p>Правильное подключение <em>BLTouch</em> критически важно для его работы. Датчик имеет 5 проводов: красный и черный (питание 5В), коричневый (земля сигнала), оранжевый (сигнал управления серво) и желтый (сигнал датчика Z-min). В прошивке <strong>Marlin 2.1</strong> необходимо убедиться, что логика управления соответствует вашей плате.</p>
+
+<p>В файле <code>Configuration.h</code> проверьте параметр <code>#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN</code>. Если ваш датчик подключен в разъем <code>Z-STOP</code>, эта опция должна быть активна. Если же вы используете отдельный разъем <code>Z-PROBE</code> (что часто встречается на платах с поддержкой <em>BLTouch</em> "из коробки"), эту опцию нужно закомментировать, а в файле пинов убедиться, что <code>Z_MIN_PROBE_PIN</code> назначен корректно.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Цвет провода BLTouch</th>
+<th>Назначение</th>
+<th>Подключение на плате</th>
+<th>Настройка в Marlin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Красный</td>
+<td>Питание +5В</td>
+<td>Pin 5V</td>
+<td>Не требуется</td>
+</tr>
+<tr>
+<td>Черный</td>
+<td>Земля (GND)</td>
+<td>Pin GND</td>
+<td>Не требуется</td>
+</tr>
+<tr>
+<td>Коричневый</td>
+<td>Сигнал GND</td>
+<td>Pin GND (сигнальный)</td>
+<td>Не требуется</td>
+</tr>
+<tr>
+<td>Оранжевый</td>
+<td>Серво сигнал</td>
+<td>SERVO0_PIN</td>
+<td>Автоматически</td>
+</tr>
+<tr>
+<td>Желтый</td>
+<td>Сигнал Z-мин</td>
+<td>Z_MIN_PIN или Z_PROBE</td>
+<td>Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Особое внимание уделите напряжению питания. <em>BLTouch</em> требует стабильные 5 вольт. Подключение к 12В или 24В мгновенно выведет датчик из строя. Если на вашей плате нет отдельного выхода 5В с достаточным током, используйте внешний стабилизатор или подключите питание от разъема экрана, если это допустимо конструктивно.</p>
+
+<div class="pb-poll" id="poll-46cfaac9"><div class="pb-poll-question">📊 Какая материнская плата установлена в вашем принтере?</div><div class="pb-poll-option" data-poll="46cfaac9" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Ender 3 Stock (Melzi)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="46cfaac9" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">SKR Mini E3 V2/V3</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="46cfaac9" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">BigTreeTech SKR</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="46cfaac9" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Creality 4.2.2/4.2.7</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="46cfaac9" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другая</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="компиляция-прошивки-и-загрузка-в-контроллер">Компиляция прошивки и загрузка в контроллер</h2>
+
+<p>После внесения всех изменений в конфигурационные файлы необходимо скомпилировать прошивку. Для этого удобнее всего использовать среду <em>PlatformIO</em> в редакторе <em>VS Code</em>. Откройте папку с проектом Marlin, выберите вашу плату в файле <code>platformio.ini</code> (секция <code>[env:YOUR_BOARD]</code>) и запустите задачу <code>PlatformIO: Build</code>.</p>
+
+<p>В процессе компиляции внимательно следите за окном вывода. Ошибки часто указывают на синтаксические недочеты в файлах <code>.h</code>, например, незакрытые кавычки или опечатки в названиях макросов. Если компиляция прошла успешно, в папке <code>.pio/build/YOUR_BOARD</code> появится файл прошивки с расширением <code>.bin</code>.</p>
+
+<p>Загрузка прошивки зависит от типа вашего загрузчика. Для плат с SD-картой (например, <em>SKR Mini</em>) достаточно скопировать файл <code>firmware.bin</code> на пустую карту формата FAT32, вставить её в слот на плате и перезагрузить принтер. Индикатор на плате начнет мигать, сигнализируя о процессе перепрошивки. После завершения файл на карте может переименоваться или исчезнуть.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Никогда не выключайте питание принтера во время мигания индикатора прошивки. Прерывание процесса записи может "окирпичить" контроллер, потребовав восстановления через ISP-программатор.</p>
+</blockquote>
+
+<p>Для плат без поддержки загрузки через SD (например, старые <em>Melzi</em>) потребуется подключение через USB и использование утилиты <em>XLoader</em> или встроенного загрузчика Arduino. Убедитесь, что выбран правильный порт COM и скорость передачи данных (обычно 115200 или 250000 бод).</p>
+
+<h2 id="первичная-калибровка-и-настройка-z-offset">Первичная калибровка и настройка Z-offset</h2>
+
+<p>После успешной загрузки новой прошивки принтер готов к калибровке. Первый запуск лучше проводить без филамента, чтобы исключить риск засорения сопла при тестовых движениях. Подключитесь к принтеру через терминал (например, <em>Pronterface</em> или консоль в <em>Cura</em>) или используйте экран управления.</p>
+
+<p>Ключевым параметром является <strong>Z-offset</strong> — расстояние между срабатыванием датчика и реальным положением сопла относительно стола. Чтобы настроить его, выполните команду автохоминга <code>G28</code>, затем опустите зонд командой <code>M280 P0 S10</code> (развернуть) и подведите сопло к столу. Используйте команду <code>M851 Z-1.5</code> (значение примерное) для установки начального смещения.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Чек-лист первичной калибровки</h4><label class="check-item"><input type="checkbox"><span>Выполнить G28 (автохоминг)</span></label><label class="check-item"><input type="checkbox"><span>Развернуть щуп BLTouch</span></label><label class="check-item"><input type="checkbox"><span>Опустить сопло к столу на лист бумаги</span></label><label class="check-item"><input type="checkbox"><span>Настроить Z-offset командой M851</span></label><label class="check-item"><input type="checkbox"><span>Сохранить настройки в EEPROM</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<p>Процесс точной настройки выглядит так: подложите лист бумаги между соплом и столом. Двигайте ось Z с шагом 0.1 мм, пока не почувствуете легкое трение бумаги. Затем уменьшите шаг до 0.01 мм для финишной регулировки. Как только бумага начнет двигаться с ощутимым сопротивлением, но не порвется, значение на экране (или в терминале) является вашим идеальным <code>Z-offset</code>.</p>
+
+<p>Не забудьте сохранить настройки в энергонезависимую память командой <code>M500</code>. Без этой команды все изменения сбросятся после выключения питания. В <em>Marlin 2.1</em> также полезно включить функцию <code>BABYSTEPPING</code>, которая позволяет корректировать высоту первого слоя прямо во время печати через меню принтера.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильный Z-offset достигается тогда, когда первый слой печати выглядит как плоские, слегка приплюснутые линии, слитые друг с другом, без зазоров и без прозрачности.</p></aside>
+
+<h2 id="тестирование-автовыравнивания-и-устранение-ошибок">Тестирование автовыравнивания и устранение ошибок</h2>
+
+<p>Финальным этапом является проверка работы алгоритма выравнивания. Запустите команду <code>G29</code>, которая инициирует процесс probing. Принтер начнет последовательно касаться щупом заданных точек сетки. Наблюдайте за процессом: щуп должен четко срабатывать (красный светодиод загорается при касании), а движения должны быть плавными.</p>
+
+<p>Если в процессе появляются ошибки, такие как "Probe Failed" или принтер начинает двигаться в хаотичном порядке, проверьте логику инвертирования конца хода. Команда <code>M119</code> показывает состояние концевиков. При нажатии на щуп статус <code>z_min</code> должен меняться с <code>open</code> на <code>TRIGGERED</code>. Если статус не меняется или меняется наоборот, проверьте параметр <code>#define Z_MIN_PROBE_ENDSTOP_INVERTING</code> в конфигурации.</p>
+
+<p>Частой проблемой является "кривая" карта высот, где разница между точками превышает 0.5 мм. Это может указывать на механические проблемы: люфт в оси Z, перегретые драйверы шаговых двигателей или физическую деформацию стола. Программная компенсация не может исправить сильные механические дефекты.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Если щуп срабатывает преждевременно (до касания стола), возможно, сопло слишком близко к поверхности или на щупе есть налипший пластик. Очистите иглу датчика спиртом.</p>
+</blockquote>
+
+<p>Для визуализации карты высот можно использовать команду <code>M420 V</code>, которая выведет значения высот каждой точки сетки в консоль. Анализируя эти данные, можно понять, в какой части стола наблюдается наибольший прогиб, и при необходимости подкрутить регулировочные винты вручную для грубого выравнивания перед запуском автоуровня.</p>
+
+<details class="pb-accordion"><summary>Что делать, если BLTouch мигает красным 5 раз?</summary><div class="pb-accordion-body"><p>Это сигнал об ошибке самодиагностики. Чаще всего причина в плохом контакте проводов, недостаточном напряжении 5В или механическом заклинивании штырька.</p></div></details>
+
+<details>
+<summary>Почему BLTouch не развертывается при команде G28?</summary>
+<p>Скорее всего, не назначен пин сервопривода или напряжение на оранжевом проводе отсутствует. Проверьте настройки <code>SERVO0_PIN</code> в файле пинов вашей платы и убедитесь, что разъем подключен правильно (ориентация ключа).</p>
+</details>
+
+<details>
+<summary>Как часто нужно делать автовыравнивание G29?</summary>
+<p>При использовании <em>UBL</em> достаточно создать одну качественную сетку и сохранить её. Корректировать нужно только <code>Z-offset</code> при смене сопла или поверхности стола. Для обычного <code>BILINEAR</code> рекомендуется запускать <code>G29</code> перед каждой печатью.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать BLTouch с нагреваемым столом 100°C?</summary>
+<p>Да, <em>BLTouch</em> рассчитан на работу при высоких температурах. Однако провода должны быть термостойкими, а сам датчик не должен касаться горячих частей корпуса принтера, чтобы не расплавить пластиковый кожух.</p>
+</details>
+
+<details>
+<summary>В чем разница между Marlin 2.0 и 2.1 для настройки BLTouch?</summary>
+<p>В версии 2.1 улучшена обработка ошибок зонда и добавлена более гибкая настройка задержек срабатывания. Также изменена структура некоторых меню, но основные команды G-кода (G28, G29, M851) остались совместимыми.</p>
+</details>
+
+<details>
+<summary>Принтер пишет "Homing failed", что делать?</summary>
+<p>Проверьте, не сработал ли концевик оси Z до начала движения. Возможно, сопло опустилось слишком низко при парковке. Также проверьте команду <code>M119</code> — если концевик постоянно в статусе TRIGGERED, проверьте проводку на замыкание.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/3d-pechat-i-modelirovanie/s/st/stanok-dlya-protyazhki-filamenta-iz-pet-butylok.html" class="pb-related-card">
+                <span class="pb-related-title">Станок для протяжки филамента из ПЭТ бутылок: обзор и выбор</span>
+                <span class="pb-related-desc">Как выбрать станок для протяжки филамента из пластиковых бутылок. Принцип работы, чертежи, настройка</span>
+            </a><a href="/3d-pechat-i-modelirovanie/b/ba/bambu-lab-x1-obzor.html" class="pb-related-card">
+                <span class="pb-related-title">Bambu Lab X1 Review: Полный обзор и тесты</span>
+                <span class="pb-related-desc">Подробный обзор Bambu Lab X1: скорость, качество печати, особенности AMS и сравнение с конкурентами.</span>
+            </a><a href="/3d-pechat-i-modelirovanie/f/fl/flyingbear-ghost-5-kharakteristiki.html" class="pb-related-card">
+                <span class="pb-related-title">FlyingBear Ghost 5 характеристики: полный обзор 3D принтера</span>
+                <span class="pb-related-desc">Детальные характеристики FlyingBear Ghost 5: скорость, точность, Hotend, прошивка. Сравнение версий,</span>
+            </a><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-kupit-dlya-doma-kakoj-luchshe.html" class="pb-related-card">
+                <span class="pb-related-title">Какой 3D принтер купить для дома: выбор лучшей модели</span>
+                <span class="pb-related-desc">Полный гайд по выбору домашнего 3D принтера. Рейтинг технологий FDM и SLA, сравнение моделей, советы</span>
+            </a><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-creality-ender-3-pro.html" class="pb-related-card">
+                <span class="pb-related-title">Creality Ender 3 Pro: Полный обзор, характеристики и настройка</span>
+                <span class="pb-related-desc">Подробный разбор 3D-принтера Creality Ender 3 Pro. Технические особенности, сравнение с версиями, ин</span>
+            </a><a href="/3d-pechat-i-modelirovanie/f/fl/flashforge-adventurer-5m-pechat-abs.html" class="pb-related-card">
+                <span class="pb-related-title">Печать ABS на Flashforge Adventurer 5M: Профиль и настройки</span>
+                <span class="pb-related-desc">Как печатать ABS на Flashforge Adventurer 5M: настройки температуры, обдува и адгезии. Решение пробл</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>adb shell pm install: Полное руководство по установке APK — Техно Гид</title>
+    <meta name="description" content="Изучите команду adb shell pm install. Разбор флагов, установка на Android TV, отладка и решение ошибок при ручном развертывании приложений.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/smartfony-i-planshety/a/ad/adb-shell-pm-install.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="adb shell pm install: Полное руководство по установке APK">
+    <meta property="og:description" content="Изучите команду adb shell pm install. Разбор флагов, установка на Android TV, отладка и решение ошибок при ручном развертывании приложений.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-nav-active">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/smartfony-i-planshety/">Смартфоны и Планшеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">adb shell pm install: Полное руководство по установке APK</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#основы-работы-с-менеджером-пакетов-через-adb">Основы работы с менеджером пакетов через ADB</a></li><li><a href="#синтаксис-и-обязательные-параметры-установки">Синтаксис и обязательные параметры установки</a></li><li><a href="#установка-обновлений-и-откат-версий">Установка обновлений и откат версий</a></li><li><a href="#особенности-работы-с-android-tv-и-приставками">Особенности работы с Android TV и приставками</a></li><li><a href="#решение-распространенных-ошибок">Решение распространенных ошибок</a></li><li><a href="#массовая-установка-и-скриптинг">Массовая установка и скриптинг</a></li><li><a href="#безопасность-и-ограничения-системы">Безопасность и ограничения системы</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/smartfony-i-planshety/p/pe/perestali-prikhodit-uvedomleniya-na-ajfon-ot-prilozhenij-chto-delat.html">Уведомления на iPhone не приходят: полное руководство по исправлению</a></li><li><a href="/smartfony-i-planshety/k/ka/kak-proverit-slushayut-li-mobilnyj-telefon-kombinatsiya.html">Как проверить, слушает ли мобильный телефон: коды, приложение и признаки</a></li><li><a href="/smartfony-i-planshety/n/na/nashel-ajfon-chto-s-nim-delat.html">Нашел айфон: пошаговый план действий и законные методы возврата</a></li><li><a href="/smartfony-i-planshety/k/ka/kakim-kleem-prikleit-kryshku-telefona.html">Каким клеем приклеить крышку телефона: выбор состава</a></li><li><a href="/smartfony-i-planshety/c/ch/chekhol-iz-epoksidnoj-smoly-dlya-telefona-svoimi-rukami.html">Чехол из эпоксидной смолы своими руками: пошаговое руководство</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Полное руководство по использованию команды adb shell pm install</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#основы-работы-с-менеджером-пакетов-через-adb">Основы работы с менеджером пакетов через ADB</a></li><li><a href="#синтаксис-и-обязательные-параметры-установки">Синтаксис и обязательные параметры установки</a></li><li><a href="#установка-обновлений-и-откат-версий">Установка обновлений и откат версий</a></li><li><a href="#особенности-работы-с-android-tv-и-приставками">Особенности работы с Android TV и приставками</a></li><li><a href="#решение-распространенных-ошибок">Решение распространенных ошибок</a></li><li><a href="#массовая-установка-и-скриптинг">Массовая установка и скриптинг</a></li><li><a href="#безопасность-и-ограничения-системы">Безопасность и ограничения системы</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Инструментарий Android Debug Bridge (ADB) предоставляет разработчикам и продвинутым пользователям мощный доступ к операционной системе устройства через компьютер. Одной из самых востребованных функций в этом наборе является команда <code>adb shell pm install</code>, которая позволяет вручную устанавливать <em>APK</em>-файлы непосредственно в системную память смартфона или планшета.</p>
+
+<p>В отличие от стандартной установки через файловый менеджер, данный метод дает возможность контролировать процесс развертывания, обходить ограничения интерфейса и работать с приложениями, недоступными в официальных магазинах. Это незаменимый инструмент для тестирования <em>закрепленных версий</em> ПО, настройки <em>Android TV</em> приставок или восстановления удаленных системных компонентов.</p>
+
+<h2 id="основы-работы-с-менеджером-пакетов-через-adb">Основы работы с менеджером пакетов через ADB</h2>
+<p>Команда <code>pm</code> является сокращением от Package Manager,ного компонента Android, ответственного за управление всеми установленными приложениями. Когда вы вводите <code>adb shell pm install</code>, вы фактически перенаправляете системный запрос на установку файла, находящегося в памяти компьютера, прямо в адресное пространство устройства.</p>
+
+<p>Для корректной работы этого метода необходимо обеспечить связь между хост-системой и мобильным устройством. Важно предварительно активировать <strong>Отладку по USB</strong> в настройках разработчика. Без этого хотя бы один запрос будет отвергнут операционной системой, так как уровень доступа останется ограниченным.</p>
+
+<p>Синтаксис команды выглядит достаточно просто, но за кажущейся простотой скрывается множество параметров, влияющих на итоговый результат. Базовая конструкция требует указания полного пути к <em>APK-файлу</em> или его относительного пути, если вы находитесь в корневой директории с <em>ADB</em>. Ошибки в написании пути к файлу являются самой частой причиной неудачных попыток.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание</strong>: Если вы работаете с Android TV или медиаприставками, убедитесь, что устройство находится в режиме <strong>Developer Options</strong> и разрешение на установку из неизвестных источников (ADB) уже предоставлено в настройках безопасности. Иначе команда вернет ошибку"Failure".</p>
+</blockquote>
+
+<h2 id="синтаксис-и-обязательные-параметры-установки">Синтаксис и обязательные параметры установки</h2>
+<p>Простая установка файла происходит по команде <pre><code>adb install имя_приложения.apk</code></pre>, однако использование <code>adb shell pm install</code> открывает доступ к более тонкой настройке процесса. Эта команда выполняется внутри оболочки устройства, что позволяет манипулировать правами доступа и местом установки.</p>
+
+<p>Ключевым отличием от внешней команды <code>adb install</code> является возможность использования специфических флагов системы Android, таких как <strong>-l</strong> (фиксированная установка), <strong>-i</strong> (указание установщика) и <strong>-t</strong> (разрешение тестовых APK). Эти опции критичны при развертывании модифицированных сборок или <em>системных приложений</em>.</p>
+
+<p>Рассмотрим основные флаги, которые делают команду гибким инструментом: <code>-r</code> позволяет обновить существующее приложение, сохраняя его данные, а <code>-d</code> разрешает откат на более старую версию. Без флага <code>-r</code> попытка установки новой версии поверх старой приведет к ошибке, если сигнатуры не совпадают.</p>
+
+<p>Важно понимать, что при использовании <code>adb shell</code> путь к файлу должен быть доступен внутри устройства. Часто это означает, что файл сначала нужно загрузить на устройство через <code>adb push</code>, и только затем вызывать <code>pm install</code> с указанием внутреннего пути.</p>
+
+<div class="pb-poll" id="poll-08296afe"><div class="pb-poll-question">📊 Какой тип устройств вы чаще используете для отладки?</div><div class="pb-poll-option" data-poll="08296afe" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Смартфоны</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="08296afe" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Планшеты</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="08296afe" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Android TV приставки</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="08296afe" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Другое</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="установка-обновлений-и-откат-версий">Установка обновлений и откат версий</h2>
+<p>Часто возникает ситуация, когда новая версия приложения работает нестабильно, и требуется быстро откатиться на предыдущую версию. Команда <code>adb shell pm install</code> с флагом <code>-d</code> (downgrade) позволяет выполнить эту операцию мгновенно. Это особенно актуально для разработчиков, тестирующих <em>бета-версии</em> ПО.</p>
+
+<p>Для обновления существующего приложения без потери пользовательских данных (настроек, сохранений, кэша) необходимо использовать флаг <code>-r</code>. Этот параметр говорит системе перезаписать исполняемый файл, не удаляя директорию <em>data</em> приложения. Если же вы забудете этот флаг, система может потребовать полного удаления и повторной установки.</p>
+
+<p>Иногда установка новой версии блокируется, если цифровая подпись сертификата не совпадает со старой. В таких случаях помогает комбинация флагов <code>-r</code> и <code>-t</code>, но только если вы готовы рискнуть целостностью данных. Будьте осторожны при откате системных компонентов.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед установкой</h4><label class="check-item"><input type="checkbox"><span>Проверить путь к APK на ПК</span></label><label class="check-item"><input type="checkbox"><span>Активировать отладку по USB</span></label><label class="check-item"><input type="checkbox"><span>Очистить кеш менеджера пакетов</span></label><label class="check-item"><input type="checkbox"><span>Подключить зарядное устройство</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="особенности-работы-с-android-tv-и-приставками">Особенности работы с Android TV и приставками</h2>
+<p>Установка приложений на телевизоры и ТВ-приставки имеет свои нюансы из-за отсутствия привычного файлового менеджера. Команда <code>adb shell pm install</code> становится основным способом инсталляции <em>APK</em> на устройства, такие как <em>Xiaomi Mi Box</em>, <em>Nvidia Shield</em> или <em>Chromecast</em>.</p>
+
+<p>На многих ТВ-приставках требуется сначала установить файл на внутреннюю память устройства. Для этого используется цепочка действий: сначала <code>adb push app.apk /sdcard/Download/</code>, затем <code>adb shell pm install /sdcard/Download/app.apk</code>. Это обходит ограничения интерфейса и позволяет устанавливать приложения, не найденные в Google Play.</p>
+
+<p>Особое внимание стоит уделить разрешениям. При установке на <em>Android TV</em> система может не запросить права у пользователя, если установка произведена через ADB. Однако некоторые приложения могут некорректно работать без явного подтверждения прав доступа через экран телевизора.</p>
+
+<details class="pb-accordion"><summary>Проблема с отсутствием звука при установке на ТВ</summary><div class="pb-accordion-body"><p>Иногда после установки через ADB на ТВ-приставках приложения запускаются, но не отдают звук. Это связано с тем, что некоторые кодеки не инициализируются без полной перезагрузки системы. Попробуйте выполнить команду'adb shell reboot' после установки.</p></div></details>
+
+<blockquote>
+<p>⚠️ <strong>Внимание</strong>: На некоторых моделях <em>Android TV</em> (например, старые версии Sony или Philips) команда установки может завершиться ошибкой <strong>INSTALL_FAILED_UPDATE_INCOMPATIBLE</strong>. В этом случае необходимо вручную удалить старое приложение через настройки TV перед повторной попыткой установки.</p>
+</blockquote>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Флаг</th>
+<th>Описание</th>
+<th>Применение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-r</code></td>
+<td>Replace application</td>
+<td>Обновление APK с сохранением данных</td>
+</tr>
+<tr>
+<td><code>-t</code></td>
+<td>Allow Test APK</td>
+<td>Установка тестовых сборок и отладочных версий</td>
+</tr>
+<tr>
+<td><code>-d</code></td>
+<td>Allow Downgrade</td>
+<td>Откат на более старую версию приложения</td>
+</tr>
+<tr>
+<td><code>-g</code></td>
+<td>Grant all permissions</td>
+<td>Автоматическое предоставление всех разрешений</td>
+</tr>
+<tr>
+<td><code>-l</code></td>
+<td>Forward Lock</td>
+<td>Ограничение доступа к файлам приложения</td>
+</tr>
+</tbody>
+</table></div>
+
+<h2 id="решение-распространенных-ошибок">Решение распространенных ошибок</h2>
+<p>При работе с командой вы можете столкнуться с рядом ошибок, указывающих на проблемы с файлом или правами доступа. Самая частая ошибка — <strong>INSTALL_FAILED_USER_RESTRICTED</strong>. Она означает, что на устройстве включена защита, блокирующая установку через ADB. Необходимо отключить эту опцию в меню"Для разработчиков".</p>
+
+<p>Ошибка <strong>INSTALL_FAILED_ALREADY_EXISTS</strong> возникает, когда вы пытаетесь установить приложение, которое уже присутствует в системе, но не используете флаг обновления. В таком случае система не позволяет перезаписать файл без явного указания на замену. Просто добавьте в команду параметр <code>-r</code>.</p>
+
+<p>Если вы видите сообщение <strong>INSTALL_FAILED_INSUFFICIENT_STORAGE</strong>, это не всегда означает, что память действительно забита. Иногда это сбой кэша пакетного менеджера. Попробуйте очистить кеш через <code>adb shell pm clear</code> или перезагрузить устройство. Также проверьте, не переполнен ли раздел <em>/data</em>.</p>
+
+<p>Ошибки, связанные с несовместимостью (например, <strong>INCOMPATIBLE</strong>), часто возникают при попытке установить 64-битное приложение на старое 32-битное устройство или наоборот. Убедитесь, что архитектура <em>APK</em> соответствует процессору вашего устройства.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если команда выдает ошибку"Failure [INSTALL_FAILED_VERIFICATION]", попробуйте добавить флаг --no-verify или временно отключить Google Play Protect в настройках безопасности устройства, если это допустимо в вашей ситуации.</p></aside>
+
+<h2 id="массовая-установка-и-скриптинг">Массовая установка и скриптинг</h2>
+<p>Для автоматизации процессов, например, при настройке множества устройств в офисе или магазине, ручное вбивание команд неэффективно. Вы можете создать простой скрипт на Bash или Python, который будет последовательно вызывать <code>adb shell pm install</code> для списка файлов.</p>
+
+<p>При написании скриптов важно учитывать задержку между установкой разных приложений. Система Android не всегда успевает проиндексировать только что установленное ПО. Добавьте команду <code>sleep</code> между вызовами, чтобы избежать конфликтов и ошибок индексации.</p>
+
+<p>Скрипт может также проверять успешность установки по коду возврата. Если код не равен нулю, скрипт должен записать имя файла в лог ошибок. Это позволяет быстро выявить проблемные пакеты, которые не подходят под вашу конфигурацию.</p>
+
+<p> Если ADB-соединение разорвется в середине процесса, некоторые приложения могут оказаться в"полуустановленном" состоянии. Рекомендуется делать резервные копии данных перед таким масштабным вмешательством.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Использование флагов -r и -t позволяет обойти ограничения цифровой подписи и тестового режима, что критично для разработчиков и системных администраторов, работающих с кастомными сборками.</p></aside>
+
+<h2 id="безопасность-и-ограничения-системы">Безопасность и ограничения системы</h2>
+<p>Команда <code>adb shell pm install</code> дает привилегии, сопоставимые с правами суперпользователя в некоторых контекстах. Это означает, что вы можете установить вредоносное ПО или приложение, которое нарушит работу системы, если не проверите исходный файл. Всегда проверяйте <em>цифровую подпись</em> APK, если он скачан из сторонних источников.</p>
+
+<p>Современные версии Android (начиная с 11 и выше) вводят дополнительные барьеры. Даже при наличии отладки по USB, некоторые системные пакеты защищены от прямой установки через ADB. Это сделано для предотвращения случайного удаления или изменения критических компонентов.</p>
+
+<p>Если вы используете <em>Root-права</em>, ситуация меняется. С Root-доступом вы можете использовать команду для установки приложений в системный раздел (<code>system/app</code>), что делает их неотделимыми от прошивки. Делать это следует только с крайней осторожностью, так как ошибка может привести к"кирпичу" устройства.</p>
+
+<p>Помните, что установка приложений через ADB не проходит проверку Google Play Protect. Это может привести к тому, что антивирусные модули будут блокировать работу установленных программ или выдавать постоянные предупреждения о безопасности. Игнорирование этих предупреждений должно быть осознанным решением.</p>
+
+
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Что делать, если команда выдает ошибку"Failure [INSTALL_FAILED_UPDATE_INCOMPATIBLE]?"</summary>
+<p>Эта ошибка означает, что на устройстве уже установлено приложение с другой цифровой подписью. Вам необходимо полностью удалить старую версию через настройки или команду <code>adb uninstall</code>, прежде чем запускать установку новой. Флаги <code>-r</code> в данном случае не помогут.</p>
+</details>
+
+<details>
+<summary>Можно ли установить приложение на SD-карту через эту команду?</summary>
+<p>Да, но это зависит от версии Android и настроек системы. Обычно для принудительной установки на внешний накопитель используется флаг <code>-f</code> (force to internal, но на старых версиях иногда работает наоборот) или комбинация с параметрами места хранения. Однако современные версии Android часто игнорируют SD-карту для установки приложений.</p>
+</details>
+
+<details>
+<summary>Как проверить, успешно ли прошла установка?</summary>
+<p>После выполнения команды ADB вернет сообщение. Если вы видите <strong>Parsing package</strong> и затем <strong>Success</strong>, установка прошла успешно. Ошибки начинаются со слова <strong>Failure</strong> и содержат описание проблемы в квадратных скобках. Также можно проверить список установленных пакетов командой <code>adb shell pm list packages | grep"имя_пакета"</code>.</p>
+</details>
+
+<details>
+<summary>Нужна ли рут-права для использования adb shell pm install?</summary>
+<p>Нет, для установки пользовательских приложений права суперпользователя (Root) не требуются. Достаточно включить"Отладку по USB" в меню разработчика. Однако, если вы хотите установить системное приложение в раздел <code>/system</code>, то Root-права станут обязательными.</p>
+</details>
+
+<blockquote>
+<p>⚠️ <strong>Внимание</strong>: При установке модифицированных приложений (модов) через ADB существует риск блокировки аккаунта в онлайн-играх или банковских приложениях. Система безопасности может идентифицировать установку через ADB как подозрительную активность.</p>
+</blockquote></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/smartfony-i-planshety/p/pe/perestali-prikhodit-uvedomleniya-na-ajfon-ot-prilozhenij-chto-delat.html" class="pb-related-card">
+                <span class="pb-related-title">Уведомления на iPhone не приходят: полное руководство по исправлению</span>
+                <span class="pb-related-desc">Перестали приходить уведомления на айфон от приложений? Узнайте, как проверить настройки, перезапуст</span>
+            </a><a href="/smartfony-i-planshety/k/ka/kak-proverit-slushayut-li-mobilnyj-telefon-kombinatsiya.html" class="pb-related-card">
+                <span class="pb-related-title">Как проверить, слушает ли мобильный телефон: коды, приложение и признаки</span>
+                <span class="pb-related-desc">Узнайте, как определить слежку за смартфоном. Проверка через USSD-комбинации, анализ трафика и призн</span>
+            </a><a href="/smartfony-i-planshety/n/na/nashel-ajfon-chto-s-nim-delat.html" class="pb-related-card">
+                <span class="pb-related-title">Нашел айфон: пошаговый план действий и законные методы возврата</span>
+                <span class="pb-related-desc">Что делать, если вы нашли iPhone? Инструкция по поиску владельца, проверке на кражу и правильным юри</span>
+            </a><a href="/smartfony-i-planshety/k/ka/kakim-kleem-prikleit-kryshku-telefona.html" class="pb-related-card">
+                <span class="pb-related-title">Каким клеем приклеить крышку телефона: выбор состава</span>
+                <span class="pb-related-desc">Обзор лучших клеев для ремонта крышек телефонов. Инструкция по нанесению, таблица свойств и техника </span>
+            </a><a href="/smartfony-i-planshety/c/ch/chekhol-iz-epoksidnoj-smoly-dlya-telefona-svoimi-rukami.html" class="pb-related-card">
+                <span class="pb-related-title">Чехол из эпоксидной смолы своими руками: пошаговое руководство</span>
+                <span class="pb-related-desc">Создайте уникальный дизайн-чехол для смартфона из эпоксидной смолы. Инструкция по выбору смолы, зали</span>
+            </a><a href="/smartfony-i-planshety/k/ka/kak-vklyuchit-vibratsiyu-na-ajfone-v-bezzvuchnom-rezhime-12.html" class="pb-related-card">
+                <span class="pb-related-title">Как включить вибрацию на iPhone 12 в беззвучном режиме</span>
+                <span class="pb-related-desc">Подробная инструкция по настройке тактильной отдачи на iPhone 12. Узнайте, как включить вибрацию при</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

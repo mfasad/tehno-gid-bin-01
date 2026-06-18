@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как через ADB установить прошивку: полная инструкция по откату и обновлению — Техно Гид</title>
+    <meta name="description" content="Пошаговое руководство: как установить прошивку через ADB на Android TV. Подготовка, команды, откат системы и устранение ошибок при перепрошивке.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/televizory-i-tv-pristavki/k/ka/kak-cherez-adb-ustanovit-proshivku.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как через ADB установить прошивку: полная инструкция по откату и обновлению">
+    <meta property="og:description" content="Пошаговое руководство: как установить прошивку через ADB на Android TV. Подготовка, команды, откат системы и устранение ошибок при перепрошивке.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/televizory-i-tv-pristavki/">Телевизоры и ТВ-приставки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как через ADB установить прошивку: полная инструкция по откату и обновлению</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-окружения-и-активация-отладки">Подготовка окружения и активация отладки</a></li><li><a href="#получение-файла-прошивки-и-проверка-контрольных-сумм">Получение файла прошивки и проверка контрольных сумм</a></li><li><a href="#соединение-с-устройством-и-проверка-связи">Соединение с устройством и проверка связи</a></li><li><a href="#установка-прошивки-через-консольные-команды">Установка прошивки через консольные команды</a></li><li><a href="#таблица-распространенных-ошибок-и-методы-их-решения">Таблица распространенных ошибок и методы их решения</a></li><li><a href="#устранение-последствий-неудачной-прошивки">Устранение последствий неудачной прошивки</a></li><li><a href="#частые-вопросы-по-установке-прошивки-через-adb">Частые вопросы по установке прошивки через ADB</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/televizory-i-tv-pristavki/k/ka/kak-obnovit-staryj-smart-tv-lg.html">Как обновить старый Smart TV LG: методы, версии прошивок и WebOS</a></li><li><a href="/televizory-i-tv-pristavki/k/ka/kak-ustanovit-media-stejshen-iks-na-televizore-samsung.html">Как установить Media Station X на телевизор Samsung: Полная инструкция</a></li><li><a href="/televizory-i-tv-pristavki/k/ka/kak-ustanovit-media-stejshen-iks-na-televizor-lg.html">Как установить Media Station X на телевизор LG: Полная инструкция</a></li><li><a href="/televizory-i-tv-pristavki/g/gl/glav-tv-dlya-android.html">Голова ТВ для Андроид: Выбор, настройка и лучшие модели 2026</a></li><li><a href="/televizory-i-tv-pristavki/k/ka/kak-perezagruzit-televizor-samsung-smart-tv-s-pulta.html">Как перезагрузить телевизор Samsung Smart TV с пульта: полные инструкции</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как через ADB установить прошивку на Android-устройство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-окружения-и-активация-отладки">Подготовка окружения и активация отладки</a></li><li><a href="#получение-файла-прошивки-и-проверка-контрольных-сумм">Получение файла прошивки и проверка контрольных сумм</a></li><li><a href="#соединение-с-устройством-и-проверка-связи">Соединение с устройством и проверка связи</a></li><li><a href="#установка-прошивки-через-консольные-команды">Установка прошивки через консольные команды</a></li><li><a href="#таблица-распространенных-ошибок-и-методы-их-решения">Таблица распространенных ошибок и методы их решения</a></li><li><a href="#устранение-последствий-неудачной-прошивки">Устранение последствий неудачной прошивки</a></li><li><a href="#частые-вопросы-по-установке-прошивки-через-adb">Частые вопросы по установке прошивки через ADB</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Многие пользователи сталкиваются с ситуацией, когда встроенные средства обновления не работают или требуют версии ПО, недоступной через стандартный интерфейс. В таких случаях единственным выходом становится использование отладочного интерфейса <strong>ADB</strong> (Android Debug Bridge). Этот инструмент позволяет передавать файлы и выполнять команды непосредственно на операционной системе устройства, минуя графический интерфейс.</p>
+
+<p>Процесс установки прошивки через этот протокол часто называют «откатом» или «ручным обновлением», так как он позволяет принудительно обновить систему даже если официальный сервер не видит ваше устройство. Однако важно понимать, что <strong>ADB</strong> — это не универсальный ключ для всех типов прошивок. Чаще всего он используется для установки <em>OTA-пакетов</em> (реализуемых как обновление по воздуху) или для принудительной установки конкретных обновлений, если автоматический механизм блокирует их.</p>
+
+<h2 id="подготовка-окружения-и-активация-отладки">Подготовка окружения и активация отладки</h2>
+<p>Прежде чем начать работу, необходимо создать программную среду, способную взаимодействовать с вашим устройством. Вам потребуется компьютер с установленными драйверами <strong>ADB</strong> и <em>Fastboot</em>, которые входят в состав платформы Android SDK. Без правильно настроенного окружения компьютер просто не увидит подключенный гаджет, и любые попытки передачи данных завершатся ошибкой.</p>
+
+<p>Ключевой этап — активация режима отладки на самом устройстве. Зайдите в <code>Настройки → О телевизе</code> (или <code>О системе</code>) и найдите пункт с номером сборки. Необходимо быстро нажимать на него, пока не появится сообщение «Вы стали разработчиком». После этого в меню настроек появится новый раздел <code>Для разработчиков</code>, где нужно переключить тумблер <strong>Отладка по USB</strong> в активное положение.</p>
+
+<p>Важно учитывать, что на некоторых устройствах, например, от бренда <em>Xiaomi</em> или в оболочках типа <em>Google TV</em>, активация отладки может требовать подтверждения через ПИН-код или привязку к аккаунту разработчика. Если устройство находится в сети Wi-Fi, убедитесь, что оно подключено к той же подсети, что и компьютер, для беспроводного подключения через IP-адрес.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Включение отладки по USB открывает доступ к системным файлам. Если вы не уверены в своих действиях, существует риск получить доступ к устройству злоумышленникам, если компьютер не защищен паролем.</p>
+</blockquote>
+
+<blockquote>
+<p>⚠️ Внимание: Перед началом любых манипуляций проверьте актуальность версии платформы SDK Tools на официальном сайте разработчиков, так как устаревшие версии могут не поддерживать новые протоколы безопасности современных устройств.</p>
+</blockquote>
+
+<div class="pb-poll" id="poll-62b5f6b9"><div class="pb-poll-question">📊 Какой метод подключения вы предпочитаете?</div><div class="pb-poll-option" data-poll="62b5f6b9" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Провод USB</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="62b5f6b9" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Беспроводное подключение (Wi-Fi)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="62b5f6b9" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Через Fastboot</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="62b5f6b9" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Не знаю, как подключиться</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="получение-файла-прошивки-и-проверка-контрольных-сумм">Получение файла прошивки и проверка контрольных сумм</h2>
+<p>Главная сложность заключается в поиске правильного образа системы. Для установления через <strong>ADB</strong> обычно требуется файл с расширением <em>.zip</em>, который является пакетом обновления. Эти файлы часто называют «OTA-пакетами». Они должны строго соответствовать модели вашего устройства и текущей версии системы, иначе процесс установки прервется с ошибкой.</p>
+
+<p>Найти нужный файл можно на официальных форумах разработчиков или в репозиториях, где энтузиасты выкладывают дампы прошивок. Однако никогда не используйте файлы из непроверенных источников. <strong>Целостность файла</strong> — критический параметр. Если архив поврежден при скачивании, система откажется его устанавливать, а в худшем случае устройство может перестать загружаться.</p>
+
+<p>Перед началом работы обязательно сверьте контрольную сумму (хеш) скачанного файла с эталонным значением, указанным на сайте источника. Используйте инструменты для проверки <code>MD5</code> или <code>SHA256</code>. Это займет всего пару минут, но исключит риск установки битого образа. Особенно это важно для <em>Sony Bravia</em> или <em>Roku TV</em>, где жесткие проверки целостности могут заблокировать загрузку.</p>
+
+<details class="pb-accordion"><summary>Где искать прошивки, если их нет на сайте производителя?</summary><div class="pb-accordion-body"><p>На форумах 4PDA, XDA Developers или в Telegram-каналах энтузиастов, специализирующихся на вашей модели ТВ. Также полезно проверить кэши серверов обновлений Google, если устройство близко к стандартам Android TV.</p></div></details>
+
+<h2 id="соединение-с-устройством-и-проверка-связи">Соединение с устройством и проверка связи</h2>
+<p>После того как файл прошивки готов и активирована отладка, нужно установить связь между компьютером и устройством. Откройте командную строку (Terminal) или PowerShell в папке с утилитами ADB. Если вы используете проводное подключение, вставьте USB-кабель в порт, поддерживающий передачу данных. Для беспроводного подключения введите команду <code>adb connect IP_адрес_устройства:5555</code>.</p>
+
+<p>Чтобы убедиться, что соединение установлено корректно, выполните команду <code>adb devices</code>. В ответ вы должны увидеть строку с серийным номером вашего устройства и статусом <code>device</code>. Если статус <code>unauthorized</code>, посмотрите на экран телевизора или планшета — там должно появиться всплывающее окно с запросом на разрешение отладки.</p>
+
+<p>Если устройство не определяется, попробуйте сменить USB-порт или кабель. Иногда проблема кроется в отсутствии драйверов, хотя в стандартном пакете они обычно есть. Для беспроводного соединения убедитесь, что брандмауэр Windows не блокирует порт <code>5555</code>. В случае сбоя помогает перезапуск демона adb: <code>adb kill-server</code> и затем <code>adb start-server</code>.</p>
+
+<p>Важно понимать, что стабильность соединения критична. Прерывание передачи данных на полпути может привести к тому, что файл будет поврежден на стороне устройства, и система не сможет его обработать.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка готовности к установке</h4><label class="check-item"><input type="checkbox"><span>Установлены драйверы ADB</span></label><label class="check-item"><input type="checkbox"><span>Активирован режим разработчика</span></label><label class="check-item"><input type="checkbox"><span>Подключен USB или настроен Wi-Fi</span></label><label class="check-item"><input type="checkbox"><span>Файл прошивки скачан и проверен</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="установка-прошивки-через-консольные-команды">Установка прошивки через консольные команды</h2>
+<p>Сам процесс установки сводится к передаче команды на запуск обновления. В отличие от режимов восстановления (Recovery), где используется меню, здесь всё делается текстовыми командами. Сперва нужно передать файл на устройство. Используйте команду <code>adb push путь_к_файлу.zip /sdcard/</code>. Эта операция перенесет архив в корневую директорию внутренней памяти.</p>
+<p>После загрузки файла необходимо запустить процесс прошивки. Для этого используется команда <code>adb shell cmd package install-create -r</code>, но чаще всего для установки OTA-пакетов используется более прямой метод через <code>recovery</code> или системный сервис обновлений. Стандартный метод для многих устройств выглядит так:</p>
+
+<pre><code>adb shell pm install -r -f /sdcard/имя_файла.zip</code></pre>
+
+<p>Однако, если устройство требует перезагрузки в режим Recovery для завершения установки, команда будет другой. Часто используется <code>adb reboot recovery</code>. В режиме восстановления (который может выглядеть как Android-робот с восклицательным знаком) нужно выбрать пункт «Apply update from ADB» и снова подключить устройство, передав команду <code>adb sideload имя_файла.zip</code>.</p>
+
+<p>Процесс установки может занять от 5 до 20 минут. Экран устройства может гаснуть или показывать индикатор прогресса. В этот период категорически нельзя прерывать связь или выключать устройство. Оставляйте компьютер включенным и не трогайте USB-кабель.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Если вы используете команду <code>adb sideload</code>, убедитесь, что файл прошивки полностью совместим с режимом Recovery вашего устройства, так как некоторые заводские рекавери блокируют установку неподписанных образов.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если прошивка устанавливается через режим Recovery, используйте USB-кабель с коротким отрезком и качественной экранировкой, чтобы избежать сбоя передачи данных из-за помех.</p></aside>
+
+<h2 id="таблица-распространенных-ошибок-и-методы-их-решения">Таблица распространенных ошибок и методы их решения</h2>
+<p>При работе с ADB пользователи часто сталкиваются с рядом типичных проблем. Понимание кодов ошибок поможет сэкономить время. Ниже приведена таблица самых частых ситуаций и способы их устранения.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Ошибка / Сообщение</th>
+<th>Причина</th>
+<th>Решение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>error: failed to copy</code></td>
+<td>Недостаточно места или битый кабель</td>
+<td>Очистите память устройства или смените кабель</td>
+</tr>
+<tr>
+<td><code>error: failed to stat</code></td>
+<td>Неверный путь к файлу</td>
+<td>Проверьте точное имя файла и путь в консоли</td>
+</tr>
+<tr>
+<td><code>error: device not found</code></td>
+<td>Нет связи с устройством</td>
+<td>Переподключите кабель, проверьте отладку</td>
+</tr>
+<tr>
+<td><code>installation failed</code></td>
+<td>Несовместимость версии</td>
+<td>Скачайте прошивку для другой версии Android</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Особое внимание уделите пункту <code>installation failed</code>. Это часто означает, что вы пытаетесь установить «чистую» прошивку на устройство с кастомными изменениями или наоборот. Система безопасности Android предотвращает подобные действия, чтобы избежать конфликтов файлов.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Самая частая причина ошибки установки — несоответствие версии логической структуры прошивки текущей версии системы на устройстве.</p></aside>
+
+<h2 id="устранение-последствий-неудачной-прошивки">Устранение последствий неудачной прошивки</h2>
+<p>Иногда процесс установки прерывается, и устройство перестает загружаться, уходя в бесконечный цикл перезагрузок (bootloop). В таком случае стандартные методы уже не помогут. Вам потребуется зайти в режим Recovery или Fastboot. Для этого часто нужно выключить устройство и зажать комбинацию кнопок (например, <code>Power + Volume Up</code>).</p>
+
+<p>Если устройство зашло в меню Recovery, попробуйте выполнить <code>Wipe data/factory reset</code>. Это удалит данные, но вернет работоспособность системы, если проблема была в конфликте файлов. В некоторых случаях помогает повторная установка той же прошивки, но уже через режим Fastboot.</p>
+
+<p>Если ни один из методов не помогает, остается только перепрошить устройство через специализированный инструмент от производителя (например, <em>MediaTek Flash Tool</em> или <em>Samsung Odin</em>), что требует загрузки в режим загрузки (Download Mode) и использования USB-кабеля в режиме прошивки, а не просто отладки.</p>
+
+<details class="pb-accordion"><summary>Что делать, если устройство не включается после сбоя?</summary><div class="pb-accordion-body"><p>Попробуйте кратковременно отсоединить аккумулятор (если это возможно) или подождать 10-15 минут полной разрядки, а затем снова подключить зарядку. Это может сбросить контроллер питания.</p></div></details>
+
+<h2 id="частые-вопросы-по-установке-прошивки-через-adb">Частые вопросы по установке прошивки через ADB</h2>
+<p>Ниже собраны ответы на самые популярные вопросы, возникающие у пользователей при попытке обновления системы через командную строку.</p>
+
+<details>
+<summary>Можно ли установить прошивку через ADB без Root-прав?</summary>
+<p>Да, установка стандартных OTA-обновлений не требует Root-прав. ADB работает с правами пользователя, достаточными для запуска системного установщика пакетов. Однако для установки модифицированных прошивок часто требуется разблокировка загрузчика и Root.</p>
+</details>
+
+<details>
+<summary>Почему команда adb devices показывает статус unauthorized?</summary>
+<p>Это означает, что устройство не получило разрешение на отладку с этого конкретного компьютера. Посмотрите на экран устройства (если он включен) и нажмите «Разрешить». Если экран черный, сбросьте настройки отладки в меню «Для разработчиков».</p>
+</details>
+
+<details>
+<summary>Можно ли обновить TV-приставку без её физического подключения к компьютеру?</summary>
+<p>Да, если приставка и компьютер находятся в одной сети Wi-Fi, можно использовать беспроводное подключение. Введите <code>adb connect 192.168.1.XX</code>, где XX — адрес приставки. Это удобно, но медленнее проводного соединения.</p>
+</details>
+
+<details>
+<summary>Сколько времени занимает установка прошивки через ADB?</summary>
+<p>Время зависит от размера файла и скорости соединения. Передача файла может занять 5-10 минут, а сама установка на устройстве — еще 10-20 минут. Не торопите процесс.</p>
+</details>
+
+<details>
+<summary>Что будет, если прошивка несовместима?</summary>
+<p>Система выдаст ошибку «Installation failed» и не применит изменения. В большинстве случаев устройство останется в рабочем состоянии, но в редких случаях может потребоваться сброс настроек до заводских.</p>
+</details>
+
+<blockquote>
+<p>⚠️ Внимание: Официальные спецификации прошивок могут меняться без уведомления. Всегда сверяйте модель устройства (например, <em>Android TV Box Model X-200</em>) и номер версии прошивки перед началом установки.</p>
+</blockquote></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/televizory-i-tv-pristavki/k/ka/kak-obnovit-staryj-smart-tv-lg.html" class="pb-related-card">
+                <span class="pb-related-title">Как обновить старый Smart TV LG: методы, версии прошивок и WebOS</span>
+                <span class="pb-related-desc">Полная инструкция: как обновить старый телевизор LG. Установка WebOS, прошивка через USB, App Store </span>
+            </a><a href="/televizory-i-tv-pristavki/k/ka/kak-ustanovit-media-stejshen-iks-na-televizore-samsung.html" class="pb-related-card">
+                <span class="pb-related-title">Как установить Media Station X на телевизор Samsung: Полная инструкция</span>
+                <span class="pb-related-desc">Пошаговая настройка приложения Media Station X на Smart TV Samsung. Установка через браузер, настрой</span>
+            </a><a href="/televizory-i-tv-pristavki/k/ka/kak-ustanovit-media-stejshen-iks-na-televizor-lg.html" class="pb-related-card">
+                <span class="pb-related-title">Как установить Media Station X на телевизор LG: Полная инструкция</span>
+                <span class="pb-related-desc">Пошаговое руководство по установке и настройке приложения Media Station X на телевизорах LG с систем</span>
+            </a><a href="/televizory-i-tv-pristavki/g/gl/glav-tv-dlya-android.html" class="pb-related-card">
+                <span class="pb-related-title">Голова ТВ для Андроид: Выбор, настройка и лучшие модели 2026</span>
+                <span class="pb-related-desc">Полный гид по головным устройствам ТВ на Android. Обзор топовых моделей, сравнение характеристик, ин</span>
+            </a><a href="/televizory-i-tv-pristavki/k/ka/kak-perezagruzit-televizor-samsung-smart-tv-s-pulta.html" class="pb-related-card">
+                <span class="pb-related-title">Как перезагрузить телевизор Samsung Smart TV с пульта: полные инструкции</span>
+                <span class="pb-related-desc">Пошаговая инструкция: как перезагрузить Smart TV Samsung с пульта, выполнить мягкий сброс, отключить</span>
+            </a><a href="/televizory-i-tv-pristavki/p/pe/peers-tv-kak-dobavit-svoj-plejlist-m3u-dlya-iptv.html" class="pb-related-card">
+                <span class="pb-related-title">Peers TV: как добавить плейлист M3U и настроить IPTV</span>
+                <span class="pb-related-desc">Подробная инструкция по настройке IPTV в приложении Peers TV. Узнайте, как загрузить M3U плейлист, д</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

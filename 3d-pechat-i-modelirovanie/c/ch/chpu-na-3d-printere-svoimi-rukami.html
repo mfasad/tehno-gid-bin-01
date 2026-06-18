@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Модернизация 3D принтера в ЧПУ: пошаговая инструкция и схемы — Техно Гид</title>
+    <meta name="description" content="Как превратить 3D принтер в ЧПУ станок своими руками. Обзор конвертеров, выбор прошивки Marlin, расчет шаговых двигателей и советы по безопасности при фрезеровке.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/3d-pechat-i-modelirovanie/c/ch/chpu-na-3d-printere-svoimi-rukami.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Модернизация 3D принтера в ЧПУ: пошаговая инструкция и схемы">
+    <meta property="og:description" content="Как превратить 3D принтер в ЧПУ станок своими руками. Обзор конвертеров, выбор прошивки Marlin, расчет шаговых двигателей и советы по безопасности при фрезеровке.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/3d-pechat-i-modelirovanie/">3D Печать и Моделирование</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Модернизация 3D принтера в ЧПУ: пошаговая инструкция и схемы</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-концепцию-конверсии">Введение в концепцию конверсии</a></li><li><a href="#механическая-подготовка-и-крепление-инструмента">Механическая подготовка и крепление инструмента</a></li><li><a href="#электроника-и-управление-прошивкой">Электроника и управление прошивкой</a></li><li><a href="#расчет-скорости-подачи-и-режимов-резания">Расчет скорости подачи и режимов резания</a></li><li><a href="#софт-и-подготовка-управляющих-кодов">Софт и подготовка управляющих кодов</a></li><li><a href="#безопасность-и-защита-от-вибраций">Безопасность и защита от вибраций</a></li><li><a href="#частые-ошибки-новичков-при-конверсии">Частые ошибки новичков при конверсии</a></li><li><a href="#заключение-и-перспективы-развития">Заключение и перспективы развития</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-rejting-byudzhetnykh.html">Топ бюджетных 3D принтеров 2026: Рейтинг лучших моделей для дома</a></li><li><a href="/3d-pechat-i-modelirovanie/p/pr/programma-dlya-3d-printera-anycubic.html">Лучшая программа для 3D принтера Anycubic: Top Slicer и настройки</a></li><li><a href="/3d-pechat-i-modelirovanie/k/ka/kak-nastroit-3d-printer-ender-3.html">Как настроить 3D принтер Ender 3: Полная инструкция по калибровке и прошивке</a></li><li><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-bambu-lab-x1.html">Bambu Lab X1 Carbon: Полный обзор флагманского 3D-принтера</a></li><li><a href="/3d-pechat-i-modelirovanie/r/ra/raspechatat-na-3d-printere-podvizhnye-igrushki.html">Как распечатать на 3д принтере подвижные игрушки: руководство для новичков</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>ЧПУ на базе 3D принтера: полное руководство по модернизации</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-концепцию-конверсии">Введение в концепцию конверсии</a></li><li><a href="#механическая-подготовка-и-крепление-инструмента">Механическая подготовка и крепление инструмента</a></li><li><a href="#электроника-и-управление-прошивкой">Электроника и управление прошивкой</a></li><li><a href="#расчет-скорости-подачи-и-режимов-резания">Расчет скорости подачи и режимов резания</a></li><li><a href="#софт-и-подготовка-управляющих-кодов">Софт и подготовка управляющих кодов</a></li><li><a href="#безопасность-и-защита-от-вибраций">Безопасность и защита от вибраций</a></li><li><a href="#частые-ошибки-новичков-при-конверсии">Частые ошибки новичков при конверсии</a></li><li><a href="#заключение-и-перспективы-развития">Заключение и перспективы развития</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-концепцию-конверсии">Введение в концепцию конверсии</h2>
+
+<p>Многие владельцы <strong>3D принтеров</strong> мечтают расширить функционал своего оборудования, не покупая новый станок. Превращение <em>FDM принтера</em> в фрезерный станок с ЧПУ — это популярный проект, который позволяет обрабатывать дерево, пластик и мягкие металлы, используя привычную кинематику.</p>
+
+<p>Суть процесса заключается не в полной замене начинки, а в адаптации <strong>шаговых двигателей</strong> и контроллера под задачи удаления материала, а не его добавления. Вам потребуется изменить механику удержания инструмента, установить <em>CNC-фрезу</em> и перепрошить электронику. Это сложный, но крайне полезный опыт, который раскроет потенциал вашего оборудования.</p>
+
+<p>Результатом станет устройство, способное выполнять гравировку, вырезание печатных плат и создание деталей из фанеры. Главное — правильно рассчитать нагрузки, так как <strong>оси X и Y</strong> 3D принтеров часто не предназначены для высоких крутящих моментов, возникающих при фрезеровке.</p>
+
+<h2 id="механическая-подготовка-и-крепление-инструмента">Механическая подготовка и крепление инструмента</h2>
+
+<p>Самый первый шаг — демонтаж экструдера и установка шпинделя. Стандартные <em>3D принтеры</em> разработаны для легкого веса сопла, а фреза создает значительную вибрацию. Необходимо жестко закрепить <strong>шпиндель</strong> на каретке, используя самодельный или покупной адаптер, чтобы исключить люфты при резке.</p>
+
+<p>Используйте <em>V-slot</em> профилей для усиления конструкции, если ваша рама сделана из пластика. Пластиковые соединители при работе с металлом или твердым деревом могут быстро разрушиться. Рекомендуется предусмотреть возможность регулировки высоты шпинделя для компенсации износа фрезы в процессе работы.</p>
+
+<p>Важно учесть систему охлаждения. <strong>Воздушный шпиндель</strong> требует подачи сжатого воздуха, а электродвигатель — эффективного отвода тепла. Подумайте о подключении небольшого вентилятора или пылесоса сразу к патрону, чтобы стружка не забивала зазор между фрезой и материалом.</p>
+
+<blockquote>⚠️ Внимание: Никогда не используйте стандартные пластиковые монтажные кронштейны экструдера для крепления мощных шпинделей. Вибрация при фрезеровке может привести к мгновенному разрушению пластика и повреждению направляющих осей.</blockquote>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Механическая подготовка</h4><label class="check-item"><input type="checkbox"><span>Установить жесткий адаптер для шпинделя</span></label><label class="check-item"><input type="checkbox"><span>Проверить жесткость рамы и осей</span></label><label class="check-item"><input type="checkbox"><span>Организовать систему отвода стружки</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в отсутствии люфтов в подшипниках</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="электроника-и-управление-прошивкой">Электроника и управление прошивкой</h2>
+
+<p>Переход на <strong>CNC режим</strong> требует глубокой настройки прошивки. Стандартные конфигурации для печати (G-code для экструзии) не подходят для фрезеровки. Вам необходимо установить специализированную версию прошивки, например, <em>Marlin</em> или <em>Klipper</em>, с включенным режимом <code>CNC_WOODWORKING</code>.</p>
+
+<p>В прошивке нужно отключить <strong>авторепринтер</strong> (Auto Home) для оси Z, если он настроен на сопло, и перенастроить логику работы. Также критически важно настроить <em>шаговые драйверы</em> на более высокий ток, чтобы избежать проскальзывания при резке, но не перегреть их.</p>
+
+<p>Для управления шпинделем потребуется реле или MOSFET-транзистор, который будет открываться по команде <code>M3</code> (включение шпинделя). Проверьте, есть ли на вашей плате управления свободный порт для этого выхода. Если нет, придется использовать внешний контроллер.</p>
+
+<details class="pb-accordion"><summary>Что делать, если плата не поддерживает управление шпинделем?</summary><div class="pb-accordion-body"><p>Если ваша плата (например, старая версии Rambo или дешевая RepRap) не имеет выхода для шпинделя, можно использовать дополнительный микроконтроллер (Arduino Nano) для управления реле через программное обеспечение типа UGS (Universal G-Code Sender).</p></div></details>
+
+<p>Не забудьте про <strong>концевые выключатели</strong> (Endstops). Они должны быть настроены так, чтобы станок корректно определял нулевую точку рабочего поля перед началом фрезеровки. Ошибка в этом параметре может стоить вам испорченной заготовки или сломанной фрезы.</p>
+
+<div class="pb-poll" id="poll-bce40a7e"><div class="pb-poll-question">📊 Какая прошивка используется на вашем 3D принтере?</div><div class="pb-poll-option" data-poll="bce40a7e" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Marlin</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="bce40a7e" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Klipper</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="bce40a7e" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Repetier</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="bce40a7e" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Duet</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="bce40a7e" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Собранная с нуля (CNC)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="расчет-скорости-подачи-и-режимов-резания">Расчет скорости подачи и режимов резания</h2>
+
+<p>При переходе от печати к фрезеровке меняются <strong>физические параметры</strong> процесса. Скорость подачи (Feed Rate) должна быть значительно ниже, чем скорость печати, чтобы фреза успевала удалять материал, а не "плавила" его или не ломалась.</p>
+
+<p>Для <em>фанеры</em> и <strong>пластика</strong> оптимальная скорость обычно составляет 1000–3000 мм/мин, в то время как скорость печати может достигать 60000 мм/мин. Перегрузка двигателя может привести к ошибке шага и "поплывшей" детали.</p>
+
+<p>Следует также учитывать глубину прохода. Делать глубокий проход за один раз нельзя. Разбейте задачу на несколько проходов по <strong>3-5 мм</strong> (в зависимости от диаметра фрезы). Это снизит нагрузку на оси и продлит жизнь инструменту.</p>
+
+<div class="pb-table-wrap"><table>
+  <thead>
+    <tr>
+      <th>Материал</th>
+      <th>Диаметр фрезы</th>
+      <th>Скорость подачи (мм/мин)</th>
+      <th>Глубина прохода (мм)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Сосна (фанера)</td>
+      <td>3 мм</td>
+      <td>1500</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <td>АБС пластик</td>
+      <td>2 мм</td>
+      <td>800</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>Алюминий (мягкий)</td>
+      <td>3 мм</td>
+      <td>400</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <td>Дуб</td>
+      <td>4 мм</td>
+      <td>1200</td>
+      <td>1.5</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Главное правило фрезеровки: медленная подача и малая глубина прохода. Лучше сделать 5 легких проходов, чем один глубокий, который сломает двигатель или фрезу.</p></aside>
+
+<h2 id="софт-и-подготовка-управляющих-кодов">Софт и подготовка управляющих кодов</h2>
+
+<p>Для генерации G-code вам понадобится <strong>CAM-программа</strong> (Computer Aided Manufacturing). Популярные решения включают <em>Carveco</em>, <strong>Estlcam</strong> или бесплатные варианты вроде <em>Inkscape</em> с плагином Path to G-code. Они позволяют задать траекторию движения фрезы.</p>
+
+<p>При экспорте кода убедитесь, что в настройках постпроцессора выбран режим <code>mm</code> (миллиметры), а не дюймы. Ошибка здесь приведет к тому, что станок будет двигаться в 25 раз быстрее или медленнее ожидаемого, что чревато аварией.</p>
+
+<p>Используйте <strong>проверку кода</strong> (G-code Simulator) перед запуском станка. Визуализация траектории поможет увидеть потенциально опасные моменты, например, резкие повороты на высокой скорости или попытку прохода сквозь ограничительный блок.</p>
+
+<blockquote>⚠️ Внимание: Всегда проверяйте <em>Zero Point</em> (начальную точку) перед запуском. Если вы задали координаты (0,0,0) на столе, а станок начал движение с высоты 10 мм над столом, фреза врежется в стол с огромной силой.</blockquote>
+
+<h2 id="безопасность-и-защита-от-вибраций">Безопасность и защита от вибраций</h2>
+
+<p>Фрезеровка — это процесс с высокой вибрацией, которая может раскрутить болты и гайки на <strong>3D принтере</strong>. Рекомендуется использовать <em>фиксатор резьбы</em> (Loctite) на всех критических точках крепления шпинделя и шаговых двигателей.</p>
+
+<p>Стружка, летящая от фрезы, может попасть в электронные компоненты и двигатели. Необходимо предусмотреть <strong>защитный кожух</strong> или хотя бы прозрачный щиток вокруг рабочей зоны. Это также убережет ваши глаза от летящих опилок.</p>
+
+<p>Не забывайте о <em>заземлении</em> станка. Электростатическое разряды могут повредить чувствительные платы управления. Подключите металлический корпус шпинделя и раму станка к общему заземлению.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте малярный скотч или двусторонний скотч для фиксации заготовки. Клейкие ленты часто выдерживают вибрацию лучше, чем простые струбцины, которые могут мешать пути фрезы.</p></aside>
+
+<h2 id="частые-ошибки-новичков-при-конверсии">Частые ошибки новичков при конверсии</h2>
+
+<p>Самая распространенная ошибка — попытка фрезеровать <strong>металл</strong> на принтере, который не имеет жесткой рамы. Вибрации приведут к тому, что фреза будет вибрировать (chatter), и поверхность будет испорчена. Для алюминия подходит только очень жесткая конструкция.</p>
+
+<p>Другая проблема — игнорирование <em>инерции</em> каретки. При резком изменении направления движения (например, в углах букв) каретка может немного "пролететь" мимо точки. Это решается настройками ускорения и рывка (Jerk) в прошивке.</p>
+
+<p>Некоторые пользователи забывают про <strong>охлаждение шпинделя</strong>. Если вы работаете долго, мотор фрезы может перегреться. В отличие от хотэнда, который всегда нагрет, шпиндель должен иметь свободный поток воздуха.</p>
+
+<details class="pb-accordion"><summary>Как избежать "вибрации фрезы" (Chatter)?</summary><div class="pb-accordion-body"><p>Если фреза вибрирует, попробуйте снизить скорость подачи на 20-30% или уменьшить глубину прохода. Также проверьте, не разболтался ли патрон шпинделя.</p></div></details>
+
+<h2 id="заключение-и-перспективы-развития">Заключение и перспективы развития</h2>
+
+<p>Превращение <em>3D принтера</em> в ЧПУ станок — это отличный способ получить универсальное оборудование для мастерской. Вы сможете создавать детали, которые невозможно напечатать, и гравировать сложные узоры. Главное — соблюдать технику безопасности и не торопиться с настройкой режимов резания.</p>
+
+<p>После получения базовых навыков можно модернизировать станок, установив <strong>линейные направляющие</strong> вместо ремней и шаговых двигателей с резисторами. Это повысит точность и позволит работать с более твердыми материалами.</p>
+
+<p>Помните, что каждый материал требует индивидуального подхода. Экспериментируйте, ведите дневник настроек для разных фрез и материалов, и ваш самодельный станок станет незаменимым помощником.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Успешная конверсия зависит от баланса между жесткостью механики и правильными настройками прошивки. Начните с мягких материалов (дерево, пластик) перед тем, как пробовать металлы.</p></aside>
+
+<details>
+  <summary>Какой максимальный вес шпинделя можно установить на обычный 3D принтер?</summary>
+  <p>Обычно это 500-800 грамм, если рама металлическая или усиленная. Для пластиковых рам (Creality Ender 3 и аналоги) лучше использовать легкие шпиндели (до 300 г) или 3D-печатные фрезы с ручным приводом для гравировки.</p>
+</details>
+
+<details>
+  <summary>Можно ли использовать то же ПО для слайсинга, что и для печати?</summary>
+  <p>Нет. Слайсеры (Cura, PrusaSlicer) генерируют код для экструзии. Для ЧПУ нужны CAM-системы (Estlcam, Inkscape, Carbide Create), которые рассчитывают траекторию удаления материала.</p>
+</details>
+
+<details>
+  <summary>Нужно ли менять шаговые двигатели на более мощные?</summary>
+  <p>Часто стандартные двигатели NEMA 17 достаточны для дерева и пластика. Однако, если вы планируете фрезеровать алюминий, стоит рассмотреть установку двигателей с большим крутящим моментом (например, NEMA 23) и соответствующей механической передачей.</p>
+</details>
+
+<details>
+  <summary>Как защитить электронику от пыли при работе в режиме ЧПУ?</summary>
+  <p>Лучший способ — использовать защитные чехлы для линейных направляющих и установить общий кожух над рабочей зоной, подключенный к пылесосу. Также можно отключить корпус принтера от сети, если он не имеет принудительного охлаждения.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-rejting-byudzhetnykh.html" class="pb-related-card">
+                <span class="pb-related-title">Топ бюджетных 3D принтеров 2026: Рейтинг лучших моделей для дома</span>
+                <span class="pb-related-desc">Рейтинг лучших бюджетных 3D принтеров для начинающих. Сравнение моделей, обзор характеристик и совет</span>
+            </a><a href="/3d-pechat-i-modelirovanie/p/pr/programma-dlya-3d-printera-anycubic.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшая программа для 3D принтера Anycubic: Top Slicer и настройки</span>
+                <span class="pb-related-desc">Полный обзор софта для Anycubic: Cura, Chitubox, Lychee. Настройка слайсера, поддержка моделей и реш</span>
+            </a><a href="/3d-pechat-i-modelirovanie/k/ka/kak-nastroit-3d-printer-ender-3.html" class="pb-related-card">
+                <span class="pb-related-title">Как настроить 3D принтер Ender 3: Полная инструкция по калибровке и прошивке</span>
+                <span class="pb-related-desc">Подробное руководство по первоначальной настройке Creality Ender 3. Калибровка стола, прошивка Marli</span>
+            </a><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-bambu-lab-x1.html" class="pb-related-card">
+                <span class="pb-related-title">Bambu Lab X1 Carbon: Полный обзор флагманского 3D-принтера</span>
+                <span class="pb-related-desc">Глубокий анализ 3D-принтера Bambu Lab X1. Обзор функций LiDAR, скорости печати, качества сборки и ср</span>
+            </a><a href="/3d-pechat-i-modelirovanie/r/ra/raspechatat-na-3d-printere-podvizhnye-igrushki.html" class="pb-related-card">
+                <span class="pb-related-title">Как распечатать на 3д принтере подвижные игрушки: руководство для новичков</span>
+                <span class="pb-related-desc">Пошаговая инструкция: распечатать на 3д принтере подвижные игрушки. Настройки слайсера, выбор пласти</span>
+            </a><a href="/3d-pechat-i-modelirovanie/n/na/nastrojka-shagovykh-dvigatelej-v-mach3.html" class="pb-related-card">
+                <span class="pb-related-title">Настройка шаговых двигателей в Mach3: полное руководство</span>
+                <span class="pb-related-desc">Пошаговая инструкция по настройке шаговых двигателей в Mach3. Расчет шагов, тестирование, устранение</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

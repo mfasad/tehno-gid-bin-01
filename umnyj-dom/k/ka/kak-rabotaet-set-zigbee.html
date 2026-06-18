@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как работает сеть Zigbee: протокол, топология и отличия от Wi-Fi — Техно Гид</title>
+    <meta name="description" content="Подробный разбор технологии Zigbee: как устроена ячеистая сеть, роль шлюза, энергоэффективность и сравнение с другими протоколами для умного дома.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/k/ka/kak-rabotaet-set-zigbee.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как работает сеть Zigbee: протокол, топология и отличия от Wi-Fi">
+    <meta property="og:description" content="Подробный разбор технологии Zigbee: как устроена ячеистая сеть, роль шлюза, энергоэффективность и сравнение с другими протоколами для умного дома.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как работает сеть Zigbee: протокол, топология и отличия от Wi-Fi</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-технологию-беспроводной-связи">Введение в технологию беспроводной связи</a></li><li><a href="#архитектура-и-типы-устройств-в-протоколе">Архитектура и типы устройств в протоколе</a></li><li><a href="#механизм-ячеистой-сети-и-маршрутизации">Механизм ячеистой сети и маршрутизации</a></li><li><a href="#частотные-диапазоны-и-помехоустойчивость">Частотные диапазоны и помехоустойчивость</a></li><li><a href="#энергоэффективность-и-автономность">Энергоэффективность и автономность</a></li><li><a href="#безопасность-и-шифрование-данных">Безопасность и шифрование данных</a></li><li><a href="#сравнение-с-другими-протоколами-умного-дома">Сравнение с другими протоколами умного дома</a></li><li><a href="#особенности-настройки-и-faq">Особенности настройки и (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/k/ka/kamera-ne-podklyuchaetsya-k-seti.html">Камера не подключается к сети: причины и решения</a></li><li><a href="/umnyj-dom/5/5-/5-00-eto-noch-ili-utro.html">5:00 — это ночь или утро? Время суток и биоритмы</a></li><li><a href="/umnyj-dom/u/um/umnye-vesy-napolnye-xiaomi.html">Умные весы Xiaomi: обзор, настройка и точность</a></li><li><a href="/umnyj-dom/a/av/avtonomnaya-sistema-umnogo-doma.html">Автономная система умного дома: принцип работы и выбор</a></li><li><a href="/umnyj-dom/u/ud/udalennoe-podklyuchenie-k-home-assistant.html">Удаленное подключение к Home Assistant: 3 безопасных способа</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Принципы работы сети Zigbee: от теории к практике</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-технологию-беспроводной-связи">Введение в технологию беспроводной связи</a></li><li><a href="#архитектура-и-типы-устройств-в-протоколе">Архитектура и типы устройств в протоколе</a></li><li><a href="#механизм-ячеистой-сети-и-маршрутизации">Механизм ячеистой сети и маршрутизации</a></li><li><a href="#частотные-диапазоны-и-помехоустойчивость">Частотные диапазоны и помехоустойчивость</a></li><li><a href="#энергоэффективность-и-автономность">Энергоэффективность и автономность</a></li><li><a href="#безопасность-и-шифрование-данных">Безопасность и шифрование данных</a></li><li><a href="#сравнение-с-другими-протоколами-умного-дома">Сравнение с другими протоколами умного дома</a></li><li><a href="#особенности-настройки-и-faq">Особенности настройки и (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-технологию-беспроводной-связи">Введение в технологию беспроводной связи</h2>
+
+<p>Современный <strong>умный дом</strong> требует надежной и энергоэффективной связи между тысячами устройств, и здесь на сцену выходит <em>Zigbee</em>. Этот протокол стал золотым стандартом для автоматизации, позволяя датчикам, лампочкам и розеткам общаться между собой без перегрузки домашнего Wi-Fi роутера. В отличие от громоздких решений прошлого, Zigbee обеспечивает мгновенную реакцию и стабильность даже при большом количестве подключенных гаджетов.</p>
+
+<p>Секрет популярности технологии кроется в её архитектуре: каждый узел сети может не только передавать свои данные, но и служить ретранслятором для соседей. Это создает самовосстанавливающуюся структуру, где потеря одного устройства не приводит к коллапсу всей системы. Вам больше не нужно беспокоиться о «мертвых зонах» в дальних комнатах, так как сигнал гибко обходит препятствия.</p>
+
+<p>Многие пользователи ошибочно полагают, что для работы умных устройств обязательно нужен мощный интернет или сложный сервер. На самом деле, <strong>локальная сеть Zigbee</strong> функционирует автономно, обрабатывая сценарии даже при отключении внешнего подключения, что делает её идеальной для критически важных систем безопасности и освещения.</p>
+
+<h2 id="архитектура-и-типы-устройств-в-протоколе">Архитектура и типы устройств в протоколе</h2>
+
+<p>В основе любой сетевой топологии лежат три ключевых типа устройств, каждый из которых выполняет свою уникальную функцию. Понимание их ролей поможет вам правильно спроектировать инфраструктуру умного дома и избежать ошибок при расширении системы.</p>
+
+<p>Первым и самым главным элементом является <strong>координатор</strong> (Coordinator). Это устройство, которое часто встроено в сам шлюз или хаб, оно инициализирует сеть, выбирает канал связи и управляет всем процессом авторизации новых гаджетов. Без координатора сеть просто не сможет существовать, так как именно он хранит ключи шифрования и маршрутные таблицы.</p>
+
+<p>Второй тип — это <strong>маршрутизаторы</strong> (Routers). Это полноценные устройства, которые получают питание от сети, поэтому они постоянно активны и могут ретранслировать сигнал для других узлов. Яркими примерами маршрутизаторов служат умные розетки, лампы и выключатели, которые усиливают сигнал и расширяют покрытие сети на несколько комнат.</p>
+
+<p>Третий тип — <strong>конечные устройства</strong> (End Devices). Это датчики движения, температуры, протечки или пульты, которые работают от батареек и большую часть времени находятся в «спящем» режиме для экономии энергии. Они взаимодействуют с сетью только при необходимости, а все данные за них передает ближайший маршрутизатор или родительское устройство.</p>
+
+<blockquote>⚠️ Внимание: Маршрутизаторы Zigbee не могут быть «спящими» устройствами, так как они обязаны постоянно слушать эфир для ретрансляции пакетов. Если вы используете устройство только от батареи, оно не сможет усиливать сигнал для соседей.</blockquote>
+
+<h2 id="механизм-ячеистой-сети-и-маршрутизации">Механизм ячеистой сети и маршрутизации</h2>
+
+<p>Главная особенность, отличающая <em>Zigbee</em> от простых звездных топологий, — это ячеистая структура (mesh). В такой системе данные не идут по прямому пути от источника к получателю, если прямой путь недоступен или перегружен. Вместо этого информация прыгает от устройства к устройству, находя оптимальный маршрут в реальном времени.</p>
+
+<p>Представьте, что вы нажали кнопку на выключателе в прихожей, чтобы зажечь свет в гостиной. Если расстояние слишком велико для одного скачка сигнала, команда пройдет через умную лампу в коридоре и затем через розетку в зале, прежде чем достигнет цели. Этот процесс происходит за доли секунды и абсолютно незаметен для пользователя, обеспечивая мгновенное срабатывание.</p>
+
+<p>Если одно из промежуточных устройств выйдет из строя или будет отключено, сеть автоматически перестроит маршруты. Алгоритмы протокола найдут новый путь через другие доступные узлы, сохраняя работоспособность всей системы. Такая отказоустойчивость делает технологию незаменимой для крупных жилых пространств и офисов.</p>
+
+<div class="pb-poll" id="poll-d821f774"><div class="pb-poll-question">📊 Какой тип устройств у вас преобладает в умном доме?</div><div class="pb-poll-option" data-poll="d821f774" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Датчики (End Devices)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d821f774" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Лампы и Розетки (Routers)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d821f774" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Полный комплект с Хабом</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d821f774" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Пока только один-два гаджета</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="частотные-диапазоны-и-помехоустойчивость">Частотные диапазоны и помехоустойчивость</h2>
+
+<p>Работа протокола зависит от выбранного диапазона частот, который варьируется в зависимости от региона использования. В Европе и России стандартом является диапазон <code>2.4 ГГц</code>, который также используется Wi-Fi и Bluetooth, что теоретически создает риск помех. Однако инженеры предусмотрели механизмы разделения каналов, минимизирующие конфликты.</p>
+
+<p>В этом диапазоне доступно 16 каналов связи, пронумерованных от 11 до 26. Стандартный Wi-Fi роутер обычно работает на каналах 1, 6 или 11. Чтобы избежать наложения сигналов, при настройке <strong>шлюза Zigbee</strong> рекомендуется выбирать каналы, удаленные от центральных Wi-Fi частот, например, 15, 20 или 25.</p>
+
+<p>В Северной Америке используется дополнительный диапазон <code>915 МГц</code>, который обладает лучшей проникающей способностью, но там он менее популярен. В Европе также встречается редкий диапазон <code>868 МГц</code>, который обеспечивает дальность связи, но имеет строгие ограничения по времени передачи данных. Выбор правильного канала — это первый шаг к стабильной работе без сбоев.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Регион</th>
+<th>Основной диапазон</th>
+<th>Количество каналов</th>
+<th>Особенности</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Россия / Европа</td>
+<td>2.4 ГГц</td>
+<td>16</td>
+<td>Совместимость с Wi-Fi, требует настройки каналов</td>
+</tr>
+<tr>
+<td>США</td>
+<td>915 МГц, 2.4 ГГц</td>
+<td>10 + 16</td>
+<td>Лучшая дальность на 915 МГц, специфично для рынка</td>
+</tr>
+<tr>
+<td>Европа (редко)</td>
+<td>868 МГц</td>
+<td>1</td>
+<td>Максимальная дальность, низкая скорость передачи</td>
+</tr>
+<tr>
+<td>Азия</td>
+<td>2.4 ГГц</td>
+<td>16</td>
+<td>Аналогично европейскому стандарту</td>
+</tr>
+</tbody>
+</table></div>
+
+<h2 id="энергоэффективность-и-автономность">Энергоэффективность и автономность</h2>
+
+<p>Одним из главных преимуществ технологии является её невероятная экономичность, позволяющая датчикам работать от одной батарейки CR2032 годами. Это достигается за счет продуманного режима сна, при котором устройство просыпается лишь на миллисекунды для приема или отправки пакета данных.</p>
+
+<p>В отличие от Wi-Fi устройств, которые постоянно сканируют эфир и поддерживают активное соединение, <strong>конечные узлы Zigbee</strong> почти не потребляют энергию. Они «спят», пока не произойдет событие: датчик движения сработает, термометр измерит температуру, или вы нажмете кнопку пульта.</p>
+
+<p>Для маршрутизаторов, работающих от сети, энергопотребление также минимально, так как протокол не требует высокой пропускной способности. Это позволяет создавать плотные сети из сотни устройств без значительного увеличения нагрузки на электросеть дома. Вам не нужно искать розетку рядом с каждым датчиком, что дает полную свободу в дизайне интерьера.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если вы используете датчики с батарейками, старайтесь ставить их рядом с маршрутизаторами (лампами или розетками), а не в глубоких углах. Хороший сигнал снижает время, которое устройство тратит на попытки передать данные, продлевая жизнь батарееке.</p></aside>
+
+<h2 id="безопасность-и-шифрование-данных">Безопасность и шифрование данных</h2>
+
+<p>Безопасность в сетях <em>Zigbee</em> обеспечивается на аппаратном уровне с использованием стандарта шифрования <strong>AES-128</strong>. Это тот же алгоритм, который используется в банковских картах и военных системах, что делает перехват данных практически невозможным без знания ключей.</p>
+
+<p>При добавлении нового устройства в сеть происходит сложный процесс рукопожатия (pairing). В этот момент генерируются уникальный ключ сети и ключи для каждого устройства. Координатор распределяет эти ключи, и все дальнейшие сообщения между узлами передаются в зашифрованном виде.</p>
+
+<p>Хотя теоретическая уязвимость возможна при физическом доступе к устройству и специализированном оборудовании для перехвата, в бытовых условиях взлом сети Zigbee крайне затруднен. Важно лишь не оставлять сеть в режиме «обучения» (Join) надолго после добавления всех гаджетов, чтобы посторонние не могли подключить свое устройство.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>AES-128 шифрование делает сеть Zigbee безопасной для передачи данных, но критически важно отключать режим добавления новых устройств сразу после настройки системы.</p></aside>
+
+<h2 id="сравнение-с-другими-протоколами-умного-дома">Сравнение с другими протоколами умного дома</h2>
+
+<p>Выбирая оборудование, вы часто сталкиваетесь с дилеммой: что лучше — <em>Zigbee</em>, Wi-Fi, Bluetooth или Z-Wave? Каждый протокол имеет свои плюсы и минусы, и их понимание поможет избежать ошибок при покупке.</p>
+
+<p>Wi-Fi устройства удобны тем, что не требуют хаба, но они «съедают» ресурсы роутера и потребляют много энергии. Bluetooth отлично подходит для персональной связи, но плохо масштабируется на большие площади. Z-Wave работает на другой частоте, избегая помех от Wi-Fi, но оборудование там значительно дороже и меньше по ассортименту.</p>
+
+<p>Zigbee занимает оптимальную нишу: он дешевле Z-Wave, работает автономно от интернета и создает отказоустойчивую сеть. Однако ему обязательно нужен шлюз, что добавляет небольшой порог входа, но окупается надежностью и масштабируемостью системы в будущем.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Чек-лист выбора протокола</h4><label class="check-item"><input type="checkbox"><span>Нужна ли автономная работа без интернета?</span></label><label class="check-item"><input type="checkbox"><span>Есть ли в доме много Wi-Fi устройств?</span></label><label class="check-item"><input type="checkbox"><span>Планируете ли вы более 20 датчиков?</span></label><label class="check-item"><input type="checkbox"><span>Важна ли скорость передачи видео?</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="особенности-настройки-и-faq">Особенности настройки и (FAQ)</h2>
+
+<p>Настройка сети может показаться сложной, но на практике процесс интуитивно понятен. Сначала вы подключаете координатор к хабу или серверу управления, затем переводите его в режим поиска и по очереди активируете новые устройства, нажимая кнопку сопряжения.</p>
+
+<p>Иногда возникает проблема, когда устройство не добавляется или пропадает из сети. Это часто связано с тем, что устройство находится слишком далеко от координатора и не имеет рядом маршрутизатора для ретрансляции. В таких случаях нужно переместить устройство ближе к источнику питания или добавить промежуточную розетку.</p>
+
+<p> Протокол допускает разные профили приложений, поэтому лучше выбирать устройства одного производителя или проверенные экосистемы, такие как <em>Aqara</em>, <em>Philips Hue</em> или <em>Tuya</em>, чтобы избежать конфликтов.</p>
+
+<details class="pb-accordion"><summary>Что такое «Zigbee 3.0»?|Zigbee 3.0 — это обновленная версия стандарта, которая объединила различные профили предыдущих версий в одну универсальную спецификацию. Это обеспечило максимальную совместимость устройств разных производителей, которые раньше могли не работать вместе.-->
+
+<blockquote>⚠️ Внимание</summary><div class="pb-accordion-body"><p> При переходе с одной экосистемы на другую (например, с Xiaomi на Home Assistant) старые устройства могут потребовать сброса до заводских настроек. Процесс сброса отличается у разных брендов: у одних это 5 нажатий кнопки, у других — длительное удержание.</blockquote>
+
+
+
+<details>
+<summary>Нужен ли интернет для работы Zigbee устройств?</summary>
+<p>Нет, интернет не нужен для локальной работы сети. Умные сценарии (например, датчик открывает дверь -> свет включается) выполняются внутри сети Zigbee через шлюз или локальный сервер. Интернет требуется только для удаленного управления со смартфона из другой точки мира.</p>
+</details>
+
+<details>
+<summary>Можно ли объединить устройства разных производителей в одну сеть?</summary>
+<p>Да, теоретически это возможно, если устройства поддерживают стандарт Zigbee 3.0 или имеют совместимые профили. Однако на практике лучше использовать устройства одной экосистемы или проверенные модели, чтобы избежать конфликтов маршрутизации и функций.</p>
+</details>
+
+<details>
+<summary>Сколько устройств можно подключить к одной сети Zigbee?</summary>
+<p>Теоретический лимит составляет 65 000 устройств, но на практике стабильная работа обеспечивается при подключении до 150-200 активных узлов. Ограничение обычно накладывается не протоколом, а мощностью координатора и пропускной способностью сети в вашем конкретном жилье.</p>
+</details>
+
+<details>
+<summary>Почему датчики Zigbee иногда «отваливаются»?</summary>
+<p>Чаще всего это связано с разрядом батарейки или плохим сигналом в месте установки. Если устройство находится далеко от маршрутизаторов, оно тратит много энергии на попытки передать данные, что приводит к сбоям. Проверьте уровень сигнала в приложении и подумайте о добавлении мощного маршрутизатора.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/k/ka/kamera-ne-podklyuchaetsya-k-seti.html" class="pb-related-card">
+                <span class="pb-related-title">Камера не подключается к сети: причины и решения</span>
+                <span class="pb-related-desc">Почему IP-камера не подключается к Wi-Fi или сети? Полный гайд по диагностике, настройке роутера и у</span>
+            </a><a href="/umnyj-dom/5/5-/5-00-eto-noch-ili-utro.html" class="pb-related-card">
+                <span class="pb-related-title">5:00 — это ночь или утро? Время суток и биоритмы</span>
+                <span class="pb-related-desc">Разбираем, к какой части суток относится 5 утра. Влияние на сон, циркадные ритмы и правилаLED-диспле</span>
+            </a><a href="/umnyj-dom/u/um/umnye-vesy-napolnye-xiaomi.html" class="pb-related-card">
+                <span class="pb-related-title">Умные весы Xiaomi: обзор, настройка и точность</span>
+                <span class="pb-related-desc">Полный гид по напольным весам Xiaomi. Разбор моделей Mi Body, Scales 2, подключение к приложению Mi </span>
+            </a><a href="/umnyj-dom/a/av/avtonomnaya-sistema-umnogo-doma.html" class="pb-related-card">
+                <span class="pb-related-title">Автономная система умного дома: принцип работы и выбор</span>
+                <span class="pb-related-desc">Как работает автономная система умного дома без интернета? Обзор протоколов Zigbee, Z-Wave и локальн</span>
+            </a><a href="/umnyj-dom/u/ud/udalennoe-podklyuchenie-k-home-assistant.html" class="pb-related-card">
+                <span class="pb-related-title">Удаленное подключение к Home Assistant: 3 безопасных способа</span>
+                <span class="pb-related-desc">Как настроить удаленный доступ к Home Assistant. Настройка Nabu Casa, туннелирование через Cloudflar</span>
+            </a><a href="/umnyj-dom/d/dl/dlya-chego-kondensator-v-sensornom-vyklyuchatele-sveta.html" class="pb-related-card">
+                <span class="pb-related-title">Роль конденсатора в сенсорном выключателе: принцип работы и нюансы</span>
+                <span class="pb-related-desc">Разбираем функцию конденсатора в сенсорных выключателях света. Узнайте, как он стабилизирует питание</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

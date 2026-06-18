@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как использовать Arduino Nano в качестве программатора для AVR — Техно Гид</title>
+    <meta name="description" content="Пошаговая инструкция: превращаем Arduino Nano в ISP-программатор. Схема подключения, настройка AVRDUDE, прошивка ATmega328 и устранение ошибок.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/a/ar/arduino-nano-kak-programmator.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как использовать Arduino Nano в качестве программатора для AVR">
+    <meta property="og:description" content="Пошаговая инструкция: превращаем Arduino Nano в ISP-программатор. Схема подключения, настройка AVRDUDE, прошивка ATmega328 и устранение ошибок.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как использовать Arduino Nano в качестве программатора для AVR</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#принцип-работы-и-аппаратная-подготовка">Принцип работы и аппаратная подготовка</a></li><li><a href="#прошивка-платы-программатора">Прошивка платы-программатора</a></li><li><a href="#схема-подключения-и-необходимые-компоненты">Схема подключения и необходимые компоненты</a></li><li><a href="#настройка-среды-разработки-для-записи">Настройка среды разработки для записи</a></li><li><a href="#таблица-распиновки-и-сигналов">Таблица распиновки и сигналов</a></li><li><a href="#устранение-распространенных-проблем">Устранение распространенных проблем</a></li><li><a href="#расширенные-возможности-и-альтернативы">Расширенные возможности и альтернативы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/k/ka/kak-budet-ispolzovatsya-sd-karta-chto-vybrat.html">Как выбрать SD-карту: скорость, классы и применение</a></li><li><a href="/kompyutery-i-noutbuki/m/mo/monitor-zavisaet-a-kompyuter-rabotaet.html">Монитор завис а компьютер работает: причины, диагностика и решение</a></li><li><a href="/kompyutery-i-noutbuki/u/uv/uvelichit-operativnuyu-pamyat-na-noutbuke-za-schet-zhestkogo-diska.html">Можно ли увеличить оперативную память за счет жесткого диска?</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-chasto-nado-menyat-zhidkost-v-vodyanom-okhlazhdenii-kompyutera.html">Как часто менять жидкость в водяном охлаждении ПК: сроки и советы</a></li><li><a href="/kompyutery-i-noutbuki/s/ss/ssd-m2-kak-fleshka.html">Как использовать M.2 SSD как флешку: адаптеры, скорость и нюансы</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Превращаем Arduino Nano в универсальный программатор AVR</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#принцип-работы-и-аппаратная-подготовка">Принцип работы и аппаратная подготовка</a></li><li><a href="#прошивка-платы-программатора">Прошивка платы-программатора</a></li><li><a href="#схема-подключения-и-необходимые-компоненты">Схема подключения и необходимые компоненты</a></li><li><a href="#настройка-среды-разработки-для-записи">Настройка среды разработки для записи</a></li><li><a href="#таблица-распиновки-и-сигналов">Таблица распиновки и сигналов</a></li><li><a href="#устранение-распространенных-проблем">Устранение распространенных проблем</a></li><li><a href="#расширенные-возможности-и-альтернативы">Расширенные возможности и альтернативы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Многие энтузиасты электроники сталкиваются с необходимостью перепрошить микроконтроллер без использования дорогостоящего оборудования. В таких ситуациях на помощь приходит решение, доступное каждому: использование платы <em>Arduino Nano</em> в роли программатора. Этот метод позволяет записывать загрузчики и пользовательский код в память любых 8-битных AVR-микроконтроллеров, таких как <em>ATmega328P</em> или <em>ATtiny85</em>.</p>
+
+<p>Подобный подход особенно выгоден при массовом производстве или обучении, когда бюджета на покупку профессиональных устройств вроде <em>AVR ISP MKII</em> недостаточно. Важно понимать, что сама плата <em>Arduino Nano</em> по сути уже является готовым интерфейсом USB-to-UART и набором необходимых выводов для программирования. Вам не нужно паять сложные схемы, достаточно лишь нескольких перемычек и правильной настройки среды разработки.</p>
+
+<h2 id="принцип-работы-и-аппаратная-подготовка">Принцип работы и аппаратная подготовка</h2>
+<p>В основе метода лежит использование встроенного в <em>Arduino Nano</em> чипа <strong>ATmega168</strong> или <strong>ATmega328</strong>, на который предварительно зашита прошивка <strong>ArduinoISP</strong>. Этот код превращает микроконтроллер в эмулятор стандартного программатора, передавая команды от компьютера к целевому устройству по протоколу SPI.</p>
+
+<p>Для успешной работы необходимо правильно задействовать выводы платы. Ключевыми являются пины <strong>10</strong> (SS), <strong>11</strong> (MOSI), <strong>12</strong> (MISO) и <strong>13</strong> (SCK), которые должны быть соединены с соответствующими контактами на программируемом чипе. Особое внимание стоит уделить линии сброса, которая подключается к выводу <strong>RESET</strong> целевого микроконтроллера.</p>
+
+<p>Вы должны обеспечить стабильное питание для обоих устройств, если вы программируете внешний чип, не подключенный к плате. Часто возникает ситуация, когда <em>Arduino Nano</em> питается от USB, а целевой чип требует отдельного источника тока. В этом случае важно правильно организовать общую землю (GND) между платами.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Никогда не подавайте напряжение больше 5В на пины программирования, если целевой микроконтроллер работает на 3.3В, так как это гарантированно выведет его из строя, даже если вы используете дата-шины.</p>
+</blockquote>
+
+<h2 id="прошивка-платы-программатора">Прошивка платы-программатора</h2>
+<p>Прежде чем начинать работу, сама плата <em>Arduino Nano</em> должна быть превращена в программное устройство. Стандартная прошивка для вывода текста или управления светодиодами здесь не подойдет. Вам необходимо загрузить специальную программу <strong>ArduinoISP</strong>, которая доступна в стандартном наборе примеров IDE.</p>
+
+<p>Откройте среду разработки <em>Arduino IDE</em> и перейдите по пути <code>Файл → Примеры → 11. ArduinoISP → ArduinoISP</code>. После того как код загрузится в редактор, выберите правильную плату в меню <code>Инструменты → Плата → Arduino Nano</code> и установите процессор <code>ATmega328P (Old Bootloader)</code> или <code>ATmega328P</code> в зависимости от ревизии вашего чипа.</p>
+
+<p>Нажмите кнопку загрузки. После успешной компиляции и записи прошивки плата готова к работе. В этот момент на плате может замигать светодиод <strong>L</strong>, что свидетельствует о том, что программатор находится в ожидании команд от компьютера. Не удаляйте эту прошивку, пока не закончите все работы.</p>
+
+<details class="pb-accordion"><summary>Что делать, если плата не определяется?
+<p>Если после прошивки плата не мигает или компьютер не видит её как COM-порт, проверьте наличие драйверов CH340 или FT232. Попробуйте переустановить драйверы из диспетчера устройств Windows или использовать другую USB-кабель.--></p>
+
+<h2 id="схема-подключения-и-необходимые-компоненты">Схема подключения и необходимые компоненты</h2>
+<p>Физическое соединение двух плат требует аккуратности и внимания к цветам проводов. Вам понадобится набор макетных проводов (джамперов), макетная плата (breadboard) и, возможно, резисторы для стабилизации сигналов. Схема подключения крайне проста, но ошибки в ней приведут к невозможности записи кода.</p>
+
+<p>Основная схема соединения выглядит следующим образом</summary><div class="pb-accordion-body"><p> цифровые пины 10, 11, 12, 13 на <em>Arduino Nano</em> подключаются к аналогичным пинам на целевом чипе. Кроме того, нужно соединить выводы питания: <strong>5V</strong> с <strong>VCC</strong> и <strong>GND</strong> с <strong>GND</strong>. Не забудьте подключить пин <strong>CAP</strong> или вывод <strong>RESET</strong> через конденсатор, если возникают сбои при старте.</p>
+
+<p>Для надежности часто рекомендуют использовать <strong>10 кОм</strong> резистор между пинами RESET и 5V на программируемом устройстве, чтобы предотвратить случайный перезапуск во время процесса. Также стоит подключить керамический конденсатор на 100 нФ между выводами RESET и GND на плате программиста для фильтрации помех.</p>
+
+
+<p>Подключить MOSI (11) к MOSI целевого чипа</p>
+<p>Подключить MISO (12) к MISO целевого чипа</p>
+<p>Подключить SCK (13) к SCK целевого чипа</p>
+<p>Подключить SS (10) к RESET целевого чипа</p>
+<p>Соединить общие земли (GND) обеих плат</p></div></details></p>
+
+<p>Иногда возникает необходимость подключения внешнего кварцевого резонатора, если вы программируете чип без внутреннего генератора. В таком случае частота работы будет строго зависеть от внешнего источника тактирования. Убедитесь, что конденсаторы на кварце подобраны корректно для выбранной частоты.</p>
+
+<h2 id="настройка-среды-разработки-для-записи">Настройка среды разработки для записи</h2>
+<p>После того как железо подготовлено, переходим к программной части. В меню <code>Инструменты</code> в <em>Arduino IDE</code> необходимо указать тип программатора. Выберите пункт <code>Программист</code> и в списке найдите <strong>Arduino as ISP</em>. Это критически важный шаг, который сообщает среде разработки, что использовать нужно не стандартный загрузчик, а внешнее SPI-устройство.</p>
+
+<p>Далее необходимо выбрать целевую плату. Если вы загружаете код в пустой чип, выберите соответствующую модель, например, <code>Arduino Uno</code> или <code>ATmega328 on a breadboard</code>. Важно, чтобы настройки процессора, тактовой частоты и загрузчика совпадали с тем, что вы планируете записать.</p>
+
+<p>Существует два основных варианта действий: запись загрузчика или прямая прошивка скетча. Для записи загрузчика используйте опцию <code>Инструменты → Записать загрузчик</code>. Для прямой прошивки выберите <code>Скетч → Загрузить с использованием программиста</code>. Второй вариант часто предпочтительнее, так как он записывает код сразу, минуя загрузчик.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед загрузкой кода убедитесь, что в настройках компилятора отключена опция "Проверка размера памяти", если используете старые чипы с ограниченным объемом ОЗУ. Это поможет избежать ложных ошибок компиляции.</p></aside>
+
+<h2 id="таблица-распиновки-и-сигналов">Таблица распиновки и сигналов</h2>
+<p>Ниже приведена подробная таблица соответствия выводов между платой программатора и целевым микроконтроллером. Это справочный материал, который поможет вам избежать путаницы при пайке или макетировании.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Пин Arduino Nano</th>
+<th>Функция</th>
+<th>Целевой контакт (AVR)</th>
+<th>Примечание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>D10</code></td>
+<td>SS (Slave Select)</td>
+<td><code>RESET</code></td>
+<td>Управляет началом записи</td>
+</tr>
+<tr>
+<td><code>D11</code></td>
+<td>MOSI (Master Out)</td>
+<td><code>MOSI</code></td>
+<td>Передача данных от ПК</td>
+</tr>
+<tr>
+<td><code>D12</code></td>
+<td>MISO (Master In)</td>
+<td><code>MISO</code></td>
+<td>Ответ от чипа</td>
+</tr>
+<tr>
+<td><code>D13</code></td>
+<td>SCK (Clock)</td>
+<td><code>SCK</code></td>
+<td>Тактовый сигнал</td>
+</tr>
+<tr>
+<td><code>5V</code></td>
+<td>Питание</td>
+<td><code>VCC</code></td>
+<td>Обязательно 5В или 3.3В</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Обратите внимание, что пин <strong>RESET</em> на целевом чипе выполняет роль Slave Select. Это означает, что вы не можете использовать его для других целей в своей схеме, пока программатор активен. Если вам нужен этот вывод для сброса в вашей конструкции, его придется разорвать или использовать программный сброс.</p>
+
+<p>Также стоит учитывать, что некоторые версии <em>Arduino Nano</strong> могут иметь отличия в распиновке, особенно если это клон с чипом <strong>CH340G</strong> вместо оригинального <strong>FT232RL</strong>. Однако логика работы SPI-интерфейса остается неизменной, и схема подключения остается универсальной.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильное соответствие пина SS (10) и RESET — это залог успешной связи. Ошибка в этом соединении приведет к тому, что программатор не сможет "разбудить" чип.</p></aside>
+
+<h2 id="устранение-распространенных-проблем">Устранение распространенных проблем</h2>
+<p>Даже при идеальной схеме могут возникнуть ошибки при записи. Самая частая проблема — сообщение <strong>"avrdude: stk500v2_ReceiveMessage() : timeout"</strong>. Это обычно означает, что программатор не видит целевой чип или связь прервана. Проверьте целостность проводов и наличие питания на целевом устройстве.</p>
+
+<p>Другая частая ошибка связана с несовпадением частоты. Если вы записываете загрузчик с настройкой 16 МГц на чип, который имеет внутренний генератор 1 МГц, дальнейшая работа будет невозможна. <mark>Никогда не переключайте частоту записи без проверки наличия внешнего кварцевого резонатора на плате.</mark></p>
+
+<p>Иногда помогает установка дополнительного резистора на 10 кОм между линией RESET и питанием на программируемом чипе. Это стабилизирует уровень сигнала и предотвращает случайные перезагрузки во время длительной записи больших скетчей. Также попробуйте снизить скорость записи в настройках программы.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Если вы видите ошибку "Device signature = 0x000000", проверьте, не замкнут ли пин MISO на землю или не отключено ли питание.</p>
+</blockquote>
+
+<p>Если вы используете USB-кабель низкого качества, он может не обеспечивать достаточный ток для работы обоих устройств одновременно. В таких случаях попробуйте отключить периферию или использовать внешний источник питания для целевой схемы, оставив USB только для передачи данных.</p>
+
+<div class="pb-poll" id="poll-5a55241d"><div class="pb-poll-question">📊 С какой целью вы используете Arduino Nano как программатор?</div><div class="pb-poll-option" data-poll="5a55241d" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Для обучения и экспериментов</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="5a55241d" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Для производства серийных устройств</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="5a55241d" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Для восстановления "кирпичей"</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="5a55241d" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Только для записи загрузчика</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<p>Помните, что при работе с <strong>AVRDUDE</em> через командную строку можно видеть более подробные логи ошибок. Используйте флаг <code>-v</code> (verbose) для получения детальной информации о ходе процесса, что поможет быстрее локализовать проблему.</p>
+
+<h2 id="расширенные-возможности-и-альтернативы">Расширенные возможности и альтернативы</h2>
+<p>Использование <em>Arduino Nano</em> не ограничивается лишь стандартными задачами. Вы можете писать собственные утилиты для чтения памяти чипа, создания дампов или даже изменения фьюзов (fuse bits). Это открывает широкие возможности для реверс-инжиниринга и низкоуровневого программирования.</p>
+
+<p>Существуют альтернативные прошивки для <em>Arduino Nano</em>, такие как <strong>ArduinoISP-Mega</strong>, которые поддерживают более сложные сценарии и работу с чипами, имеющими большие объемы памяти. Они могут быть полезны, если вы работаете с <strong>ATmega128</strong> или <strong>ATmega2560</strong>.</p>
+
+<p>Также стоит упомянуть, что современные версии <em>Arduino IDE</em> начали внедрять поддержку более современных инструментов, таких как <strong>avrdude.conf</strong> с обновленными сигнатурами чипов. Следите за обновлениями, чтобы иметь возможность работать с новейшими микроконтроллерами.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При изменении фьюзов убедитесь, что вы знаете текущие настройки. Неправильная установка фьюзов может сделать чип нечитаемым стандартными средствами, потребуются специальные методы "оживления".</p>
+</blockquote>
+
+<p>В заключение, использование платы <em>Arduino Nano</em> как программатора — это эффективный и дешевый способ работы с AVR-микроконтроллерами. Он экономит бюджет и дает полное понимание принципов работы SPI-интерфейса. Главное — соблюдать полярность и внимательно следить за настройками частоты.</p>
+
+<p>Этот метод позволяет вам быть независимым от дорогих лабораторных стендов. С минимальным набором компонентов вы можете создавать и перепрошивать свои устройства в любой момент, что является фундаментом для глубокого погружения в мир микроэлектроники.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Умение "оживлять" кирпичи и перепрошивать чипы напрямую — ключевой навык для любого инженера-электронщика, и Arduino Nano дает этот инструмент бесплатно.</p></aside>
+
+<details>
+<summary>Могу ли я использовать Arduino Nano для программирования ATtiny85?</summary>
+<p>Да, вы можете использовать <em>Arduino Nano</em> для программирования <em>ATtiny85</em>. Схема подключения аналогична, но нужно учитывать, что у ATtiny85 меньше выводов. Пины MOSI, MISO, SCK и RESET должны быть соединены с соответствующими пинами ATtiny85 (обычно это пины 5, 6, 7 и 1). В Arduino IDE выберите плату ATtiny85 и программист Arduino as ISP.</p>
+</details>
+
+<details>
+<summary>Что делать, если загрузчик не записывается?</summary>
+<p>Если загрузчик не записывается, проверьте, правильно ли подключен кабель RESET к выводу 10 (SS) на программаторе. Убедитесь, что вы выбрали правильный тип чипа и частоту в меню инструментов. Также проверьте, не поврежден ли сам загрузочный код в памяти программиста, попробуйте перепрошить его заново.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать этот метод для STM32?</summary>
+<p>Нет, стандартный метод "Arduino as ISP" работает только для 8-битных AVR-микроконтроллеров. Для программирования STM32 нужен другой протокол (SWD или UART), и стандартная прошивка ArduinoISP здесь не подойдет. Вам понадобится специализированный программатор ST-Link или адаптер для JTAG.</p>
+</details>
+
+<details>
+<summary>Какой максимальный размер памяти можно прошить?</summary>
+<p>Метод позволяет прошивать чипы с объемом памяти до 128 КБ (например, ATmega128), если использовать соответствующие настройки в Arduino IDE и правильную конфигурацию фьюзов. Однако скорость записи может снижаться с увеличением объема памяти. Для большинства задач с ATmega328 (32 КБ) ограничений нет.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/k/ka/kak-budet-ispolzovatsya-sd-karta-chto-vybrat.html" class="pb-related-card">
+                <span class="pb-related-title">Как выбрать SD-карту: скорость, классы и применение</span>
+                <span class="pb-related-desc">Полный гид по выбору SD карты. Узнайте, что такое классы скорости UHS, V30, A2 и как выбрать накопит</span>
+            </a><a href="/kompyutery-i-noutbuki/m/mo/monitor-zavisaet-a-kompyuter-rabotaet.html" class="pb-related-card">
+                <span class="pb-related-title">Монитор завис а компьютер работает: причины, диагностика и решение</span>
+                <span class="pb-related-desc">Экран чёрный или статичен, но системный блок жив? Разбираем причины зависания монитора, когда ПК фун</span>
+            </a><a href="/kompyutery-i-noutbuki/u/uv/uvelichit-operativnuyu-pamyat-na-noutbuke-za-schet-zhestkogo-diska.html" class="pb-related-card">
+                <span class="pb-related-title">Можно ли увеличить оперативную память за счет жесткого диска?</span>
+                <span class="pb-related-desc">Разбираем технологию файла подкачки и ReadyBoost. Узнайте, как использовать HDD/SSD для ускорения си</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-chasto-nado-menyat-zhidkost-v-vodyanom-okhlazhdenii-kompyutera.html" class="pb-related-card">
+                <span class="pb-related-title">Как часто менять жидкость в водяном охлаждении ПК: сроки и советы</span>
+                <span class="pb-related-desc">Узнайте, как часто нужно менять жидкость в системе водяного охлаждения компьютера. Подробный гид по </span>
+            </a><a href="/kompyutery-i-noutbuki/s/ss/ssd-m2-kak-fleshka.html" class="pb-related-card">
+                <span class="pb-related-title">Как использовать M.2 SSD как флешку: адаптеры, скорость и нюансы</span>
+                <span class="pb-related-desc">Полное руководство: как превратить быстрый M.2 накопитель в портативное хранилище. Обзор кейсов, раз</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-ubrat-naklejku-s-monitora.html" class="pb-related-card">
+                <span class="pb-related-title">Как убрать наклейку с монитора: 5 безопасных способов</span>
+                <span class="pb-related-desc">Пошаговая инструкция, как удалить наклейку с экрана монитора без следов. Средства для очистки: спирт</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>UART и RS232: главные отличия, уровни сигналов и подключение — Техно Гид</title>
+    <meta name="description" content="Подробный разбор различий между UART и RS232. Узнайте про уровни напряжения, протоколы связи, совместимость и правила подключения контроллеров для электронных проектов.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/u/ua/uart-i-rs232-otlichiya.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="UART и RS232: главные отличия, уровни сигналов и подключение">
+    <meta property="og:description" content="Подробный разбор различий между UART и RS232. Узнайте про уровни напряжения, протоколы связи, совместимость и правила подключения контроллеров для электронных проектов.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">UART и RS232: главные отличия, уровни сигналов и подключение</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#суть-технологии-uart-и-принцип-работы">Суть технологии UART и принцип работы</a></li><li><a href="#стандарт-rs232-и-его-электрические-особенности">Стандарт RS232 и его электрические особенности</a></li><li><a href="#ключевые-различия-и-сравнение-параметров">Ключевые различия и сравнение параметров</a></li><li><a href="#необходимые-преобразователи-интерфейсов">Необходимые преобразователи интерфейсов</a></li><li><a href="#проблема-перекрестного-подключения">Проблема перекрестного подключения</a></li><li><a href="#практические-рекомендации-и-меры-предосторожности">Практические рекомендации и меры предосторожности</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/p/po/podklyuchenie-ide-zhestkogo-diska-k-sata.html">Как подключить IDE жесткий диск к SATA: адаптеры и переходники</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kabel-usb-3-0.html">Кабель USB 3.0: полный гайд по выбору, характеристикам и отличиям от 2.0</a></li><li><a href="/kompyutery-i-noutbuki/s/sa/samye-besshumnye-kulery-dlya-kompyutera.html">Самые бесшумные кулеры для ПК: Топ-модели и выбор</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kakoj-klavishej-zavershaetsya-vvod-komandy.html">Какой клавишей завершается ввод команды в консоли и терминале?</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-snyat-vodyanoe-okhlazhdenie-s-protsessora.html">Как снять водяное охлаждение с процессора: полная инструкция</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>UART и RS232: в чем разница и как их правильно подключить</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#суть-технологии-uart-и-принцип-работы">Суть технологии UART и принцип работы</a></li><li><a href="#стандарт-rs232-и-его-электрические-особенности">Стандарт RS232 и его электрические особенности</a></li><li><a href="#ключевые-различия-и-сравнение-параметров">Ключевые различия и сравнение параметров</a></li><li><a href="#необходимые-преобразователи-интерфейсов">Необходимые преобразователи интерфейсов</a></li><li><a href="#проблема-перекрестного-подключения">Проблема перекрестного подключения</a></li><li><a href="#практические-рекомендации-и-меры-предосторожности">Практические рекомендации и меры предосторожности</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2>Вводная часть</
+
+<p>Многие разработчики и инженеры при создании систем управления или отладки устройств сталкиваются с путаницей между аббревиатурами <strong>UART</strong> и <strong>RS232</strong>. Часто эти термины используют как синонимы, что в корне неверно с точки зрения технической архитектуры. <em>UART</em> (Universal Asynchronous Receiver-Transmitter) — это физический интерфейс и протокол передачи данных, реализованный в виде микросхемы или периферии микроконтроллера.</p>
+
+<p>С другой стороны, <strong>RS232</strong> — это стандарт электрического интерфейса, который определяет уровни напряжения, разъемы и механические характеристики соединения. Вы можете реализовать протокол UART, используя не только уровень RS232, но и TTL, USB или другие стандарты. Понимание этой разницы критично для предотвращения выхода из строя дорогостоящей электроники при неправильном подключении.</p>
+
+<p>При попытке соединить порт микроконтроллера с компьютером без понимания этих различий, вы рискуете подать <em>недопустимое напряжение</em> на вход приемника. В этой статье мы детально разберем, как эти технологии взаимодействуют, какие преобразователи нужны для их связи и как избежать фатальных ошибок при монтаже.</p>
+
+<h2 id="суть-технологии-uart-и-принцип-работы">Суть технологии UART и принцип работы</h2>
+
+<p><strong>UART</strong> расшифровывается как Универсальный Асинхронный Приемо-Передатчик. Это аппаратное устройство, которое берет параллельные данные от процессора и преобразует их в последовательный поток битов для передачи по одной линии, и наоборот. Ключевая особенность этого интерфейса — отсутствие тактового сигнала (clock line). Синхронизация происходит за счет заранее согласованной скорости передачи, называемой <strong>baud rate</strong>.</p>
+
+<p>Для корректной работы вам необходимо настроить параметры <code>8N1</code> или аналогичные, где 8 — количество бит данных, N — отсутствие бита четности, 1 — стоповый бит. Если настройки не совпадают на обоих концах линии связи, вы получите бессмысленный набор символов (мусор) вместо полезной информации. Схема <em>UART</em> всегда подразумевает наличие двух линий передачи данных: TX (Transmit) и RX (Receive), а также общую землю (GND).</p>
+
+<p>Важно понимать, что сам по себе UART не определяет электрические уровни. В микроконтроллерах, таких как <em>Arduino</em>, <em>STM32</em> или <em>ESP32</em>, уровни сигналов UART обычно соответствуют логике TTL (0В и 3.3В или 5В). Это напряжение слишком мало для передачи данных на большие расстояния и несовместимо с портами старых компьютеров без дополнительной обработки.</p>
+
+<blockquote>⚠️ Внимание: Подключение линии TX одного устройства напрямую к линии TX другого устройства приведет к конфликту сигналов. Всегда соединяйте TX передатчика с RX приемника, а RX передатчика с TX приемника, не забывая соединить земли.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>UART — это протокол и логический уровень, который определяет формат данных, но не определяет электрические характеристики напряжения для передачи сигнала по проводам.</p></aside>
+
+<h2 id="стандарт-rs232-и-его-электрические-особенности">Стандарт RS232 и его электрические особенности</h2>
+
+<p><strong>RS232</strong> (Recommended Standard 232) — это стандарт, разработанный Ассоциацией электронной промышленности (EIA) еще в 1960-х годах. Он определяет, как именно должны выглядеть электрические сигналы для надежной передачи данных на расстояния до 15 метров. Главная особенность RS232 — использование инвертированных и высоких уровней напряжения, что обеспечивает высокую помехоустойчивость.</p>
+
+<p>В отличие от логики TTL, где логическая 1 — это положительное напряжение, в стандарте RS232 <strong>логическая единица (Mark)</strong> соответствует отрицательному напряжению в диапазоне от -3В до -15В. Логический ноль (Space) соответствует положительному напряжению от +3В до +15В. Диапазон от -3В до +3В считается зоной неопределенности, куда сигнал передаваться не должен. Это позволяет приемнику четко отличать данные от шума.</p>
+
+<p>Механически интерфейс RS232 часто ассоциируется с 9-контактным разъемом DB9 (D-subminiature) или старыми 25-контактными разъемами. Однако сам стандарт не регламентирует форму разъема, он лишь описывает назначение контактов и электрические параметры. Современные устройства могут использовать миниатюрные разъемы, но сохранять соответствие электрическим нормам RS232.</p>
+
+<p>Использование высоких размахов напряжения (+12В/-12В) позволяет сигналу преодолевать длинные кабельные трассы в промышленных цехах без существенных искажений, что было невозможно с логикой 5В. Именно поэтому RS232 десятилетиями оставался стандартом де-факто для подключения модемов, терминалов и промышленного оборудования.</p>
+
+<details class="pb-accordion"><summary>Почему используется отрицательное напряжение для логической единицы?</summary><div class="pb-accordion-body"><p>В ранних системах отрицательное напряжение для логической 1 (Mark) было выбрано для лучшей совместимости с телефонными линиями и для снижения влияния наводок в линиях связи, где часто присутствовали положительные смещения.</p></div></details>
+
+<h2 id="ключевые-различия-и-сравнение-параметров">Ключевые различия и сравнение параметров</h2>
+
+<p>Чтобы окончательно расставить точки над i, давайте сравним эти две технологии по ключевым параметрам. Главное отличие заключается в том, что UART — это способ организации обмена данными, а RS232 — это физический способ реализации этого обмена с конкретным напряжением. Вы можете реализовать UART через RS232, USB или даже через оптоволоконные линии, если использовать соответствующие преобразователи.</p>
+
+<p>Ниже приведена таблица, наглядно демонстрирующая разницу между логическими уровнями UART (TTL) и стандартом RS232. Обратите внимание на полярность сигналов, так как это самая частая причина ошибок при проектировании.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>UART (TTL уровни)</th>
+<th>RS232</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Логическая 1 (Mark)</td>
+<td><strong>3.3В или 5В</strong></td>
+<td><strong>-3В.. -15В</strong></td>
+</tr>
+<tr>
+<td>Логическая 0 (Space)</td>
+<td><strong>0В</strong></td>
+<td><strong>+3В.. +15В</strong></td>
+</tr>
+<tr>
+<td>Количество линий данных</td>
+<td>2 (TX, RX)</td>
+<td>Минимум 2 (TX, RX), часто более</td>
+</tr>
+<tr>
+<td>Максимальная длина кабеля</td>
+<td>до 15-30 см</td>
+<td>до 15 метров</td>
+</tr>
+<tr>
+<td>Типичные разъемы</td>
+<td>PIN-headers (GND, TX, RX)</td>
+<td>DB9, DB25, RJ45</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Одной из критических ошибок новичков является попытка подключить микросхему с UART-портом напрямую к разъему DB9 компьютера. Сигнал с микроконтроллера (например, +5В за логическую 0) будет воспринят RS232-портом компьютера как логическая 0 (так как он положительный), но напряжение может быть недостаточным или, наоборот, слишком высоким для входа, что приведет к сгоранию порта. <em>Путешествие</em> сигнала от микроконтроллера до ПК требует обязательного преобразования уровней.</p>
+
+<h2 id="необходимые-преобразователи-интерфейсов">Необходимые преобразователи интерфейсов</h2>
+
+<p>Для того чтобы соединить устройство с логикой UART (TTL) и компьютерный порт RS232, необходим <strong>преобразователь уровней</strong>. Эти устройства выполняют двойную функцию: они инвертируют сигнал (меняют полярность) и изменяют размах напряжения. Наиболее популярной микросхемой для таких задач является <em>MAX232</em> или ее современные аналоги, такие как <em>SP3232</em>.</p>
+
+<p>Микросхема работает за счет встроенных генераторов, которые на основе напряжения питания 5В генерируют необходимые +10В и -10В для линий RS232. Вам потребуется подключить внешние конденсаторы (обычно 1 мкФ или 0.1 мкФ, в зависимости от версии чипа) к соответствующим выводам для работы зарядовых насосов. Без этих конденсаторов микросхема не сможет создать отрицательное напряжение.</p>
+
+<p>Современные USB-адаптеры часто объединяют в одном корпусе два преобразователя: сначала USB в UART (например, на базе <em>FT232RL</em> или <em>CH340</em>), а затем, если требуется, встроенный уровень RS232. Однако большинство дешевых адаптеров выводят именно TTL-уровни UART на пины. Внимательно читайте спецификацию adapter'а перед покупкой, чтобы понять, какие уровни он выдает на контактах.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если вы используете USB-адаптер с TTL-выводами, убедитесь, что его рабочее напряжение (3.3В или 5В) совпадает с напряжением питания вашего микроконтроллера, иначе вы можете сжечь логическую цепь устройства.</p></aside>
+
+<h2 id="проблема-перекрестного-подключения">Проблема перекрестного подключения</h2>
+
+<p>Одной из самых частых проблем при работе с этими интерфейсами является путаница в перекрестном подключении. В архитектуре <strong>UART</strong> передатчик (TX) всегда должен быть соединен с приемником (RX) удаленного устройства. Это правило "крест-накрест" работает для любых уровней сигналов, будь то TTL или RS232.</p>
+
+<p>Если вы подключаете два устройства напрямую (например, два микроконтроллера), схема соединения выглядит так: TX первого устройства идет на RX второго, а RX первого — на TX второго. Не забудьте соединить общую землю (GND), иначе сигналы не будут иметь общего опорного потенциала, и связь не установится. В мире <em>RS232</em> ситуация усложняется стандартом разъемов.</p>
+
+<p>В стандартном настройке порта на ПК (DTE — Data Terminal Equipment) контакт TX находится на одном пине, а RX на другом. В периферийном устройстве (DCE — Data Communication Equipment) эти контакты могут быть "зашиты" внутри или инвертированы. Именно поэтому часто используются "нуль-модемные" кабели (Null-Modem), внутри которых провода TX и RX перекрещены для прямого соединения двух компьютеров или ПК и устройства.</p>
+
+<ul>
+<li>✅ Всегда проверяйте назначение контактов в даташите (datasheet) перед пайкой.</li>
+<li>✅ Используйте мультиметр для проверки наличия напряжения на линиях TX в покое (Idle state).</li>
+<li>✅ Для RS232 по умолчанию в покое находится линия TX на уровне логической 1 (отрицательное напряжение).</li>
+</ul>
+
+<div class="pb-poll" id="poll-4e2c99f5"><div class="pb-poll-question">📊 Какой тип преобразователя вы используете чаще всего?</div><div class="pb-poll-option" data-poll="4e2c99f5" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">MAX232 (классика)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="4e2c99f5" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">USB-TTL (FT232, CH340)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="4e2c99f5" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">USB-RS232 (с поворотом)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="4e2c99f5" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Не использую преобразователи</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="практические-рекомендации-и-меры-предосторожности">Практические рекомендации и меры предосторожности</h2>
+
+<p>При работе с физическим интерфейсом <strong>RS232</strong> необходимо учитывать, что он не поддерживает горячее подключение в некоторых старых реализациях. Подключение разъема DB9 к включенному порту может вызвать скачки напряжения, которые способны повредить драйверы порта или материнскую плату. Старайтесь отключать питание или устройство перед физическим подключением кабеля.</p>
+
+<p>При выборе кабеля для соединений на большие расстояния (близкие к пределу 15 метров для RS232) используйте экранированные витые пары. Экран должен быть заземлен только с одной стороны (обычно со стороны источника питания), чтобы избежать образования земляных петель, которые вносят сильные наводки. Это особенно актуально в промышленных условиях с мощным электрооборудованием рядом.</p>
+
+<p>Если вам нужно подключить современное устройство с UART к старому оборудованию с RS232, убедитесь, что преобразователь поддерживает требуемую скорость передачи данных. Некоторые дешевые чипы имеют ограничение по baud rate (например, до 115200), тогда как промышленные стандарты могут требовать более высоких скоростей для эффективной передачи больших массивов данных.</p>
+
+<blockquote>⚠️ Внимание: Никогда не подавайте напряжение питания (VCC) с одного устройства на линию данных (TX/RX) другого устройства, даже если они заземлены. Это гарантированно выведет порт из строя.</blockquote>
+
+<p> Проверка целостности линий и правильность настройки скоростей — залог успешной отладки.</p>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли подключить UART напрямую к RS232 без преобразователя?</summary>
+<p>Нет, это невозможно и опасно. Уровни напряжения несовместимы: TTL (0-5В) и RS232 (-15В до +15В). Прямое подключение с большой вероятностью приведет к выходу из строя порта микроконтроллера или компьютера из-за превышения лимитов напряжения.</p>
+</details>
+
+<details>
+<summary>В чем разница между нуль-модемным кабелем и прямым кабелем RS232?</summary>
+<p>Прямой кабель соединяет TX с TX и RX с RX, что требуется для соединения ПК с модемом (DTE-DCE). Нуль-модемный кабель перекрещивает линии (TX-RX), что необходимо для соединения двух ПК или двух периферийных устройств (DTE-DTE) напрямую.</p>
+</details>
+
+<details>
+<summary>Почему сигнал в покое (Idle) на RS232 имеет отрицательное напряжение?</summary>
+<p>Логическая 1 (Mark) в RS232 соответствует отрицательному напряжению. В режиме ожидания линия передатчика находится в состоянии логической 1, поэтому напряжение на линии TX по умолчанию отрицательное (например, -12В).</p>
+</details>
+
+<details>
+<summary>Какая максимальная длина кабеля для UART и RS232?</summary>
+<p>Для UART (TTL) длина кабеля ограничена десятками сантиметров (обычно до 20-30 см) из-за низкого напряжения и отсутствия экранирования. Для RS232 стандартным пределом является 15 метров, хотя на практике при низких скоростях и качественном кабеле можно добиться работы на 20-30 метров.</p>
+</details>
+
+<blockquote>⚠️ Внимание: Технические характеристики разъемов и кабелей могут меняться в зависимости от производителя. Всегда сверяйтесь с официальной документацией на конкретное оборудование перед началом монтажных работ.</blockquote>
+
+<p>Понимание различий между <strong>UART</strong> и <strong>RS232</strong> — это фундамент для успешной работы в области встроенных систем и промышленной автоматизации. Правильное использование преобразователей и соблюдение правил подключения обеспечат надежную работу ваших устройств на протяжении всего срока эксплуатации.</p></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/p/po/podklyuchenie-ide-zhestkogo-diska-k-sata.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить IDE жесткий диск к SATA: адаптеры и переходники</span>
+                <span class="pb-related-desc">Полная инструкция по подключению старых IDE накопителей к современным SATA-портам. Обзор переходнико</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kabel-usb-3-0.html" class="pb-related-card">
+                <span class="pb-related-title">Кабель USB 3.0: полный гайд по выбору, характеристикам и отличиям от 2.0</span>
+                <span class="pb-related-desc">Как выбрать качественный кабель USB 3.0? Разбор скоростей, совместимости разъемов Type-A, Type-C и M</span>
+            </a><a href="/kompyutery-i-noutbuki/s/sa/samye-besshumnye-kulery-dlya-kompyutera.html" class="pb-related-card">
+                <span class="pb-related-title">Самые бесшумные кулеры для ПК: Топ-модели и выбор</span>
+                <span class="pb-related-desc">Обзор самых тихих систем охлаждения для процессора. Как выбрать бесшумный кулер, рейтинг моделей и с</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kakoj-klavishej-zavershaetsya-vvod-komandy.html" class="pb-related-card">
+                <span class="pb-related-title">Какой клавишей завершается ввод команды в консоли и терминале?</span>
+                <span class="pb-related-desc">Узнайте, какая клавиша завершает ввод команды в командной строке Windows, Linux и macOS. Разбор ошиб</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-snyat-vodyanoe-okhlazhdenie-s-protsessora.html" class="pb-related-card">
+                <span class="pb-related-title">Как снять водяное охлаждение с процессора: полная инструкция</span>
+                <span class="pb-related-desc">Пошаговая инструкция по демонтажу СЖО. Как заменить пасту, не повредив кристалл и сокет. Разбор водо</span>
+            </a><a href="/kompyutery-i-noutbuki/m/mo/mozhno-li-podklyuchit-monitor-vmesto-televizora.html" class="pb-related-card">
+                <span class="pb-related-title">Монитор вместо телевизора: можно ли подключить и как настроить?</span>
+                <span class="pb-related-desc">Полный разбор подключения монитора к ПК и консолям. Узнайте про HDMI, звук, герцовку и разницу в тех</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

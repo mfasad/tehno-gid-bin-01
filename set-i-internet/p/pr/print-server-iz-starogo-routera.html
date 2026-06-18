@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Принт-сервер из старого роутера: пошаговая инструкция — Техно Гид</title>
+    <meta name="description" content="Как превратить ненужный Wi-Fi роутер в принт-сервер. Руководство по настройке OpenWrt, прошивкам DD-WRT и подключению USB-принтера.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/p/pr/print-server-iz-starogo-routera.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Принт-сервер из старого роутера: пошаговая инструкция">
+    <meta property="og:description" content="Как превратить ненужный Wi-Fi роутер в принт-сервер. Руководство по настройке OpenWrt, прошивкам DD-WRT и подключению USB-принтера.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Принт-сервер из старого роутера: пошаговая инструкция</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#оценка-совместимости-оборудования-и-портов">Оценка совместимости оборудования и портов</a></li><li><a href="#выбор-альтернативной-прошивки-для-разблокировки-функций">Выбор альтернативной прошивки для разблокировки функций</a></li><li><a href="#установка-и-настройка-службы-печати-cups">Установка и настройка службы печати CUPS</a></li><li><a href="#подключение-принтера-и-диагностика-драйверов">Подключение принтера и диагностика драйверов</a></li><li><a href="#таблица-совместимости-популярных-моделей-роутеров">Таблица совместимости популярных моделей роутеров</a></li><li><a href="#настройка-доступа-к-принтеру-на-клиентских-устройствах">Настройка доступа к принтеру на клиентских устройствах</a></li><li><a href="#решение-типичных-проблем-и-оптимизация">Решение типичных проблем и оптимизация</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/k/ka/kak-uluchshit-sotovuyu-svyaz-v-pomeshchenii.html">Как улучшить сотовую связь в помещении: проверенные методы</a></li><li><a href="/set-i-internet/k/ka/kak-podat-zayavku-na-smenu-operatora-sotovoj-svyazi-s-sokhraneniem-nomera.html">Смена оператора с сохранением номера: пошаговая инструкция 2026</a></li><li><a href="/set-i-internet/n/na/nastrojka-routera-zte-f670-rostelekom.html">Настройка роутера ZTE F670 для Ростелеком: пошаговая инструкция</a></li><li><a href="/set-i-internet/v/vi/vidy-vitoj-pary-dlya-interneta.html">Виды витой пары для интернета: описание, категории и выбор</a></li><li><a href="/set-i-internet/k/ka/kak-provesti-internet-v-chastnyj-dom-v-derevne-bez-telefona.html">Интернет в частный дом без телефона: все способы подключения</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Превращаем старый роутер в принт-сервер: полное руководство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#оценка-совместимости-оборудования-и-портов">Оценка совместимости оборудования и портов</a></li><li><a href="#выбор-альтернативной-прошивки-для-разблокировки-функций">Выбор альтернативной прошивки для разблокировки функций</a></li><li><a href="#установка-и-настройка-службы-печати-cups">Установка и настройка службы печати CUPS</a></li><li><a href="#подключение-принтера-и-диагностика-драйверов">Подключение принтера и диагностика драйверов</a></li><li><a href="#таблица-совместимости-популярных-моделей-роутеров">Таблица совместимости популярных моделей роутеров</a></li><li><a href="#настройка-доступа-к-принтеру-на-клиентских-устройствах">Настройка доступа к принтеру на клиентских устройствах</a></li><li><a href="#решение-типичных-проблем-и-оптимизация">Решение типичных проблем и оптимизация</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Ваш старый роутер, пылящийся на полке, может обрести вторую жизнь, избавив вас от необходимости покупать новый <strong>принт-сервер</strong> или держать включенным старый компьютер. Многие современные устройства оснащены USB-портом, который стандартная прошивка часто использует только для модемов или флешек, но при правильной настройке он становится идеальным интерфейсом для подключения <em>USB-принтера</em>.</p>
+
+<p>Подобное решение особенно актуально для домашних офисов или небольших студий, где важен каждый рубль бюджета. Вы получаете автономное устройство, работающее 24/7, которое мгновенно распределяет задания печати между всеми устройствами в сети, будь то смартфон, планшет или персональный ПК. Это экономит электроэнергию и значительно упрощает администрирование локальной сети <code>LAN</code>.</p>
+
+<h2 id="оценка-совместимости-оборудования-и-портов">Оценка совместимости оборудования и портов</h2>
+
+<p>Прежде чем приступать к активным действиям, необходимо внимательно осмотреть ваш роутер. Ключевым фактором успеха является наличие физического USB-порта, совместимого с периферией. Не все порты созданы равными: некоторые версии маршрутизаторов, например, ранние модели <em>TP-Link Archer</em> или бюджетные <em>Asus</em>, имеют порты, работающие только в режиме <code>USB 2.0</code> для подключения 3G/4G модемов.</p>
+
+<p>Проверьте спецификацию вашей модели на официальном сайте производителя. Вам нужен порт, поддерживающий режим <strong>Host</strong> (хост), а не только <code>Device</strong> (устройство). Если в описании характеристик указано «USB for 3G/4G modem only», то подключить принтер стандартными средствами не получится без сложной пайки и замены контроллера.</p>
+
+<ul>
+<li>🔍 Осмотрите корпус на наличие порта USB-A или USB-B;
+<li>📄 Найдите точную ревизию устройства (например, v1.0, v2.1) на наклейке снизу;
+<li>⚡ Убедитесь, что блок питания роутера выдает достаточную силу тока для принтера (обычно нужно от 1А).</li>
+</ul>
+
+<p>Важно отметить, что некоторые производители намеренно блокируют возможность использования USB-портов для принтеров в прошивках бюджетных линеек. В таких случаях единственным выходом становится замена программного обеспечения на альтернативное.</p>
+
+<blockquote>⚠️ Внимание: Если ваш роутер имеет только один USB-порт, помните, что подключение принтера может лишить вас возможности использовать его для создания домашнего NAS или подключения внешнего жесткого диска.</blockquote>
+
+<h2 id="выбор-альтернативной-прошивки-для-разблокировки-функций">Выбор альтернативной прошивки для разблокировки функций</h2>
+
+<p>Стандартное программное обеспечение от производителя часто ограничивает функционал USB-портов. Чтобы превратить роутер в полноценный <strong>принт-сервер</strong>, потребуется установка сторонней прошивки. Самые популярные и надежные решения — это <em>OpenWrt</em> и <em>DD-WRT</em>. Они открывают полный доступ к системе и позволяют устанавливать необходимые пакеты для печати.</p>
+
+<p>Процесс замены прошивки требует осторожности, так как ошибка может превратить устройство в «кирпич». Всегда скачивайте версию ПО, строго соответствующую ревизии вашего роутера. Установка неподходящей версии приведет к фатальной ошибке загрузчика.</p>
+
+<details class="pb-accordion"><summary>Почему не стоит использовать стоковую прошивку?</summary><div class="pb-accordion-body"><p>Стандартные прошивки часто имеют урезанный функционал USB, отсутствие поддержки драйверов принтеров и слабую стабильность при длительной работе. OpenWrt и DD-WRT предоставляют полный контроль над драйверами и сетевыми службами, включая CUPS.</p></div></details>
+
+<p>Для новичков лучше подойдет проект <em>OpenWrt</em>, так как он имеет активное сообщество и отличную документацию по установке пакетов печати. Вам потребуется найти в репозитории пакет <code>kmod-usb-printer</code> и саму службу печати, например, <code>lpr</code> или <code>cups</code>.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к прошивке</h4><label class="check-item"><input type="checkbox"><span>Скачать правильную версию прошивки (OpenWrt/DD-WRT)</span></label><label class="check-item"><input type="checkbox"><span>Скачать драйверы принтера (если есть)</span></label><label class="check-item"><input type="checkbox"><span>Подготовить кабель Ethernet для настройки</span></label><label class="check-item"><input type="checkbox"><span>Обеспечить стабильное питание во время прошивки</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>После успешной загрузки новой системы вы сможете управлять роутером через веб-интерфейс или SSH. Доступ к консоли дает возможность вручную настроить параметры ядра для работы с конкретным типом принтеров. Это особенно важно для старых моделей <em>HP LaserJet</em> или <em>Epson</em>, которые требуют специфических драйверов.</p>
+
+<h2 id="установка-и-настройка-службы-печати-cups">Установка и настройка службы печати CUPS</h2>
+
+<p>Центральным элементом системы печати в Linux-окружении роутера является служба <strong>CUPS</strong> (Common Unix Printing System). Именно она принимает задания от сети, обрабатывает их и отправляет на принтер. Установка этого пакета в <em>OpenWrt</em> обычно производится через пакетный менеджер <code>opkg</code>.</p>
+
+<p>Вам необходимо зайти в терминал роутера и выполнить команду установки. Обратите внимание, что объем памяти на роутерах ограничен, поэтому иногда приходится устанавливать облегченные версии драйверов. Для большинства струйных и лазерных принтеров достаточно базового набора драйверов <code>ghostscript</code>.</p>
+
+<pre><code>opkg update
+<p>opkg install cups cups-client</code></pre></p>
+
+<p>После установки служба должна быть запущена и настроена на запуск при старте системы. Настройка CUPS выполняется через веб-интерфейс, который открывается по адресу <code>https://localhost:631</code> или по IP-адресу роутера. Здесь вы добавляете принтер, выбирая его из списка обнаруженных USB-устройств.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед установкой CUPS очистите кэш пакетов, чтобы убедиться, что вы скачиваете свежие версии драйверов, что снижает риск конфликтов версий.</p></aside>
+
+<p>Важно правильно настроить права доступа к очереди печати. По умолчанию служба может быть недоступна с внешних IP-адресов. Вам нужно добавить IP-адреса ваших компьютеров или подсеть <code>192.168.1.0/24</code> в разрешенный список в файле конфигурации <code>/etc/cups/cupsd.conf</code>.</p>
+
+<blockquote>⚠️ Внимание: Убедитесь, что ваша прошивка поддерживает USB 2.0 на полной скорости. Некоторые дешевые роутеры имеют порты USB 1.1, что приведет к крайне медленной печати даже простых текстовых документов.</blockquote>
+
+<h2 id="подключение-принтера-и-диагностика-драйверов">Подключение принтера и диагностика драйверов</h2>
+
+<p>Физическое подключение устройства кажется простым шагом, но здесь кроются нюансы с питанием. Принтеры потребляют значительный ток, особенно в момент прогрева печки или вращения барабана. Если блок питания роутера слабый, принтер может отключаться или выдавать ошибки «нет бумаги» при попытке печати.</p>
+
+<p>Используйте качественный USB-кабель длиной не более 1,5 метров. Длинный кабель увеличивает падение напряжения, что критично для работы USB-портов роутеров. Если вы используете принтер с внешним блоком питания, убедитесь, что он подключен к розетке, а роутер питает только управляющие сигналы.</p>
+
+<ul>
+<li>🖨️ Подключите принтер к USB-порту роутера;
+<li>🔋 Проверьте индикацию питания на принтере (должна быть стабильной);
+<li>📡 Убедитесь, что роутер увидел устройство через команду <code>dmesg</code>.</li>
+</ul>
+
+<p>После подключения система должна зарегистрировать новое устройство. Проверьте это, введя команду <code>lsusb</code> в консоли роутера. Если устройство отображается, но печать не идет, проблема скорее всего в выборе правильного драйвера или PPD-файла (PostScript Printer Description).</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильный выбор драйвера — это 90% успеха работы принт-сервера. Если автоматическое определение не сработало, скачайте PPD-файл с сайта производителя и загрузите его вручную в CUPS.</p></aside>
+
+<h2 id="таблица-совместимости-популярных-моделей-роутеров">Таблица совместимости популярных моделей роутеров</h2>
+
+<p>Ниже приведена таблица, демонстрирующая совместимость популярных моделей с задачей превращения их в принт-сервер. Данные основаны на опыте установки <em>OpenWrt</em> и наличии полноценной поддержки USB-порта.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Модель роутера</th>
+<th>Поддержка OpenWrt</th>
+<th>Тип USB порта</th>
+<th>Рекомендация</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>Asus RT-AC68U</em></td>
+<td>Полная</td>
+<td>USB 3.0 + 2.0</td>
+<td>Отлично подходит для печати</td>
+</tr>
+<tr>
+<td><em>TP-Link Archer C7</em></td>
+<td>Полная</td>
+<td>USB 2.0</td>
+<td>Хороший выбор для струйных принтеров</td>
+</tr>
+<tr>
+<td><em>Zyxel Keenetic Ultra</em></td>
+<td>Частичная (NeutrinOS)</td>
+<td>USB 2.0</td>
+<td>Работает «из коробки» без перепрошивки</td>
+</tr>
+<tr>
+<td><em>Бюджетные модели D-Link</em></td>
+<td>Ограниченная</td>
+<td>Нет или только модем</td>
+<td>Не рекомендуется для этой задачи</td>
+</tr>
+</tbody>
+</table></div>
+
+<div class="pb-poll" id="poll-6bb8cc26"><div class="pb-poll-question">📊 Планируете ли вы использовать роутер для других задач (NAS, медиасервер)?</div><div class="pb-poll-option" data-poll="6bb8cc26" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Только принт-сервер</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6bb8cc26" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Комплексное решение (NAS + Печать)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6bb8cc26" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Пока не решил</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6bb8cc26" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Только для модема</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="настройка-доступа-к-принтеру-на-клиентских-устройствах">Настройка доступа к принтеру на клиентских устройствах</h2>
+
+<p>После того как роутер настроен, принтер должен появиться в сети как сетевой ресурс. На компьютерах с Windows это делается через «Установка принтера» -> «Добавить локальный принтер» -> «Использовать существующий порт» (выбираете <code>TCP/IP</code>) и вводите IP-адрес роутера.</p>
+
+<p>Для macOS и Linux процесс еще проще: система автоматически обнаруживает устройство через протокол <strong>IPP</strong> (Internet Printing Protocol). В настройках принтера укажите протокол <code>http://IP_ROUTERA:631/printers/printer_name</code>. Это обеспечит правильную обработку заданий.</p>
+
+<p>Важно настроить статический IP-адрес для роутера в вашей сети, чтобы адрес не менялся после перезагрузки. Иначе клиентам придется каждый раз перенастраивать соединение. Это делается в разделе <code>Сеть → Интерфейсы → LAN</code> в веб-интерфейсе роутера.</p>
+
+<p>Иногда возникает проблема с корпоративными сетями, где принтеры должны быть доступны только определенным пользователям. В этом случае в настройках <code>CUPS</code> можно настроить аутентификацию, чтобы никто посторонний не использовал ваши чернила.</p>
+
+<h2 id="решение-типичных-проблем-и-оптимизация">Решение типичных проблем и оптимизация</h2>
+
+<p>Работа принт-сервера на базе роутера не всегда проходит без сбоев. Самая частая проблема — «зависание» очереди печати. Это происходит из-за нехватки оперативной памяти роутера при обработке сложных графических файлов. Решение — увеличение размера файла подкачки или использование облегченных драйверов.</p>
+
+<p>Другая распространенная проблема — принтер не выходит из спящего режима. Некоторые модели принтеров «засыпают» настолько глубоко, что роутер не может их «разбудить». В таких случаях помогает отключение энергосбережения в драйверах принтера на ПК-клиенте.</p>
+
+<details class="pb-accordion"><summary>Что делать, если принтер печатает «кашу»?</summary><div class="pb-accordion-body"><p>Если вместо текста вы получаете набор символов, значит, на клиентском ПК выбран неправильный драйвер. Удалите принтер и добавьте его заново, выбрав универсальный драйвер PCL6 или PostScript, а не специфичный для модели.</p></div></details>
+
+<p>Для оптимизации работы рекомендуется отключать ненужные службы в роутере, такие как <code>UPnP</code>, <code>DNS-Forwarding</code> или Wi-Fi точки доступа, если они не используются. Это высвобождает ресурсы процессора и памяти для обработки очереди печати.</p>
+
+<blockquote>⚠️ Внимание: Никогда не пытайтесь обновлять прошивку роутера во время активной печати или нахождения заданий в очереди. Это может привести к потере конфигурации и необходимости полной перенастройки системы.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Регулярная перезагрузка роутера раз в неделю помогает очистить кэш памяти и избежать зависаний очереди печати, особенно на моделях с малым объемом ОЗУ.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли подключить сканер через роутер?</summary>
+<p>В большинстве случаев нет. Протоколы сканирования (WIA, TWAIN) требуют постоянного двунаправленного взаимодействия с драйверами на ПК. Роутер-принт-сервер обычно поддерживает только одностороннюю передачу данных на принтер.</p>
+</details>
+
+<details>
+<summary>Нужен ли принтер для работы с сетевой печатью?</summary>
+<p>Да, принтер должен быть физически подключен к роутеру. Роутер выступает посредником, передавая данные, но не может генерировать изображение самостоятельно.</p>
+</details>
+
+<details>
+<summary>Какая максимальная скорость печати?</summary>
+<p>Скорость зависит от интерфейса USB. USB 2.0 обеспечивает достаточную скорость для текстовых документов. Для графических файлов большого объема может наблюдаться задержка, но общая скорость печати не будет уступать прямому подключению к ПК.</p>
+</details>
+
+<details>
+<summary>Работает ли это с облачными сервисами печати?</summary>
+<p>Да, если настроить роутер с поддержкой Google Cloud Print или аналогичных сервисов, либо использовать сторонние шлюзы, но это требует более сложной настройки и мощного процессора роутера.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать этот метод с 3D-принтером?</summary>
+<p>Технически возможно, но крайне не рекомендуется. 3D-принтеры требуют стабильного потока данных и высокой скорости передачи без потерь, что сетевой интерфейс USB на роутере обеспечить не может. Для 3D-принтеров лучше используйте Raspberry Pi.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/k/ka/kak-uluchshit-sotovuyu-svyaz-v-pomeshchenii.html" class="pb-related-card">
+                <span class="pb-related-title">Как улучшить сотовую связь в помещении: проверенные методы</span>
+                <span class="pb-related-desc">Эффективные способы усилить сигнал сотовой сети в доме. Обзор репитеров, антенн и настроек смартфона</span>
+            </a><a href="/set-i-internet/k/ka/kak-podat-zayavku-na-smenu-operatora-sotovoj-svyazi-s-sokhraneniem-nomera.html" class="pb-related-card">
+                <span class="pb-related-title">Смена оператора с сохранением номера: пошаговая инструкция 2026</span>
+                <span class="pb-related-desc">Подробный гайд по МНП (MNP): как сменить оператора и сохранить номер телефона. Требования, документы</span>
+            </a><a href="/set-i-internet/n/na/nastrojka-routera-zte-f670-rostelekom.html" class="pb-related-card">
+                <span class="pb-related-title">Настройка роутера ZTE F670 для Ростелеком: пошаговая инструкция</span>
+                <span class="pb-related-desc">Полное руководство по настройке роутера ZTE F670 от Ростелеком. Настройка PPPoE, Wi-Fi, IPTV и смена</span>
+            </a><a href="/set-i-internet/v/vi/vidy-vitoj-pary-dlya-interneta.html" class="pb-related-card">
+                <span class="pb-related-title">Виды витой пары для интернета: описание, категории и выбор</span>
+                <span class="pb-related-desc">Полный гид по типам витой пары: Cat 5e, 6, 7. Выбираем экранированный или неэкранированный кабель дл</span>
+            </a><a href="/set-i-internet/k/ka/kak-provesti-internet-v-chastnyj-dom-v-derevne-bez-telefona.html" class="pb-related-card">
+                <span class="pb-related-title">Интернет в частный дом без телефона: все способы подключения</span>
+                <span class="pb-related-desc">Как провести интернет в деревне без стационарного телефона. Спутник, LTE, радиоканал: сравнение техн</span>
+            </a><a href="/set-i-internet/k/ka/kak-opredelit-chastotu-4g-vyshki.html" class="pb-related-card">
+                <span class="pb-related-title">Как определить частоту вышки 4G: инструкции и программы</span>
+                <span class="pb-related-desc">Узнайте, как определить частоту 4G вышки для усиления сигнала. Обзор инженерного меню, приложений и </span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

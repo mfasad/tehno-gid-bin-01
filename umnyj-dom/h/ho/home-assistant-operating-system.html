@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Home Assistant Operating System: Полное руководство по установке — Техно Гид</title>
+    <meta name="description" content="Как установить Home Assistant OS на Raspberry Pi и x86. Настройка умного дома, резервное копирование и работа с Supervised.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/h/ho/home-assistant-operating-system.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Home Assistant Operating System: Полное руководство по установке">
+    <meta property="og:description" content="Как установить Home Assistant OS на Raspberry Pi и x86. Настройка умного дома, резервное копирование и работа с Supervised.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Home Assistant Operating System: Полное руководство по установке</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#архитектура-и-преимущества-home-assistant-os">Архитектура и преимущества Home Assistant OS</a></li><li><a href="#выбор-оборудования-для-развертывания-системы">Выбор оборудования для развертывания системы</a></li><li><a href="#процесс-установки-на-raspberry-pi">Процесс установки на Raspberry Pi</a></li><li><a href="#развертывание-на-x86-и-виртуальных-машинах">Развертывание на x86 и виртуальных машинах</a></li><li><a href="#первичная-настройка-и-создание-пользователя">Первичная настройка и создание пользователя</a></li><li><a href="#управление-аддонами-и-обновлениями">Управление аддонами и обновлениями</a></li><li><a href="#резервное-копирование-и-восстановление-данных">Резервное копирование и восстановление данных</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/k/ka/kakaya-podpiska-nuzhna-dlya-kolonki-alisa-lajt.html">Нужна ли подписка для Яндекс Станции Лайт: тарифы и функции</a></li><li><a href="/umnyj-dom/p/po/pochemu-alisa-ne-vklyuchaet-muzyku-a-tolko-govorit.html">Алиса не включает музыку: причины и способы решения</a></li><li><a href="/umnyj-dom/s/sh/shlyuz-sonoff-zigbee-bridge-pro.html">Шлюз Sonoff Zigbee Bridge Pro: Обзор, настройка и интеграция</a></li><li><a href="/umnyj-dom/r/ro/robot-pylesos-mamibot-exvac660-instruktsiya-po-primeneniyu-na-russkom-yazyke.html">Mamibot EXVac 660: инструкция, настройка и ремонт</a></li><li><a href="/umnyj-dom/w/wi/wifi-diy-smart-switch.html">Wifi DIY Smart Switch: Сборка умного выключателя своими руками</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Home Assistant Operating System: Установка и настройка</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#архитектура-и-преимущества-home-assistant-os">Архитектура и преимущества Home Assistant OS</a></li><li><a href="#выбор-оборудования-для-развертывания-системы">Выбор оборудования для развертывания системы</a></li><li><a href="#процесс-установки-на-raspberry-pi">Процесс установки на Raspberry Pi</a></li><li><a href="#развертывание-на-x86-и-виртуальных-машинах">Развертывание на x86 и виртуальных машинах</a></li><li><a href="#первичная-настройка-и-создание-пользователя">Первичная настройка и создание пользователя</a></li><li><a href="#управление-аддонами-и-обновлениями">Управление аддонами и обновлениями</a></li><li><a href="#резервное-копирование-и-восстановление-данных">Резервное копирование и восстановление данных</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Современный <strong>умный дом</strong> стремится к максимальной автономности и независимости от облачных сервисов крупных корпораций. В центре этой экосистемы часто оказывается платформа <em>Home Assistant</em>, которая объединяет разрозненные устройства в единую управляемую сеть. Однако для стабильной работы системы требуется не просто программное обеспечение, а специализированная операционная среда, известная как <em>Home Assistant Operating System</em> (HAOS). Это решение превращает обычное устройство в выделенный хаб, обеспечивающий бесперебойную автоматизацию.</p>
+
+<p>Выбор правильной операционной системы критически важен для производительности и простоты обслуживания. В отличие от установки <em>Home Assistant Core</em> вручную на существующую ОС Linux или Windows, использование <strong>HAOS</strong> предоставляет полный контроль над обновлениями и резервным копированием через удобный интерфейс. Пользователь получает готовую систему "из коробки", где уже настроены все необходимые зависимости, включая Supervisor и Docker. Это избавляет от необходимости вручную редактировать конфигурационные файлы при каждом обновлении ядра.</p>
+
+<p>Рассмотрим детально, почему именно этот вариант является золотым стандартом для развертывания домашней автоматизации. Мы разберем процесс установки на популярные платформы, такие как <em>Raspberry Pi</em> или мини-ПК на базе <em>x86</em>, а также затронем вопросы миграции и безопасности. Понимание архитектуры HAOS позволит вам построить надежную систему, которая будет работать годами без сбоев.</p>
+
+<h2 id="архитектура-и-преимущества-home-assistant-os">Архитектура и преимущества Home Assistant OS</h2>
+<p>Главное отличие <strong>Home Assistant Operating System</strong> от других методов установки заключается в ее монолитной структуре. Это не просто набор скриптов, а полноценный дистрибутив Linux, оптимизированный специально под задачи умного дома. Система использует механизм атомарных обновлений, что гарантирует работоспособность даже в случае сбоя во время загрузки новой версии прошивки. Вы всегда можете откатиться к предыдущей точке восстановления, если обновление прошло неудачно.</p>
+
+<p>Внутри системы работает компонент <em>Supervisor</em>, который выступает в роли диспетчера. Он управляет самим ядром Home Assistant, аддонами и обновлениями операционной системы. Благодаря этому пользователю не нужно иметь глубоких знаний командной строки Linux для установки дополнительных инструментов, таких как <em>Mosquitto</em> (MQTT брокер) или <em>File Editor</em>. Все устанавливается в один клик через графический интерфейс.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Home Assistant OS занимает всё доступное пространство на носителе. Перед установкой убедитесь, что вы сделали резервную копию всех данных на карте памяти или SSD, так как процесс форматирования необратим.</p>
+</blockquote>
+
+<p>Использование данной ОС также обеспечивает изоляцию процессов. Аддоны запускаются в отдельных контейнерах, что повышает безопасность всей системы. Если один из компонентов будет скомпрометирован или начнет потреблять чрезмерное количество ресурсов, это не повлияет на работу основного ядра автоматизации. <strong>Стабильность</strong> здесь приоритетнее гибкости ручной настройки, что идеально подходит для домашних пользователей.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Home Assistant OS предоставляет самый простой и надежный способ развертывания, автоматизируя рутинные задачи администрирования системы.</p></aside>
+
+<h2 id="выбор-оборудования-для-развертывания-системы">Выбор оборудования для развертывания системы</h2>
+<p>Перед началом установки необходимо определиться с аппаратной платформой. <em>Home Assistant</em> отличается отличной оптимизацией и может работать на широком спектре устройств. Самым популярным выбором остается одноплатный компьютер <em>Raspberry Pi</em>, благодаря его низкому энергопотреблению и компактности. Модели <em>Raspberry Pi 4</em> и <em>Raspberry Pi 5</em> обеспечивают достаточную производительность для большинства сценариев умного дома.</p>
+
+<p>Однако для более сложных конфигураций с использованием распознавания образов или обработки видео с камер стоит рассмотреть мини-ПК на архитектуре <strong>x86_64</strong>. Устройства вроде <em>Intel NUC</em> или старые ноутбуки часто предоставляют лучшую производительность процессора и возможность подключения нескольких дисков по SATA или NVMe. Это особенно важно, если вы планируете использовать базу данных для долгого хранения истории событий.</p>
+
+<p>При выборе накопителя критически важно обращать внимание на скорость записи и ресурс перезаписи. Карты памяти microSD, особенно дешевые модели, часто становятся "узким горлышком" и выходят из строя через год активной работы с базами данных. Рекомендуется использовать SSD диски через USB 3.0 или специализированные карты памяти класса <em>A2</em> с высоким рейтингом выносливости.</p>
+
+<ul>
+<li>📌 <strong>Raspberry Pi 4/5</strong>: Идеально для старта, низкое энергопотребление, тихая работа.</li>
+<li>💻 <strong>Mini PC (x86)</strong>: Высокая производительность, поддержка виртуализации, подключение быстрых NVMe накопителей.</li>
+<li>⚡ <strong>Orange Pi / NanoPi</strong>: Бюджетные альтернативы, но могут требовать дополнительной настройки совместимости.</li>
+</ul>
+
+<div class="pb-poll" id="poll-38986432"><div class="pb-poll-question">📊 На каком оборудовании вы планируете запускать Home Assistant?</div><div class="pb-poll-option" data-poll="38986432" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Raspberry Pi 4/5</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="38986432" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Mini PC (Intel NUC и аналоги)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="38986432" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Старый ноутбук</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="38986432" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Виртуальная машина (Proxmox/ESXi)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="38986432" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другое</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="процесс-установки-на-raspberry-pi">Процесс установки на Raspberry Pi</h2>
+<p>Установка <em>Home Assistant Operating System</em> на устройства семейства Raspberry Pi является наиболее отработанным сценарием. Для начала вам потребуется образ системы, который можно скачать с официального репозитория GitHub проекта. Файл обычно имеет расширение <code>.xz</code> и представляет собой сжатый образ диска, готовый к записи.</p>
+
+<p>Для записи образа на карту памяти или SSD рекомендуется использовать утилиту <em>Raspberry Pi Imager</em>. Это кроссплатформенное приложение позволяет выбрать устройство, операционную систему и носитель в несколько кликов. В меню выбора ОС найдите раздел "Home Assistant" и выберите версию <strong>Home Assistant OS</strong> для вашей модели платы (обычно 64-bit).</p>
+
+<pre><code>raspi-config</code></pre>
+
+<p>После записи образа вставьте накопитель в устройство и подключите питание. При первом запуске система автоматически расширит файловую систему и запустит сервисы. Через несколько минут на вашем роутере появится устройство с именем <code>homeassistant.local</code>. Доступ к интерфейсу осуществляется через браузер по адресу <code>http://homeassistant.local:8123</code>.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Интерфейсы и порты могут обновляться разработчиками. Если адрес <code>homeassistant.local</code> не открывается, проверьте список клиентов в настройках вашего роутера или используйте приложение для сканирования сети.</p>
+</blockquote>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к установке на Raspberry Pi</h4><label class="check-item"><input type="checkbox"><span>Скачать Raspberry Pi Imager</span></label><label class="check-item"><input type="checkbox"><span>Загрузить образ HAOS (64-bit)</span></label><label class="check-item"><input type="checkbox"><span>Подготовить карту памяти Class 10 или SSD</span></label><label class="check-item"><input type="checkbox"><span>Подключить ethernet кабель для первичной настройки</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="развертывание-на-x86-и-виртуальных-машинах">Развертывание на x86 и виртуальных машинах</h2>
+<p>Для пользователей, предпочитающих архитектуру <strong>x86_64</strong>, процесс установки немного отличается. Вы можете установить HAOS напрямую на "железо" или развернуть его в виде виртуальной машины. Прямая установка обеспечивает максимальную производительность, так как отсутствует оверхед гипервизора, но требует выделения отдельного устройства.</p>
+
+<p>Если вы используете гипервизор, такой как <em>Proxmox VE</em>, <em>VMware ESXi</em> или <em>VirtualBox</em>, процедура сводится к созданию новой виртуальной машины и подключению образа диска. В Proxmox, например, можно скачать готовый файл образа <code>.qcow2</code> и импортировать его через командную строку или веб-интерфейс. Важно выделить системе не менее 2 ГБ оперативной памяти и 2 ядра процессора для комфортной работы.</p>
+
+<p>При настройке виртуальной машины убедитесь, что тип шины диска установлен в режим <code>VirtIO</code> (для KVM/QEMU) для лучшей производительности ввода-вывода. Сетевой адаптер также лучше настроить в режиме <em>Bridged</em>, чтобы устройство получило IP-адрес из вашей локальной сети и было доступно другим гаджетам без дополнительных настроек маршрутизации.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Минимальные требования</th>
+<th>Рекомендуемые значения</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Процессор</td>
+<td>1 ядро (ARM или x86)</td>
+<td>4 ядра (для обработки видео/ML)</td>
+</tr>
+<tr>
+<td>Оперативная память</td>
+<td>1 ГБ</td>
+<td>4 ГБ и выше</td>
+</tr>
+<tr>
+<td>Накопитель</td>
+<td>8 ГБ (SD карта)</td>
+<td>32 ГБ+ (SSD NVMe/SATA)</td>
+</tr>
+<tr>
+<td>Сеть</td>
+<td>100 Мбит/с</td>
+<td>1 Гбит/с (Ethernet)</td>
+</tr>
+</tbody>
+</table></div>
+
+<details class="pb-accordion"><summary>Проблемы с пробросом USB в виртуальных машинах</summary><div class="pb-accordion-body"><p>Если вы используете HAOS в виртуальной машине и вам нужно подключить Zigbee-стик, убедитесь, что гипервизор корректно пробрасывает USB-устройство внутрь гостевой ОС. В Proxmox это делается через добавление устройства USB в конфигурацию VM.</p></div></details>
+
+<h2 id="первичная-настройка-и-создание-пользователя">Первичная настройка и создание пользователя</h2>
+<p>После успешного запуска системы вы увидите приветственный экран мастера настройки. На этом этапе вам будет предложено создать имя пользователя и пароль. Эти данные будут использоваться для входа в панель управления и предоставления прав администратора. Придумайте сложный пароль, так как этот аккаунт имеет полный доступ ко всей инфраструктуре умного дома.</p>
+
+<p>Система автоматически попытается определить ваше местоположение для настройки часового пояса и единиц измерения. Это важно для корректной работы автоматизаций, зависящих от времени восхода и заката солнца, таких как управление освещением или жалюзи. Вы можете изменить эти настройки позже в разделе <code>Настройки → Система → Общие</code>.</p>
+
+<p>На следующем этапе мастер предложит настроить интеграции для обнаруженных устройств. <strong>Home Assistant</strong> славится своей способностью автоматически находить устройства в локальной сети. Если у вас есть устройства от <em>Philips Hue</em>, <em>Google Cast</em> или <em>Sonoff</em>, они могут появиться в списке сразу же. Не спешите добавлять всё подряд, лучше сначала настроить базовую структуру.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Не используйте один и тот же пароль, что и для вашей почты или банковских сервисов. Доступ к умному дому дает контроль над физическими устройствами в вашем жилище.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Сразу после настройки создайте резервную копию системы через меню "Настройки → Система → Резервное копирование". Это сохранит чистую конфигурацию, к которой можно будет вернуться в случае ошибок.</p></aside>
+
+<h2 id="управление-аддонами-и-обновлениями">Управление аддонами и обновлениями</h2>
+<p>Одной из ключевых возможностей <em>Home Assistant Operating System</em> является магазин аддонов. Это предварительно настроенные приложения, которые работают в изолированных контейнерах рядом с основным ядром. Через этот магазин можно установить сервер умного дома <em>Zigbee2MQTT</em>, систему видеонаблюдения <em>Frigate</em> или даже полноценный медиацентр.</p>
+
+<p>Процесс обновления системы максимально упрощен. При появлении новой версии HAOS вы получите уведомление в панели управления. Обновление происходит "на лету" или с кратковременной перезагрузкой, в зависимости от типа изменений. Важно следить за журналом обновлений, так как иногда новые версии могут требовать изменений в конфигурации интеграций.</p>
+
+<p>Для продвинутых пользователей доступна возможность установки аддонов из сторонних репозиториев. Это позволяет получить доступ к экспериментальным функциям или специфическим инструментам, которых нет в официальном магазине. Чтобы добавить репозиторий, перейдите в раздел <code>Настройки → Дополнения → Магазин дополнений</code> и нажмите на три точки в углу экрана.</p>
+
+<ul>
+<li>🔒 <strong>Snapshot</strong>: Полные снимки системы, включающие настройки, аддоны и историю.</li>
+<li>🔄 <strong>Auto-update</strong>: Возможность настроить автоматическое обновление безопасных аддонов.</li>
+<li>🛠️ <strong>Terminal & SSH</strong>: Аддон для доступа к командной строке системы для глубокой отладки.</li>
+</ul>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Регулярное создание полных снимков (Snapshots) перед установкой новых аддонов или обновлением системы — единственная гарантия быстрого восстановления работоспособности.</p></aside>
+
+<h2 id="резервное-копирование-и-восстановление-данных">Резервное копирование и восстановление данных</h2>
+<p>Надежность системы умного дома напрямую зависит от стратегии резервного копирования. В <em>Home Assistant OS</em> эта функция встроена на уровне ядра. Вы можете создавать полные резервные копии, которые включают в себя конфигурацию, установленные аддоны и базу данных истории. Это позволяет перенести весь умный дом на новое устройство за считанные минуты.</p>
+
+<p>Рекомендуется настроить автоматическое создание резервных копий по расписанию. Например, еженедельное полное копирование и ежедневное частичное (только конфигурация). Эти файлы можно автоматически загружать в облачное хранилище, например, Google Drive или Dropbox, используя соответствующие аддоны или встроенные функции синхронизации.</p>
+
+<p>В случае выхода из строя накопителя или сбоя системы, процесс восстановления интуитивно понятен. При первоначальной настройке нового экземпляра HAOS система предложит восстановить данные из ранее созданной резервной копии. Вам потребуется лишь указать путь к файлу бэкапа, и система самостоятельно развернет все настройки и аддоны в том состоянии, в котором они были на момент создания снимка.</p>
+
+<details>
+<summary>Где физически хранятся файлы резервных копий?</summary>
+<p>По умолчанию резервные копии хранятся в папке <code>/backup</code> внутри файловой системы Home Assistant OS. Вы можете получить к ним доступ через сетевую шару Samba (если установлен соответствующий аддон) или через интерфейс "Файловый менеджер" в боковом меню профиля пользователя.</p>
+</details>
+
+<details>
+<summary>Можно ли восстановить резервную копию на другую версию ОС?</summary>
+<p>Да, система поддерживает восстановление бэкапов, созданных на более старых версиях Home Assistant OS. При восстановлении на новую версию система может предложить обновить формат базы данных. Однако восстановление бэкапа с будущей версии на старую невозможно из-за различий в структуре данных.</p>
+</details>
+
+<details>
+<summary>Что делать, если забыт пароль администратора?</summary>
+<p>Если вы потеряли доступ к интерфейсу, вам потребуется физический доступ к устройству и подключение монитора с клавиатурой (или доступ по SSH через аддон Terminal). На экране консоли или в терминале можно использовать команду <code>ha auth reset</code> для сброса пароля пользователя.</p>
+</details>
+
+<details>
+<summary>В чем разница между HAOS и Home Assistant Container?</summary>
+<p>HAOS — это полная операционная система со встроенным Supervisor, управляющим обновлениями и аддонами. Home Assistant Container — это просто Docker-контейнер, который нужно запускать на своей ОС (например, Ubuntu или Debian), вручную устанавливая все зависимости и инструменты управления.</p>
+</details>
+
+<details>
+<summary>Требуется ли статический IP-адрес для работы Home Assistant?</summary>
+<p>Желательно, но не строго обязательно. Для стабильной работы интеграций и доступа извне лучше закрепить IP-адрес за устройством в настройках вашего роутера (DHCP Reservation) или настроить статический IP в самой операционной системе через меню сети.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/k/ka/kakaya-podpiska-nuzhna-dlya-kolonki-alisa-lajt.html" class="pb-related-card">
+                <span class="pb-related-title">Нужна ли подписка для Яндекс Станции Лайт: тарифы и функции</span>
+                <span class="pb-related-desc">Разбираем, какие функции доступны без оплаты, а что требует подписки Яндекс Плюс. Актуальные тарифы </span>
+            </a><a href="/umnyj-dom/p/po/pochemu-alisa-ne-vklyuchaet-muzyku-a-tolko-govorit.html" class="pb-related-card">
+                <span class="pb-related-title">Алиса не включает музыку: причины и способы решения</span>
+                <span class="pb-related-desc">Почему голосовой помощник Алиса только говорит, но не воспроизводит треки? Разбор частых ошибок, нас</span>
+            </a><a href="/umnyj-dom/s/sh/shlyuz-sonoff-zigbee-bridge-pro.html" class="pb-related-card">
+                <span class="pb-related-title">Шлюз Sonoff Zigbee Bridge Pro: Обзор, настройка и интеграция</span>
+                <span class="pb-related-desc">Полный обзор шлюза Sonoff Zigbee Bridge Pro. Характеристики, отличия от версии Basic, настройка чере</span>
+            </a><a href="/umnyj-dom/r/ro/robot-pylesos-mamibot-exvac660-instruktsiya-po-primeneniyu-na-russkom-yazyke.html" class="pb-related-card">
+                <span class="pb-related-title">Mamibot EXVac 660: инструкция, настройка и ремонт</span>
+                <span class="pb-related-desc">Подробное руководство по эксплуатации робота-пылесоса Mamibot EXVac 660. Настройка Wi-Fi, уход за ще</span>
+            </a><a href="/umnyj-dom/w/wi/wifi-diy-smart-switch.html" class="pb-related-card">
+                <span class="pb-related-title">Wifi DIY Smart Switch: Сборка умного выключателя своими руками</span>
+                <span class="pb-related-desc">Как превратить обычный выключатель в умный. Выбор ESP8266, прошивка Tasmota, схемы подключения и нас</span>
+            </a><a href="/umnyj-dom/p/pr/programmirovanie-na-arduino-obuchenie.html" class="pb-related-card">
+                <span class="pb-related-title">Обучение программированию на Arduino: Полное руководство для новичков</span>
+                <span class="pb-related-desc">Как начать программировать Arduino с нуля. Выбор платы, настройка среды, изучение языка C++ и создан</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

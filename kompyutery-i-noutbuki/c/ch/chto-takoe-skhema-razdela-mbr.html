@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Схема раздела MBR: что это, как работает и чем отличается от GPT — Техно Гид</title>
+    <meta name="description" content="Подробный разбор таблицы разделов MBR: структура, ограничения, создание и конвертация. Полное руководство по файловым системам и загрузке ОС.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/c/ch/chto-takoe-skhema-razdela-mbr.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Схема раздела MBR: что это, как работает и чем отличается от GPT">
+    <meta property="og:description" content="Подробный разбор таблицы разделов MBR: структура, ограничения, создание и конвертация. Полное руководство по файловым системам и загрузке ОС.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Схема раздела MBR: что это, как работает и чем отличается от GPT</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#основы-работы-с-загрузочными-секторами">Основы работы с загрузочными секторами</a></li><li><a href="#структура-и-техническое-устройство-mbr">Структура и техническое устройство MBR</a></li><li><a href="#ограничения-и-проблемы-использования-mbr">Ограничения и проблемы использования MBR</a></li><li><a href="#сравнение-mbr-и-gpt-почему-стоит-перейти">Сравнение MBR и GPT: почему стоит перейти</a></li><li><a href="#технические-различия-в-таблицах-разделов">Технические различия в таблицах разделов</a></li><li><a href="#как-конвертировать-диск-в-gpt-или-mbr">Как конвертировать диск в GPT или MBR</a></li><li><a href="#восстановление-поврежденной-таблицы-разделов">Восстановление поврежденной таблицы разделов</a></li><li><a href="#специфика-mbr-в-современных-ос">Специфика MBR в современных ОС</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/l/lu/luchshaya-sborka-pk-za-20k.html">Лучшая сборка ПК за 20000 рублей в 2026: Бюджетный гейминг</a></li><li><a href="/kompyutery-i-noutbuki/c/ch/chto-takoe-gravirovka-na-makbuke.html">Гравировка на MacBook: виды, цены и как заказать персонализацию</a></li><li><a href="/kompyutery-i-noutbuki/u/us/ustanovit-dve-operatsionnye-sistemy-na-odin-kompyuter.html">Как установить две операционные системы на один компьютер</a></li><li><a href="/kompyutery-i-noutbuki/i/iz/iz-chego-sdelan-zhestkij-disk-kompyutera.html">Из чего сделан жесткий диск: устройство, материалы и начинка HDD</a></li><li><a href="/kompyutery-i-noutbuki/p/po/pochemu-noutbuk-ne-vidit-ssd-disk.html">Почему ноутбук не видит SSD: диагностика и решение проблем</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Схема раздела MBR: Полное руководство по структуре загрузочных томов</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#основы-работы-с-загрузочными-секторами">Основы работы с загрузочными секторами</a></li><li><a href="#структура-и-техническое-устройство-mbr">Структура и техническое устройство MBR</a></li><li><a href="#ограничения-и-проблемы-использования-mbr">Ограничения и проблемы использования MBR</a></li><li><a href="#сравнение-mbr-и-gpt-почему-стоит-перейти">Сравнение MBR и GPT: почему стоит перейти</a></li><li><a href="#технические-различия-в-таблицах-разделов">Технические различия в таблицах разделов</a></li><li><a href="#как-конвертировать-диск-в-gpt-или-mbr">Как конвертировать диск в GPT или MBR</a></li><li><a href="#восстановление-поврежденной-таблицы-разделов">Восстановление поврежденной таблицы разделов</a></li><li><a href="#специфика-mbr-в-современных-ос">Специфика MBR в современных ОС</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="основы-работы-с-загрузочными-секторами">Основы работы с загрузочными секторами</h2>
+<p>Когда вы устанавливаете операционную систему на жесткий диск или SSD, первым шагом становится разметка накопителя. Именно здесь вступает в игру <strong>таблица разделов MBR</strong> (Master Boot Record), которая является стандартом де-факто для большинства компьютеров, выпущенных до 2010 года. Это не просто набор битов, а критически важная структура данных, расположенная в самом начале физического носителя.</p>
+<p>В отличие от современных подходов, <em>MBR</em> хранит информацию о расположении разделов и загрузочном коде в одном единственном секторе размером 512 байт. Оборотная сторона этого решения — жесткое ограничение на количество основных разделов и максимальный размер поддерживаемого диска. Для пользователя это означает, что при использовании устаревшей схемы вы не сможете корректно работать с накопителями объемом более 2 ТБ.</p>
+
+<h2 id="структура-и-техническое-устройство-mbr">Структура и техническое устройство MBR</h2>
+<p>Физически область MBR находится на нулевой дорожке нулевого сектора диска. Она состоит из трех логических частей: кода загрузчика, таблицы разделов и уникального сигнатурного идентификатора. <strong>Код загрузчика</strong> занимает первые 446 байт и отвечает за инициализацию процесса запуска операционной системы после включения компьютера.</p>
+<p>Следующая часть — это сама <strong>таблица разделов</strong>, занимающая 64 байта. В ней хранятся описания до четырех основных разделов. Каждое описание занимает ровно 16 байт и содержит информацию о начале и конце раздела, его типе и статусе активности. Именно из-за этих 64 байт невозможно создать более четырех прямых разделов без использования дополнительных механизмов.</p>
+<p>Завершает структуру 2-байтовый магический номер, известный как <code>0x55AA</code>. Если этот код отсутствует или поврежден, BIOS или UEFI не распознает диск как загрузочный, и вы получите ошибку при попытке старта. <mark>Повреждение именно этого двухбайтового идентификатора является самой частой причиной потери доступа ко всем данным на диске при программных сбоях.</mark></p>
+
+<h2 id="ограничения-и-проблемы-использования-mbr">Ограничения и проблемы использования MBR</h2>
+<p>Главным недостатком устаревшей схемы является невозможность работы с дисками большого объема. Из-за использования 32-битных адресов для указания начала и конца разделов, предельный размер тома составляет ровно 2 ТБ. Если вы попытаетесь подключить 4-ТБ диск, отформатированный как MBR, операционная система «увидит» только 2 ТБ, а оставшееся место будет недоступно.</p>
+<p>Второе важное ограничение касается количества разделов. Вы не можете создать более четырех первичных разделов. Если вам нужно больше, приходится прибегать к созданию расширенного раздела, внутри которого размещаются логические диски. Это усложняет структуру диска и может привести к проблемам при восстановлении данных.</p>
+<ul>
+<li>🚫 <strong>Лимит объема:</strong> максимальный поддерживаемый размер диска — 2 ТБ, что критично для современных серверов и игровых ПК.</li>
+<li>🚫 <strong>Количество разделов:</strong> максимум 4 первичных раздела или 3 первичных плюс один расширенный с неограниченным числом логических.</li>
+<li>🚫 <strong>Отказоустойчивость:</strong> отсутствует встроенная защита данных в таблице разделов, одно повреждение может сделать весь диск нечитаемым.</li>
+</ul>
+
+<div class="pb-poll" id="poll-c70958d3"><div class="pb-poll-question">📊 Схема разделов вашего основного диска</div><div class="pb-poll-option" data-poll="c70958d3" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">MBR</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c70958d3" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">GPT</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c70958d3" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Не знаю</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c70958d3" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Использую оба варианта</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="сравнение-mbr-и-gpt-почему-стоит-перейти">Сравнение MBR и GPT: почему стоит перейти</h2>
+<p>С развитием стандарта UEFI на сцену вышла схема GPT (GUID Partition Table), которая пришла на замену MBR. GPT не имеет ограничений по размеру диска и количества разделов, а также использует циклический контроль избыточности для проверки целостности данных. Если вы работаете на современном компьютере с Windows 10/11 или Linux, скорее всего, вам подойдет именно этот формат.</p>
+<p>Однако MBR все еще имеет свои ниши применения. Например, для старых систем с BIOS (не UEFI) или для создания загрузочных флешек, совместимых с устройствами 2005–2010 годов выпуска, <em>MBR</em> остается единственным рабочим вариантом. Также он может быть полезен для создания систем восстановления, которые должны запускаться на любом оборудовании.</p>
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> При конвертации диска из MBR в GPT все данные будут удалены. Убедитесь, что у вас есть резервная копия перед началом преобразования, так как обратный процесс также требует очистки структуры диска.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>GPT обеспечивает лучшую отказоустойчивость и поддерживает диски объемом более 2 ТБ, что делает его стандартом для современных систем.</p></aside>
+
+<h2 id="технические-различия-в-таблицах-разделов">Технические различия в таблицах разделов</h2>
+<p>Для наглядности сравним ключевые параметры обеих схем. Разница не только в цифрах, но и в самом подходе к хранению метаданных. В GPT информация дублируется в начале и конце диска, что позволяет системе восстановить таблицу разделов в случае её повреждения в первом блоке.</p>
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>MBR</th>
+<th>GPT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Максимальный размер диска</td>
+<td>2 ТБ</td>
+<td>9,4 Зеттабайт</td>
+</tr>
+<tr>
+<td>Максимум первичных разделов</td>
+<td>4</td>
+<td>128 (стандарт)</td>
+</tr>
+<tr>
+<td>Поддержка UEFI</td>
+<td>Нет (только BIOS)</td>
+<td>Да</td>
+</tr>
+<tr>
+<td>Контроль целостности</td>
+<td>Нет</td>
+<td>CRC32 хеш-сумма</td>
+</tr>
+<tr>
+<td>Расположение данных</td>
+<td>Первый сектор</td>
+<td>Начало и конец диска</td>
+</tr>
+</tbody>
+</table></div>
+
+<h2 id="как-конвертировать-диск-в-gpt-или-mbr">Как конвертировать диск в GPT или MBR</h2>
+<p>Если вы решили сменить схему разделов, вам понадобится утилита <code>diskpart</code> в Windows или <code>fdisk</code> в Linux. Важно понимать, что простое изменение флага в свойствах диска не сработает — необходимо стереть все разделы. Этот процесс называется «очисткой диска».</p>
+<p>В среде Windows процедура выглядит следующим образом: запустите командную строку от имени администратора и введите <code>diskpart</code>. Далее выберите нужный диск командой <code>select disk N</code> (где N — номер диска) и выполните <code>clean</code>. После этого можно создавать новую таблицу разделов с помощью <code>convert gpt</code> или <code>convert mbr</code>.</p>
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Инструкция по конвертации диска</h4><label class="check-item"><input type="checkbox"><span>Создать резервную копию всех данных</span></label><label class="check-item"><input type="checkbox"><span>Запустить утилиту Disk Management</span></label><label class="check-item"><input type="checkbox"><span>Выполнить команду clean для удаления разделов</span></label><label class="check-item"><input type="checkbox"><span>Создать новую таблицу разделов нужного типа</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+<p>Для пользователей Linux процесс аналогичен, но требует осторожности с указанием устройства. Используйте <code>sudo fdisk /dev/sdX</code>, затем нажмите <code>x</code> для дополнительных функций, <code>r</code> для изменения типа таблицы разделов, и следуйте инструкциям на экране. Не забудьте сохранить изменения флагом <code>w</code>.</p>
+
+<details class="pb-accordion"><summary>Что будет, если диск GPT подключить к старому BIOS?|Если материнская плата не поддерживает UEFI, она не сможет загрузиться с диска, размеченного по стандарту GPT. Система просто не найдет загрузочный сектор, так как ищет MBR-код в первом секторе, которого там физически нет.-->
+
+<h2 id="восстановление-поврежденной-таблицы-разделов">Восстановление поврежденной таблицы разделов</h2>
+<p>Ситуации, когда MBR повреждается (например, из-за сбоя питания или действия вируса), случаются часто. Если вы видите сообщение <code>"Invalid Partition Table"</code> или <code>"Error Loading Operating System"</code>, значит, загрузочный код или сигнатура <code>0x55AA</code> отсутствуют. В этом случае необходимо восстановить <strong>загрузочный сектор</strong> специальным ПО.</p>
+<p>Восстановление можно выполнить через установочный диск операционной системы. В режиме восстановления (WinRE) запустите командную строку и используйте утилиту <code>bootrec</code>. Команда <code>bootrec /fixmbr</code> перезапишет загрузочный код, не затрагивая структуру разделов, что позволяет сохранить данные.</p>
+<blockquote>
+<p>⚠️ <strong>Внимание</summary><div class="pb-accordion-body"><p></strong> Использование утилит для восстановления MBR может привести к потере данных, если они были повреждены физически. Всегда проверяйте целостность диска через <code>chkdsk</code> перед попыткой восстановления загрузчика.</p>
+</blockquote>
+
+
+
+<h2 id="специфика-mbr-в-современных-ос">Специфика MBR в современных ОС</h2>
+<p>Несмотря на выход стандартов, многие пользователи продолжают использовать MBR на новых дисках, особенно при двойной загрузке (Dual Boot) Windows и Linux. Некоторые дистрибутивы Linux и старые версии Windows (XP, 7) лучше работают с MBR на специфическом оборудовании. Однако стандартным режимом для Windows 11 является исключительно <strong>GPT</strong> с включенным Secure Boot.</p>
+<p>Если вы планируете установку Windows 11, схема MBR не позволит вам завершить установку без конвертации диска. Система потребует отключения Secure Boot или смены режима загрузки, что противоречит требованиям безопасности Microsoft. Поэтому при сборке нового ПК выбор в пользу GPT очевиден.</p>
+<p>В заключение стоит отметить, что MBR — это надежный, но устаревающий стандарт. Его понимание необходимо для работы с legacy-оборудованием и восстановления данных, но для новых систем он является ограничивающим фактором. Правильный выбор схемы разделов на этапе инициализации диска сэкономит вам часы времени в будущем.</p>
+
+<div class="pb-poll" id="poll-116619c4"><div class="pb-poll-question">📊 Планируете ли вы переход на GPT в ближайшем будущем?</div><div class="pb-poll-option" data-poll="116619c4" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Да, уже планирую</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="116619c4" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Нет, меня все устраивает</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="116619c4" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Пока не решился</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="116619c4" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Только для внешнего диска</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+<details>
+<summary>Можно ли изменить схему разделов без потери данных?</summary>
+<p>В большинстве случаев — нет. Для изменения схемы с MBR на GPT или наоборот необходимо очистить таблицу разделов, что удаляет все данные на диске. Существуют сторонние утилиты для конвертации без потери данных, но они не гарантируют 100% успеха и требуют обязательного бэкапа.</p>
+</details>
+<details>
+<summary>Как узнать, какой у меня диск: MBR или GPT?</summary>
+<p>В Windows нажмите <code>Win + X</code> и выберите «Управление дисками». Нажмите правой кнопкой мыши на название диска (например, «Диск 0») и выберите «Свойства». На вкладке «Тома» в поле «Стиль раздела» будет указано: «Таблица основных загрузочных записей (MBR)» или «Таблица разделов GUID (GPT)».</p>
+</details>
+<details>
+<summary>Почему мой диск 4 ТБ показывает только 2 ТБ?</summary>
+<p>Это происходит потому, что диск размечен по стандарту MBR, который поддерживает максимум 2 ТБ. Остальное пространство находится вне досягаемости файловой системы. Решение — конвертация диска в GPT с предварительным сохранением данных.</p>
+</details>
+<details>
+<summary>Нужен ли MBR для загрузочной флешки с Windows 10?</summary>
+<p>Зависит от вашей материнской платы. Если у вас старый BIOS, флешка должна быть MBR. Если UEFI — лучше использовать GPT. Для максимальной совместимости можно создать флешку в режиме MBR, но современные компьютеры с UEFI могут не увидеть её без специальных настроек.</p>
+</details>
+<details>
+<summary>Влияет ли тип таблицы разделов на скорость работы диска?</summary>
+<p>Нет, тип таблицы разделов (MBR или GPT) не влияет на скорость чтения/записи данных. Это метаданные, которые считываются один раз при загрузке системы. Скорость зависит от интерфейса подключения (SATA, NVMe) и качества самого накопителя.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/l/lu/luchshaya-sborka-pk-za-20k.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшая сборка ПК за 20000 рублей в 2026: Бюджетный гейминг</span>
+                <span class="pb-related-desc">Экспертный гид по сборке компьютера за 20 тысяч рублей. Разбор процессоров, видеокарт и платформ. Ка</span>
+            </a><a href="/kompyutery-i-noutbuki/c/ch/chto-takoe-gravirovka-na-makbuke.html" class="pb-related-card">
+                <span class="pb-related-title">Гравировка на MacBook: виды, цены и как заказать персонализацию</span>
+                <span class="pb-related-desc">Всё о лазерной гравировке на ноутбуках Apple. Виды надписей, стоимость, влияние на гарантию и сроки </span>
+            </a><a href="/kompyutery-i-noutbuki/u/us/ustanovit-dve-operatsionnye-sistemy-na-odin-kompyuter.html" class="pb-related-card">
+                <span class="pb-related-title">Как установить две операционные системы на один компьютер</span>
+                <span class="pb-related-desc">Полное руководство по настройке dual boot: выбор дисков, создание разделов, загрузчики Windows и Lin</span>
+            </a><a href="/kompyutery-i-noutbuki/i/iz/iz-chego-sdelan-zhestkij-disk-kompyutera.html" class="pb-related-card">
+                <span class="pb-related-title">Из чего сделан жесткий диск: устройство, материалы и начинка HDD</span>
+                <span class="pb-related-desc">Подробный разбор конструкции жесткого диска: из каких материалов состоят пластины, магнитные головки</span>
+            </a><a href="/kompyutery-i-noutbuki/p/po/pochemu-noutbuk-ne-vidit-ssd-disk.html" class="pb-related-card">
+                <span class="pb-related-title">Почему ноутбук не видит SSD: диагностика и решение проблем</span>
+                <span class="pb-related-desc">Ноутбук не определяет SSD? Узнайте причины: от сбитых настроек BIOS до физического брака. Пошаговая </span>
+            </a><a href="/kompyutery-i-noutbuki/b/bl/bloody-a70-programma-dlya-myshi.html" class="pb-related-card">
+                <span class="pb-related-title">Программа A4Tech Bloody для мыши: установка, настройка и макросы</span>
+                <span class="pb-related-desc">Полный гайд по работе с программным обеспечением Bloody для мышей A70. Настройка DPI, создание макро</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

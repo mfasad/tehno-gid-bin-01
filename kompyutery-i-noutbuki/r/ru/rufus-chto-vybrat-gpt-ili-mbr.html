@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Rufus: что выбрать GPT или MBR — полное руководство — Техно Гид</title>
+    <meta name="description" content="Разбираемся, какую схему раздела диска выбрать в Rufus: GPT или MBR. Инструкция для UEFI, BIOS, Windows 10 и 11.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/r/ru/rufus-chto-vybrat-gpt-ili-mbr.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Rufus: что выбрать GPT или MBR — полное руководство">
+    <meta property="og:description" content="Разбираемся, какую схему раздела диска выбрать в Rufus: GPT или MBR. Инструкция для UEFI, BIOS, Windows 10 и 11.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Rufus: что выбрать GPT или MBR — полное руководство</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#фундаментальные-отличия-mbr-и-gpt">Фундаментальные отличия MBR и GPT</a></li><li><a href="#взаимосвязь-схемы-раздела-и-типа-прошивки-biosuefi">Взаимосвязь схемы раздела и типа прошивки BIOS/UEFI</a></li><li><a href="#как-определить-тип-прошивки-перед-записью">Как определить тип прошивки перед записью</a></li><li><a href="#специфика-установки-windows-10-и-windows-11">Специфика установки Windows 10 и Windows 11</a></li><li><a href="#алгоритм-выбора-настроек-в-rufus">Алгоритм выбора настроек в Rufus</a></li><li><a href="#частые-ошибки-и-способы-их-решения">Частые ошибки и способы их решения</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/m/mo/mozhno-li-pomenyat-operativnuyu-pamyat.html">Можно ли поменять оперативную память: Полное руководство по апгрейду</a></li><li><a href="/kompyutery-i-noutbuki/k/ko/kombinatsii-klavish-kopirovat-vstavit.html">Комбинации клавиш копировать вставить: Полная шпаргалка для Windows и Mac</a></li><li><a href="/kompyutery-i-noutbuki/c/ch/chto-luchshe-linuks-ili-windows.html">Что лучше: Linux или Windows? Сравнение ОС 2026</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kastomnye-provoda-dlya-pk.html">Кастомные провода для ПК: гид по выбору, материалам и сборке</a></li><li><a href="/kompyutery-i-noutbuki/k/ko/komanda-razvernut-okno-na-ves-ekran.html">Как развернуть окно на весь экран: команды и горячие клавиши</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Rufus: что выбрать GPT или MBR при создании загрузочной флешки</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#фундаментальные-отличия-mbr-и-gpt">Фундаментальные отличия MBR и GPT</a></li><li><a href="#взаимосвязь-схемы-раздела-и-типа-прошивки-biosuefi">Взаимосвязь схемы раздела и типа прошивки BIOS/UEFI</a></li><li><a href="#как-определить-тип-прошивки-перед-записью">Как определить тип прошивки перед записью</a></li><li><a href="#специфика-установки-windows-10-и-windows-11">Специфика установки Windows 10 и Windows 11</a></li><li><a href="#алгоритм-выбора-настроек-в-rufus">Алгоритм выбора настроек в Rufus</a></li><li><a href="#частые-ошибки-и-способы-их-решения">Частые ошибки и способы их решения</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Создание загрузочного носителя — это первый и критически важный этап при установке операционной системы или проведении диагностики компьютера. Программа <em>Rufus</em> заслуженно считается одним из самых надежных инструментов для этой задачи, но её интерфейс часто ставит в тупик новичков. Главный вопрос, возникающий при настройке параметров записи: какую схему раздела выбрать — <strong>GPT</strong> или <strong>MBR</strong>?</p>
+
+<p>Неправильный выбор на этом этапе приведет к тому, что компьютер просто не увидит установочную флешку при загрузке, и процесс установки не начнется. Понимание разницы между этими стандартами необходимо не только для успешной инсталляции Windows, но и для корректной работы дисковой подсистемы в будущем. Давайте разберем технические нюансы, чтобы вы могли принимать уверенные решения.</p>
+
+<p>В этой статье мы детально рассмотрим архитектуру обоих стандартов, их совместимость с типами прошивок материнских плат и дадим четкие рекомендации для различных сценариев использования. Вы узнаете, как определить тип вашего BIOS и почему современные системы требуют иного подхода, чем компьютеры десятилетней давности.</p>
+
+<h2 id="фундаментальные-отличия-mbr-и-gpt">Фундаментальные отличия MBR и GPT</h2>
+
+<p>Чтобы сделать осознанный выбор в меню <em>Rufus</em>, нужно понимать, что представляют собой эти аббревиатуры. <strong>MBR</strong> (Master Boot Record) — это старый стандарт разметки диска, который использовался еще со времен первых IBM PC. Он хранит информацию о загрузчике и разделах в самом начале диска. Главная проблема MBR заключается в ограничении размера диска до 2 ТБ и поддержке максимум четырех основных разделов.</p>
+
+<p>В противовес ему пришел стандарт <strong>GPT</strong> (GUID Partition Table), разработанный компанией Intel как часть спецификации UEFI. Этот формат лишен ограничений предшественника: он поддерживает диски объемом до 9,4 ЗБ (зеттабайт) и практически неограниченное количество разделов. Кроме того, GPT хранит несколько копий таблицы разделов по всему диску, что повышает надежность данных.</p>
+
+<p>Разница также кроется в механизме загрузки. MBR полагается на код загрузчика, расположенный в первом секторе, который уязвим для повреждения вирусами или сбоями. GPT использует защищенный загрузочный раздел и проверяет целостность данных с помощью контрольных сумм CRC. Для современных операционных систем, таких как <em>Windows 10</em> и <em>Windows 11</em>, использование GPT стало фактически обязательным требованием для полноценной работы функций безопасности.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Конвертация диска из MBR в GPT без потери данных возможна только на пустом диске или с использованием сторонних конвертеров в работающей системе. При создании загрузочной флешки в Rufus выбор схемы раздела определяет, как будет отформатирован сам USB-накопитель, а не жесткий диск вашего компьютера, хотя они должны быть совместимы.</p>
+</blockquote>
+
+<h2 id="взаимосвязь-схемы-раздела-и-типа-прошивки-biosuefi">Взаимосвязь схемы раздела и типа прошивки BIOS/UEFI</h2>
+
+<p>Ключевым фактором при выборе настройки в <em>Rufus</em> является тип прошивки вашей материнской платы. Старые компьютеры используют классический <strong>BIOS</strong> (Legacy), который умеет читать загрузочный код только с дисков, размеченных по стандарту MBR. Если вы выберете GPT для такого компьютера, система проигнорирует флешку при попытке загрузки.</p>
+
+<p>Современные системы оснащены интерфейсом <strong>UEFI</strong> (Unified Extensible Firmware Interface). Этот стандарт пришел на смену BIOS и требует использования схемы GPT для загрузки операционных систем в нативном режиме. UEFI обеспечивает более быстрый старт системы, поддержку мыши в меню настроек и возможность загрузки с дисков объемом более 2 ТБ.</p>
+
+<p>Существует также гибридный режим работы, часто называемый <code>CSM</code> (Compatibility Support Module). Он позволяет UEFI-платам эмулировать работу старого BIOS и загружаться с MBR-дисков. Однако производители все чаще отказываются от этой функции в новых моделях ноутбуков и материнских плат, делая поддержку исключительно UEFI+GPT единственным вариантом.</p>
+
+<ul>
+<li>🖥️ <strong>Только Legacy BIOS:</strong> обязательно выбирайте схему раздела <code>MBR</code> и целевую систему <code>BIOS (или UEFI-CSM)</code>.</li>
+<li>🚀 <strong>Только UEFI:</strong> используйте схему <code>GPT</code> и целевую систему <code>UEFI (non CSM)</code>.</li>
+<li>🔄 <strong>Универсальный вариант:</strong> если вы не знаете тип прошивки, некоторые версии Rufus позволяют создать гибридную флешку, но это работает не со всеми образами ISO.</li>
+</ul>
+
+<div class="pb-poll" id="poll-d897d16d"><div class="pb-poll-question">📊 Какой тип прошивки у вашего основного компьютера?</div><div class="pb-poll-option" data-poll="d897d16d" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Только UEFI (современный ПК)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d897d16d" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Только Legacy BIOS (старый ПК)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d897d16d" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Не знаю / Гибридный режим (CSM)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d897d16d" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Планирую покупать новый компьютер</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="как-определить-тип-прошивки-перед-записью">Как определить тип прошивки перед записью</h2>
+
+<p>Прежде чем запускать <em>Rufus</em>, необходимо точно узнать, в каком режиме работает ваш компьютер. Самый простой способ сделать это в среде Windows — использовать утилиту <code>msinfo32</code>. Нажмите комбинацию клавиш <code>Win + R</code>, введите команду и нажмите Enter. В открывшемся окне найдите строку <strong>Режим BIOS</strong>.</p>
+
+<p>Если там указано <code>Устаревший</code> (или <em>Legacy</em>), значит, ваша система работает в режиме классического BIOS. В этом случае при записи образа в Rufus нужно однозначно выбирать <strong>MBR</strong>. Если же указано <code>UEFI</code>, то правильный выбор — <strong>GPT</strong>. Это правило работает для 99% случаев установки Windows 10 и 11.</p>
+
+<p>Также можно проверить настройки непосредственно при включении компьютера. Зайдите в BIOS/UEFI Setup (обычно клавиши <code>F2</code>, <code>Del</code> или <code>F10</code>) и поищите раздел <code>Boot</code>. Если вы видите опцию <code>CSM Support</code> и она включена (Enabled), система может загружаться с MBR. Если опции нет или она отключена — требуется GPT.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед входом в BIOS сделайте фото экрана с текущими настройками на телефон. Это поможет вернуть все параметры обратно, если вы случайно измените что-то лишнее при проверке режима загрузки.</p></aside>
+
+<h2 id="специфика-установки-windows-10-и-windows-11">Специфика установки Windows 10 и Windows 11</h2>
+
+<p>Выбор схемы раздела напрямую диктуется требованиями устанавливаемой операционной системы. Для <em>Windows 10</em> Microsoft рекомендует использовать UEFI и GPT, особенно для компьютеров с объемом памяти более 4 ГБ и экранами высокого разрешения. Однако «десятка» все еще поддерживает установку в режиме Legacy BIOS с разметкой MBR.</p>
+
+<p>Ситуация кардинально меняется с выходом <em>Windows 11</em>. Новая операционная система имеет строгие требования к безопасности, включая наличие модуля <strong>TPM 2.0</strong> и обязательную загрузку через <strong>UEFI</strong> с <strong>Secure Boot</strong>. Установка Windows 11 на диск с разметкой MBR официальными средствами невозможна — установщик просто выдаст ошибку о несоответствии требованиям.</p>
+
+<p>При использовании <em>Rufus</em> для записи образа Windows 11 программа автоматически предложит дополнительные опции модификации ISO, такие как отключение проверки TPM. Но даже в этом случае для корректной работы системы после установки рекомендуется использовать схему GPT, чтобы избежать проблем с обновлениями и функциями безопасности в будущем.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>ОС</th>
+<th>Рекомендуемая схема</th>
+<th>Тип прошивки</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows 7</td>
+<td>MBR (предпочтительно)</td>
+<td>Legacy BIOS / UEFI (CSM)</td>
+<td>Нет поддержки Secure Boot</td>
+</tr>
+<tr>
+<td>Windows 8.1</td>
+<td>GPT</td>
+<td>UEFI</td>
+<td>Требуется UEFI для полной функциональности</td>
+</tr>
+<tr>
+<td>Windows 10</td>
+<td>GPT</td>
+<td>UEFI</td>
+<td>MBR возможен, но не рекомендуется</td>
+</tr>
+<tr>
+<td>Windows 11</td>
+<td>GPT (обязательно)</td>
+<td>UEFI + Secure Boot</td>
+<td>Установка на MBR блокирована</td>
+</tr>
+</tbody>
+</table></div>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Интерфейс программы Rufus периодически обновляется. Если вы не видите опции выбора схемы раздела или она заблокирована (серая), попробуйте обновить программу до последней версии с официального сайта разработчика или сменить метод загрузки с «Диск или ISO-образ» на «Загрузить», чтобы получить совместимый образ.</p>
+</blockquote>
+
+<h2 id="алгоритм-выбора-настроек-в-rufus">Алгоритм выбора настроек в Rufus</h2>
+
+<p>Процесс настройки программы интуитивно понятен, но требует внимательности. После выбора USB-накопителя и загрузки ISO-образа, обратите внимание на поле <strong>Схема раздела</strong>. Именно здесь принимается решающее значение. Программа часто пытается автоматически определить оптимальные настройки на основе выбранного образа, но полагаться на автоматику стоит не всегда.</p>
+
+<p>Если ваша цель — создать универсальную флешку для обслуживания разных компьютеров в организации, где парк техники разнороден, ситуация усложняется. В таком случае можно попробовать создать флешку с поддержкой обоих режимов, выбрав схему <code>GPT</code> и целевую систему <code>UEFI (non CSM)</code>, но это сработает только на современных машинах. Для старых ПК придется иметь отдельный носитель с разметкой MBR.</p>
+
+<p>Важно также выбрать правильную файловую систему. Для схем GPT и загрузки в режиме UEFI часто требуется файловая система <code>FAT32</code>, так как прошивка UEFI умеет читать только её. Проблема в том, что FAT32 не поддерживает файлы размером более 4 ГБ. Если образ Windows содержит файл <code>install.wim</code>, превышающий этот лимит, <em>Rufus</em> автоматически предложит разбить его или использовать файловую систему <code>NTFS</code> с созданием специального загрузочного раздела.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед записью</h4><label class="check-item"><input type="checkbox"><span>Узнать режим BIOS (Legacy или UEFI)</span></label><label class="check-item"><input type="checkbox"><span>Скачать актуальный ISO-образ Windows</span></label><label class="check-item"><input type="checkbox"><span>Выбрать схему раздела (GPT для UEFI, MBR для BIOS)</span></label><label class="check-item"><input type="checkbox"><span>Проверить объем файла install.wim (если >4ГБ, нужен NTFS)</span></label><label class="check-item"><input type="checkbox"><span>Нажать СТАРТ и дождаться окончания</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="частые-ошибки-и-способы-их-решения">Частые ошибки и способы их решения</h2>
+
+<p>Одна из самых распространенных проблем — ошибка «Windows не может быть установлена на этот диск. Выбранный диск имеет стиль разделов GPT» (или наоборот, MBR). Это сообщение появляется на этапе выбора диска для установки, когда настройки флешки и целевого жесткого диска не совпадают или не соответствуют режиму загрузки, в котором запущен установщик.</p>
+
+<p>Если вы видите эту ошибку, значит, вы загрузились с флешки в режиме, отличном от того, для которого она была создана. Например, флешка записана как UEFI (GPT), а компьютер загрузился в режиме Legacy. Решение: перезагрузите ПК, зайдите в Boot Menu (обычно <code>F12</code> или <code>F8</code>) и выберите пункт загрузки, в названии которого есть <code>UEFI</code>.</p>
+
+<p>Другая ситуация: вы хотите сохранить данные на диске, но система требует конвертации. В этом случае можно использовать командную строку установщика. Нажмите <code>Shift + F10</code>, введите <code>diskpart</code>, затем <code>list disk</code>, выберите диск (<code>select disk 0</code>) и очистите его командой <code>clean</code>. <strong>Внимание:</strong> это удалит все данные с диска! После этого введите <code>convert gpt</code> и закройте окно.</p>
+
+<details class="pb-accordion"><summary>Что делать, если Rufus не видит флешку?</summary><div class="pb-accordion-body"><p>Если программа не отображает ваш USB-накопитель, попробуйте переключить параметр «Метод загрузки» или переподключить флешку в другой порт (желательно USB 2.0, если есть). Также убедитесь, что на флешке нет аппаратного переключателя защиты от записи. В крайнем случае, используйте утилиту diskpart для полной очистки накопителя перед запуском Rufus.</p></div></details>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Главное правило: Схема раздела флешки (GPT/MBR) должна строго соответствовать режиму загрузки материнской платы (UEFI/Legacy), иначе установка системы не начнется.</p></aside>
+
+<details>
+<summary>Можно ли изменить схему раздела с MBR на GPT без потери данных?</summary>
+<p>В контексте создания загрузочной флешки в Rufus — нет, при записи образа диск будет отформатирован, и все данные на флешке будут удалены. Если же речь идет о внутреннем жестком диске с установленной Windows, то в Windows 10 (версия 1703 и новее) есть встроенная утилита <code>mbr2gpt.exe</code>, которая позволяет конвертировать диск без потери данных, но только если на диске нет лишних разделов и структура соответствует требованиям.</p>
+</details>
+
+<details>
+<summary>Почему для UEFI рекомендуется FAT32, а не NTFS?</summary>
+<p>Спецификация UEFI требует, чтобы загрузочный раздел был отформатирован в FAT32, так как прошивка содержит драйверы только для этой файловой системы. NTFS не поддерживается нативными драйверами UEFI большинства материнских плат. Rufus обходит это ограничение, создавая специальный раздел для загрузки, если выбран NTFS, но FAT32 остается наиболее совместимым вариантом.</p>
+</details>
+
+<details>
+<summary>Что делать, если файл install.wim больше 4 ГБ при выборе FAT32?</summary>
+<p>Файловая система FAT32 не поддерживает файлы размером более 4 ГБ. Современные образы Windows 10/11 часто содержат файл <code>sources\install.wim</code>, превышающий этот лимит. В этом случае Rufus предложит два варианта: разбить файл на части (что может вызвать ошибки при установке) или отформатировать флешку в NTFS с созданием специального загрузочного раздела UEFI. Рекомендуется соглашаться на второй вариант.</p>
+</details>
+
+<details>
+<summary>Обязательно ли использовать GPT для Windows 10?</summary>
+<p>Технически нет, Windows 10 прекрасно устанавливается и работает на дисках с разметкой MBR в режиме Legacy BIOS. Однако использование GPT и UEFI дает преимущества: более быструю загрузку, поддержку дисков свыше 2 ТБ, улучшенную безопасность (Secure Boot) и возможность использования более 4 основных разделов. Для новых сборок ПК выбор в пользу GPT является единственно верным.</p>
+</details>
+
+<details>
+<summary>Как узнать, поддерживает ли мой компьютер Secure Boot?</summary>
+<p>Secure Boot — это функция UEFI. Зайдите в настройки BIOS/UEFI вашего компьютера (клавиша Del или F2 при старте). Найдите раздел <code>Security</code> или <code>Boot</code>. Если там есть пункт <code>Secure Boot</code> и его можно переключить в состояние <code>Enabled</code>, значит, ваша плата поддерживает эту технологию. Для работы Secure Boot диск обязательно должен быть размечен в стиле GPT.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/m/mo/mozhno-li-pomenyat-operativnuyu-pamyat.html" class="pb-related-card">
+                <span class="pb-related-title">Можно ли поменять оперативную память: Полное руководство по апгрейду</span>
+                <span class="pb-related-desc">Узнайте, можно ли заменить память в вашем ПК или ноутбуке. Инструкция по выбору модулей DDR4/DDR5, п</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ko/kombinatsii-klavish-kopirovat-vstavit.html" class="pb-related-card">
+                <span class="pb-related-title">Комбинации клавиш копировать вставить: Полная шпаргалка для Windows и Mac</span>
+                <span class="pb-related-desc">Узнайте все горячие клавиши для копирования и вставки текста, файлов и данных. Инструкция для Window</span>
+            </a><a href="/kompyutery-i-noutbuki/c/ch/chto-luchshe-linuks-ili-windows.html" class="pb-related-card">
+                <span class="pb-related-title">Что лучше: Linux или Windows? Сравнение ОС 2026</span>
+                <span class="pb-related-desc">Подробное сравнение Windows и Linux. Плюсы, минусы, производительность, безопасность и выбор для раз</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kastomnye-provoda-dlya-pk.html" class="pb-related-card">
+                <span class="pb-related-title">Кастомные провода для ПК: гид по выбору, материалам и сборке</span>
+                <span class="pb-related-desc">Полное руководство по кастомным проводам для ПК. Разбор материалов, разъемов, гибкости и калькулятор</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ko/komanda-razvernut-okno-na-ves-ekran.html" class="pb-related-card">
+                <span class="pb-related-title">Как развернуть окно на весь экран: команды и горячие клавиши</span>
+                <span class="pb-related-desc">Полное руководство по командам развертывания окон в Windows, Android и браузерах. Горячие клавиши, к</span>
+            </a><a href="/kompyutery-i-noutbuki/s/sb/sborka-pk-svoimi-rukami-poshagovaya-instruktsiya.html" class="pb-related-card">
+                <span class="pb-related-title">Сборка ПК своими руками: пошаговая инструкция для новичков</span>
+                <span class="pb-related-desc">Подробное руководство по самостоятельной сборке компьютера. Выбор комплектующих, пошаговая установка</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

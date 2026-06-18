@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Boot Priority не видит SSD: Полное руководство по решению — Техно Гид</title>
+    <meta name="description" content="Почему BIOS не видит SSD в меню загрузки? Разбор причин: режимы SATA, GPT/MBR, драйверы NVMe и сброс настроек UEFI.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/b/bo/boot-priority-ne-vidit-ssd.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Boot Priority не видит SSD: Полное руководство по решению">
+    <meta property="og:description" content="Почему BIOS не видит SSD в меню загрузки? Разбор причин: режимы SATA, GPT/MBR, драйверы NVMe и сброс настроек UEFI.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Boot Priority не видит SSD: Полное руководство по решению</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#диагностика-физического-подключения-и-отображения-в-bios">Диагностика физического подключения и отображения в BIOS</a></li><li><a href="#конфликт-режимов-legacy-и-uefi">Конфликт режимов Legacy и UEFI</a></li><li><a href="#настройки-контроллера-sata-ahci-против-raid">Настройки контроллера SATA: AHCI против RAID</a></li><li><a href="#специфика-nvme-накопителей-и-разделение-линий-pcie">Специфика NVMe накопителей и разделение линий PCIe</a></li><li><a href="#проблемы-с-secure-boot-и-загрузочными-записями">Проблемы с Secure Boot и загрузочными записями</a></li><li><a href="#сброс-настроек-bios-и-обновление-прошивки">Сброс настроек BIOS и обновление прошивки</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/k/ka/kakoj-zhestkij-disk-luchshe-kupit-dlya-videonablyudeniya.html">Какой жесткий диск купить для видеонаблюдения: выбор HDD</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-rasschitat-moshchnost-kompyutera-dlya-ibp.html">Как рассчитать мощность ПК для ИБП: точная формула и правила</a></li><li><a href="/kompyutery-i-noutbuki/e/ef/efi-network-0-for-ipv6.html">EFI Network 0 for IPv6: ошибка загрузки и решение</a></li><li><a href="/kompyutery-i-noutbuki/p/po/pochemu-ne-rabotaet-telegramm-veb-na-kompyutere.html">Почему не работает Telegram Web на компьютере: причины и решения</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kastomnye-podsvetki-dlya-klaviatury.html">Кастомные подсветки для клавиатуры: типы, бренды и выбор</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>BIOS не видит SSD в Boot Priority: причины и решения</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#диагностика-физического-подключения-и-отображения-в-bios">Диагностика физического подключения и отображения в BIOS</a></li><li><a href="#конфликт-режимов-legacy-и-uefi">Конфликт режимов Legacy и UEFI</a></li><li><a href="#настройки-контроллера-sata-ahci-против-raid">Настройки контроллера SATA: AHCI против RAID</a></li><li><a href="#специфика-nvme-накопителей-и-разделение-линий-pcie">Специфика NVMe накопителей и разделение линий PCIe</a></li><li><a href="#проблемы-с-secure-boot-и-загрузочными-записями">Проблемы с Secure Boot и загрузочными записями</a></li><li><a href="#сброс-настроек-bios-и-обновление-прошивки">Сброс настроек BIOS и обновление прошивки</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Ситуация, когда после установки нового накопителя или сброса настроек материнская плата игнорирует ваш диск в меню <code>Boot Priority</code>, является одной из самых распространенных проблем при сборке ПК. Пользователь попадает в замкнутый круг: система утверждает, что загрузочных устройств не найдено, хотя физически диск подключен и даже определяется в списке устройств хранения, но отсутствует в списке приоритета загрузки. Чаще всего корень зла кроется не в физической поломке, а в несоответствии стандартов разметки диска и настроек прошивки UEFI/BIOS.</p>
+
+<p>Прежде чем подозревать аппаратный брак, необходимо понять логику работы современных контроллеров. Протоколы передачи данных эволюционировали, и старые методы инициализации часто конфликтуют с новыми накопителями формата <em>NVMe</em> или современными режимами работы <em>SATA</em>. В этой статье мы детально разберем алгоритм диагностики, который позволит вернуть ваш SSD в список приоритетных устройств загрузки без лишних затрат.</p>
+
+<h2 id="диагностика-физического-подключения-и-отображения-в-bios">Диагностика физического подключения и отображения в BIOS</h2>
+
+<p>Первым шагом всегда должна стать проверка видимости накопителя на самом низком уровне. Зайдите в раздел <code>System Information</code> или <code>SATA Configuration</code> в вашем BIOS. Если диск отсутствует даже здесь, проблема почти наверняка аппаратная. Проверьте плотность прилегания кабеля SATA или самого модуля M.2 в слоте. Иногда контакт нарушается из-за перекоса платы или недостаточного усилия при вставке.</p>
+
+<p>Особое внимание стоит уделить питанию. Для 2.5-дюймовых SSD часто забывают подключить второй коннектор от блока питания, ограничиваясь только кабелем данных. Без питания контроллер диска не сможет ответить на запрос материнской платы. В случае с M.2 накопителями убедитесь, что вы используете правильный ключ разъема (M-key или B+M key), так как некоторые старые материнские платы не поддерживают определенные типы интерфейсов через слот M.2.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Если диск определяется в BIOS, но не виден в Boot Priority, ни в коем случае не пытайтесь перепрошивать BIOS "наугад". Это может привести к потере совместимости с контроллерами хранения.</p>
+</blockquote>
+
+<p>Также стоит проверить, не отключен ли конкретный порт SATA в настройках чипсета. В редких случаях, особенно на серверных платах или старых решениях, порты могут быть программно переведены в состояние <code>Disabled</code> для экономии ресурсов или из-за конфликта с другими устройствами.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Первичная проверка оборудования</h4><label class="check-item"><input type="checkbox"><span>Проверка кабеля SATA и питания</span></label><label class="check-item"><input type="checkbox"><span>Плотность посадки M.2 модуля</span></label><label class="check-item"><input type="checkbox"><span>Очистка контактов ластиком</span></label><label class="check-item"><input type="checkbox"><span>Проверка порта на другом устройстве</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="конфликт-режимов-legacy-и-uefi">Конфликт режимов Legacy и UEFI</h2>
+
+<p>Наиболее частой причиной игнорирования диска в списке загрузки является несоответствие режима работы BIOS типу разметки диска. Современные системы требуют режима <strong>UEFI</strong> и таблицы разделов <strong>GPT</strong>. Если ваш SSD размечен в старом стандарте <strong>MBR</strong>, а в BIOS включен режим "UEFI Only", загрузчик просто не увидит этот диск как потенциальный вариант для старта системы.</p>
+
+<p>Решение заключается в переключении параметра <code>CSM (Compatibility Support Module)</code>. Включив этот модуль, вы разрешаете BIOS эмулировать_legacy_ среду, что позволит увидеть MBR-диски. Однако для современных версий Windows 10 и 11 настоятельно рекомендуется использовать чистый режим UEFI. Для этого диск необходимо конвертировать в GPT, что можно сделать утилитой <code>diskpart</code> или сторонним софтом без потери данных (при наличии резервной копии).</p>
+
+<p>Обратная ситуация также возможна: диск размечен в GPT, а BIOS находится в режиме <code>Legacy</code>. В этом случае в списке загрузки вы увидите только старые HDD или USB-флешки с соответствующей разметкой. Переключите настройку <code>Boot Mode</code> на <code>UEFI</code> или <code>UEFI with CSM</code>, чтобы система корректно считала GUID Partition Table.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для быстрой проверки типа разметки в Windows используйте команду diskpart, затем list disk. Звездочка (*) в колонке Gpt укажет на нужный тип таблицы разделов.</p></aside>
+
+<h2 id="настройки-контроллера-sata-ahci-против-raid">Настройки контроллера SATA: AHCI против RAID</h2>
+
+<p>Режим работы контроллера хранения данных играет критическую роль в отображении дисков. По умолчанию многие материнские платы, особенно от производителей вроде Dell, HP или Lenovo, могут быть настроены на режим <strong>RAID</strong> (даже если у вас один диск) или <strong>Intel RST</strong>. В этом режиме операционная система или установщик могут не видеть накопитель без специальных драйверов, а BIOS может скрывать его из общего списка boot-устройств, считая частью массива.</p>
+
+<p>Оптимальным выбором для большинства домашних пользователей является режим <strong>AHCI</strong>. Он обеспечивает нативную поддержку команд NCQ и горячую замену, а также максимальную совместимость с драйверами Windows и Linux. Чтобы изменить этот параметр, найдите в BIOS раздел <code>SATA Mode</code> или <code>SATA Configuration</code> и выберите значение <code>AHCI</code>.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Режим контроллера</th>
+<th>Совместимость с ОС</th>
+<em>Производительность</em>
+<th>Рекомендация</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IDE</strong></td>
+<td>Высокая (старые ОС)</td>
+<td>Низкая</td>
+<td>Только для Windows XP и старше</td>
+</tr>
+<tr>
+<td><strong>AHCI</strong></td>
+<td>Высокая (Win 7+)</td>
+<td>Оптимальная</td>
+<td>Стандарт для большинства SSD</td>
+</tr>
+<tr>
+<td><strong>RAID / RST</strong></td>
+<td>Требует драйверов</td>
+<td>Высокая (в массиве)</td>
+<td>Только для конфигураций из 2+ дисков</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Помните, что смена режима работы контроллера с <code>RAID</code> на <code>AHCI</code> (или наоборот) на уже установленной системе может привести к ошибке <code>INACCESSIBLE_BOOT_DEVICE</code> при загрузке Windows. В таком случае потребуется правка реестра или безопасная загрузка для установки корректных драйверов перед изменением настроек BIOS.</p>
+
+<div class="pb-poll" id="poll-f957e64e"><div class="pb-poll-question">📊 Какой тип накопителя у вас не определяется?</div><div class="pb-poll-option" data-poll="f957e64e" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">SATA 2.5 дюйма</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="f957e64e" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">M.2 SATA</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="f957e64e" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">M.2 NVMe</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="f957e64e" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Внешний USB диск</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="специфика-nvme-накопителей-и-разделение-линий-pcie">Специфика NVMe накопителей и разделение линий PCIe</h2>
+
+<p>Накопители формата <em>NVMe</em> используют шину <strong>PCI Express</strong>, а не SATA, что накладывает свои ограничения. На некоторых материнских платах слоты M.2 разделяют линии PCIe с другими слотами расширения или портами SATA. Например, при установке диска в слот <code>M.2_1</code> могут автоматически отключаться порты <code>SATA_5</code> и <code>SATA_6</code>. Эта информация всегда указана в руководстве пользователя (manual) к вашей плате.</p>
+
+<p>Если вы используете PCIe-адаптер для установки NVMe диска в старый слот, убедитесь, что ваша версия BIOS поддерживает загрузку с <strong>Option ROM</strong> для NVMe. В старых версиях прошивок такой поддержки может не быть, и диск будет виден только как устройство хранения данных после загрузки ОС, но не как загрузочный.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Конфликт ресурсов линий PCIe может привести к тому, что видеокарта перейдет в режим работы x8 вместо x16, если вы заняли все доступные линии вторичным накопителем.</p>
+</blockquote>
+
+<p>Также стоит проверить, включена ли поддержка <code>NVMe Configuration</code> в разделе периферии. Некоторые производители BIOS позволяют вручную отключать определенные слоты M.2 для ускорения POST (процедуры самотестирования), что делает диск невидимым для системы до загрузки Windows.</p>
+
+<details class="pb-accordion"><summary>Что такое разделение линий PCIe?</summary><div class="pb-accordion-body"><p>Линии PCIe — это каналы связи между процессором/чипсетом и устройствами. Их количество ограничено. При подключении нового устройства (например, SSD M.2) система может забрать линии у другого устройства (например, второго слота PCIe x16 или портов SATA), чтобы обеспечить работу нового диска.</p></div></details>
+
+<h2 id="проблемы-с-secure-boot-и-загрузочными-записями">Проблемы с Secure Boot и загрузочными записями</h2>
+
+<p>Технология <strong>Secure Boot</strong> предназначена для защиты от вредоносного ПО на уровне загрузчика, но она же может блокировать загрузку с дисков, не имеющих цифровой подписи или использующих нестандартные загрузчики (например, некоторые дистрибутивы Linux или старые версии Windows). Если в списке Boot Priority диск есть, но система не пытается с него загрузиться, попробуйте временно отключить Secure Boot.</p>
+
+<p>Отключение производится в разделе <code>Security</code> или <code>Boot</code>. Установите параметр <code>Secure Boot Control</code> в положение <code>Disabled</code>. После успешной загрузки системы и проверки работоспособности можно попытаться включить его обратно, предварительно убедившись, что загрузчик ОС корректно подписан ключами платформы.</p>
+
+<p>В некоторых случаях помогает полный сброс ключей безопасности. В меню Secure Boot найдите опцию <code>Clear Secure Boot Keys</code> или <code>Restore Factory Keys</code>. Это действие вернет настройки до заводских значений, что часто решает проблемы с распознаванием подписей загрузочных секторов на новых SSD.</p>
+
+<h2 id="сброс-настроек-bios-и-обновление-прошивки">Сброс настроек BIOS и обновление прошивки</h2>
+
+<p>Если программные настройки не помогают, возможно, в NVRAM (энергонезависимой памяти) накопились ошибки конфигурации. Выполните сброс настроек BIOS на заводские (<code>Load Optimized Defaults</code>). Часто эта простая процедура активирует скрытые контроллеры или перераспределяет ресурсы так, что SSD становится виден.</p>
+
+<p>Более радикальным, но эффективным методом является обновление BIOS. Производители материнских плат регулярно выпускают обновления, улучшающие совместимость с новыми моделями SSD, особенно с высокоскоростными Gen4 и Gen5 накопителями. Зайдите на сайт производителя вашей платы, скачайте последнюю версию и обновите прошивку через утилиту в BIOS или из-под Windows.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Обновление BIOS часто решает проблемы совместимости с новыми контроллерами хранения, которые не были учтены при выпуске платы.</p></aside>
+
+<p>При обновлении важно соблюдать стабильность питания. Используйте источник бесперебойного питания, если в вашей сети возможны перебои. Прерывание процесса перепрошивки может превратить материнскую плату в "кирпич", требующий программаторного восстановления.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Интерфейсы BIOS и названия пунктов меню могут отличаться в зависимости от версии прошивки и производителя (ASUS, Gigabyte, MSI, ASRock). Всегда сверяйтесь с актуальной документацией для вашей конкретной модели платы.</p>
+</blockquote>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Почему SSD виден в списке устройств, но отсутствует в Boot Priority?</summary>
+<p>Это означает, что на диске отсутствует корректная загрузочная запись (EFI раздел для UEFI или активный раздел для Legacy). Диск исправен физически, но на нем нет операционной системы или загрузчик поврежден. Требуется переустановка ОС или восстановление загрузчика.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать SSD M.2 и SATA диски одновременно?</summary>
+<p>Да, можно, но с оговорками. На многих платах при занятии слота M.2 некоторые порты SATA отключаются аппаратно. Проверьте руководство к вашей материнской плате, чтобы узнать, какие именно порты отключаются при использовании конкретного слота M.2.</p>
+</details>
+
+<details>
+<summary>Как перевести диск из MBR в GPT без потери данных?</summary>
+<p>В Windows 10 (версия 1703 и новее) и Windows 11 существует встроенная утилита <code>mbr2gpt.exe</code>. Она позволяет конвертировать диск без форматирования, но перед операцией настоятельно рекомендуется создать полную резервную копию важных данных на внешний носитель.</p>
+</details>
+
+<details>
+<summary>Почему после установки нового SSD компьютер не включается?</summary>
+<p>Возможен конфликт оборудования или короткое замыкание. Попробуйте извлечь новый диск и запустить систему. Если ПК включается, проверьте правильность установки SSD, отсутствие лишних стоек под ним и целостность контактов. Также может потребоваться сброс CMOS.</p>
+</details>
+
+<details>
+<summary>Влияет ли порядок подключения SATA кабелей на видимость диска?</summary>
+<p>Обычно нет, современные контроллеры определяют устройства независимо от порта. Однако на некоторых старых или специфических платах порты SATA 0 и SATA 1 являются приоритетными для загрузочных устройств. Попробуйте переключить кабель в порт с меньшим номером.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/k/ka/kakoj-zhestkij-disk-luchshe-kupit-dlya-videonablyudeniya.html" class="pb-related-card">
+                <span class="pb-related-title">Какой жесткий диск купить для видеонаблюдения: выбор HDD</span>
+                <span class="pb-related-desc">Как выбрать жесткий диск для системы видеонаблюдения. Обзор специализированных HDD, сравнение с обыч</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-rasschitat-moshchnost-kompyutera-dlya-ibp.html" class="pb-related-card">
+                <span class="pb-related-title">Как рассчитать мощность ПК для ИБП: точная формула и правила</span>
+                <span class="pb-related-desc">Узнайте, как правильно рассчитать мощность компьютера для выбора ИБП. Формулы перевода Ватт в ВА, ко</span>
+            </a><a href="/kompyutery-i-noutbuki/e/ef/efi-network-0-for-ipv6.html" class="pb-related-card">
+                <span class="pb-related-title">EFI Network 0 for IPv6: ошибка загрузки и решение</span>
+                <span class="pb-related-desc">Почему появляется ошибка EFI Network 0 for IPv6? Полный гайд по устранению сбоя загрузки, настройке </span>
+            </a><a href="/kompyutery-i-noutbuki/p/po/pochemu-ne-rabotaet-telegramm-veb-na-kompyutere.html" class="pb-related-card">
+                <span class="pb-related-title">Почему не работает Telegram Web на компьютере: причины и решения</span>
+                <span class="pb-related-desc">Не открывается Телеграм Веб на ПК? Полный разбор ошибок: кэш, браузер, прокси. Решения проблем с заг</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kastomnye-podsvetki-dlya-klaviatury.html" class="pb-related-card">
+                <span class="pb-related-title">Кастомные подсветки для клавиатуры: типы, бренды и выбор</span>
+                <span class="pb-related-desc">Полный гид по кастомной подсветке клавиатур. Разбор типов LED, программное обеспечение, выбор клавиш</span>
+            </a><a href="/kompyutery-i-noutbuki/p/po/poleznye-sochetaniya-klavish-na-klaviature.html" class="pb-related-card">
+                <span class="pb-related-title">Полезные сочетания клавиш на клавиатуре: Полное руководство для Windows и macOS</span>
+                <span class="pb-related-desc">Освойте горячие клавиши для Windows и macOS. Сэкономьте часы работы, используя эффективные сочетания</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

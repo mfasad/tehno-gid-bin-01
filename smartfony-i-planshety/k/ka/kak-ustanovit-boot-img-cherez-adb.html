@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Установка boot.img через ADB: полная инструкция — Техно Гид</title>
+    <meta name="description" content="Как установить boot.img через ADB на Android. Пошаговая инструкция, команды fastboot, устранение ошибок и важные нюансы прошивки загрузчика.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/smartfony-i-planshety/k/ka/kak-ustanovit-boot-img-cherez-adb.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Установка boot.img через ADB: полная инструкция">
+    <meta property="og:description" content="Как установить boot.img через ADB на Android. Пошаговая инструкция, команды fastboot, устранение ошибок и важные нюансы прошивки загрузчика.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-nav-active">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/smartfony-i-planshety/">Смартфоны и Планшеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Установка boot.img через ADB: полная инструкция</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-рабочего-окружения-и-драйверов">Подготовка рабочего окружения и драйверов</a></li><li><a href="#получение-прав-суперпользователя-и-извлечение-образа">Получение прав суперпользователя и извлечение образа</a></li><li><a href="#перевод-устройства-в-режим-fastboot">Перевод устройства в режим Fastboot</a></li><li><a href="#процесс-установки-bootimg-через-fastboot">Процесс установки boot.img через Fastboot</a></li><li><a href="#особенности-работы-с-устройствами-ab">Особенности работы с устройствами A/B</a></li><li><a href="#диагностика-и-решение-распространенных-ошибок">Диагностика и решение распространенных ошибок</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/smartfony-i-planshety/c/ch/chto-delat-esli-na-telefone-propal-zvuk-a-v-naushnikakh-est.html">Пропал звук на телефоне, но в наушниках есть: причины и решение</a></li><li><a href="/smartfony-i-planshety/a/an/analogi-3utools-dlya-android.html">Лучшие аналоги 3uTools для Android: полный обзор программ</a></li><li><a href="/smartfony-i-planshety/p/po/pochemu-ajfon-vnezapno-vyklyuchaetsya.html">Почему iPhone внезапно выключается: 5 главных причин и решения</a></li><li><a href="/smartfony-i-planshety/k/ka/kak-podklyuchit-internet-na-planshete-bez-sim-karty.html">Как подключить интернет на планшете без сим карты: 5 рабочих способов</a></li><li><a href="/smartfony-i-planshety/k/ka/kak-ustanovit-ekran-na-telefon-v-domashnikh-usloviyakh.html">Как заменить экран на телефоне дома: полная инструкция</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как установить boot.img через ADB и Fastboot</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-рабочего-окружения-и-драйверов">Подготовка рабочего окружения и драйверов</a></li><li><a href="#получение-прав-суперпользователя-и-извлечение-образа">Получение прав суперпользователя и извлечение образа</a></li><li><a href="#перевод-устройства-в-режим-fastboot">Перевод устройства в режим Fastboot</a></li><li><a href="#процесс-установки-bootimg-через-fastboot">Процесс установки boot.img через Fastboot</a></li><li><a href="#особенности-работы-с-устройствами-ab">Особенности работы с устройствами A/B</a></li><li><a href="#диагностика-и-решение-распространенных-ошибок">Диагностика и решение распространенных ошибок</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Процесс модификации операционной системы Android часто требует прямого вмешательства в работу загрузочного раздела. Пользователи, стремящиеся получить root-права или установить кастомное ядро, неизбежно сталкиваются с необходимостью замены стандартного образа <strong>boot.img</strong>. Эта процедура является критически важной, так как именно этот файл содержит ядро системы и ramdisk, отвечающие за первичную инициализацию оборудования.</p>
+
+<p>Инструментарий платформы Android SDK, в частности утилиты <em>ADB</em> и <em>Fastboot</em>, предоставляет надежный механизм для выполнения таких операций. Однако процесс не лишен рисков: ошибка в выборе файла или неверная команда могут привести к тому, что устройство перестанет загружаться. Понимание архитектуры разделов и последовательности действий позволит минимизировать вероятность возникновения проблем.</p>
+
+<p>В данном руководстве мы детально разберем этапы подготовки, процесс перепрошивки и методы восстановления работоспособности гаджета. Мы рассмотрим различия между режимами работы утилит, особенности работы с современными устройствами и распространенные ошибки, с которыми сталкиваются пользователи при попытке установить модифицированный образ.</p>
+
+<h2 id="подготовка-рабочего-окружения-и-драйверов">Подготовка рабочего окружения и драйверов</h2>
+
+<p>Первым шагом является установка необходимых драйверов на персональный компьютер. Без корректно установленных <strong>USB-драйверов</strong> система не сможет распознать смартфон в режиме загрузчика. Для устройств на базе процессоров Qualcomm часто требуется установка специфических драйверов QDLoader, в то время как для MediaTek могут понадобиться драйверы VCOM.</p>
+
+<p>После установки драйверов необходимо скачать пакет <em>Platform Tools</em> с официального сайта разработчиков Android. Этот архив содержит исполняемые файлы <code>adb.exe</code> и <code>fastboot.exe</code>, которые являются основными инструментами взаимодействия. Распакуйте архив в удобную директорию, например, в корень диска C, чтобы пути к файлам не содержали пробелов.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Использование неофициальных сборок драйверов может привести к нестабильной работе порта USB или невозможности определения устройства в диспетчере задач.</p>
+</blockquote>
+
+<p>Не менее важно проверить целостность кабеля подключения. Дешевые кабели, предназначенные только для зарядки, не поддерживают передачу данных, что сделает невозможным выполнение любых команд через <strong>ADB</strong>. Используйте оригинальный кабель или сертифицированный аналог с поддержкой высокоскоростной передачи данных.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед началом работ включите отладку по USB в меню «Для разработчиков» и подтвердите отпечаток ключа RSA на экране смартфона при первом подключении к ПК.</p></aside>
+
+<h2 id="получение-прав-суперпользователя-и-извлечение-образа">Получение прав суперпользователя и извлечение образа</h2>
+
+<p>Для замены загрузочного образа часто требуется сначала извлечь текущий <code>boot.img</code> с устройства, чтобы модифицировать его или создать резервную копию. Эта операция возможна только при наличии <strong>root-прав</strong>. Если права уже получены, можно воспользоваться терминалом на самом устройстве или командной строкой ПК.</p>
+
+<p>Процесс дампа раздела выглядит следующим образом. Подключите смартфон в режиме отладки и выполните команду для определения прав доступа к блочным устройствам. В современных версиях Android пути к разделам могут отличаться, поэтому важно найти корректный symlink.</p>
+
+<pre><code>adb shell "ls -l /dev/block/bootdevice/by-name/boot"</code></pre>
+
+<p>Получив путь к устройству, выполните команду чтения данных с раздела и сохранения их в файл на компьютере. Убедитесь, что у вас достаточно свободного места на диске, хотя размер образа обычно не превышает 64 МБ.</p>
+
+<pre><code>adb pull /dev/block/bootdevice/by-name/boot boot_backup.img</code></pre>
+
+<details class="pb-accordion"><summary>Альтернативный способ поиска раздела</summary><div class="pb-accordion-body"><p> Если команда выше не сработала, попробуйте использовать утилиту fdisk в shell: cat /proc/partitions, чтобы найти номер раздела boot, а затем использовать dd для копирования.</p></div></details>
+
+<p>Если вы планируете использовать готовый модифицированный образ от сообщества разработчиков, убедитесь, что он предназначен именно для вашей модели устройства. Прошивка образа от <em>Xiaomi</em> на смартфон <em>OnePlus</em> гарантированно приведет к «окирпичиванию» гаджета из-за различий в аппаратной архитектуре.</p>
+
+<h2 id="перевод-устройства-в-режим-fastboot">Перевод устройства в режим Fastboot</h2>
+
+<p>Режим <strong>Fastboot</strong> (или Bootloader mode) позволяет отправлять низкоуровневые команды непосредственно в загрузчик устройства, минуя операционную систему. Это единственно верный способ записать новый образ в раздел boot, так как в работающей системе этот раздел обычно заблокирован для записи.</p>
+
+<p>Существует два основных способа входа в этот режим. Первый — аппаратный: выключите смартфон, затем зажмите комбинацию клавиш (чаще всего <code>Громкость Вниз</code> + <code>Питание</code>) до появления логотипа загрузчика или надписи Fastboot. Второй способ — программный, через команду ADB, если телефон включен и отладка активна.</p>
+
+<pre><code>adb reboot bootloader</code></pre>
+
+<p>После перезагрузки проверьте подключение устройства в режиме загрузчика. Введите команду <code>fastboot devices</code> в командной строке ПК. Если в ответ вы увидите серийный номер устройства, значит связь установлена корректно и можно приступать к прошивке.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Состояние индикатора</th>
+<th>Значение</th>
+<th>Действие</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Серийный номер</td>
+<td>Устройство подключено</td>
+<td>Можно выполнять команды</td>
+</tr>
+<tr>
+<td>Нет ответа</td>
+<td>Проблема с драйверами</td>
+<td>Переустановить драйверы</td>
+</tr>
+<tr>
+<td>Waiting for device</td>
+<td>Телефон не в режиме Fastboot</td>
+<td>Перезагрузить в Bootloader</td>
+</tr>
+<tr>
+<td>Unauthorized</td>
+<td>Нет подтверждения отладки</td>
+<td>Подтвердить на экране</td>
+</tr>
+</tbody>
+</table></div>
+
+<div class="pb-poll" id="poll-0aa95ece"><div class="pb-poll-question">📊 Какой способ входа в Fastboot вы используете чаще?</div><div class="pb-poll-option" data-poll="0aa95ece" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Кнопками на выключенном телефоне</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0aa95ece" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Командой adb reboot bootloader</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0aa95ece" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Через приложение для перезагрузки</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0aa95ece" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Случайно при прошивке</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="процесс-установки-bootimg-через-fastboot">Процесс установки boot.img через Fastboot</h2>
+
+<p>Основной этап процедуры — запись нового файла в раздел памяти. Команда <code>fastboot flash</code> является стандартным инструментом для этой задачи. Она полностью перезаписывает содержимое целевого раздела данными из указанного файла.</p>
+
+<p>Перед выполнением записи настоятельно рекомендуется разблокировать загрузчик, если это еще не сделано. На многих устройствах (например, <em>Pixel</em> или <em>OnePlus</em>) попытка прошивки на заблокированный bootloader приведет к ошибке подписи и отказу в выполнении операции.</p>
+
+<pre><code>fastboot flash boot boot_custom.img</code></pre>
+
+<p>Важно следить за прогрессом выполнения команды. Процесс не должен прерываться. Если в консоли появилось сообщение <code>finished. total time: x.xxx</code>, значит операция прошла успешно. После этого необходимо перезагрузить устройство для применения изменений.</p>
+
+<pre><code>fastboot reboot</code></pre>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Контрольный список перед прошивкой</h4><label class="check-item"><input type="checkbox"><span>Файл boot.img имеет правильное расширение</span></label><label class="check-item"><input type="checkbox"><span>Устройство заряжено минимум на 50%</span></label><label class="check-item"><input type="checkbox"><span>Загрузчик разблокирован</span></label><label class="check-item"><input type="checkbox"><span>Резервная копия оригинального boot.img создана</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>В некоторых случаях, особенно на устройствах с динамическими разделами (A/B partition scheme), команда может отличаться. Вместо прямого указания раздела может потребоваться использование слотов. Например, команда <code>fastboot flash boot_a boot.img</code> запишет образ в активный слот A.</p>
+
+<h2 id="особенности-работы-с-устройствами-ab">Особенности работы с устройствами A/B</h2>
+
+<p>Современные смартфоны часто используют схему обновлений <strong>Seamless Updates</strong>, предполагающую наличие двух наборов системных разделов (Slot A и Slot B). Это позволяет обновлять систему в фоне, не прерывая работу пользователя. При прошивке <code>boot.img</code> на таких устройствах нужно учитывать, в какой слот производится запись.</p>
+
+<p>Чтобы определить активный слот, используйте команду <code>fastboot getvar current-slot</code>. Если вы прошиваете образ вручную, логичнее всего записывать его в текущий активный слот, чтобы устройство загрузилось с новыми изменениями немедленно.</p>
+
+<blockquote>
+<p>⚠️ Внимание: На устройствах с A/B разделами команда flash без указания слота может записать данные только в активный слот, но в некоторых кастомных рекавери поведение может отличаться.</p>
+</blockquote>
+
+<p>Если после прошивки устройство не загружается, можно попробовать переключиться на другой слот. Команда <code>fastboot --set-active=other</code> изменит приоритет загрузки на альтернативный раздел, что может вернуть телефон к жизни, если второй слот содержит рабочую систему.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Устройства с A/B разделами требуют внимательного отношения к выбору активного слота, иначе прошивка может оказаться не примененной после перезагрузки.</p></aside>
+
+<h2 id="диагностика-и-решение-распространенных-ошибок">Диагностика и решение распространенных ошибок</h2>
+
+<p>Наиболее частой проблемой является ошибка <code>(bootloader) Device is locked</code>. Она означает, что загрузчик заблокирован производителем и не принимает неподписанные образы. Решение заключается в разблокировке через команду <code>fastboot oem unlock</code> или <code>fastboot flashing unlock</code>, что влечет за собой полный сброс данных.</p>
+
+<p>Другая распространенная ошибка — <code>FAILED (remote: partition does not exist)</code>. Это происходит, если имя раздела указано неверно. На разных устройствах раздел может называться <code>boot</code>, <code>kernel</code> или иметь префикс. Всегда сверяйтесь с технической документацией к конкретному чипсету.</p>
+
+<p>Если телефон уходит в циклическую перезагрузку (bootloop) после установки образа, необходимо вернуться в режим Fastboot и восстановить оригинальный <code>boot_backup.img</code>, который мы создавали на этапе подготовки. Это вернет устройство в исходное состояние.</p>
+
+<pre><code>fastboot flash boot boot_backup.img
+<p>fastboot reboot</code></pre></p>
+
+<details class="pb-accordion"><summary>Что делать если компьютер не видит телефон в Fastboot?</summary><div class="pb-accordion-body"><p>Попробуйте другой USB-порт, желательно USB 2.0. Проверьте диспетчер устройств Windows: если устройство отображается как "Unknown Device", обновите драйвер вручную, указав путь к папке с драйверами Android Bootloader Interface.</p></div></details>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли установить boot.img без разблокировки загрузчика?</summary>
+<p>Нет, в большинстве случаев это невозможно. Заблокированный загрузчик проверяет цифровую подпись образа. Неофициальный или модифицированный boot.img не имеет валидной подписи производителя, поэтому запись будет отклонена.</p>
+</details>
+
+<details>
+<summary>В чем разница между fastboot flash и fastboot boot?</summary>
+<p>Команда <code>flash</code> записывает образ в постоянную память устройства, сохраняя его после перезагрузки. Команда <code>boot</code> загружает образ временно в оперативную память для тестирования; после перезагрузки телефон вернется к старой системе.</p>
+</details>
+
+<details>
+<summary>Что такое recovery.img и можно ли его прошить так же?</summary>
+<p>Да, <code>recovery.img</code> прошивается аналогичной командой <code>fastboot flash recovery recovery.img</code>. Этот образ содержит среду восстановления для установки обновлений или сброса настроек.</p>
+</details>
+
+<details>
+<summary>Безопасно ли прошивать boot.img от другой версии Android?</summary>
+<p>Крайне не рекомендуется. Ядро должно соответствовать версии системы и драйверам оборудования. Несовместимость версий может привести к неработоспособности Wi-Fi, звука или полному отказу системы загружаться.</p>
+</details>
+
+<details>
+<summary>Как узнать, какой именно boot.img нужен для моего телефона?</summary>
+<summary>Необходимо скачать полный образ прошивки (stock ROM), предназначенный строго для вашей модели и версии ПО. Из этого архива извлекается файл boot.img, который является эталонным для вашего устройства.</summary>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/smartfony-i-planshety/c/ch/chto-delat-esli-na-telefone-propal-zvuk-a-v-naushnikakh-est.html" class="pb-related-card">
+                <span class="pb-related-title">Пропал звук на телефоне, но в наушниках есть: причины и решение</span>
+                <span class="pb-related-desc">Звук на телефоне не работает, а в наушниках всё нормально? Подробная инструкция по диагностике: от ч</span>
+            </a><a href="/smartfony-i-planshety/a/an/analogi-3utools-dlya-android.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшие аналоги 3uTools для Android: полный обзор программ</span>
+                <span class="pb-related-desc">Ищете аналог 3uTools для Android? Обзор топовых утилит для прошивки, диагностики и управления телефо</span>
+            </a><a href="/smartfony-i-planshety/p/po/pochemu-ajfon-vnezapno-vyklyuchaetsya.html" class="pb-related-card">
+                <span class="pb-related-title">Почему iPhone внезапно выключается: 5 главных причин и решения</span>
+                <span class="pb-related-desc">iPhone выключается без предупреждения? Разбираем реальные причины: от севшего аккумулятора до програ</span>
+            </a><a href="/smartfony-i-planshety/k/ka/kak-podklyuchit-internet-na-planshete-bez-sim-karty.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить интернет на планшете без сим карты: 5 рабочих способов</span>
+                <span class="pb-related-desc">Полное руководство: настройка Wi-Fi, tethering, eSIM и сторонние сервисы для планшетов без SIM-слота</span>
+            </a><a href="/smartfony-i-planshety/k/ka/kak-ustanovit-ekran-na-telefon-v-domashnikh-usloviyakh.html" class="pb-related-card">
+                <span class="pb-related-title">Как заменить экран на телефоне дома: полная инструкция</span>
+                <span class="pb-related-desc">Пошаговое руководство по замене дисплея смартфона своими руками. Выбор запчастей, инструменты, риски</span>
+            </a><a href="/smartfony-i-planshety/b/be/besplatnoe-prilozhenie-s-muzykoj-na-ajfon.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшие бесплатные приложения с музыкой на iPhone: обзор 2026</span>
+                <span class="pb-related-desc">Полный гайд по выбору бесплатных плееров и стриминга для iPhone. Сравнение Spotify, Яндекс Музыки, S</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

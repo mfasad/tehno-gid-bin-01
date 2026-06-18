@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Физика в компьютерных играх: от базовой математики до реалистичного симулятора — Техно Гид</title>
+    <meta name="description" content="Разбираем, как работают физические движки в играх. Raycast,, жидкости и разрушаемость. Как создатели игр имитируют законы вселенной.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/igry-i-razvlecheniya/f/fi/fizika-v-kompyuternykh-igrakh.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Физика в компьютерных играх: от базовой математики до реалистичного симулятора">
+    <meta property="og:description" content="Разбираем, как работают физические движки в играх. Raycast,, жидкости и разрушаемость. Как создатели игр имитируют законы вселенной.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/igry-i-razvlecheniya/">Игры и Развлечения</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Физика в компьютерных играх: от базовой математики до реалистичного симулятора</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#основы-физического-движка-и-методы-расчета">Основы физического движка и методы расчета</a></li><li><a href="#коллизии-и-обнаружение-столкновений">Коллизии и обнаружение столкновений</a></li><li><a href="#динамика-твердых-тел-и-поведение-объектов">Динамика твердых тел и поведение объектов</a></li><li><a href="#симуляция-мягких-тел-жидкостей-и-тканей">Симуляция мягких тел, жидкостей и тканей</a></li><li><a href="#разрушаемость-окружения-и-эффекты-частиц">Разрушаемость окружения и эффекты частиц</a></li><li><a href="#оптимизация-и-аппаратное-ускорение">Оптимизация и аппаратное ускорение</a></li><li><a href="#будущее-физики-в-игровых-вселенных">Будущее физики в игровых вселенных</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/igry-i-razvlecheniya/k/ki/kinopoisk-ru-pult-igra-vvesti-kod.html">Кинопоиск Пульт: как ввести код и подключить игру</a></li><li><a href="/igry-i-razvlecheniya/s/sk/skajrim-vmesto-bukv-kvadratiki-v-igre-kak-ispravit.html">Скайрим вместо букв квадратики: как исправить проблему с шрифтами</a></li><li><a href="/igry-i-razvlecheniya/g/gt/gta-na-android-4pda.html">Скачать GTA на Android 4PDA: Обзор версий, установка и настройки</a></li><li><a href="/igry-i-razvlecheniya/k/ka/kak-podklyuchit-dendi-k-monitoru.html">Как подключить Денди к современному монитору: HDMI, VGA и ТВ-картриджи</a></li><li><a href="/igry-i-razvlecheniya/k/ka/kak-podklyuchit-zhestkij-disk-k-ps4.html">Как подключить жесткий диск к PS4: Инструкция по USB и HDD</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Физика в компьютерных играх: Иллюзия реальности</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#основы-физического-движка-и-методы-расчета">Основы физического движка и методы расчета</a></li><li><a href="#коллизии-и-обнаружение-столкновений">Коллизии и обнаружение столкновений</a></li><li><a href="#динамика-твердых-тел-и-поведение-объектов">Динамика твердых тел и поведение объектов</a></li><li><a href="#симуляция-мягких-тел-жидкостей-и-тканей">Симуляция мягких тел, жидкостей и тканей</a></li><li><a href="#разрушаемость-окружения-и-эффекты-частиц">Разрушаемость окружения и эффекты частиц</a></li><li><a href="#оптимизация-и-аппаратное-ускорение">Оптимизация и аппаратное ускорение</a></li><li><a href="#будущее-физики-в-игровых-вселенных">Будущее физики в игровых вселенных</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Когда мы запускаем любимый шутер от первого лица или проходим сложную головоломку с гравитацией, мы часто даже не задумываемся о том, какой огромный пласт математических вычислений происходит за кадром. <strong>Физический движок</strong> — это невидимый архитектор игрового мира, который заставляет предметы падать, сталкиваться, катиться и разрушаться так, как это происходит в реальной жизни. Без него игровая вселенная была бы просто набором статичных картинок, где персонажи скользят по полу, а пули останавливаются в воздухе.</p>
+
+<p>Современные игры эволюционировали от простых <code>Axis-Aligned Bounding Box</code> до сложных симуляций жидкостей и газов. Разработчики используют методы <strong>интегрирования Эйлера</strong> и <strong>метод Рунге-Кутты</strong> для расчета траекторий, чтобы каждый объект вел себя предсказуемо для игрока, но при этом сохранял элемент непредсказуемости, необходимый для геймплея. Понимание того, как работает <em>Unity</em> или <em>Unreal Engine</em> на уровне физики, помогает не только разработчикам, но и обычным игрокам лучше чувствовать механику игры.</p>
+
+<h2 id="основы-физического-движка-и-методы-расчета">Основы физического движка и методы расчета</h2>
+<p>В основе любой компьютерной физики лежит система уравнений, описывающих движение тел. Движок должен постоянно рассчитывать силы, действующие на каждый объект: гравитацию, трение, сопротивление воздуха и импульс от ударов. Для этого используются сложные алгоритмы, которые обновляют координаты объектов десятки, а иногда и сотни раз в секунду. Если вы видите плавное падение кирпича, за этим стоит <strong>цикл симуляции</strong>, который обновляет состояние мира.</p>
+
+<p>Ключевым элементом является дискретизация времени. Вместо непрерывного течения времени компьютер разбивает его на крошечные интервалы, называемые <code>Time Step</code>. В каждом таком шаге движок вычисляет новые позиции и скорости. Чем меньше шаг, тем точнее симуляция, но и тем выше нагрузка на процессор. Часто используется техника <strong>фиксированного шага</strong>, чтобы избежать рассинхронизации между скоростью отрисовки кадров и скоростью вычислений физики.</p>
+
+<p>Многие новички ошибочно полагают, что физика в играх — это просто набор скриптов. На самом деле это жесткая математическая модель, оптимизированная для работы в реальном времени. Разработчики жертвуют математической идеальностью ради производительности, используя упрощенные модели столкновений. Это позволяет играм работать даже на слабых <em>видеокартах</em> и процессорах.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Физический движок не имитирует реальность один в один, а создает оптимизированную математическую модель, которая выглядит правдоподобно для игрока и не перегружает железо.</p></aside>
+
+<h2 id="коллизии-и-обнаружение-столкновений">Коллизии и обнаружение столкновений</h2>
+<p>Самая важная задача любого физического движка — понять, когда два объекта пересекаются. Этот процесс называется <strong>обнаружением столкновений</strong> (Collision Detection). Если бы компьютер проверял пересечение каждой полигональной грани каждого объекта, игра бы зависала на секунду. Поэтому используются иерархические структуры и упрощенные формы.</p>
+
+<p>Первый этап — это широкая фаза (Broad Phase), где движок быстро отсекает объекты, которые явно находятся далеко друг от друга. Для этого часто используется структура данных <em>Octree</em> или <strong>BSP-дерево</strong>. На этом этапе проверяются простые геометрические фигуры, окружающие сложный объект, такие как <code>Sphere</code> (сфера) или <code>Box</code> (коробка). Только если эти простые формы пересекаются, движок переходит к узкой фазе.</p>
+
+<p>Узкая фаза (Narrow Phase) — это точный расчет пересечений. Здесь используются сложные алгоритмы, такие как <strong>GJK (Gilbert-Johnson-Keerthi)</strong> или <strong>Separating Axis Theorem</strong>. Именно здесь рассчитывается точка контакта, вектор нормали и глубина проникновения. Эти данные необходимы для ответа движка: как отскочит объект, какой звук воспроизведется и какая частица вылетит при ударе.</p>
+
+<blockquote>⚠️ Внимание: Ошибки в расчетах коллизий, известные как"tunneling", могут происходить, когда объект движется слишком быстро за один <code>Time Step</code> и проскакивает сквозь стену без регистрации столкновения. Разработчики решают это методом непрерывной проверки столкновений (CCD).</blockquote>
+
+<details class="pb-accordion"><summary>Что такое CCD (Continuous Collision Detection)?</summary><div class="pb-accordion-body"><p>Это метод, при котором движок проверяет не только начальную и конечную точку движения объекта за кадр, но и весь путь между ними, предотвращая прохождение сквозь препятствия на высокой скорости.</p></div></details>
+
+<h2 id="динамика-твердых-тел-и-поведение-объектов">Динамика твердых тел и поведение объектов</h2>
+<p>После того как столкновение обнаружено, нужно рассчитать реакцию. <strong>Динамика твердых тел</strong> (Rigid Body Dynamics) отвечает за движение объектов, которые не деформируются. Это касается большинства предметов в играх: ящиков, машин, персонажей (в их скелетной части). Движок применяет законы Ньютона, рассчитывая ускорение, силу и момент инерции.</p>
+
+<p>В играх часто используется <strong>импульсная динамика</strong>. Вместо того чтобы решать дифференциальные уравнения в реальном времени, движок мгновенно меняет скорость объектов при ударе, используя понятие импульса. Это позволяет избежать"разрывов" в физике и делает реакцию мгновенной. Однако, если массы объектов сильно различаются, могут возникнуть артефакты, когда легкий предмет отбрасывает тяжелый на огромную скорость.</p>
+
+<p>Для управления объектами часто используются <code>RigidBody</code> компоненты, которые позволяют задавать гравитацию, трение и упругость. В <em>Unreal Engine</em> это настраивается через <code>Physics Material</code>. Вы можете сделать поверхность скользкой, как лед, или шершавой, как асфальт. Эти параметры критически важны для геймплея гоночных симуляторов или платформеров.</p>
+
+<div class="pb-poll" id="poll-9ac582df"><div class="pb-poll-question">📊 Какой аспект физики в играх вас интересует больше всего?</div><div class="pb-poll-option" data-poll="9ac582df" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Реалистичное разрушение</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="9ac582df" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Физика жидкостей</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="9ac582df" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Траектории полета снарядов</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="9ac582df" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Физика одежды и волос</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="симуляция-мягких-тел-жидкостей-и-тканей">Симуляция мягких тел, жидкостей и тканей</h2>
+<p>Если твердые тела — это скелет физики, то мягкие тела (Soft Body Dynamics) и жидкости — это её плоть и кровь. Симуляция <strong>деформируемых объектов</strong> требует огромных вычислительных ресурсов. Вместо одной точки центра масс используется система множества вершин, соединенных пружинами или жесткими связями.</p>
+
+<p>Жидкости в играх рассчитываются с помощью методов <strong>Smoothed Particle Hydrodynamics (SPH)</strong> или <strong>Eulerian Grid</strong>. В методе частиц каждая капля воды — это отдельный объект, взаимодействующий с соседями. Это дает очень красивый результат, но работает медленно. Решетки же делят пространство на клетки и рассчитывают плотность и скорость потока в каждой ячейке, что быстрее, но менее детализировано.</p>
+
+<p>Особое место занимает симуляция тканей и одежды. Здесь используется сложная математика для расчета натяжения нитей, складок и взаимодействия с ветром. Современные движки, такие как <em>NVIDIA Flex</em> или <em>Massive</em>, позволяют создавать реалистичные флаги, плащи и одеяла, которые реагируют на каждое движение персонажа. Это не просто анимация, а полноценная физическая симуляция в реальном времени.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если вы разработчик и сталкиваетесь с"взрывами" мягких тел, попробуйте увеличить количество подшагов (substeps) симуляции или упростить сетку вершин объекта.</p></aside>
+
+<h2 id="разрушаемость-окружения-и-эффекты-частиц">Разрушаемость окружения и эффекты частиц</h2>
+<p>Разрушаемость — это"вишенка на торте" современной физики. В старых играх разрушения были заранее анимированы: стена падала по одному сценарию. Сегодня используется <strong>процедурная разрушаемость</strong>. Стена разбивается на осколки разной формы и размера в зависимости от силы и места удара. Для этого используются алгоритмы Voronoi Diagrams, которые разбивают объект на случайные полигоны.</p>
+
+<p>Каждый осколок становится отдельным физическим объектом с собственной массой и инерцией. Это создает эффект <strong>хаоса</strong>, который невозможно предсказать заранее. Игрок чувствует реальное влияние своих действий на мир. Однако, если слишком много объектов будет летать одновременно, производительность упадет, и потребуется система LOD (Level of Detail) для физики.</p>
+
+<p>Эффекты частиц часто сочетаются с физикой твердых тел. Искры, пепел, дым — все это управляется физическими параметрами. Ветер толкает дым, искры падают вниз и взаимодействуют с поверхностью. <strong>Системы частиц</strong> (Particle Systems) в <em>Unity</em> или <em>Unreal Engine</em> позволяют создавать сложные визуальные эффекты, которые подчиняются законам физики, добавляя глубину и реализм сцене.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Тип физики</th>
+<th>Основной метод расчета</th>
+<th>Примеры использования в играх</th>
+<th>Нагрузка на CPU</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Твердые тела</td>
+<td>Импульсная динамика, GJK</td>
+<td>Машины в гонках, ящики в шутерах</td>
+<td>Средняя</td>
+</tr>
+<tr>
+<td>Жидкости</td>
+<td>SPH, Grid-based</td>
+<td>Океаны, реки, магические заклинания</td>
+<td>Высокая</td>
+</tr>
+<tr>
+<td>Мягкие тела</td>
+<td>Сеточная деформация, пружины</td>
+<td>Одежда, флаги, взрывчатка</td>
+<td>Очень высокая</td>
+</tr>
+<tr>
+<td>Ткани</td>
+<td>Система вершин и ограничений</td>
+<td>Паруса, занавески, плащи</td>
+<td>Средняя/Высокая</td>
+</tr>
+</tbody>
+</table></div>
+
+<blockquote>⚠️ Внимание: Чрезмерное использование физики частиц и разрушаемости может привести к падению FPS ниже приемлемого уровня. Оптимизация требует использования статических мешей для неактивных объектов и отключения физики для объектов, находящихся вне поля зрения камеры.</blockquote>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Чек-лист оптимизации физики в игре</h4><label class="check-item"><input type="checkbox"><span>Проверьте количество активных Rigidbody</span></label><label class="check-item"><input type="checkbox"><span>Ограничьте количество частиц в одной системе</span></label><label class="check-item"><input type="checkbox"><span>Используйте LOD для физики</span></label><label class="check-item"><input type="checkbox"><span>Отключите CCD для медленных объектов</span></label><label class="check-item"><input type="checkbox"><span>Настройте слои коллизий</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="оптимизация-и-аппаратное-ускорение">Оптимизация и аппаратное ускорение</h2>
+<p>Сложные физические расчеты требуют огромной мощности. Современные процессоры имеют много ядер, но физические движки часто ограничены одним или несколькими потоками. Для решения этой проблемы используются технологии <strong>аппаратного ускорения</strong>. NVIDIA PhysX, например, может переносить вычисления на видеокарту (GPU), освобождая процессор для логики игры и ИИ.</p>
+
+<p>Важно понимать разницу между CPU и GPU физикой. GPU обладает тысячами потоков, что идеально подходит для параллельных задач, таких как расчет поведения тысяч частиц или жидкости. Однако, для сложных взаимодействий твердых тел, где важна строгая последовательность, CPU все еще часто эффективнее. Гибридный подход позволяет использовать лучшие стороны обоих типов оборудования.</p>
+
+<p>Технологии вроде <em>DLSS</em> или <strong>FidelityFX</strong> также косвенно влияют на физику, освобождая ресурсы для более сложных симуляций, повышая разрешение рендеринга за счет апскейлинга. Но стоит помнить: <mark>физика не масштабируется так же легко, как графика, и требует отдельной настройки под конкретное железо</mark>.</p>
+
+<details class="pb-accordion"><summary>Как работает NVIDIA PhysX?</summary><div class="pb-accordion-body"><p>Это middleware, который позволяет разработчикам интегрировать продвинутую физику в свои игры. Он поддерживает как CPU, так и GPU обработку, позволяя реализовать разрушаемость окружения, сложные эффекты дыма и реалистичное поведение жидкостей.</p></div></details>
+
+<h2 id="будущее-физики-в-игровых-вселенных">Будущее физики в игровых вселенных</h2>
+<p>Искусственный интеллект начинает играть роль в создании физики. Нейросети могут обучаться на реальных данных и предсказывать поведение объектов, экономя вычислительные ресурсы. <strong>Machine Learning</strong> позволяет создавать более естественные анимации персонажей, которые реагируют на неровности поверхности без предварительной настройки аниматорами.</p>
+
+<p>Развитие трассировки лучей (Ray Tracing) меняет подход к свету и его взаимодействию с физическими объектами. Свет теперь не просто текстура, а физические частицы, которые отражаются и преломляются. Это открывает новые возможности для симуляции оптических эффектов, которые напрямую зависят от физических свойств материалов.</p>
+
+<p>В будущем мы увидим полную <strong>симуляцию микромира</strong> в играх. Химические реакции, температура, деградация материалов — все это станет частью игрового процесса. Игра перестанет быть просто набором правил и станет настоящей виртуальной реальностью, подчиняющейся законам природы. Это позволит создавать симуляторы нового поколения для обучения и развлечений.</p>
+
+<blockquote>⚠️ Внимание: Важно различать графическую симуляцию (рендеринг) и физическую симуляцию. Высокое качество картинки не гарантирует точность физики. Игрок должен обращать внимание на настройки движка и используемые технологии, а не только на разрешение.</blockquote>
+
+<h2 id="часто-задаваемые-вопросы">Часто задаваемые вопросы</h2>
+
+<details>
+<summary>В чем разница между физикой и анимацией?</summary>
+<p>Анимация — это заранее записанная последовательность кадров, которая воспроизводится без изменений. Физика — это динамический процесс расчета положения объектов в реальном времени на основе сил и законов движения. Анимация гарантирует красоту, физика — непредсказуемость.</p>
+</details>
+
+<details>
+<summary>Почему в некоторых играх физика"глючит" и предметы проваливаются сквозь пол?</summary>
+<p>Это явление называется"tunneling" или"tunneling effect". Оно возникает, когда объект движется слишком быстро за один кадр и проскакивает сквозь препятствие, не успевая зарегистрировать столкновение. Решается включением непрерывной проверки столкновений (CCD) или уменьшением шага времени симуляции.</p>
+</details>
+
+<details>
+<summary>Можно ли запустить сложные физические симуляции на слабых ПК?</summary>
+<p>Сложные симуляции, такие как жидкости или тысячи частиц, требуют значительных ресурсов. Однако, современные движки имеют настройки качества, которые позволяют отключать тяжелые эффекты или упрощать их, делая игру играбельной даже на слабых системах. Главное — баланс между визуалом и производительностью.</p>
+</details>
+
+<details>
+<summary>Как разработчики создают реалистичное разрушение зданий?</summary>
+<p>Для этого используется процедурная генерация сетки (Voronoi), которая разбивает объект на множество осколков перед началом игры. При ударе эти осколки становятся активными физическими объектами. Также применяются алгоритмы, которые определяют направление разрушения в зависимости от места и силы удара.</p>
+</details>
+
+<details>
+<summary>Что такое"жесткие связи" в физике тканей?</summary>
+<p>Жесткие связи — это виртуальные пружины или стержни, соединяющие вершины сетки ткани. Они ограничивают расстояние между вершинами, не давая ткани растягиваться бесконечно. Чем жестче связи, тем более плотной кажется ткань; чем мягче — тем она более эластична.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/igry-i-razvlecheniya/k/ki/kinopoisk-ru-pult-igra-vvesti-kod.html" class="pb-related-card">
+                <span class="pb-related-title">Кинопоиск Пульт: как ввести код и подключить игру</span>
+                <span class="pb-related-desc">Полная инструкция по вводу кода в приложении Кинопоиск Пульт для запуска игр. Решаем проблемы с подк</span>
+            </a><a href="/igry-i-razvlecheniya/s/sk/skajrim-vmesto-bukv-kvadratiki-v-igre-kak-ispravit.html" class="pb-related-card">
+                <span class="pb-related-title">Скайрим вместо букв квадратики: как исправить проблему с шрифтами</span>
+                <span class="pb-related-desc">В игре Skyrim вместо букв появляются квадраты? Полное руководство по исправлению шрифтов. Настройка </span>
+            </a><a href="/igry-i-razvlecheniya/g/gt/gta-na-android-4pda.html" class="pb-related-card">
+                <span class="pb-related-title">Скачать GTA на Android 4PDA: Обзор версий, установка и настройки</span>
+                <span class="pb-related-desc">Полный гайд по установке Grand Theft Auto на Android через 4PDA. Инструкция по скачиванию APK, OBB, </span>
+            </a><a href="/igry-i-razvlecheniya/k/ka/kak-podklyuchit-dendi-k-monitoru.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить Денди к современному монитору: HDMI, VGA и ТВ-картриджи</span>
+                <span class="pb-related-desc">Пошаговая инструкция по подключению консоли Dendy к LCD/LED мониторам. Обзор переходников, конвертер</span>
+            </a><a href="/igry-i-razvlecheniya/k/ka/kak-podklyuchit-zhestkij-disk-k-ps4.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить жесткий диск к PS4: Инструкция по USB и HDD</span>
+                <span class="pb-related-desc">Полное руководство: как подключить внешний жесткий диск к PlayStation 4. Настройка хранилища, формат</span>
+            </a><a href="/igry-i-razvlecheniya/k/ki/kino-onlajn-poslednij-bogatyr.html" class="pb-related-card">
+                <span class="pb-related-title">Фильм Последний богатырь: смотреть онлайн, качество и платформы</span>
+                <span class="pb-related-desc">Где смотреть трилогию Последний богатырь онлайн. Обзор качества, платформ, сюжета и технических дета</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

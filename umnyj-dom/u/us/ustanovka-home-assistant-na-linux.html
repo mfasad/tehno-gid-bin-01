@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Установка Home Assistant на Linux: полное руководство по развертыванию — Техно Гид</title>
+    <meta name="description" content="Пошаговая инструкция по установке Home Assistant OS на Linux. Настройка виртуальной машины, выбор образа, установка и базовая конфигурация умного дома.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/u/us/ustanovka-home-assistant-na-linux.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Установка Home Assistant на Linux: полное руководство по развертыванию">
+    <meta property="og:description" content="Пошаговая инструкция по установке Home Assistant OS на Linux. Настройка виртуальной машины, выбор образа, установка и базовая конфигурация умного дома.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Установка Home Assistant на Linux: полное руководство по развертыванию</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-экосистему-автоматизации">Введение в экосистему автоматизации</a></li><li><a href="#выбор-оптимального-метода-развертывания">Выбор оптимального метода развертывания</a></li><li><a href="#подготовка-инфраструктуры-и-создание-виртуальной-машины">Подготовка инфраструктуры и создание виртуальной машины</a></li><li><a href="#установка-home-assistant-supervised-на-голый-сервер">Установка Home Assistant Supervised на "голый" сервер</a></li><li><a href="#настройка-сети-и-проброс-устройств">Настройка сети и проброс устройств</a></li><li><a href="#безопасность-и-резервное-копирование">Безопасность и резервное копирование</a></li><li><a href="#частые-вопросы-и-решение-проблем">Частые вопросы и решение проблем</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/o/ot/otkryt-vorota-s-telefona-vmesto-pulta.html">Как открыть ворота с телефона вместо пульта: простая инструкция</a></li><li><a href="/umnyj-dom/m/me/messendzher-max-v-home-assistant.html">Max Messenger в Home Assistant: полная настройка и интеграция</a></li><li><a href="/umnyj-dom/z/zi/zigbi-ustrojstva-dlya-umnogo-doma.html">ZigBee устройства для умного дома: выбор, настройка и преимущества</a></li><li><a href="/umnyj-dom/u/um/umnaya-kolonka-plyusy-i-minusy.html">Умная колонка: плюсы и минусы перед покупкой в 2026</a></li><li><a href="/umnyj-dom/k/ka/kak-nazyvaetsya-vytyanutyj-kvadrat.html">Как называется вытянутый квадрат: Терминология и применение форм</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Полное руководство по установке Home Assistant на Linux</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-экосистему-автоматизации">Введение в экосистему автоматизации</a></li><li><a href="#выбор-оптимального-метода-развертывания">Выбор оптимального метода развертывания</a></li><li><a href="#подготовка-инфраструктуры-и-создание-виртуальной-машины">Подготовка инфраструктуры и создание виртуальной машины</a></li><li><a href="#установка-home-assistant-supervised-на-голый-сервер">Установка Home Assistant Supervised на "голый" сервер</a></li><li><a href="#настройка-сети-и-проброс-устройств">Настройка сети и проброс устройств</a></li><li><a href="#безопасность-и-резервное-копирование">Безопасность и резервное копирование</a></li><li><a href="#частые-вопросы-и-решение-проблем">Частые вопросы и решение проблем</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-экосистему-автоматизации">Введение в экосистему автоматизации</h2>
+<p>Установка <strong>Home Assistant</strong> на <em>Linux</em> становится все более популярным решением для энтузиастов, желающих получить полный контроль над своим умным домом без зависимости от облачных сервисов. В отличие от установок на Raspberry Pi, развертывание на полноценном сервере с операционной системой <em>Ubuntu</em> или <em>Debian</em> открывает доступ к значительно большим вычислительным ресурсам.</p>
+<p>Вы получаете возможность запускать сложные интеграции, тяжелые интеграции с искусственным интеллектом и хранить огромные базы данных истории устройств. Это решение идеально подходит для тех, кто уже имеет выделенный сервер или мощный ПК, который простаивает большую часть времени. <mark>Ключевым отличием установки на Linux является необходимость самостоятельной настройки окружения, что дает гибкость, но требует базовых знаний командной строки.</mark></p>
+
+<h2 id="выбор-оптимального-метода-развертывания">Выбор оптимального метода развертывания</h2>
+<p>Перед началом работы необходимо определиться со способом установки, так как от этого зависит сложность настройки и стабильность работы системы. Существует три основных подхода, каждый из которых имеет свои преимущества и недостатки для различных сценариев использования.</p>
+<p>Первый вариант — это <strong>Home Assistant Supervised</strong>, который устанавливается поверх существующей дистрибуции Linux. Этот метод позволяет использовать железо напрямую, но требует строгого соблюдения требований к системе, иначе обновления могут сломать среду. Второй вариант — запуск в виде <em>Docker-контейнера</em>, который является самым легковесным, но лишает вас доступа к нативным функциям, таким как Zigbee через USB-ключи без сложной проброски.</p>
+<p>Третий и наиболее рекомендуемый метод для новичков и экспертов alike — это использование <strong>виртуальной машины</strong>. В этом случае сама операционная система <em>Home Assistant OS</em> работает внутри изолированного окружения, такого как <em>Proxmox</em> или <em>VirtualBox</em>. Это обеспечивает максимальную надежность и простоту резервного копирования всей системы целиком.</p>
+
+<blockquote>⚠️ Внимание: Если вы планируете использовать метод Supervised на Debian или Ubuntu, убедитесь, что вы не используете модифицированные версии ОС или сторонние репозитории, так как это может нарушить целостность сборки и привести к невозможности обновлений.</blockquote>
+
+<div class="pb-poll" id="poll-b7e66548"><div class="pb-poll-question">📊 Какой метод установки вы предпочитаете?</div><div class="pb-poll-option" data-poll="b7e66548" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Home Assistant OS (Виртуальная машина)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="b7e66548" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Home Assistant Supervised</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="b7e66548" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Docker Container</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="b7e66548" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Я еще не выбрал</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="подготовка-инфраструктуры-и-создание-виртуальной-машины">Подготовка инфраструктуры и создание виртуальной машины</h2>
+<p>Если вы выбрали путь виртуализации, первым шагом станет загрузка образа <em>Home Assistant OS</em> в формате <code>qcow2</code> (для KVM/QEMU) или <code>ova</code> (для VMware). Процесс подготовки требует скачивания файла с официального сайта и его конвертации при необходимости в формат, поддерживаемый вашим гипервизором.</p>
+<p>При создании новой виртуальной машины в <em>Proxmox</em> или <em>VirtualBox</em> важно выделить достаточное количество ресурсов. Минимально рекомендуется выделить 2 ядра CPU и 4 ГБ оперативной памяти, чтобы система работала плавно даже при активной записи логов. Дисковое пространство должно составлять не менее 32 ГБ, так как базы данных и дополнения быстро занимают место.</p>
+<p>Сетевые настройки требуют особого внимания. Для корректной работы интеграций, таких как <strong>Multicast</strong> или обнаружение устройств по протоколу <em>mDNS</em>, виртуальная машина должна использовать режим сетевой карты <em>Bridged</em> (мост), а не NAT. Это позволит системе вести себя как полноценное устройство в вашей локальной сети.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка виртуальной машины</h4><label class="check-item"><input type="checkbox"><span>Скачать образ Home Assistant OS</span></label><label class="check-item"><input type="checkbox"><span>Назначить минимум 2 ядра CPU</span></label><label class="check-item"><input type="checkbox"><span>Выделить 4 ГБ ОЗУ</span></label><label class="check-item"><input type="checkbox"><span>Настроить сетевой режим Bridge</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>После запуска виртуальной машины вам нужно будет подключить консоль и дождаться загрузки. На экране появится IP-адрес вашего нового сервера, по которому вы сможете перейти в веб-интерфейс. Это самый простой способ начать, так как вся сложная настройка ядра и драйверов уже выполнена разработчиками.</p>
+
+<details class="pb-accordion"><summary>Что делать, если виртуальная машина не загружается?</summary><div class="pb-accordion-body"><p>Проверьте, включена ли виртуализация (VT-x/AMD-V) в BIOS вашего физического сервера. Также убедитесь, что вы выбрали правильный тип ОС при создании VM (обычно Linux 5.x или 6.x 64-bit).</p></div></details>
+
+<h2 id="установка-home-assistant-supervised-на-голый-сервер">Установка Home Assistant Supervised на "голый" сервер</h2>
+<p>Для тех, кто хочет получить максимальную производительность и не пользоваться виртуализацией, подходит метод <strong>Supervised</strong>. Это полноценная операционная система, но она требует чистой установки Linux без лишних пакетов. Поддерживаются только официальные дистрибутивы: <em>Debian</em> или <em>Ubuntu Server</em> определенных версий.</p>
+<p>Процесс установки начинается с обновления пакетной базы и установки необходимых зависимостей. Вам потребуется выполнить несколько команд в терминале для установки Docker, Docker Compose и других утилит, необходимых для работы Supervisor. Это требует внимательности, так как одна ошибка в версии пакета может блокировать установку.</p>
+<p>После установки зависимостей запускается скрипт, который проверяет готовность системы и устанавливает сам интерфейс Supervisor. Этот процесс может занять от 10 до 30 минут в зависимости от скорости вашего интернет-соединения и дисковой подсистемы. Система сама настроит сетевые интерфейсы и необходимые службы.</p>
+
+<blockquote>⚠️ Внимание: Метод Supervised крайне чувствителен к изменениям в системе. Если вы установите сторонний пакет, который конфликтует с системными библиотеками, Supervisor может перестать работать, и восстановление потребует переустановки всей системы.</blockquote>
+
+<p> Это делает метод Supervised отличным выбором для продвинутых пользователей, которые хотят оптимизировать скорость отклика.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Метод установки</th>
+<th>Сложность настройки</th>
+<th>Доступ к USB</th>
+<th>Гибкость системы</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Virtual Machine (OS)</td>
+<td>Низкая</td>
+<td>Требуется проброс</td>
+<td>Средняя</td>
+</tr>
+<tr>
+<td>Supervised (Debian/Ubuntu)</td>
+<td>Высокая</td>
+<td>Прямой доступ</td>
+<td>Низкая (строгие требования)</td>
+</tr>
+<tr>
+<td>Docker (Core)</td>
+<td>Средняя</td>
+<td>Требуется проброс</td>
+<td>Высокая</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Выбор метода зависит от ваших навыков администрирования и целей использования. Если вам нужна "поставил и забыл" система — выбирайте виртуальную машину. Если вы хотите экспериментировать с ядром — выбирайте Supervised или Docker.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед установкой Supervised версии сделайте полный бэкап вашей системы и загрузите образ ОС заново на флешку. Это сэкономит часы времени в случае неудачной конфигурации.</p></aside>
+
+<h2 id="настройка-сети-и-проброс-устройств">Настройка сети и проброс устройств</h2>
+<p>После установки системы необходимо убедиться, что все устройства умного дома видны и управляемы. Критически важным моментом является правильная настройка сети, чтобы <strong>Home Assistant</strong> мог общаться с устройствами по локальному протоколу. Если вы используете виртуальную машину, убедитесь, что сетевой мост настроен корректно.</p>
+<p>Для работы с USB-ключами (Zigbee, Z-Wave, BLE) в виртуализированной среде необходимо настроить их проброс. В <em>Proxmox</em> это делается через добавление устройства в конфигурацию виртуальной машины, указав путь к USB-устройству. В системе <em>Linux</em> это часто требует настройки прав доступа к <code>/dev/ttyUSB0</code> или аналогичным устройствам.</p>
+<p>Иногда возникает проблема с доступом к устройствам, подключенным через USB, из-за прав доступа к файлам. Вам может потребоваться добавить пользователя в группу <code>dialout</code> или <code>plugdev</code>, чтобы система могла читать данные с порта. Это стандартная процедура настройки периферии в Linux.</p>
+
+<details class="pb-accordion"><summary>Как найти путь к USB-устройству в Linux?</summary><div class="pb-accordion-body"><p>Используйте команду <code>ls /dev/ttyUSB*</code> или <code>dmesg | grep tty</code> сразу после подключения устройства, чтобы увидеть, какой порт ему был назначен системой.</p></div></details>
+
+<p>Также важно настроить статический IP-адрес для вашего сервера в роутере или непосредственно в системе. Динамический адрес может измениться после перезагрузки, что приведет к потере доступа к панели управления и сбоям в работе интеграций. Статический IP гарантирует, что ваш сервер всегда будет доступен по одному и тому же адресу.</p>
+
+<blockquote>⚠️ Внимание: Избегайте использования IPv6, если ваш домашний роутер или сеть не настроены для его корректной работы с локальными устройствами. В некоторых случаях IPv6 может блокировать обнаружение устройств по протоколу mDNS, приводя к ошибкам подключения.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Корректная настройка сетевых интерфейсов и прав доступа к USB-портам является фундаментом стабильной работы умного дома на базе Home Assistant.</p></aside>
+
+<h2 id="безопасность-и-резервное-копирование">Безопасность и резервное копирование</h2>
+<p>После того как система установлена и устройства подключены, необходимо уделить внимание безопасности. Открытие панели управления в интернет без защиты — это прямой путь к взлому. Всегда используйте <strong>SSL-сертификаты</strong> и настройте двухфакторную аутентификацию для всех учетных записей.</p>
+<p>Регулярное резервное копирование — это не просто рекомендация, а необходимость. <em>Home Assistant</em> позволяет создавать полные образы системы, включая конфигурацию, дополнения и историю. Настройте автоматическую отправку этих бэкапов во внешнее хранилище, например, на Google Drive или в SFTP.</p>
+<p>Не забывайте обновлять саму систему регулярно. Разработчики выпускают обновления безопасности и новые функции ежемесячно. Процесс обновления в <em>Supervised</em> или <em>VM</em> обычно занимает несколько минут и может быть выполнен в один клик через интерфейс Supervisor.</p>
+
+<p>Также стоит рассмотреть использование <strong>Firewall</strong> для ограничения доступа к портам сервера. Оставьте открытыми только необходимые порты (обычно 8123) и заблокируйте все остальные входящие соединения. Это защитит ваш сервер от сканирования и атак извне.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Безопасность системы</h4><label class="check-item"><input type="checkbox"><span>Включить двухфакторную аутентификацию</span></label><label class="check-item"><input type="checkbox"><span>Настроить автоматическое резервное копирование</span></label><label class="check-item"><input type="checkbox"><span>Обновить систему до последней версии</span></label><label class="check-item"><input type="checkbox"><span>Настроить Firewall и закрыть лишние порты</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="частые-вопросы-и-решение-проблем">Частые вопросы и решение проблем</h2>
+<p>В процессе работы пользователи могут столкнуться с рядом типичных проблем, которые имеют стандартные решения. Например, если сервер не видит устройства, проверьте, не блокирует ли фаервол локальный трафик или не сбились ли настройки сети после обновления.</p>
+<p>Иногда возникают проблемы с производительностью, если вы выделили слишком мало ресурсов виртуальной машине. В таких случаях система может работать медленно, а загрузка данных из истории затягиваться. Увеличение количества ядер CPU или объема оперативной памяти обычно решает эту проблему.</p>
+<p>Если вы используете метод Supervised и система перестала загружаться, попробуйте загрузиться в режиме восстановления из загрузочного меню или восстановить из последней точки восстановления. Это позволит вернуть систему в рабочее состояние без полной переустановки.</p>
+
+<details>
+<summary>Как восстановить доступ, если я забыл пароль?</summary>
+<p>Вы можете сбросить пароль, запустив контейнер в режиме сброса или используя команду <code>ha auth reset</code> в терминале (если доступен доступ к консоли). Это вернет пароль к значению по умолчанию, которое нужно будет изменить при первом входе.</p>
+</details>
+
+<details>
+<summary>Почему не работают интеграции Zigbee?</summary>
+<p>Чаще всего проблема в том, что USB-ключ занят другой виртуальной машиной или процессом. Проверьте, что устройство подключено только к одной системе, и убедитесь, что права доступа к <code>/dev/ttyUSB0</code> корректны.</p>
+</details>
+
+<details>
+<summary>Можно ли установить Home Assistant на CentOS?</summary>
+<p>Официально поддерживаются только Debian и Ubuntu для метода Supervised. CentOS не входит в список поддерживаемых дистрибутивов, и установка на него может привести к нестабильной работе.</p>
+</details>
+
+<details>
+<summary>Сколько места занимает база данных?</summary>
+<p>Размер базы данных зависит от количества устройств и частоты записи событий. Для среднего дома через год работы может потребоваться от 5 до 20 ГБ. Рекомендуется настраивать автоматическую очистку старых данных в настройках интеграции Recorder.</p>
+</details>
+
+<details>
+<summary>Как запустить Home Assistant на Raspberry Pi с Linux?</summary>
+<p>Если вы хотите использовать Raspberry Pi с полноценным Linux, вы можете установить Debian или Ubuntu, а затем развернуть Home Assistant через Docker или Supervised. Однако для Raspberry Pi чаще рекомендуется использовать готовый образ OS для максимальной простоты.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/o/ot/otkryt-vorota-s-telefona-vmesto-pulta.html" class="pb-related-card">
+                <span class="pb-related-title">Как открыть ворота с телефона вместо пульта: простая инструкция</span>
+                <span class="pb-related-desc">Узнайте, как управлять воротами со смартфона. Обзор Wi-Fi модулей, GSM контроллеров и приложений для</span>
+            </a><a href="/umnyj-dom/m/me/messendzher-max-v-home-assistant.html" class="pb-related-card">
+                <span class="pb-related-title">Max Messenger в Home Assistant: полная настройка и интеграция</span>
+                <span class="pb-related-desc">Как настроить Max Messenger в Home Assistant для уведомлений. Пошаговая инструкция, решение ошибок, </span>
+            </a><a href="/umnyj-dom/z/zi/zigbi-ustrojstva-dlya-umnogo-doma.html" class="pb-related-card">
+                <span class="pb-related-title">ZigBee устройства для умного дома: выбор, настройка и преимущества</span>
+                <span class="pb-related-desc">Полный гид по протоколу ZigBee. Обзор датчиков, ламп, шлюзов. Сравнение с Wi-Fi и Z-Wave. Особенност</span>
+            </a><a href="/umnyj-dom/u/um/umnaya-kolonka-plyusy-i-minusy.html" class="pb-related-card">
+                <span class="pb-related-title">Умная колонка: плюсы и минусы перед покупкой в 2026</span>
+                <span class="pb-related-desc">Полный разбор умных колонок: преимущества голосового управления, недостатки приватности, сравнение э</span>
+            </a><a href="/umnyj-dom/k/ka/kak-nazyvaetsya-vytyanutyj-kvadrat.html" class="pb-related-card">
+                <span class="pb-related-title">Как называется вытянутый квадрат: Терминология и применение форм</span>
+                <span class="pb-related-desc">Узнайте, как правильно называется вытянутый квадрат в математике и дизайне. Разбор термина прямоугол</span>
+            </a><a href="/umnyj-dom/l/la/lampa-cherez-media-stejshen-iks.html" class="pb-related-card">
+                <span class="pb-related-title">Лампа через медиа стейшен X: настройка и управление</span>
+                <span class="pb-related-desc">Инструкция по подключению и управлению умной лампой через медиа-станцию. Разбор протоколов, настройк</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

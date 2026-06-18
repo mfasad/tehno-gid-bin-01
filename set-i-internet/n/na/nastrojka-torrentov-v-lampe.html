@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Настройка торрентов на LAMP: Ubuntu, CentOS и Docker — Техно Гид</title>
+    <meta name="description" content="Полное руководство по установке и настройке торрент-клиентов на LAMP-сервере. Трансляция торрентов в браузер, безопасность и оптимизация для Linux.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/n/na/nastrojka-torrentov-v-lampe.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Настройка торрентов на LAMP: Ubuntu, CentOS и Docker">
+    <meta property="og:description" content="Полное руководство по установке и настройке торрент-клиентов на LAMP-сервере. Трансляция торрентов в браузер, безопасность и оптимизация для Linux.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Настройка торрентов на LAMP: Ubuntu, CentOS и Docker</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-работу-с-p2p-на-веб-сервере">Введение в работу с P2P на веб-сервере</a></li><li><a href="#выбор-подходящего-программного-обеспечения">Выбор подходящего программного обеспечения</a></li><li><a href="#установка-и-базовая-конфигурация-на-linux">Установка и базовая конфигурация на Linux</a></li><li><a href="#интеграция-с-веб-сервером-apache">Интеграция с веб-сервером Apache</a></li><li><a href="#безопасность-и-управление-правами-доступа">Безопасность и управление правами доступа</a></li><li><a href="#оптимизация-производительности-и-сетевые-настройки">Оптимизация производительности и сетевые настройки</a></li><li><a href="#частые-проблемы-и-методы-их-решения">Частые проблемы и методы их решения</a></li><li><a href="#итоги-и-перспективы-использования">Итоги и перспективы использования</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/n/na/na-routere-mgts-gorit-vosklitsatelnyj-znak.html">Желтый восклицательный знак на роутере МГТС: причины и способы решения</a></li><li><a href="/set-i-internet/k/ka/karta-s-vvodom-koordinat.html">Карта с вводом координат: точный поиск по широте и долготе</a></li><li><a href="/set-i-internet/k/ko/koeffitsient-usileniya-priemnoj-antenny.html">Коэффициент усиления приемной антенны: Формулы, ДБи и выбор</a></li><li><a href="/set-i-internet/k/ko/kod-929-nomer-8-929.html">Код 929 и номер 8 929: Что означают и как с ними работать</a></li><li><a href="/set-i-internet/k/ka/kak-proverit-nomer-telefona-a1.html">Проверка номера А1: баланс, тариф и статус сим-карты онлайн</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Настройка торрентов в LAMP: Полное руководство по развертыванию</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-работу-с-p2p-на-веб-сервере">Введение в работу с P2P на веб-сервере</a></li><li><a href="#выбор-подходящего-программного-обеспечения">Выбор подходящего программного обеспечения</a></li><li><a href="#установка-и-базовая-конфигурация-на-linux">Установка и базовая конфигурация на Linux</a></li><li><a href="#интеграция-с-веб-сервером-apache">Интеграция с веб-сервером Apache</a></li><li><a href="#безопасность-и-управление-правами-доступа">Безопасность и управление правами доступа</a></li><li><a href="#оптимизация-производительности-и-сетевые-настройки">Оптимизация производительности и сетевые настройки</a></li><li><a href="#частые-проблемы-и-методы-их-решения">Частые проблемы и методы их решения</a></li><li><a href="#итоги-и-перспективы-использования">Итоги и перспективы использования</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-работу-с-p2p-на-веб-сервере">Введение в работу с P2P на веб-сервере</h2>
+<p>Развертывание <strong>торрент-клиента</strong> на связке Linux, Apache, MySQL и PHP (LAMP) открывает уникальные возможности для домашнего сервера или удаленного хостинга. В отличие от десктопных версий, веб-интерфейс позволяет управлять загрузками с любого устройства, имеющего выход в интернет, без установки дополнительного ПО.</p>
+<p>Основная задача при такой конфигурации — обеспечить стабильную работу веб-сервера и корректную передачу файлов с торрент-движка в файловую систему. Многие пользователи путают сам стек LAMP с торрент-программой, забывая, что Apache и PHP лишь служат оболочкой для управления процессом, а ядром загрузки выступает отдельное приложение.</p>
+
+<h2 id="выбор-подходящего-программного-обеспечения">Выбор подходящего программного обеспечения</h2>
+<p>Прежде чем приступать к настройке, необходимо определиться с программным обеспечением. Для работы в среде LAMP чаще всего используют специализированные решения, которые либо имеют встроенный веб-интерфейс, либо интегрируются с ним через API. Самыми популярными вариантами являются <em>Deluge</em>, <em>qBittorrent</em> и <em>Transmission</em>.</p>
+<p>Каждый из этих клиентов имеет свои особенности конфигурации. <em>Transmission</em> считается эталоном легкости и минимализма, идеально подходящим для старых серверов. <em>qBittorrent</em> предлагает более богатый функционал и современный интерфейс, но требует чуть больше ресурсов. <em>Deluge</em> известен своей гибкостью благодаря системе плагинов.</p>
+<p>Важно учитывать, что нативный веб-интерфейс у <em>Transmission</em> и <em>qBittorrent</em> работает "из коробки", тогда как для <em>Deluge</em> часто требуется установка дополнительного веб-даемона. Выбор зависит от ваших требований к производительности и удобству управления.</p>
+
+<h2 id="установка-и-базовая-конфигурация-на-linux">Установка и базовая конфигурация на Linux</h2>
+<p>Процесс установки начинается с обновления репозиториев операционной системы. Для дистрибутивов на базе Debian или Ubuntu используйте команду <code>sudo apt update && sudo apt upgrade</code>. После этого можно переходить к инсталляции выбранного клиента, например, <code>sudo apt install transmission-daemon</code>.</p>
+<p>После установки необходимо остановить службу перед изменением конфигурационных файлов, чтобы изменения вступили в силу корректно. В файле <code>/etc/transmission-daemon/settings.json</code> нужно найти и изменить параметры <code>"rpc-whitelist"</code> и <code>"rpc-whitelist-enabled"</code>, разрешив доступ с внешних адресов, если это необходимо.</p>
+<p>Следующим шагом будет настройка прав доступа к папке загрузки. Сервер должен иметь возможность записывать данные в целевую директорию. Рекомендуется создать отдельного пользователя для торрентов, чтобы изолировать процесс от системных файлов, и сменить владельца папки через команду <code>chown -R user:group /path/to/downloads</code>.</p>
+<blockquote>⚠️ Внимание: Открывая RPC-порт для внешнего доступа, вы должны сразу же сменить пароль администратора в настройках, иначе ваш сервер станет легкой мишенью для ботнетов.</blockquote>
+
+<div class="pb-poll" id="poll-62790ff0"><div class="pb-poll-question">📊 Какую ОС вы чаще используете для серверов?</div><div class="pb-poll-option" data-poll="62790ff0" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Ubuntu</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="62790ff0" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">CentOS</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="62790ff0" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Debian</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="62790ff0" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Alpine Linux</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="интеграция-с-веб-сервером-apache">Интеграция с веб-сервером Apache</h2>
+<p>Хотя многие клиенты имеют свой встроенный веб-сервер, связка с <strong>Apache</strong> позволяет использовать единый порт (обычно 80 или 443) и централизованную аутентификацию. Для этого используется модуль <code>mod_proxy</code>, который перенаправляет запросы к локальному порту клиента.</p>
+<p>Создайте новый файл конфигурации в директории <code>/etc/apache2/sites-available/</code>, назвав его, например, <code>torrent.conf</code>. Вставьте туда директивы <code>ProxyPass</code> и <code>ProxyPassReverse</code>, указывающие на локальный адрес и порт, который слушает торрент-клиент (например, <code>127.0.0.1:9091</code>).</p>
+<p>Не забудьте активировать необходимый модуль командой <code>sudo a2enmod proxy proxy_http</code> и перезагрузить службу Apache. Теперь, открывая домен вашего сайта, вы будете попадать прямо в интерфейс управления загрузками.</p>
+<ul>
+<li>Убедитесь, что фаервол разрешает трафик на локальный порт клиента.</li>
+<li>Проверьте корректность синтаксиса конфигурационного файла Apache перед перезагрузкой.</li>
+<li>Настройте SSL-сертификаты, если планируете передачу данных по защищенному протоколу.</li>
+</ul>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка интеграции Apache</h4><label class="check-item"><input type="checkbox"><span>Проверить статус службы Apache</span></label><label class="check-item"><input type="checkbox"><span>Активировать модуль proxy</span></label><label class="check-item"><input type="checkbox"><span>Написать конфиг виртуального хоста</span></label><label class="check-item"><input type="checkbox"><span>Перезагрузить сервис</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="безопасность-и-управление-правами-доступа">Безопасность и управление правами доступа</h2>
+<p>Безопасность при настройке P2P-трафика на публичном сервере критически важна. Неправильная конфигурация может привести к тому, что злоумышленники получат доступ к файлам на вашем диске или смогут использовать ваш канал для распространения запрещенного контента. Используйте <strong>аутентификацию базового доступа</strong> (Basic Auth) в Apache для защиты интерфейса.</p>
+<p>Для создания пароля используйте утилиту <code>htpasswd</code>. Команда <code>sudo htpasswd -c /etc/apache2/.htpasswd user</code> создаст файл с зашифрованным паролем. Добавьте директиву <code>AuthType Basic</code> в конфигурацию виртуального хоста, чтобы запросить логин и пароль при входе.</p>
+<p>Ограничьте права доступа на уровне файловой системы. Процесс торрент-клиента не должен иметь прав на чтение или запись в системные директории. Используйте <em>SELinux</em> или <em>AppArmor</em> для создания профилей безопасности, которые ограничат действия демон-процесса только целевой папкой загрузок.</p>
+
+<details class="pb-accordion"><summary>Детали настройки firewall</summary><div class="pb-accordion-body"><p>Если вы используете UFW, не забудьте открыть порт apache (80/443), но локальный порт клиента (например, 9091) должен быть доступен только из localhost. Команда: sudo ufw allow 80/tcp и sudo ufw allow 443/tcp.</p></div></details>
+
+<h2 id="оптимизация-производительности-и-сетевые-настройки">Оптимизация производительности и сетевые настройки</h2>
+<p>Настройка лимитов соединений и скорости является обязательным шагом для стабильной работы. Если сервер будет пытаться поддерживать тысячи соединений одновременно, это может привести к зависанию системы или блокировке со стороны провайдера. В настройках клиента ограничьте количество глобальных подключений до разумных значений.</p>
+<p>Для серверов с высоким трафиком важно правильно настроить буферы сети в файле <code>/etc/sysctl.conf</code>. Увеличение параметров <code>net.core.rmem_max</code> и <code>net.ipv4.tcp_window_scaling</code> поможет улучшить скорость загрузки и расклейки. Примените изменения командой <code>sudo sysctl -p</code>.</p>
+<p>Также стоит обратить внимание на планировщик задач. Настройка <strong>автоматического сканирования</strong> папки загрузки через cron позволит сразу добавлять новые раздачи в очередь без вашего участия. Это особенно удобно для медиа-серверов, где новые файлы должны сразу становиться доступными для транскодирования.</p>
+<blockquote>⚠️ Внимание: Неправильная настройка лимитов соединений (ulimit) может привести к ошибке "Too many open files" при активном использовании сети.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Оптимизация сетевых буферов и лимитов соединений — ключ к стабильной работе торрент-клиента под нагрузкой на сервере с ограниченными ресурсами.</p></aside>
+
+<h2 id="частые-проблемы-и-методы-их-решения">Частые проблемы и методы их решения</h2>
+<p>Одной из самых распространенных проблем является ошибка "Permission denied" при попытке сохранения файла. Чаще всего это происходит из-за несоответствия пользователя, под которым запущен Apache, и пользователя торрент-клиента. Убедитесь, что обе службы работают под одним пользователем или имеют общие права доступа к папке.</p>
+<p>Если интерфейс не загружается или зависает на полупроцессе, проверьте логи Apache и самого клиента. Ошибки вроде "Failed to bind to port" говорят о том, что порт уже занят другим процессом. Используйте команду <code>netstat -tulnp | grep 9091</code> для выявления конфликтов.</p>
+<p>Проблемы с распаковкой архивов могут возникать при отсутствии необходимых утилит в системе. Убедитесь, что в системе установлены <em>unrar</em> и <em>unzip</em>, если вы планируете автоматическое разархивирование торрентов. Без этих библиотек процесс будет останавливаться на этапе проверки целостности.</p>
+<ul>
+<li>Проверяйте логи <code>/var/log/transmission-daemon/error.log</code> для диагностики ошибок запуска.</li>
+<li>Используйте утилиту <code>lsof</code> для просмотра открытых файлов и портов.</li>
+<li>Следите за свободным местом на диске, так как торренты могут быстро заполнять раздел.</li>
+</ul>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед изменением системных лимитов (ulimit) всегда делайте резервную копию файла /etc/security/limits.conf, чтобы в случае ошибки можно было быстро восстановить работоспособность системы.</p></aside>
+
+<h2 id="итоги-и-перспективы-использования">Итоги и перспективы использования</h2>
+<p>Настройка торрентов в среде LAMP — это мощный инструмент для создания автономного медиа-центра или файлового хранилища. Грамотная конфигурация позволяет объединить функционал веб-сервера и P2P-сети, получив удобный доступ к файлам из любой точки мира.</p>
+<p>Главное преимущество такого подхода — независимость от операционной системы клиента. Вы можете управлять загрузками с планшета, телефона или любого компьютера, используя только браузер. При этом сервер остается стабильным и безопасным благодаря изоляции процессов.</p>
+<p>Помните, что окружение постоянно меняется. Версии дистрибутивов обновляются, протоколы P2P совершенствуются, а требования к безопасности ужесточаются. Регулярно обновляйте программное обеспечение и проверяйте актуальность конфигурационных файлов, чтобы сохранить работоспособность вашей системы.</p>
+
+<details class="pb-accordion"><summary>Альтернативные решения</summary><div class="pb-accordion-body"><p>Если вам нужна более сложная автоматизация, рассмотрите Docker-контейнеры с готовыми образами (например, <em>LinuxServer.io</em>). Это упростит установку и обновление, изолировав зависимости.</p></div></details>
+
+<h3>Часто задаваемые вопросы</h3>
+<details>
+<summary>Можно ли использовать LAMP для торрентов на Windows?</summary>
+<p>Технически да, так как стек LAMP может быть установлен на Windows, но это нецелесообразно. Для Windows существуют нативные клиенты с веб-интерфейсом, которые работают эффективнее и проще в настройке, чем эмуляция Linux-сервера.</p>
+</details>
+<details>
+<summary>Зачем нужен MySQL в настройке торрентов?</summary>
+<p>Само по себе приложение для торрентов (например, Transmission) не требует базы данных MySQL для своей работы. Однако, если вы разрабатываете собственную панель управления или используете сложные скрипты автоматизации на PHP, то база данных может потребоваться для хранения статистики, логов или настроек пользователей.</p>
+</details>
+<details>
+<summary>Как защитить сервер от DDoS-атак через торренты?</summary>
+<p>Используйте фаервол для ограничения количества соединений с одного IP-адреса. Также настройте лимиты в самом торрент-клиенте и используйте модули защиты Apache (например, mod_evasive), если интерфейс доступен из интернета.</p>
+</details>
+<details>
+<summary>Можно ли настроить автоматическое удаление раздачи после загрузки?</summary>
+<p>Да, большинство клиентов поддерживают эту функцию. В настройках нужно включить опцию "Удалить из списка после завершения" или настроить внешний скрипт через <code>on-completed</code> команду, который переместит файл в другую папку и удалит саму раздачу.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/n/na/na-routere-mgts-gorit-vosklitsatelnyj-znak.html" class="pb-related-card">
+                <span class="pb-related-title">Желтый восклицательный знак на роутере МГТС: причины и способы решения</span>
+                <span class="pb-related-desc">Почему горит восклицательный знак на роутере МГТС? Разбираем основные причины сбоя соединения и даем</span>
+            </a><a href="/set-i-internet/k/ka/karta-s-vvodom-koordinat.html" class="pb-related-card">
+                <span class="pb-related-title">Карта с вводом координат: точный поиск по широте и долготе</span>
+                <span class="pb-related-desc">Как использовать карту с вводом координат для точного поиска мест. Разбор форматов GPS, популярные с</span>
+            </a><a href="/set-i-internet/k/ko/koeffitsient-usileniya-priemnoj-antenny.html" class="pb-related-card">
+                <span class="pb-related-title">Коэффициент усиления приемной антенны: Формулы, ДБи и выбор</span>
+                <span class="pb-related-desc">Подробный разбор коэффициента усиления антенн. Разница между дБ и дБи, влияние на дальность связи, р</span>
+            </a><a href="/set-i-internet/k/ko/kod-929-nomer-8-929.html" class="pb-related-card">
+                <span class="pb-related-title">Код 929 и номер 8 929: Что означают и как с ними работать</span>
+                <span class="pb-related-desc">Разбор значений кода 929, номера 8 929 и сочетаний цифр в контексте кодов регионов, сотовой связи и </span>
+            </a><a href="/set-i-internet/k/ka/kak-proverit-nomer-telefona-a1.html" class="pb-related-card">
+                <span class="pb-related-title">Проверка номера А1: баланс, тариф и статус сим-карты онлайн</span>
+                <span class="pb-related-desc">Узнайте, как проверить номер телефона А1 на баланс, тарифный план и статус. Полные инструкции USSD, </span>
+            </a><a href="/set-i-internet/k/ka/kak-doekhat-po-koordinatam.html" class="pb-related-card">
+                <span class="pb-related-title">Как доехать по координатам GPS: навигаторы и поиск</span>
+                <span class="pb-related-desc">Научитесь вводить координаты в навигатор. Поиск места по широте и долготе в Яндекс, Google, OsmAnd. </span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

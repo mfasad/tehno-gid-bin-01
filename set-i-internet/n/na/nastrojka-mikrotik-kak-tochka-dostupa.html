@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Настройка MikroTik как точка доступа: Пошаговая инструкция — Техно Гид</title>
+    <meta name="description" content="Руководство по превращению роутера MikroTik в точку доступа Wi-Fi. Настройка моста, DHCP, VLAN и безопасности без лишних сложностей.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/n/na/nastrojka-mikrotik-kak-tochka-dostupa.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Настройка MikroTik как точка доступа: Пошаговая инструкция">
+    <meta property="og:description" content="Руководство по превращению роутера MikroTik в точку доступа Wi-Fi. Настройка моста, DHCP, VLAN и безопасности без лишних сложностей.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Настройка MikroTik как точка доступа: Пошаговая инструкция</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-оборудования-и-выбор-режима-работы">Подготовка оборудования и выбор режима работы</a></li><li><a href="#настройка-моста-bridge-и-портов">Настройка моста (Bridge) и портов</a></li><li><a href="#отключение-dhcp-сервера-и-настройка-ip">Отключение DHCP-сервера и настройка IP</a></li><li><a href="#настройка-беспроводной-сети-wi-fi">Настройка беспроводной сети (Wi-Fi)</a></li><li><a href="#безопасность-и-фильтрация-трафика">Безопасность и фильтрация трафика</a></li><li><a href="#проверка-работоспособности-и-устранение-неполадок">Проверка работоспособности и устранение неполадок</a></li><li><a href="#частые-вопросы-и-нюансы-настройки">Частые вопросы и нюансы настройки</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/z/za/zapret-platnykh-kontentnykh-korotkikh-nomerov-megafon.html">Как отключить платные короткие номера МегаФон навсегда</a></li><li><a href="/set-i-internet/s/sm/smena-operatora-sotovoj-svyazi.html">Смена оператора сотовой связи с сохранением номера: пошаговая инструкция</a></li><li><a href="/set-i-internet/s/si/signal-lte-chto-eto.html">Сигнал LTE: что это, как улучшить и расшифровать</a></li><li><a href="/set-i-internet/m/ma/makbuk-ne-vidit-ajfon-v-rezhime-modema.html">Макбук не видит айфон в режиме модема: решение</a></li><li><a href="/set-i-internet/w/wo/world-vision-4g-connect-nastrojka-routera.html">World Vision 4G Connect: настройка роутера и интернета | Инструкция</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Превращаем MikroTik в идеальную точку доступа: Гайд по настройке</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-оборудования-и-выбор-режима-работы">Подготовка оборудования и выбор режима работы</a></li><li><a href="#настройка-моста-bridge-и-портов">Настройка моста (Bridge) и портов</a></li><li><a href="#отключение-dhcp-сервера-и-настройка-ip">Отключение DHCP-сервера и настройка IP</a></li><li><a href="#настройка-беспроводной-сети-wi-fi">Настройка беспроводной сети (Wi-Fi)</a></li><li><a href="#безопасность-и-фильтрация-трафика">Безопасность и фильтрация трафика</a></li><li><a href="#проверка-работоспособности-и-устранение-неполадок">Проверка работоспособности и устранение неполадок</a></li><li><a href="#частые-вопросы-и-нюансы-настройки">Частые вопросы и нюансы настройки</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Современные домашние и офисные сети часто требуют расширения зоны покрытия беспроводного сигнала, и роутеры <em>MikroTik</em> отлично справляются с этой задачей. Вместо того чтобы покупать новый дешевый маршрутизатор, вы можете эффективно использовать имеющееся оборудование <strong>MikroTik</strong>, настроив его в режиме точки доступа (Access Point). Это решение дает вам контроль над параметрами сети, стабильность соединения и возможность тонкой настройки безопасности.</p>
+
+<p>Процесс настройки может показаться сложным для новичка, если полагаться только на «магический» мастер установки, который часто создает лишние подсети. Правильная конфигурация подразумевает превращение устройства в «умную» точку доступа, которая прозрачно передает трафик от основного шлюза к вашим устройствам. В этом материале мы разберем, как настроить <em>Bridge</em>, отключить DHCP-сервер и гарантировать, что ваше устройство <strong>MikroTik</strong> станет неотъемлемой частью единой сети.</p>
+
+<h2 id="подготовка-оборудования-и-выбор-режима-работы">Подготовка оборудования и выбор режима работы</h2>
+
+<p>Перед тем как лезть в настройки, необходимо физически правильно соединить устройства. Точка доступа не должна выполнять функцию маршрутизатора, поэтому ее роль ограничивается только передачей пакетов между проводной и беспроводной сетью. Вам понадобится основной роутер, который раздает интернет, и сам <em>MikroTik</em>. Убедитесь, что у вас есть доступ к компьютеру для первичной настройки через кабель Ethernet.</p>
+
+<p>Ключевой момент здесь — определить, будете ли вы использовать режим <strong>Wireless AP</strong> или современный режим <strong>AP Bridge</strong>. В зависимости от версии прошивки <em>Ros</em> (RouterOS), интерфейс может отличаться, но логика остается неизменной. Если вы используете модель hAP или RB, то порт <code>Ethernet 1</code> обычно является WAN, но в режиме точки доступа он станет частью локальной сети.</p>
+
+<p>Запомните, что при настройке точки доступа вам нужно будет отключить функцию NAT. Если оставить NAT включенным, вы получите «сеть в сети», что приведет к двойной трансляции адресов и проблемам с доступом к управляемым устройствам. Это фундаментальное отличие от режима роутера, где NAT обязателен.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Перед началом настройки сбросьте конфигурацию <em>MikroTik</em> до заводских настроек, если устройство использовалось ранее. Это избавит от конфликтов IP-адресов и старых правил фаервола, которые могут блокировать доступ к веб-консоли.</p>
+</blockquote>
+
+<div class="pb-poll" id="poll-7659087c"><div class="pb-poll-question">📊 Какой тип прошивки установлен на вашем MikroTik?</div><div class="pb-poll-option" data-poll="7659087c" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Stable (Long-term)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="7659087c" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Stable (Current)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="7659087c" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Testing</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="7659087c" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Не знаю</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="настройка-моста-bridge-и-портов">Настройка моста (Bridge) и портов</h2>
+
+<p>Центральным элементом настройки точки доступа в <em>MikroTik</em> является создание «моста» (Bridge). Мост объединяет физические порты и беспроводной интерфейс в единый логический сегмент сети. Перейдите в меню <code>Bridge</code> и создайте новый мост, назовите его, например, <code>bridge-lan</code>. Это будет виртуальный коммутатор, через который пойдет весь трафик.</p>
+
+<p>Далее необходимо добавить в этот мост все физические порты, которые будут использоваться для подключения клиентов или подключения к основному роутеру. Если вы используете <strong>MikroTik</strong> только как точку доступа, то все порты <code>Ethernet</code> должны быть членами моста. Также обязательно добавьте интерфейс <code>Wlan1</code> (или <code>Wlan2</code> в двухдиапазонных моделях) в состав моста.</p>
+
+<p>Обратите внимание на настройку <code>Hardware Offloading</code>. На современных моделях <em>MikroTik</em> (серии hAP ac2, hAP ac3, hAP ax2 и новее) эта функция позволяет перекладывать обработку трафика на специализированный чип, не нагружая процессор. Убедитесь, что в настройках моста включена опция <code>Hardware Offload</code>, иначе производительность может значительно упасть при высокой нагрузке.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Настройка Bridge</h4><label class="check-item"><input type="checkbox"><span>Создать новый Bridge (bridge-lan)</span></label><label class="check-item"><input type="checkbox"><span>Добавить порт WAN в Bridge</span></label><label class="check-item"><input type="checkbox"><span>Добавить все LAN порты в Bridge</span></label><label class="check-item"><input type="checkbox"><span>Добавить интерфейс WLAN в Bridge</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>Если вы настраиваете VLAN-сети, то процесс усложняется: нужно создавать отдельные мосты для каждого VLAN или использовать VLAN Filtering на уровне моста. Для простой домашней точки доступа достаточно одного универсального моста. </p>
+
+<details class="pb-accordion"><summary>Как проверить работу Offloading?|Зайдите в меню <code>Bridge</code> -> <code>Ports</code>, выберите порт и посмотрите на колонку <code>HW Offload</code>. Если там стоит галочка или <code>yes</code>, значит, аппаратное ускорение работает корректно.-->
+
+<h2 id="отключение-dhcp-сервера-и-настройка-ip">Отключение DHCP-сервера и настройка IP</h2>
+
+<p>Одной из самых частых ошибок при превращении роутера в точку доступа является оставление работающего DHCP-сервера. Это приведет к тому, что ваши устройства будут получать IP-адреса от MikroTik, а не от основного роутера, что вызовет потерю доступа к интернету и локальным ресурсам. Зайдите в меню <code>IP</code> -> <code>DHCP Server</code> и удалите все существующие серверы или отключите их.</p>
+
+<p>Теперь необходимо назначить статический IP-адрес самому устройству <em>MikroTik</em>. Этот адрес должен находиться в той же подсети, что и основной роутер, но быть уникальным и не конфликтовать с другими устройствами. Например, если основной роутер имеет адрес <code>192.168.1.1</code>, то точка доступа можно присвоить <code>192.168.1.2</code>.</p>
+
+<p>Для этого перейдите в <code>IP</code> -> <code>Addresses</code> и добавьте новый адрес. В поле <code>Interface</code> обязательно выберите ваш созданный мост <code>bridge-lan</code>, а не отдельный физический порт. Если выбрать физический порт, то при переподключении кабеля настройки могут «потеряться» или стать недоступными.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание</summary><div class="pb-accordion-body"><p></strong> После присвоения IP-адреса и отключения DHCP-сервера, подключение к веб-консоли через браузер по старому IP-адресу станет невозможным. Вам нужно будет обратиться к <code>IP</code> -> <code>Addresses</code> и подключить компьютер к той же подсети, чтобы попасть на устройство.</p>
+</blockquote>
+
+
+
+<h2 id="настройка-беспроводной-сети-wi-fi">Настройка беспроводной сети (Wi-Fi)</h2>
+
+<p>Переходим к самому важному для пользователя аспекту — настройке беспроводной сети. В старых версиях <em>RouterOS</em> настройки Wi-Fi находятся в отдельном меню <code>Wireless</code>, а в новых (v7 и выше) — в модуле <code>Wifi</code> или <code>WiFi wave</code>. Принцип остается тем же: создайте профиль безопасности и настройте SSID.</p>
+
+<p>Задайте имя сети (SSID), которое будет видно пользователям. Для обеспечения безопасности обязательно используйте протокол шифрования <strong>WPA2</strong> или <strong>WPA3</strong>. В настройках безопасности выберите режим <code>psk2</code> (для WPA2) и задайте надежный пароль. Избегайте использования старого протокола WEP, так как он легко взламывается.</p>
+
+<p>Если у вас двухдиапазонный роутер, настройте сети 2.4 ГГц и 5 ГГц отдельно, но с одинаковым SSID. Это позволит устройствам автоматически переключаться между диапазонами в зависимости от качества сигнала. Однако, некоторые старые устройства могут некорректно работать с одинаковыми именами, поэтому для теста можно дать им разные имена, например, <code>MyNet_2G</code> и <code>MyNet_5G</code>.</p>
+
+<div class="pb-table-wrap"><table>
+ <thead>
+  <tr>
+   <th>Параметр</th>
+   <th>Рекомендуемое значение</th>
+   <th>Описание</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>Band</td>
+   <td><code>2GHz-B/G/N</code> или <code>5GHz-N/AC/AX</code></td>
+   <td>Диапазон частот работы интерфейса</td>
+  </tr>
+  <tr>
+   <td>Mode</td>
+   <td><code>ap-bridge</code></td>
+   <td>Режим работы точки доступа</td>
+  </tr>
+  <tr>
+   <td>Security Profile</td>
+   <td><code>wpa2-psk</code></td>
+   <td>Профиль безопасности с шифрованием</td>
+  </tr>
+  <tr>
+   <td>Channel Width</td>
+   <td><code>20/40MHz</code> или <code>80MHz</code></td>
+   <td>Ширина канала для скорости</td>
+  </tr>
+ </tbody>
+</table></div>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильный выбор ширины канала критичен для скорости Wi-Fi, но слишком широкие каналы могут создавать помехи в густонаселенных районах.</p></aside>
+
+<h2 id="безопасность-и-фильтрация-трафика">Безопасность и фильтрация трафика</h2>
+
+<p>Даже будучи точкой доступа, <em>MikroTik</strong> должен защищать сеть от несанкционированного доступа. В режиме точки доступа фаервол работает иначе, чем в режиме роутера, так как NAT отключен. Однако, вы все равно можете ограничивать доступ к самому устройству управления. Перейдите в меню <code>IP</code> -> <code>Firewall</code> -> <code>Filter Rules</code>.</p>
+
+<p>Создайте правило, которое запрещает доступ к сервисам управления (Winbox, WebFig, SSH) извне, разрешая его только с определенных IP-адресов администратора. Это предотвратит попытку взлома вашего устройства, даже если кто-то подключится к вашему Wi-Fi. Не забудьте разрешить трафик на сам интерфейс <code>bridge-lan</code>, чтобы не заблокировать себя.</p>
+
+<p>Также полезно включить функцию <code>MAC Address Caching</code> или настроить <strong>MAC Filtering</em>, если вам нужно жестко ограничить список устройств, подключенных к Wi-Fi. Это защитит сеть от «соседских» подключений, если пароль будет скомпрометирован. Настройка фильтрации по MAC-адресам особенно актуальна в офисах или гостевых сетях.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</em> При настройке фаервола убедитесь, что вы не заблокировали порт управления для себя. Всегда оставляйте хотя бы одно разрешающее правило для вашего текущего IP-адреса до завершения настройки.</p>
+</blockquote>
+
+<p>Не забывайте обновлять прошивку <em>MikroTik</em> до актуальной версии. Уязвимости в беспроводных протоколах обнаруживаются регулярно, и производитель своевременно выпускает исправления. Проверьте наличие обновлений в меню <code>System</code> -> <code>Packages</code> и примените их, если они доступны.</p>
+
+<details class="pb-accordion"><summary>Как обновить прошивку через Winbox?|В Winbox нажмите на иконку <code>Packages</code> в левом меню, затем кнопку <code>Check for Updates</code>. После скачивания нажмите <code>Reboot</code> для применения.-->
+
+<h2 id="проверка-работоспособности-и-устранение-неполадок">Проверка работоспособности и устранение неполадок</h2>
+
+<p>После завершения всех настроек необходимо проверить работоспособность точки доступа. Подключите к <em>MikroTik</em> компьютер по кабелю или устройством через Wi-Fi и проверьте, получаете ли вы IP-адрес от основного роутера. Используйте команду <code>ipconfig</code> (Windows) или <code>ifconfig</code> (Linux/macOS) для проверки назначения адреса.</p>
+
+<p>Если вы не получаете IP-адрес или интернет не работает, проверьте физические соединения. Убедитесь, что кабель от основного роутера подключен к порту, который вы добавили в мост <code>bridge-lan</code>. Также проверьте, что на основном роутере включен DHCP-сервер и он раздает адреса в нужной подсети.</p>
+
+<p>Для диагностики можно использовать встроенные утилиты <em>MikroTik</em>, такие как <code>Torch</code> или <code>Packet Sniffer</code>. Они покажут, проходит ли трафик через интерфейс и есть ли проблемы с пакетной потерей. Если пакеты уходят, но не возвращаются, проблема может быть в маршрутизации на основном шлюзе.</p>
+
+<!--WIDGET</summary><div class="pb-accordion-body"><p>keypoint:Если Wi-Fi работает, но нет интернета, проверьте маршрут по умолчанию на клиентском устройстве — он должен указывать на основной роутер, а не на MikroTik.</p></div></details>
+
+<h2 id="частые-вопросы-и-нюансы-настройки">Частые вопросы и нюансы настройки</h2>
+
+<p>Многие пользователи сталкиваются с вопросами о том, как правильно подключить несколько точек доступа <em>MikroTik</em> в одной сети. Ответ прост: каждая точка доступа должна иметь свой уникальный статический IP-адрес в одной подсети и работать в режиме <code>bridge</code>. DHCP-сервер должен работать только на основном роутере.</p>
+
+<p>Другой частый вопрос касается скорости Wi-Fi. Если скорость в режиме точки доступа ниже ожидаемой, проверьте режим работы беспроводного интерфейса. Убедитесь, что каналы не перекрываются с соседскими сетями, и используйте диапазон 5 ГГц для максимальной пропускной способности.</p>
+
+<p>Также важно помнить о совместимости устройств. Некоторые старые Wi-Fi адаптеры могут не поддерживать новые стандарты безопасности, такие как WPA3. В таких случаях придется откатиться к WPA2 или создать отдельную гостевую сеть с устаревшим протоколом.</p>
+
+<details>
+<summary>Как сбросить точку доступа, если я потерял доступ?</summary>
+<p>Если вы потеряли доступ к устройству, нажмите и удерживайте кнопку <code>Reset</code> на корпусе <em>MikroTik</em> при включении питания. Удерживайте кнопку до тех пор, пока светодиод <code>USR</code> не начнет моргать. Это вернет устройство к заводским настройкам, и вы сможете попасть на него через стандартный IP-адрес.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать VLAN в режиме точки доступа?</summary>
+<p>Да, <em>MikroTik</em> отлично поддерживает VLAN в режиме точки доступа. Для этого нужно включить <code>VLAN Filtering</code> на мосту и создать соответствующие VLAN-интерфейсы. Это позволяет разделять трафик гостей и сотрудников на одном физическом устройстве.</p>
+</details>
+
+<details>
+<summary>Что делать, если клиенты не видят сеть 5 ГГц?</summary>
+<p>Убедитесь, что ваш <em>MikroTik</em> поддерживает диапазон 5 ГГц (не все модели младших серий это умеют). Также проверьте, не выбран ли канал, который запрещен в вашем регионе. В настройках <code>Country</code> выберите вашу страну, и устройство автоматически ограничит доступные каналы.</p>
+</details>
+
+<details>
+<summary>Нужно ли отключать NAT при настройке AP?</summary>
+<p>Да, это обязательно. В режиме точки доступа NAT не нужен, так как устройство не является шлюзом. Если NAT оставить включенным, вы создадите двойной NAT, что приведет к проблемам с сетевыми играми, видеозвонками и локальным доступом к устройствам.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/z/za/zapret-platnykh-kontentnykh-korotkikh-nomerov-megafon.html" class="pb-related-card">
+                <span class="pb-related-title">Как отключить платные короткие номера МегаФон навсегда</span>
+                <span class="pb-related-desc">Полная инструкция по блокировке платных коротких номеров МТС, МегаФон, Билайн. Способы отключения че</span>
+            </a><a href="/set-i-internet/s/sm/smena-operatora-sotovoj-svyazi.html" class="pb-related-card">
+                <span class="pb-related-title">Смена оператора сотовой связи с сохранением номера: пошаговая инструкция</span>
+                <span class="pb-related-desc">Как сменить оператора сотовой связи и сохранить старый номер? Полный гайд по MNP, сроки переноса, пр</span>
+            </a><a href="/set-i-internet/s/si/signal-lte-chto-eto.html" class="pb-related-card">
+                <span class="pb-related-title">Сигнал LTE: что это, как улучшить и расшифровать</span>
+                <span class="pb-related-desc">Разбираем, что такое сигнал LTE, почему он падает и как его усилить. Расшифровка индикаторов 4G, час</span>
+            </a><a href="/set-i-internet/m/ma/makbuk-ne-vidit-ajfon-v-rezhime-modema.html" class="pb-related-card">
+                <span class="pb-related-title">Макбук не видит айфон в режиме модема: решение</span>
+                <span class="pb-related-desc">Почему MacBook не видит iPhone при раздаче интернета? Полный гайд по устранению ошибки, настройке US</span>
+            </a><a href="/set-i-internet/w/wo/world-vision-4g-connect-nastrojka-routera.html" class="pb-related-card">
+                <span class="pb-related-title">World Vision 4G Connect: настройка роутера и интернета | Инструкция</span>
+                <span class="pb-related-desc">Как настроить роутер World Vision 4G Connect. Полная инструкция по входу в интерфейс, настройке APN,</span>
+            </a><a href="/set-i-internet/u/us/ustanovka-interneta-v-derevne.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить интернет в деревне: Спутник, 4G и радиоканал</span>
+                <span class="pb-related-desc">Полный гайд по выбору и установке интернета в частном доме: сравнение спутниковых, 4G и радиоканальн</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

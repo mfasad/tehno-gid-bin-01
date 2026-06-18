@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как настроить Tor-сервер на LAMP: пошаговая инструкция — Техно Гид</title>
+    <meta name="description" content="Полное руководство по развертыванию и настройке Tor-сервера на стеке LAMP. Защита, конфигурация nginx, настройки iptables и оптимизация безопасности.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/n/na/nastrojka-torservera-na-lampe.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как настроить Tor-сервер на LAMP: пошаговая инструкция">
+    <meta property="og:description" content="Полное руководство по развертыванию и настройке Tor-сервера на стеке LAMP. Защита, конфигурация nginx, настройки iptables и оптимизация безопасности.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как настроить Tor-сервер на LAMP: пошаговая инструкция</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-анонимные-сети-и-веб-серверы">Введение в анонимные сети и веб-серверы</a></li><li><a href="#подготовка-операционной-системы-и-установка-базовых-компонентов">Подготовка операционной системы и установка базовых компонентов</a></li><li><a href="#конфигурация-файла-torrc-для-серверных-задач">Конфигурация файла torrc для серверных задач</a></li><li><a href="#интеграция-apache-и-установка-ограничений-доступа">Интеграция Apache и установка ограничений доступа</a></li><li><a href="#сетевая-безопасность-и-фаервол">Сетевая безопасность и фаервол</a></li><li><a href="#оптимизация-производительности-и-базы-данных">Оптимизация производительности и базы данных</a></li><li><a href="#таблица-портов-и-служб-для-конфигурации">Таблица портов и служб для конфигурации</a></li><li><a href="#поддержание-актуальности-и-мониторинг">Поддержание актуальности и мониторинг</a></li><li><a href="#частые-вопросы-faq">Частые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/k/ka/kak-vklyuchit-na-kompe-vaj-faj.html">Как включить Wi-Fi на компьютере: пошаговая инструкция и решения</a></li><li><a href="/set-i-internet/u/ub/ubiquiti-nanostation-loco-m5-nastrojka.html">Ubiquiti NanoStation Loco M5: полная настройка точки доступа</a></li><li><a href="/set-i-internet/p/pl/plokhaya-svyaz-tinkoff-mobajl.html">Плохая связь Тинькофф Мобайл: диагностика и исправление</a></li><li><a href="/set-i-internet/k/ka/kak-perevesti-nomer-s-tele2-na-mts-s-sokhraneniem-nomera-cherez-internet-besplatno.html">Как перевести номер с Tele2 на МТС через интернет: пошаговая инструкция</a></li><li><a href="/set-i-internet/p/pr/proverit-vk-na-skrytykh-druzej.html">Как проверить ВК на скрытых друзей: 5 рабочих методов</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Настройка Tor-сервера на стеке LAMP: Полный гайд по развертыванию</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-анонимные-сети-и-веб-серверы">Введение в анонимные сети и веб-серверы</a></li><li><a href="#подготовка-операционной-системы-и-установка-базовых-компонентов">Подготовка операционной системы и установка базовых компонентов</a></li><li><a href="#конфигурация-файла-torrc-для-серверных-задач">Конфигурация файла torrc для серверных задач</a></li><li><a href="#интеграция-apache-и-установка-ограничений-доступа">Интеграция Apache и установка ограничений доступа</a></li><li><a href="#сетевая-безопасность-и-фаервол">Сетевая безопасность и фаервол</a></li><li><a href="#оптимизация-производительности-и-базы-данных">Оптимизация производительности и базы данных</a></li><li><a href="#таблица-портов-и-служб-для-конфигурации">Таблица портов и служб для конфигурации</a></li><li><a href="#поддержание-актуальности-и-мониторинг">Поддержание актуальности и мониторинг</a></li><li><a href="#частые-вопросы-faq">Частые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-анонимные-сети-и-веб-серверы">Введение в анонимные сети и веб-серверы</h2>
+<p>Развертывание <strong>скрытого сервиса</strong> или обычного выхода в сеть через <em>Tor</em> на базе классического стека <strong>LAMP</strong> (Linux, Apache, MySQL, PHP) требует глубокого понимания сетевых протоколов. Многие администраторы ошибочно полагают, что достаточно просто установить пакет, но реальная конфигурация включает тонкую настройку портов и правил файрвола для обеспечения <strong>анонимности</strong>.</p>
+<p>В этом руководстве мы рассмотрим процесс интеграции <em>Tor</em> с веб-сервером <strong>Apache</strong>, что позволяет создавать <strong>onion-сайты</strong> или защищать основной сайт от DDoS-атак. Важно понимать, что <strong>LAMP</strong> сам по себе не обеспечивает анонимность, а лишь предоставляет среду для запуска динамического контента, который затем маршрутизируется через сеть <em>Tor</em>.</p>
+<p>Процесс настройки может показаться сложным из-за большого количества конфигурационных файлов, но если следовать пошаговой логике, результат будет надежным. Мы затронем вопросы оптимизации <em>MySQL</em> для работы в условиях высокого латентности, характерного для сети <strong>Tor</strong>.</p>
+
+<h2 id="подготовка-операционной-системы-и-установка-базовых-компонентов">Подготовка операционной системы и установка базовых компонентов</h2>
+<p>Первым этапом всегда является обновление репозиториев и установка необходимых пакетов. Вам необходимо убедиться, что система <strong>Linux</strong> (чаще всего используется Ubuntu или Debian) находится в актуальном состоянии, так как устаревшие библиотеки могут содержать уязвимости, критичные для <em>безопасности</em> сервера.</p>
+<p>После обновления системы необходимо установить сам стек <strong>LAMP</strong>. В данном контексте ключевую роль играет веб-сервер <strong>Apache</strong>, который должен быть готов к перенаправлению трафика. Не забудьте сразу настроить базовую защиту: отключите root-доступ по SSH и настройте <strong>iptables</strong> для блокировки лишних портов.</p>
+<p>Установка пакета <code>tor</code> и <code>torsocks</code> является обязательной, так как они обеспечивают функционал анонимизации. Важно проверить, что служба <em>tor</em> не конфликтует с другими сетевыми демонами, работающими на стандартных портах.</p>
+
+<h2 id="конфигурация-файла-torrc-для-серверных-задач">Конфигурация файла torrc для серверных задач</h2>
+<p>Главный конфигурационный файл <strong>tor</strong>, расположенный обычно по пути <code>/etc/tor/torrc</code>, нуждается в тщательной правке. Именно здесь вы определяете, будет ли ваш сервер работать как <strong>выходной узел</strong>, <strong>прокси</strong> или создавать <em>скрытый сервис</em> (Onion Service). Для большинства сценариев с веб-сайтами на <strong>LAMP</strong> требуется создание скрытого сервиса.</p>
+<p>Вам нужно раскомментировать и настроить директиву <strong>HiddenServiceDir</strong>. Указанная папка должна находиться на диске с правами доступа только для пользователя <em>tor</em>. В этой директории будет сгенерирован уникальный <strong>.onion</strong> адрес и приватный ключ, который нельзя утерять.</p>
+<p>Не забудьте указать <strong>HiddenServicePort</strong>, сопоставив виртуальный порт <em>Onion</em> с реальным портом веб-сервера <strong>Apache</strong>. Обычно это сопоставление выглядит как 80:127.0.0.1:80, что направляет трафик из сети <em>Tor</em> на локальный интерфейс вашего сервера.</p>
+<blockquote>⚠️ Внимание: Если вы измените директорию <strong>HiddenServiceDir</strong> после генерации ключей, ваш <strong>.onion</strong> адрес изменится, и пользователи потеряют к вам доступ. Сохраните этот путь в надежном месте.</blockquote>
+
+<div class="pb-poll" id="poll-25b39267"><div class="pb-poll-question">📊 Какой тип сервиса вы планируете развернуть?</div><div class="pb-poll-option" data-poll="25b39267" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Скрытый сайт (.onion)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="25b39267" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Выходной узел</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="25b39267" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Релей</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="25b39267" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Прокси-шлюз</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="интеграция-apache-и-установка-ограничений-доступа">Интеграция Apache и установка ограничений доступа</h2>
+<p>Веб-сервер <strong>Apache</strong> необходимо настроить так, чтобы он принимал соединения только с локального интерфейса (localhost) или через <em>Unix-сокеты</em>. Это предотвращает прямое подключение к вашему сайту из обычного интернета, если вы хотите, чтобы он был доступен исключительно через сеть <strong>Tor</strong>.</p>
+<p>В конфигурационном файле виртуального хоста <code>VirtualHost</code> укажите <strong>Listen 127.0.0.1:80</strong>. Такая настройка гарантирует, что сканеры портов из открытого интернета не найдут ваш веб-сервер. Весь трафик будет поступать из <strong>Tor</strong>, что обеспечивает дополнительный уровень защиты от автоматических атак.</p>
+<p>Для повышения безопасности рекомендуется ограничить количество соединений и разрешить доступ только определенному пользователю. Используйте директивы <strong>LimitRequestBody</strong> и настройки <em>mod_security</em>, чтобы минимизировать риски эксплуатации уязвимостей в <em>PHP</em> скриптах.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка конфигурации Apache</h4><label class="check-item"><input type="checkbox"><span>Установлен Listen 127.0.0.1:80</span></label><label class="check-item"><input type="checkbox"><span>Настроен VirtualHost</span></label><label class="check-item"><input type="checkbox"><span>Отключен Indexing</span></label><label class="check-item"><input type="checkbox"><span>Настроен LimitRequestBody</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="сетевая-безопасность-и-фаервол">Сетевая безопасность и фаервол</h2>
+<p>Настройка <strong>iptables</strong> или <em>UFW</em> (Uncomplicated Firewall) является критическим этапом. Даже если <strong>Apache</strong> слушает только локальный интерфейс, система должна блокировать любые попытки внешнего доступа к портам базы данных <strong>MySQL</strong> или административным панелям.</p>
+<p>Создайте правила, разрешающие входящие соединения только с порта <strong>Tor</strong> (обычно 9001 для релейного трафика или 9050 для SOCKS) и исходящие соединения на порты <em>Tor</em> сети. Остальные порты должны быть закрыты на уровне ядра.</p>
+<p>Также важно настроить <strong>Logrotate</strong> для логов <em>Apache</em> и <strong>tor</strong>. Длительное хранение логов может компрометировать анонимность, поэтому их следует сжимать и удалять с определенной периодичностью, либо вообще отключить детальное логирование IP-адресов.</p>
+<blockquote>⚠️ Внимание: Неправильная настройка <strong>iptables</strong> может полностью заблокировать доступ к серверу. Всегда открывайте доступ к SSH (порт 22) перед применением новых правил файрвола.</blockquote>
+
+<details class="pb-accordion"><summary>Что делать, если сайт не открывается через.onion?</summary><div class="pb-accordion-body"><p>В первую очередь проверьте, что файл HiddenServiceDir существует и содержит файлы hostname и private_key. Затем убедитесь, что служба tor запущена и не выдает ошибок в /var/log/tor/log. Часто проблема кроется в том, что Apache слушает не тот интерфейс или порт, который указан в torrc. Попробуйте перезапустить службы: sudo systemctl restart tor и sudo systemctl restart apache2.</p></div></details>
+
+<h2 id="оптимизация-производительности-и-базы-данных">Оптимизация производительности и базы данных</h2>
+<p>Работа базы данных <strong>MySQL</strong> в связке с <strong>Tor</strong> имеет свои особенности. Сеть <em>Tor</em> обладает высокой задержкой (latency), поэтому запросы к базе данных могут выполняться медленнее. Вам необходимо оптимизировать конфиг <code>my.cnf</code>, увеличив размеры буферов и кэшей.</p>
+<p>Рекомендуется отключить синхронизацию с диском при каждом транзакционном коммите (<strong>innodb_flush_log_at_trx_commit</strong>), если допустима небольшая потеря данных при сбое. Это значительно ускорит работу сайта, который будет отвечать медленнее из-за прокси-соединений.</p>
+<p>Также стоит рассмотреть использование <strong>Redis</strong> или <em>Memcached</em> для кэширования сессий и запросов. Это снизит нагрузку на <strong>MySQL</strong> и ускорит отдачу контента пользователям, заходящим через <em>Onion-сеть</em>.</p>
+
+<h2 id="таблица-портов-и-служб-для-конфигурации">Таблица портов и служб для конфигурации</h2>
+<p>Ниже приведена сводная таблица основных портов и служб, которые необходимо контролировать при настройке <strong>LAMP</strong> сервера с <em>Tor</em>.</p>
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Служба</th>
+<th>Порт (TCP/UDP)</th>
+<th>Назначение</th>
+<th>Рекомендация по доступу</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Apache (Web)</td>
+<td>80 (localhost)</td>
+<td>Веб-сервис для Tor</td>
+<td>Только 127.0.0.1</td>
+</tr>
+<tr>
+<td>MySQL (DB)</td>
+<td>3306</td>
+<td>База данных</td>
+<td>Локально или через Unix-сокет</td>
+</tr>
+<tr>
+<td>Tor (Relay)</td>
+<td>9001 (TCP)</td>
+<td>Входящий трафик сети</td>
+<td>Открыт для всех (если Relay)</td>
+</tr>
+<tr>
+<td>Tor (Control)</td>
+<td>9051 (TCP)</td>
+<td>Управление службой</td>
+<td>Доступен только root/admin</td>
+</tr>
+<tr>
+<td>SSH</td>
+<td>22 (TCP)</td>
+<td>Удаленное управление</td>
+<td>Белый список IP</td>
+</tr>
+</tbody>
+</table></div>
+
+<h2 id="поддержание-актуальности-и-мониторинг">Поддержание актуальности и мониторинг</h2>
+<p>Сеть <strong>Tor</strong> постоянно развивается, и протоколы могут меняться. Рекомендуется регулярно обновлять пакеты <code>tor</code> и <strong>LAMP</strong> компонентов, чтобы использовать последние исправления безопасности. Однако делайте это осторожно, чтобы не нарушить конфигурацию.</p>
+<p>Настройте мониторинг доступности вашего <strong>.onion</strong> адреса. Существуют специализированные сервисы, которые проверяют работоспособность скрытых сервисов, но используйте их с осторожностью, чтобы не раскрыть свой настоящий IP-адрес.</p>
+<p>Важно регулярно проверять логи на предмет попыток взлома или аномальной активности. <strong>Анонимность</strong> сервера зависит не только от настроек, но и от отсутствия ошибок администрирования, которые могут привести к деанонимизации.</p>
+<blockquote>⚠️ Внимание: Если вы используете свой сервер как выходной узел, вы можете столкнуться с юридическими сложностями в некоторых юрисдикциях. Проконсультируйтесь с правовыми нормами вашей страны перед открытием портов для публичного трафика.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Ключевым моментом успешной настройки является разделение трафика: веб-сервер Apache должен принимать запросы только из локальной сети или от демона Tor, а база данных MySQL должна быть полностью изолирована от внешнего мира.</p></aside>
+
+<h2 id="частые-вопросы-faq">Частые вопросы (FAQ)</h2>
+<details>
+<summary>Можно ли использовать Nginx вместо Apache в стеке LAMP для Tor?</summary>
+<p>Технически да, вы можете использовать Nginx, хотя аббревиатура LAMP подразумевает Apache. Конфигурация будет аналогичной: Nginx должен слушать localhost, а файл torrc должен указывать на порт Nginx. Однако Apache имеет более богатую экосистему модулей для совместимости с устаревшими PHP-скриптами.</p>
+</details>
+<details>
+<summary>Как узнать свой.onion адрес после настройки?</summary>
+<p>Адрес генерируется автоматически при первом запуске службы Tor с созданным конфигурационным файлом. Вам нужно прочитать содержимое файла <strong>hostname</strong> внутри директории, указанной в параметре HiddenServiceDir (обычно <code>/var/lib/tor/hidden_service/hostname</code>).</p>
+</details>
+<details>
+<summary>Замедлит ли Tor работу моего сайта для обычных пользователей?</summary>
+<p>Если вы настроили сервер так, что сайт доступен и в открытом интернете (через обычный IP), то пользователи из обычного интернета не почувствуют замедления. Замедление будет только у тех, кто заходит через сеть Tor, из-за многократного переупаковывания трафика через узлы сети.</p>
+</details>
+<details>
+<summary>Нужно ли менять IP-адрес сервера для запуска Tor-сервера?</summary>
+<p>Нет, вам не обязательно менять IP-адрес, но рекомендуется использовать чистый сервер, который не был связан с вашими основными проектами, чтобы сохранить максимальную степень анонимности и изоляции.</p>
+</details>
+<details>
+<summary>Как защитить базу данных от утечек через Tor?</summary>
+<p>Ни в коем случае не открывайте порт 3306 в фаерволе. Настройте <strong>MySQL</strong> на использование Unix-сокета для локальных подключений. Если приложению нужен TCP, разрешите подключение только с localhost (127.0.0.1) и используйте сложные пароли и шифрование соединений.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/k/ka/kak-vklyuchit-na-kompe-vaj-faj.html" class="pb-related-card">
+                <span class="pb-related-title">Как включить Wi-Fi на компьютере: пошаговая инструкция и решения</span>
+                <span class="pb-related-desc">Подробное руководство по подключению Wi-Fi на Windows 7, 10, 11. Настройка адаптера, установка драйв</span>
+            </a><a href="/set-i-internet/u/ub/ubiquiti-nanostation-loco-m5-nastrojka.html" class="pb-related-card">
+                <span class="pb-related-title">Ubiquiti NanoStation Loco M5: полная настройка точки доступа</span>
+                <span class="pb-related-desc">Подробная инструкция по настройке Ubiquiti NanoStation Loco M5. Вход в веб-интерфейс, режимы работы,</span>
+            </a><a href="/set-i-internet/p/pl/plokhaya-svyaz-tinkoff-mobajl.html" class="pb-related-card">
+                <span class="pb-related-title">Плохая связь Тинькофф Мобайл: диагностика и исправление</span>
+                <span class="pb-related-desc">Детальный разбор причин плохой связи Тинькофф Мобайл. Как улучшить сигнал, настроить APN и решить пр</span>
+            </a><a href="/set-i-internet/k/ka/kak-perevesti-nomer-s-tele2-na-mts-s-sokhraneniem-nomera-cherez-internet-besplatno.html" class="pb-related-card">
+                <span class="pb-related-title">Как перевести номер с Tele2 на МТС через интернет: пошаговая инструкция</span>
+                <span class="pb-related-desc">Полное руководство по переносу номера с Tele2 на МТС онлайн. Сохранение номера, бесплатная процедура</span>
+            </a><a href="/set-i-internet/p/pr/proverit-vk-na-skrytykh-druzej.html" class="pb-related-card">
+                <span class="pb-related-title">Как проверить ВК на скрытых друзей: 5 рабочих методов</span>
+                <span class="pb-related-desc">Узнайте, как найти скрытых друзей ВКонтакте через ID, сторонние сервисы и настройки. Разбор популярн</span>
+            </a><a href="/set-i-internet/p/pe/perenesti-nomer-v-rostelekom.html" class="pb-related-card">
+                <span class="pb-related-title">Как перенести номер в Ростелеком: пошаговая инструкция 2026</span>
+                <span class="pb-related-desc">Полная инструкция по переносу номера в Ростелеком. Условия MNP, необходимые документы, сроки активац</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

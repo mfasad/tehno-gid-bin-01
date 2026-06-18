@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как узнать диапазон сети: IP-адреса, подсети и маски в Windows и Linux — Техно Гид</title>
+    <meta name="description" content="Подробная инструкция по определению диапазона IP-адресов в локальной сети. Расчет подсети, маски, шлюза и командная строка для сетевых администраторов.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/k/ka/kak-uznat-diapazon-seti.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как узнать диапазон сети: IP-адреса, подсети и маски в Windows и Linux">
+    <meta property="og:description" content="Подробная инструкция по определению диапазона IP-адресов в локальной сети. Расчет подсети, маски, шлюза и командная строка для сетевых администраторов.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как узнать диапазон сети: IP-адреса, подсети и маски в Windows и Linux</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#основные-понятия-сетевой-адресации">Основные понятия сетевой адресации</a></li><li><a href="#проверка-параметров-в-операционной-системе-windows">Проверка параметров в операционной системе Windows</a></li><li><a href="#инструменты-для-пользователей-linux-и-macos">Инструменты для пользователей Linux и macOS</a></li><li><a href="#расчет-диапазона-сети-вручную">Расчет диапазона сети вручную</a></li><li><a href="#использование-сторонних-утилит-для-сканирования">Использование сторонних утилит для сканирования</a></li><li><a href="#типичные-конфигурации-и-таблицы-значений">Типичные конфигурации и таблицы значений</a></li><li><a href="#особенности-настройки-статических-диапазонов">Особенности настройки статических диапазонов</a></li><li><a href="#диагностика-проблем-с-подсетью">Диагностика проблем с подсетью</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/t/te/tevas-filmy-i-serialy-skachat-besplatno-v-khoroshem-kachestve.html">Тевас фильмы и сериалы: как скачать бесплатно в HD</a></li><li><a href="/set-i-internet/k/ka/kak-uvelichit-signal-mobilnogo-interneta.html">Как усилить сигнал мобильного интернета: 7 рабочих методов</a></li><li><a href="/set-i-internet/s/sk/skorost-po-wifi-menshe-chem-po-kabelyu.html">Скорость Wi-Fi меньше чем по кабелю: причины и способы решения</a></li><li><a href="/set-i-internet/o/ob/obkhod-blokirovok-operatorov-4pda.html">Обход блокировок операторов связи в 4PDA: методы и решения</a></li><li><a href="/set-i-internet/k/ka/kak-uvelichit-skorost-vaj-faj-adaptera.html">Как увеличить скорость Wi-Fi адаптера: настройки и апгрейд</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Полное руководство по определению диапазона сети</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#основные-понятия-сетевой-адресации">Основные понятия сетевой адресации</a></li><li><a href="#проверка-параметров-в-операционной-системе-windows">Проверка параметров в операционной системе Windows</a></li><li><a href="#инструменты-для-пользователей-linux-и-macos">Инструменты для пользователей Linux и macOS</a></li><li><a href="#расчет-диапазона-сети-вручную">Расчет диапазона сети вручную</a></li><li><a href="#использование-сторонних-утилит-для-сканирования">Использование сторонних утилит для сканирования</a></li><li><a href="#типичные-конфигурации-и-таблицы-значений">Типичные конфигурации и таблицы значений</a></li><li><a href="#особенности-настройки-статических-диапазонов">Особенности настройки статических диапазонов</a></li><li><a href="#диагностика-проблем-с-подсетью">Диагностика проблем с подсетью</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Понимание структуры вашей <strong>локальной сети</strong> является фундаментом для грамотной настройки оборудования, устранения конфликтов адресов и обеспечения безопасности. Когда вы подключаете новое устройство или настраиваете роутер <em>TP-Link</em>, <em>ASUS</em> или <em>MikroTik</em>, важно знать, какие IP-адреса свободны, а какие заняты. Диапазон сети, или подсеть, определяет границы, в пределах которых устройства могут общаться друг с другом без использования маршрутизатора.</p>
+
+<p>Многие пользователи ошибочно полагают, что достаточно знать только свой <strong>IP-адрес</strong>, чтобы понять структуру сети. Однако без знания <em>маски подсети</em> и <strong>шлюза</strong> представление о границах сети будет неполным. В этой статье мы разберем, как найти эти параметры в операционных системах и как вручную вычислить диапазон доступных адресов.</p>
+
+<h2 id="основные-понятия-сетевой-адресации">Основные понятия сетевой адресации</h2>
+
+<p>Прежде чем переходить к практическим шагам, необходимо разобраться в терминологии. Каждое устройство в сети имеет уникальный <strong>IP-адрес</strong>, состоящий из 32 бит (в формате IPv4). Этот адрес делится на две части: сетевую и узловую. Сетевая часть идентифицирует саму сеть, а узловая — конкретное устройство внутри неё. Именно соотношение этих частей задается <em>маской подсети</em>.</p>
+
+<p>Маска подсети — это ключевой элемент, который говорит компьютеру, какая часть IP-адреса относится к сети, а какая к хосту. Стандартные маски, такие как <code>255.255.255.0</code>, указывают, что первые три октета определяют сеть. Если вы используете более сложную маску, например <code>255.255.254.0</code>, диапазон доступных адресов увеличивается вдвое. Понимание этих различий критично при проектировании крупных офисных сетей.</p>
+
+<p>Часто пользователи путают <strong>широковещательный адрес</strong> с адресом самого устройства. Широковещательный адрес — это адрес, который принимает каждое устройство в подсети, но он не может быть назначен конкретному компьютеру или принтеру. Зная диапазон, вы всегда сможете исключить его из списка назначаемых адресов, чтобы избежать сбоев в работе.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Неправильная настройка маски подсети может привести к тому, что устройства не увидят друг друга, даже если они подключены к одному кабелю или Wi-Fi точке доступа.</p>
+</blockquote>
+
+<h2 id="проверка-параметров-в-операционной-системе-windows">Проверка параметров в операционной системе Windows</h2>
+
+<p>Самый быстрый способ узнать настройки сети в Windows — использовать стандартную утилиту <code>cmd</code>. Вам не нужно устанавливать дополнительное ПО или скачивать драйверы. Просто откройте командную строку от имени администратора или обычного пользователя и введите команду <code>ipconfig /all</code>. Это предоставит исчерпывающую информацию о вашем адаптере.</p>
+
+<p>В выводе команды найдите строку "IP-адрес (IPv4)" и "Маска подсети". Также обратите внимание на "Основной шлюз". Эти три параметра позволяют вам вручную рассчитать границы сети. Например, если у вас адрес <code>192.168.1.15</code> и маска <code>255.255.255.0</code>, диапазон сети начинается с <code>192.168.1.1</code> и заканчивается <code>192.168.1.254</code>.</p>
+
+<p>Для более продвинутых пользователей, работающих с серверами или сложными топологиями, полезно знать команду <code>netsh interface ip show config</code>. Она дает аналогичную информацию, но в другом формате, который может быть удобнее для парсинга скриптами. Однако для большинства бытовых задач достаточно стандартного <code>ipconfig</code>.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Параметры для проверки в Windows</h4><label class="check-item"><input type="checkbox"><span>Узнать IP-адрес устройства</span></label><label class="check-item"><input type="checkbox"><span>Определить маску подсети</span></label><label class="check-item"><input type="checkbox"><span>Записать адрес шлюза</span></label><label class="check-item"><input type="checkbox"><span>Зафиксировать MAC-адрес адаптера</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="инструменты-для-пользователей-linux-и-macos">Инструменты для пользователей Linux и macOS</h2>
+
+<p>В UNIX-подобных системах подход к сетевым настройкам немного отличается. Вместо утилиты ipconfig используется команда <code>ip addr</code> или устаревшая, но все еще популярная <code>ifconfig</code>. В терминале macOS и Linux эти команды покажут вам список всех интерфейсов, включая виртуальные и мостовые соединения.</p>
+
+<p>Чтобы узнать диапазон сети в Linux, часто удобнее использовать утилиту <code>ipcalc</code> (если она установлена) или <code>ip route</code>. Команда <code>ip route</code> покажет таблицу маршрутизации, где будет указана сеть по умолчанию. Для получения детальной информации о подсети можно использовать команду <code>ip -o -4 addr show scope global</code>, которая выведет сжатый список IP-адресов и масок.</p>
+
+<p>На macOS, помимо терминала, можно воспользоваться графическим интерфейсом. Зайдите в <code>Системные настройки → Сеть → Дополнительно → TCP/IP</code>. Здесь вы увидите те же параметры: IP, Маску и Маршрутизатор. Интерфейс macOS также позволяет легко переключаться между настройками DHCP и статическим IP, что полезно при тестировании сетевых конфигураций.</p>
+
+<div class="pb-poll" id="poll-974a17f3"><div class="pb-poll-question">📊 Какая операционная система используется у вас чаще всего?</div><div class="pb-poll-option" data-poll="974a17f3" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Windows 10/11</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="974a17f3" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">macOS</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="974a17f3" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Linux (Ubuntu/Fedora)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="974a17f3" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Другая ОС</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="расчет-диапазона-сети-вручную">Расчет диапазона сети вручную</h2>
+
+<p>Иногда система не показывает информацию в понятном виде, или вам нужно спланировать сеть до ее развертывания. В таких случаях приходится выполнять расчет вручную. Алгоритм прост: возьмите IP-адрес устройства и выполните побитовое AND-сложение с маской подсети. Результатом будет адрес самой сети.</p>
+
+<p>Для получения адреса широковещательной передачи (broadcast) нужно инвертировать маску и сложить её с адресом сети. Диапазон доступных для использования адресов будет находиться между адресом сети и адресом широковещательной передачи. Например, в сети <code>192.168.0.0/24</code> первые и последние адреса зарезервированы, а usable range — это <code>192.168.0.1</code> — <code>192.168.0.254</code>.</p>
+
+<p>Многие администраторы используют онлайн-калькуляторы подсетей, чтобы избежать ошибок в бинарных вычислениях. Однако понимание принципа работы позволяет вам быстро оценить ситуацию без интернета. Если вы знаете, что ваша маска <code>/26</code>, вы сразу поймете, что в подсети всего 64 адреса.</p>
+
+<details class="pb-accordion"><summary>Пример расчета подсети /26</summary><div class="pb-accordion-body"><p>Если у вас IP 192.168.1.100 и маска 255.255.255.192 (/26), то сеть начинается с 192.168.1.64, а заканчивается на 192.168.1.127. Доступные адреса для хостов: 192.168.1.65 – 192.168.1.126.</p></div></details>
+
+<h2 id="использование-сторонних-утилит-для-сканирования">Использование сторонних утилит для сканирования</h2>
+
+<p>Если вам нужно не просто узнать настройки, а увидеть, какие устройства реально активны в найденном диапазоне, понадобятся сканеры сети. Программы вроде <em>Fing</em>, <em>Advanced IP Scanner</em> или <em>Nmap</em> позволяют быстро просканировать весь поддиапазон и составить список устройств с их именами и MAC-адресами.</p>
+
+<p>Утилита <em>Nmap</em> считается стандартом де-факто для профессионалов. Команда <code>nmap -sn 192.168.1.0/24</code> выполнит пинг-сканирование всего диапазона без проверки портов. Это безопасно и быстро. Для Windows пользователей доступен графический интерфейс <em>Zenmap</em>, который делает работу с Nmap более наглядной и удобной для новичков.</p>
+
+<p>Мобильное приложение <em>Fing</em> особенно удобно, если вы находитесь вне офиса или дома и хотите проверить сеть удаленно. Оно автоматически определяет тип устройства (принтер, телефон, камера) и показывает список всех подключенных клиентов. Это отличный способ убедиться, что к вашему Wi-Fi не подключились посторонние.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Сканирование сети, к которой у вас нет прав администратора или законного доступа, может быть расценено как попытка несанкционированного проникновения. Всегда убедитесь в законности своих действий.</p>
+</blockquote>
+
+<h2 id="типичные-конфигурации-и-таблицы-значений">Типичные конфигурации и таблицы значений</h2>
+
+<p>В большинстве бытовых и малых офисных сетей используются стандартные диапазоны. Понимание этих шаблонов значительно упрощает поиск ошибок. Ниже приведена таблица наиболее распространенных масок подсети и соответствующих им диапазонов.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Маска подсети</th>
+<th>Префикс CIDR</th>
+<th>Количество адресов</th>
+<th>Диапазон (на примере 192.168.1.x)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>255.255.255.0</td>
+<td>/24</td>
+<td>256 (254 для хостов)</td>
+<td>192.168.1.1 — 192.168.1.254</td>
+</tr>
+<tr>
+<td>255.255.0.0</td>
+<td>/16</td>
+<td>65 536 (65 534 для хостов)</td>
+<td>192.168.0.1 — 192.168.255.254</td>
+</tr>
+<tr>
+<td>255.255.255.128</td>
+<td>/25</td>
+<td>128 (126 для хостов)</td>
+<td>192.168.1.1 — 192.168.1.126</td>
+</tr>
+<tr>
+<td>255.255.255.192</td>
+<td>/26</td>
+<td>64 (62 для хостов)</td>
+<td>192.168.1.1 — 192.168.1.62</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Обратите внимание, что при изменении маски меняются не только количество доступных адресов, но и границы подсети. При mask <code>/26</code> сеть делится на блоки по 64 адреса. Если ваше устройство имеет адрес <code>192.168.1.70</code>, оно будет в другой подсети относительно устройства с адресом <code>192.168.1.10</code>, если шлюз настроен неправильно.</p>
+
+<p>Использование нестандартных масок (VLSM — Variable Length Subnet Masking) позволяет экономить IP-адреса в крупных сетях. Однако для домашнего использования это редко требуется. Стандартная <code>/24</code> маска покрывает потребности большинства пользователей, позволяя подключить более двухсот устройств одновременно.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильный выбор маски подсети критичен для сегментации сети; слишком широкая сеть может вызвать проблемы с широковещательным штормом, а слишком узкая — ограничит количество подключаемых устройств.</p></aside>
+
+<h2 id="особенности-настройки-статических-диапазонов">Особенности настройки статических диапазонов</h2>
+
+<p>При настройке статических IP-адресов для серверов, сетевых принтеров или IP-камер важно убедиться, что выбранный адрес не попадает в диапазон автоматической раздачи (DHCP). Иначе может возникнуть конфликт адресов, когда два устройства будут иметь одинаковый IP. Это приведет к потере сети для обоих.</p>
+
+<p>Для предотвращения таких ситуаций администраторы обычно зарезервируют часть диапазона. Например, если роутер выдает адреса с <code>.100</code> до <code>.200</code>, статические устройства лучше назначать в диапазоне <code>.2</code> — <code>.99</code>. Это правило должно соблюдаться неукоснительно, особенно в сетях с высокой нагрузкой.</p>
+
+<p>Проверка на наличие конфликта можно выполнить с помощью команды <code>ping</code> перед назначением адреса. Если вы хотите назначить <code>192.168.1.50</code>, сначала попингуйте его. Если ответ пришел, значит, адрес занят. Если ответа нет — адрес свободен (при условии, что устройство не настроено отвечать на ping).</p>
+
+<blockquote>
+<p>⚠️ Внимание: Даже если устройство не отвечает на ping, оно может занимать IP-адрес в сети (например, из-за настройки firewall). Самый надежный способ — проверить таблицу ARP на роутере или искать MAC-адрес устройства в настройках DHCP.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед изменением статического IP-адреса сервера убедитесь, что вы сохранили доступ к нему через консоль управления или физический доступ, чтобы в случае ошибки настройки не потерять управление системой.</p></aside>
+
+<h2 id="диагностика-проблем-с-подсетью">Диагностика проблем с подсетью</h2>
+
+<p>Если вы не можете получить доступ к другим устройствам, хотя они находятся в одном физическом сегменте, проблема часто кроется в неправильно указанном диапазоне сети. Проверьте, совпадают ли первые октеты IP-адресов у обоих устройств и соответствует ли маска подсети их сетевому адресу.</p>
+
+<p>Иногда причиной проблем становится неверно настроенный шлюз по умолчанию. Если шлюз указывает на несуществующий адрес или на устройство, которое не выполняет функции маршрутизатора, связь с внешним миром или другими подсетями будет невозможна. Используйте команду <code>tracert</code> (Windows) или <code>traceroute</code> (Linux/macOS) для отслеживания пути пакетов.</p>
+
+<p>В сложных случаях, когда сеть сегментирована VLAN, Для связи между ними необходим маршрутизатор или коммутатор третьего уровня.</p>
+
+<details class="pb-accordion"><summary>Как работает VLAN и почему IP одной подсети не видят друг друга</summary><div class="pb-accordion-body"><p>VLAN (Virtual LAN) изолирует трафик на уровне коммутатора. Даже если компьютеры имеют IP 192.168.1.2 и 192.168.1.3, но находятся в разных VLAN ID, они не смогут общаться без маршрутизации, так как коммутатор не передает широковещательные пакеты между сегментами.</p></div></details>
+
+<h2 id="часто-задаваемые-вопросы">Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Как узнать диапазон сети, если я не знаю пароль от роутера?</summary>
+<p>Вы можете узнать диапазон сети, посмотрев настройки своего компьютера, так как он автоматически получает эти данные от роутера. Используйте команду <code>ipconfig</code> в Windows или <code>ip addr</code> в Linux. Если вы получили IP по DHCP, то диапазон сети определяется вашей маской подсети и IP-адресом.</p>
+</details>
+
+<details>
+<summary>Что делать, если два устройства имеют одинаковый IP-адрес?</summary>
+<p>Это конфликт IP-адресов. Зайдите в настройки одного из устройств и смените его IP-адрес на другой, который не используется в сети. Лучше всего использовать адрес из зарезервированной для статических устройств части диапазона или включить автоматическое получение адреса (DHCP) на одном из них.</p>
+</details>
+
+<details>
+<summary>Можно ли расширить диапазон сети при малом количестве адресов?</summary>
+<p>Да, можно изменить маску подсети на более широкую (например, с <code>/24</code> на <code>/23</code>), если ваш роутер поддерживает эту функцию. Это объединит две подсети в одну, увеличив количество доступных адресов. Однако это может увеличить нагрузку на сеть из-за широковещательного трафика.</p>
+</details>
+
+<details>
+<summary>В чем разница между диапазоном сети и диапазоном DHCP?</summary>
+<p>Диапазон сети — это все возможные IP-адреса в данной подсети. Диапазон DHCP — это только та часть диапазона сети, которую роутер готов раздать автоматически устройствам. Остальные адреса могут быть зарезервированы для статического назначения.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/t/te/tevas-filmy-i-serialy-skachat-besplatno-v-khoroshem-kachestve.html" class="pb-related-card">
+                <span class="pb-related-title">Тевас фильмы и сериалы: как скачать бесплатно в HD</span>
+                <span class="pb-related-desc">Полный гид по скачиванию контента с Тевас в хорошем качестве. Обзор легальных методов, форматы файло</span>
+            </a><a href="/set-i-internet/k/ka/kak-uvelichit-signal-mobilnogo-interneta.html" class="pb-related-card">
+                <span class="pb-related-title">Как усилить сигнал мобильного интернета: 7 рабочих методов</span>
+                <span class="pb-related-desc">Узнайте, как увеличить сигнал мобильного интернета без покупки нового телефона. Эффективные советы п</span>
+            </a><a href="/set-i-internet/s/sk/skorost-po-wifi-menshe-chem-po-kabelyu.html" class="pb-related-card">
+                <span class="pb-related-title">Скорость Wi-Fi меньше чем по кабелю: причины и способы решения</span>
+                <span class="pb-related-desc">Почему скорость интернета по Wi-Fi ниже, чем по кабелю? Разбор физических ограничений, помех и настр</span>
+            </a><a href="/set-i-internet/o/ob/obkhod-blokirovok-operatorov-4pda.html" class="pb-related-card">
+                <span class="pb-related-title">Обход блокировок операторов связи в 4PDA: методы и решения</span>
+                <span class="pb-related-desc">Актуальные способы доступа к заблокированным разделам форума 4PDA от российских операторов. Обзор DN</span>
+            </a><a href="/set-i-internet/k/ka/kak-uvelichit-skorost-vaj-faj-adaptera.html" class="pb-related-card">
+                <span class="pb-related-title">Как увеличить скорость Wi-Fi адаптера: настройки и апгрейд</span>
+                <span class="pb-related-desc">Узнайте, как ускорить интернет на устройстве. Пошаговая настройка драйверов, выбор частоты 5 ГГц и о</span>
+            </a><a href="/set-i-internet/k/ka/kak-sdelat-svoj-tarif-v-mts.html" class="pb-related-card">
+                <span class="pb-related-title">Как сделать свой тариф в МТС: инструкция по конструктору</span>
+                <span class="pb-related-desc">Подробная инструкция: как создать свой тариф МТС через приложение и сайт. Настройка минут, интернета</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

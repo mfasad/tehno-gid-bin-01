@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Aqara N100 в Home Assistant: Настройка и интеграция — Техно Гид</title>
+    <meta name="description" content="Интеграция умного замка Aqara N100 в Home Assistant. Инструкция по подключению через Zigbee2MQTT, настройка автосценариев и устранение проблем.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/a/aq/aqara-n100-home-assistant.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Aqara N100 в Home Assistant: Настройка и интеграция">
+    <meta property="og:description" content="Интеграция умного замка Aqara N100 в Home Assistant. Инструкция по подключению через Zigbee2MQTT, настройка автосценариев и устранение проблем.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Aqara N100 в Home Assistant: Настройка и интеграция</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-оборудования-и-выбор-шлюза">Подготовка оборудования и выбор шлюза</a></li><li><a href="#установка-и-настройка-zigbee2mqtt">Установка и настройка Zigbee2MQTT</a></li><li><a href="#настройка-сущностей-в-home-assistant">Настройка сущностей в Home Assistant</a></li><li><a href="#анализ-событий-и-журнал-действий">Анализ событий и журнал действий</a></li><li><a href="#автоматизация-безопасности-и-сценарии">Автоматизация безопасности и сценарии</a></li><li><a href="#проблемы-с-батареей-и-энергопотреблением">Проблемы с батареей и энергопотреблением</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/r/ro/robot-pylesos-xiaomi-oshibka-shchetki-postoyanno.html">Ошибка щетки робота-пылесоса Xiaomi: причины и ремонт</a></li><li><a href="/umnyj-dom/r/ro/robot-pylesos-vklyuchaetsya-i-srazu-vyklyuchaetsya.html">Робот-пылесос включается и сразу выключается: причины и ремонт</a></li><li><a href="/umnyj-dom/h/ho/home-assistant-kak-nastroit.html">Как настроить Home Assistant: полная инструкция для новичков</a></li><li><a href="/umnyj-dom/c/ch/chto-nuzhno-dlya-umnogo-doma-s-alisoj-v-kvartire.html">Что нужно для умного дома с Алисой: полное руководство по комплекту</a></li><li><a href="/umnyj-dom/a/al/alisa-nash-vash-vybor.html">Алиса — ваш выбор: Как умный помощник меняет быт и работу</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Интеграция умного замка Aqara N100 в Home Assistant</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-оборудования-и-выбор-шлюза">Подготовка оборудования и выбор шлюза</a></li><li><a href="#установка-и-настройка-zigbee2mqtt">Установка и настройка Zigbee2MQTT</a></li><li><a href="#настройка-сущностей-в-home-assistant">Настройка сущностей в Home Assistant</a></li><li><a href="#анализ-событий-и-журнал-действий">Анализ событий и журнал действий</a></li><li><a href="#автоматизация-безопасности-и-сценарии">Автоматизация безопасности и сценарии</a></li><li><a href="#проблемы-с-батареей-и-энергопотреблением">Проблемы с батареей и энергопотреблением</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p><em>Aqara N100</em> — это один из самых популярных смарт-замков на рынке, сочетающий надежность механики с возможностями современного <strong>Zigbee-соединения</strong>. Однако для пользователей, стремящихся к полной автоматизации жилья, нативное облако производителя часто кажется ограниченным. Именно здесь на сцену выходит <strong>Home Assistant</strong>, позволяющий превратить простой замок в центральный элемент сложной системы безопасности вашего дома.</p>
+
+<p>Подключение устройства напрямую к локальному серверу дает мгновенную реакцию, полную конфиденциальность данных и независимость от интернета. В этой статье мы детально разберем процесс интеграции <em>Aqara Door Lock N100</em> в экосистему HA, используя протокол Zigbee3.0. Вы узнаете о тонкостях настройки через <code>Zigbee2MQTT</code>, особенностях работы с батареей и создании продвинутых сценариев.</p>
+
+<h2 id="подготовка-оборудования-и-выбор-шлюза">Подготовка оборудования и выбор шлюза</h2>
+
+<p>Прежде чем приступать к программной настройке, необходимо убедиться в наличии корректного аппаратного обеспечения. <em>Aqara N100</em> работает по протоколу Zigbee, что означает невозможность прямого подключения к Wi-Fi роутеру без посредника. Вам потребуется совместимый <strong>Zigbee-координатор</strong>, подключенный к серверу с Home Assistant.</p>
+
+<p>Наиболее стабильные результаты показывает использование адаптеров на чипах Texas Instruments (серии CC2652) или Silicon Labs (серии EFR32). Популярными решениями являются <em>Sonoff Zigbee 3.0 USB Dongle Plus</em> или <em>Electrolama zig-a-zig-ah!</em>. </p>
+
+<p>Расположение координатора также играет критическую роль. Поскольку замок обычно установлен на входной двери, часто в металлической коробке или рядом с армированным бетоном, сигнал может ослабевать. Убедитесь, что ваш шлюз находится в прямой видимости или имеет достаточное количество <strong>роутеров Zigbee</strong> (умных розеток, ламп) между собой и замком для создания надежной ячеистой сети.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Металлические дверные полотна и коробки могут существенно экранировать радиосигнал. Если вы наблюдаете частые разрывы связи, рассмотрите установку ретранслятора Zigbee непосредственно в прихожей.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для лучшей стабильности сети Zigbee используйте удлинитель USB для выноса координатора на расстояние 1-2 метра от корпуса сервера или Raspberry Pi, чтобы избежать помех от USB 3.0 портов.</p></aside>
+
+<h2 id="установка-и-настройка-zigbee2mqtt">Установка и настройка Zigbee2MQTT</h2>
+
+<p>Для интеграции <em>Aqara N100</em> наиболее гибким и надежным инструментом является аддон <strong>Zigbee2MQTT</strong>. Он обеспечивает глубокую поддержку устройств Aqara и позволяет детально контролировать процесс сопряжения. Если вы еще не установили этот аддон, сделайте это через магазин дополнений Home Assistant или через Docker.</p>
+
+<p>После установки необходимо настроить файл конфигурации <code>configuration.yaml</code> внутри аддона. Укажите путь к вашему адаптеру, например <code>/dev/ttyUSB0</code>, и выберите правильную скорость передачи данных. Для большинства современных стиков оптимальным значением является <code>115200</code>.</p>
+
+<p>Важным этапом является включение режима сопряжения. В интерфейсе Zigbee2MQTT нажмите кнопку"Permit join" (Разрешить присоединение). На самом замке <em>Aqara N100</em> процедура входа в режим (pairing mode) осуществляется путем длительного нажатия кнопки настройки на внутренней панели до появления голосового или световой индикации.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед спариванием</h4><label class="check-item"><input type="checkbox"><span>Адаптер подключен и виден в системе</span></label><label class="check-item"><input type="checkbox"><span>Zigbee2MQTT запущен без ошибок</span></label><label class="check-item"><input type="checkbox"><span>Режим Permit join активирован</span></label><label class="check-item"><input type="checkbox"><span>Батарейки в замке свежие</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>Как только устройство будет обнаружено, оно появится в списке устройств Zigbee2MQTT. Модель должна определиться корректно, часто как <code>lumi.lock.aq1</code> или подобный идентификатор. Если устройство добавлено, но сущности не создаются, может потребоваться обновление базы данных определений устройств (OTA или через репозиторий zigbee-herdsman-converters).</p>
+
+<h2 id="настройка-сущностей-в-home-assistant">Настройка сущностей в Home Assistant</h2>
+
+<p>После успешного сопряжения данные о замке передаются через брокер <strong>MQTT</strong> в Home Assistant. Система должна автоматически обнаружить новые сущности благодаря функции <code>homeassistant</code> в настройках MQTT. Вы увидите объект замка, датчики открытия двери, состояния батареи и журнал событий.</p>
+
+<p>Ключевым элементом управления является сущность типа <code>lock</code>. Она позволяет не только видеть текущее состояние (заперто/отперто), но и отправлять команды на управление. Однако стоит помнить, что многие модели Aqara, включая N100, имеют ограничения на дистанционное открытие в целях безопасности.</p>
+
+<p>Для удобства использования рекомендуется переименовать сущности в понятные названия, например <code>lock.front_door</code> или <code>sensor.front_door_battery</code>. Это упростит создание автоматизаций и интеграцию с голосовыми помощниками, такими как <em>Alexa</em> или <em>Google Assistant</em>, если они подключены к вашему HA.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Тип сущности</th>
+<th>Описание</th>
+<th>Пример использования</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lock.n100</code></td>
+<td>Основное управление блокировкой</td>
+<td>Автоматическое запирание при уходе</td>
+</tr>
+<tr>
+<td><code>sensor.n100_battery</code></td>
+<td>Уровень заряда элементов питания</td>
+<td>Уведомление при заряде менее 20%</td>
+</tr>
+<tr>
+<td><code>sensor.n100_action</code></td>
+<td>Тип последнего действия (код, отпечаток, ключ)</td>
+<td>Логирование, кто и как вошел в дом</td>
+</tr>
+<tr>
+<td><code>binary_sensor.n100_contact</code></td>
+<td>Состояние двери (открыта/закрыта)</td>
+<td>Сигнализация при открытии ночью</td>
+</tr>
+</tbody>
+</table></div>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Автоматическое обнаружение сущностей работает только если в настройках MQTT включена опция'Home Assistant Discovery'. Проверьте это в конфигурации интеграции MQTT.</p></aside>
+
+<h2 id="анализ-событий-и-журнал-действий">Анализ событий и журнал действий</h2>
+
+<p>Одной из самых мощных функций интеграции <em>Aqara N100</em> с Home Assistant является подробный лог действий. Датчик <code>sensor.n100_action</code> передает строковые значения, описывающие метод авторизации. Это позволяет создавать гибкие сценарии реагирования в зависимости от того, кто именно входит в дом.</p>
+
+<p>Типичные значения атрибута action могут включать: <code>lock</code> (замок заперт снаружи), <code>unlock</code> (замок открыт), <code>fingerprint_unlock</code> (отпечаток пальца), <code>password_unlock</code> (ввод кода), <code>mechanical_key</code> (механический ключ) и <code>emergency_unlock</code> (аварийное открытие). Анализ этих событий открывает возможности для умного дома нового уровня.</p>
+
+<ul>
+<li>🔐 Вы можете настроить отправку разного типа уведомлений: тихое push-уведомление при входе по отпечатку пальца члена семьи и громкую сирену при вводе неверного кода несколько раз подряд.</li>
+<li>🔦 Автоматически включать свет в прихожей только если дверь открыта способом <code>fingerprint_unlock</code> в темное время суток, игнорируя открытие механическим ключом.</li>
+<li>📹 Активировать запись на камере видеонаблюдения и сделать скриншот при любом событии открытия двери, сохраняя его в архив с меткой времени и способом входа.</li>
+</ul>
+
+<p>Для обработки этих событий используйте триггеры в автоматизациях Home Assistant. Сравнивайте состояние сенсора действия с нужным значением. Например, условие <code>state_attr('sensor.n100_action','last_action') =='fingerprint_unlock'</code> позволит точно идентифицировать вход по биометрии.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Значения событий (action codes) могут незначительно отличаться в зависимости от версии прошивки замка и версии Zigbee2MQTT. Всегда проверяйте актуальные значения в разделе"Developer Tools" ->"States".</p>
+</blockquote>
+
+<div class="pb-poll" id="poll-a31e2dba"><div class="pb-poll-question">📊 Как вы чаще всего открываете дверь?</div><div class="pb-poll-option" data-poll="a31e2dba" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Отпечаток пальца</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="a31e2dba" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">ПИН-код</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="a31e2dba" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Механический ключ</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="a31e2dba" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">NFC-метка</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="a31e2dba" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Дистанционно</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="автоматизация-безопасности-и-сценарии">Автоматизация безопасности и сценарии</h2>
+
+<p>Интеграция замка в Home Assistant позволяет реализовать сценарии, недоступные в штатном приложении производителя. Самый востребованный сценарий — <strong>автоматическое запирание</strong>. Вы можете настроить таймер, который сработает через 30 секунд после того, как датчик контакта двери покажет состояние <code>closed</code>.</p>
+
+<p>Это решение избавляет от тревоги"а закрыл ли я дверь?". Система сама проверит состояние и отправит команду на сервомотор замка. Для реализации используйте службу <code>lock.lock</code> с указанием целевой сущности вашего замка.</p>
+
+<p>Еще один полезный сценарий — режим"Отпуск". При активации этого режима в HA можно запретить открытие замка любыми методами, кроме механического ключа (если прошивка и модель позволяют программное управление доступом), или просто усилить мониторинг любых попыток доступа с мгновенным оповещением на телефон.</p>
+
+<pre><code>alias: Auto Lock Front Door
+<p>description:"Автоматическое запирание двери через 30 сек"</p>
+<p>trigger:</p>
+<p>- platform: state</p>
+<p>entity_id: binary_sensor.n100_contact</p>
+<p>to:"off"</p>
+<p>condition:</p>
+<p>- condition: state</p>
+<p>entity_id: lock.n100</p>
+<p>state:"unlocked"</p>
+<p>action:</p>
+<p>- delay:</p>
+<p>hours: 0</p>
+<p>minutes: 0</p>
+<p>seconds: 30</p>
+<p>- service: lock.lock</p>
+<p>target:</p>
+<p>entity_id: lock.n100</p>
+<p>mode: single</code></pre></p>
+
+<details class="pb-accordion"><summary>Что делать, если автоматизация не срабатывает?</summary><div class="pb-accordion-body"><p>Если команда на запирание не выполняется, проверьте, не заблокирован ли мотор замка механически. Также убедитесь, что в настройках Zigbee2MQTT для данного устройства не стоит галочка'Disabled', и проверьте логи MQTT на наличие ошибок при отправке команды set.</p></div></details>
+
+<h2 id="проблемы-с-батареей-и-энергопотреблением">Проблемы с батареей и энергопотреблением</h2>
+
+<p><em>Aqara N100</em> работает от 8 батареек типа AA. В режиме активного использования, особенно при частой работе мотора и использовании Wi-Fi шлюза (если используется оригинальный хаб Aqara), заряд может расходоваться достаточно быстро. При интеграции через Zigbee2MQTT вы получаете точные данные о напряжении или проценте заряда.</p>
+
+<p>Рекомендуется использовать качественные щелочные (Alkaline) батареи известных брендов. Литиевые батареи также подходят и часто служат дольше, особенно в условиях низких температур, если дверь выходит на неотапливаемую лестничную клетку. Избегайте дешевых солевых элементов питания.</p>
+
+<p>Настройте предупреждение в Home Assistant, которое сработает, когда уровень заряда упадет ниже 15%. Это даст вам запас времени на покупку и замену элементов питания до того, как замок полностью обесточится. Помните, что при низком заряде мотор может работать медленнее или не доводить ригели до конца.</p>
+
+<ul>
+<li>🔋 Следите за графиком разряда батареи в разделе"History" Home Assistant — резкие скачки вниз могут указывать на неисправность контактов или брак батареек.</li>
+<li>⚡ При замене батареек старайтесь делать это быстро, чтобы не прерывать работу внутренних часов и настроек, хотя в N100 обычно есть встроенный конденсатор или резервное питание для сохранения данных.</li>
+<li>🧊 Если замок установлен на улице или в холодном тамбуре, зимнее падение емкости батарей — нормальное явление, учитывайте это при настройке порогов уведомлений.</li>
+</ul>
+
+<blockquote>
+<p>⚠️ Внимание: Никогда не смешивайте батарейки разных типов (щелочные и солевые) или разных степеней износа в одном отсеке. Это может привести к протечке электролита и повреждению электроники замка.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для продления срока службы батареек отключите в настройках замка (через приложение Aqara перед интеграцией) лишние звуковые подтверждения и яркую подсветку клавиатуры, если они не критичны для вас.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли открыть Aqara N100 удаленно через Home Assistant?</summary>
+<p>Штатно большинство версий прошивки Aqara N100 блокируют функцию удаленного открытия (unLock) через Zigbee в целях безопасности. Вы можете видеть статус и запирать дверь, но команда на открытие часто игнорируется устройством. Это ограничение самого производителя, а не Home Assistant.</p>
+</details>
+
+<details>
+<summary>Что делать, если Zigbee2MQTT не видит замок?</summary>
+<p>Убедитесь, что вы правильно вошли в режим сопряжения на самом замке (обычно долгое нажатие кнопки настройки). Проверьте, что координатор находится не слишком далеко. Попробуйте перепрошить координатор на последнюю версию прошивки и обновить Zigbee2MQTT до актуальной версии.</p>
+</details>
+
+<details>
+<summary>Работает ли замок без интернета?</summary>
+<p>Да, при интеграции через Zigbee2MQTT и Home Assistant локально, замок работает полностью без доступа к глобальной сети. Все сценарии, управление и логи хранятся и выполняются на вашем локальном сервере. Интернет нужен только для удаленного доступа к самому Home Assistant (например, через Nabu Casa или VPN).</p>
+</details>
+
+<details>
+<summary>Как сбросить настройки замка для повторной интеграции?</summary>
+<p>Для полного сброса обычно требуется вынуть батарейки, зажать кнопку настройки, вставить батарейки обратно, не отпуская кнопку, в течение 5-10 секунд до звукового сигнала. После этого устройство удалится из сети Zigbee и будет готово к новому сопряжению.</p>
+</details>
+
+<details>
+<summary>Поддерживает ли N100 обновление прошивки OTA через Home Assistant?</summary>
+<p>Zigbee2MQTT имеет встроенную поддержку OTA обновлений для многих устройств Aqara. Проверьте вкладку"OTA Update" в интерфейсе аддона. Если прошивка доступна, вы сможете обновить замок прямо через веб-интерфейс, не используя приложение производителя.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/r/ro/robot-pylesos-xiaomi-oshibka-shchetki-postoyanno.html" class="pb-related-card">
+                <span class="pb-related-title">Ошибка щетки робота-пылесоса Xiaomi: причины и ремонт</span>
+                <span class="pb-related-desc">Робот-пылесос Xiaomi ошибка щетки постоянно: диагностика, очистка, замена редуктора и мотора. Что де</span>
+            </a><a href="/umnyj-dom/r/ro/robot-pylesos-vklyuchaetsya-i-srazu-vyklyuchaetsya.html" class="pb-related-card">
+                <span class="pb-related-title">Робот-пылесос включается и сразу выключается: причины и ремонт</span>
+                <span class="pb-related-desc">Почему робот-пылесос сразу выключается после запуска? Разбор основных причин: разряженные аккумулято</span>
+            </a><a href="/umnyj-dom/h/ho/home-assistant-kak-nastroit.html" class="pb-related-card">
+                <span class="pb-related-title">Как настроить Home Assistant: полная инструкция для новичков</span>
+                <span class="pb-related-desc">Пошаговая настройка Home Assistant: установка, добавление устройств, создание автоматизаций и интегр</span>
+            </a><a href="/umnyj-dom/c/ch/chto-nuzhno-dlya-umnogo-doma-s-alisoj-v-kvartire.html" class="pb-related-card">
+                <span class="pb-related-title">Что нужно для умного дома с Алисой: полное руководство по комплекту</span>
+                <span class="pb-related-desc">Пошаговый план сборки умного дома с Яндекс Станцией. Разбор обязательных устройств, протоколов Zigbe</span>
+            </a><a href="/umnyj-dom/a/al/alisa-nash-vash-vybor.html" class="pb-related-card">
+                <span class="pb-related-title">Алиса — ваш выбор: Как умный помощник меняет быт и работу</span>
+                <span class="pb-related-desc">Почему Алиса стала лучшим выбором для умного дома? Обзор возможностей, интеграция с техникой и сцена</span>
+            </a><a href="/umnyj-dom/p/pe/pereproshit-yandeks-stantsiyu-po-podpiske.html" class="pb-related-card">
+                <span class="pb-related-title">Перепрошивка Яндекс Станции по подписке: мифы, риски и реальность</span>
+                <span class="pb-related-desc">Разбираем, можно ли прошить Яндекс Станцию через подписку, нужно ли это делать и как избежать блокир</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

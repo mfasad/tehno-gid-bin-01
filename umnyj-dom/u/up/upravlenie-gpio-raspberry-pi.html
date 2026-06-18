@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Управление GPIO на Raspberry Pi: Руководство по пинам и Python — Техно Гид</title>
+    <meta name="description" content="Полный гайд по работе с GPIO портами Raspberry Pi. Настройка библиотек, схемы подключения, управление реле и датчиками на Python без ошибок.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/u/up/upravlenie-gpio-raspberry-pi.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Управление GPIO на Raspberry Pi: Руководство по пинам и Python">
+    <meta property="og:description" content="Полный гайд по работе с GPIO портами Raspberry Pi. Настройка библиотек, схемы подключения, управление реле и датчиками на Python без ошибок.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Управление GPIO на Raspberry Pi: Руководство по пинам и Python</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#основы-работы-с-выводами-микрокомпьютера">Основы работы с выводами микрокомпьютера</a></li><li><a href="#физическая-распиновка-и-электрические-параметры">Физическая распиновка и электрические параметры</a></li><li><a href="#программные-библиотеки-и-настройка-среды">Программные библиотеки и настройка среды</a></li><li><a href="#практика-ввода-и-вывода-цифровых-сигналов">Практика ввода и вывода цифровых сигналов</a></li><li><a href="#широтно-импульсная-модуляция-pwm-и-аналоговое-управление">Широтно-импульсная модуляция (PWM) и аналоговое управление</a></li><li><a href="#сравнение-режимов-нумерации-пинов">Сравнение режимов нумерации пинов</a></li><li><a href="#безопасность-и-защита-от-перегрузок">Безопасность и защита от перегрузок</a></li><li><a href="#частые-вопросы-и-решения-проблем">Частые вопросы и решения проблем</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/r/ra/raspoznavanie-lits-home-assistant.html">Распознавание лиц в Home Assistant: Настройка и интеграции 2026</a></li><li><a href="/umnyj-dom/o/ot/otpugivatel-dlya-myshej-i-krys.html">Ультразвуковой отпугиватель для мышей и крыс: выбор и настройка</a></li><li><a href="/umnyj-dom/p/po/podklyuchenie-chajnika-polaris-k-alise.html">Как подключить чайник Polaris к Алисе: полная инструкция 2026</a></li><li><a href="/umnyj-dom/s/sd/sdelat-universalnyj-klyuch-dlya-domofona.html">Сделать универсальный ключ для домофона: виды, покупка и настройка</a></li><li><a href="/umnyj-dom/u/um/umnaya-kamera-ot-yandeks.html">Умная камера от Яндекс: обзор моделей, настройки и интеграция</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Полное руководство по управлению GPIO на Raspberry Pi</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#основы-работы-с-выводами-микрокомпьютера">Основы работы с выводами микрокомпьютера</a></li><li><a href="#физическая-распиновка-и-электрические-параметры">Физическая распиновка и электрические параметры</a></li><li><a href="#программные-библиотеки-и-настройка-среды">Программные библиотеки и настройка среды</a></li><li><a href="#практика-ввода-и-вывода-цифровых-сигналов">Практика ввода и вывода цифровых сигналов</a></li><li><a href="#широтно-импульсная-модуляция-pwm-и-аналоговое-управление">Широтно-импульсная модуляция (PWM) и аналоговое управление</a></li><li><a href="#сравнение-режимов-нумерации-пинов">Сравнение режимов нумерации пинов</a></li><li><a href="#безопасность-и-защита-от-перегрузок">Безопасность и защита от перегрузок</a></li><li><a href="#частые-вопросы-и-решения-проблем">Частые вопросы и решения проблем</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="основы-работы-с-выводами-микрокомпьютера">Основы работы с выводами микрокомпьютера</h2>
+<p>Взаимодействие с внешним миром — это главная причина, по которой инженеры выбирают <em>Raspberry Pi</em> для своих проектов. Без возможности управлять электрическими сигналами этот крошечный компьютер был бы просто медленным сервером или медиа-центром. Именно интерфейс <strong>GPIO</strong> (General Purpose Input/Output) превращает одноплатный компьютер в центральный мозг умного дома, робота или системы автоматизации.</p>
+<p>Вам нужно понимать физическую природу этих портов. Это не просто разъемы, а каналы связи, способные передавать цифровые сигналы высокого и низкого уровня. При правильной настройке <strong>двухпроводной интерфейс</strong> позволяет считывать данные с датчиков температуры или включать мощные лампы через реле. Ошибки в работе с <strong>напряжением питания</strong> могут привести к необратимому повреждению платы, поэтому подход должен быть системным.</p>
+<p>Каждый пин на плате <em>Raspberry Pi 4</em> или <em>Model 3B+</em> имеет свое назначение. Некоторые фиксированы под подачу питания, другие работают только как вход, а универсальные могут переключаться программно. <mark>Не все пины поддерживают напряжение 5 Вольт — большинство работают строго в логике 3.3 Вольта.</mark> Игнорирование этого факта при подключении датчиков Arduino или старых модулей часто заканчивается сгоранием материнской платы.</p>
+
+<h2 id="физическая-распиновка-и-электрические-параметры">Физическая распиновка и электрические параметры</h2>
+<p>Прежде чем подключать провода, необходимо изучить <strong>распиновку GPIO</strong>. На плате расположено два ряда контактов, но в программном коде вы будете обращаться к ним не по номерам на плате, а по номерам BCM или физическим индексам. Физическая нумерация (Board) идет последовательно по рядам, тогда как BCM (Broadcom SOC channel) привязана к конкретному каналу процессора. <strong>Режим нумерации</strong> — первый параметр, который вы задаете в коде.</p>
+<p>Заблуждение, что все пины одинаковы, опасно. Рядом с питанием (3.3V и 5V) находятся пины заземления (GND), необходимые для замыкания цепи. Если вы забудете подключить <strong>общий провод</strong>, сигнал не замкнется, и датчик не будет работать, даже если питание подано верно. Сигнальные пины обладают ограничениями по току, обычно не более 16 мА на один вывод, что недостаточно для прямого управления мощными нагрузками.</p>
+<p>Для подключения источников питания используются специальные контакты. 5V подается напрямую от USB-преобразователя, а 3.3V генерируется встроенным стабилизатором. Важно не перепутать эти линии. Подключение 5V к пину 3.3V гарантированно убьет чип. <strong>Ток короткого замыкания</strong> на плате ограничен, но лучше не испытывать его пределы, подключая двигатели напрямую.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Подключение внешних датчиков, работающих от 5 Вольт, напрямую к пинам GPIO без использования преобразователя уровня (логического конвертера) может привести к мгновенному выходу платы из строя. Всегда проверяйте datasheet вашего модуля.</p>
+</blockquote>
+
+<div class="pb-poll" id="poll-54c2a672"><div class="pb-poll-question">📊 Какой язык программирования вы используете для Raspberry Pi?</div><div class="pb-poll-option" data-poll="54c2a672" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Python</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="54c2a672" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">C/C++</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="54c2a672" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Node.js</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="54c2a672" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Bash (скрипты)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="54c2a672" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другой</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="программные-библиотеки-и-настройка-среды">Программные библиотеки и настройка среды</h2>
+<p>Для управления портами в Linux-среде существует несколько проверенных инструментов. Самая популярная и простая библиотека — <code>RPi.GPIO</code>. Она идеально подходит для <em>Raspberry Pi 3</em> и более старых моделей, позволяя быстро писать скрипты на Python. Однако для <em>Raspberry Pi 4</em> и <em>5</em> Microsoft предлагает более современную библиотеку <code>gpiozero</code>, которая абстрагирует сложные детали работы с регистрами.</p>
+<p>Если вам нужна максимальная производительность или работа в реальном времени, стоит рассмотреть <code>lgpio</code> или <code>wiringPi</code> (хотя последняя устареет). Python-библиотеки отлично справляются с задачами, где задержка в миллисекунды не критична, например, чтение температуры или управление светодиодом. Для высокочастотных задач, таких как чтение энкодеров или управление шаговыми двигателями, программные задержки могут стать узким местом.</p>
+<p>Установка библиотек происходит через пакетный менеджер <code>apt</code> или <code>pip</code>. В современных образцах ОС Raspberry Pi OS многие драйверы уже предустановлены. Проверьте доступность модуля командой <code>gpio readall</code>. Если команда не найдена, необходимо установить пакет <code>gpio-util</code> или аналогичный утилиту <strong>raspi-gpio</strong> для низкоуровневой диагностики.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка готовности среды работы</h4><label class="check-item"><input type="checkbox"><span>Установить ОС Raspberry Pi OS</span></label><label class="check-item"><input type="checkbox"><span>Подключить монитор и клавиатуру</span></label><label class="check-item"><input type="checkbox"><span>Проверить доступ к терминалу</span></label><label class="check-item"><input type="checkbox"><span>Установить библиотеку RPi.GPIO</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="практика-ввода-и-вывода-цифровых-сигналов">Практика ввода и вывода цифровых сигналов</h2>
+<p>Самый базовый сценарий — переключение пина из режима входа в режим выхода. В режиме <strong>OUTPUT</strong> пин может подавать сигнал высокого уровня (3.3В) или низкого (0В). Это используется для управления светодиодами, реле или зуммерами. В режиме <strong>INPUT</strong> пин считывает состояние линии, что необходимо для кнопок, сенсоров движения или концевых выключателей.</p>
+<p>При чтении входного сигнала часто возникает проблема "дребезга". Механические контакты кнопок при нажатии не замыкаются мгновенно, а "прыгают", создавая серию ложных импульсов. Программно это решается установкой <strong>подтягивающих резисторов</strong> или использованием функции <code>add_event_detect</code> с фильтрацией времени. Без фильтрации микроконтроллер может зарегистрировать одно нажатие как десять событий.</p>
+<p>Для включения светодиода необходимо задать пин в режим выхода и подать HIGH. Для выключения — LOW. Для кнопки применяется обратная логика с подтяжкой к питанию (PUD_UP) или к земле (PUD_DOWN). Если подтяжка не настроена, пин будет "плавать" и ловить электромагнитные помехи, выдавая случайные значения. <strong>Физическая подтяжка</strong> всегда предпочтительнее программной для надежности.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Всегда используйте токоограничивающие резисторы при подключении светодиодов. Стандартное значение — 220 Ом или 330 Ом, чтобы ток не превышал допустимый лимит вывода.</p></aside>
+
+<h2 id="широтно-импульсная-модуляция-pwm-и-аналоговое-управление">Широтно-импульсная модуляция (PWM) и аналоговое управление</h2>
+<p>Цифровые пины могут только включать или выключать нагрузку. Но как управлять яркостью светодиода или скоростью мотора? Ответ кроется в технологии <strong>PWM (Pulse Width Modulation)</strong>. Суть метода в быстром переключении сигнала: меняя длительность импульса (скважность), мы меняем среднее напряжение на нагрузке. Глаз человека воспринимает это как плавное изменение яркости.</p>
+<p>В Python для этого используется метод <code>pwm.start()</code> и <code>pwm.ChangeDutyCycle()</code>. Частота ШИМ также настраивается. Для управления моторами нужна частота выше 20-30 Гц, чтобы избежать гула, а для светодиодов достаточно и 100 Гц, чтобы не мерцать. <strong>Аналоговый сигнал</strong> — это фикция, создаваемая быстрым ШИМ-сигналом, который фильтруется конденсаторами и инерцией нагрузки.</p>
+<p>Не все пины поддерживают аппаратный ШИМ. На большинстве плат <em>Raspberry Pi</em> аппаратные каналы PWM доступны только на пинах 12, 13, 18, 19. Программный ШИМ (software PWM) можно реализовать на любом пине, но он потребляет больше процессорного времени и может быть нестабильным при высокой нагрузке системы. <strong>Аппаратная поддержка</strong> обеспечивает плавность и точность управления.</p>
+
+<details class="pb-accordion"><summary>Как работает ШИМ на практике?Представьте, что вы включаете и выключаете свет в комнате. Если вы делаете это очень быстро, и свет горит 70% времени и погас 30%, глаз увидит тусклый свет. Если 10% времени — он будет гореть еле заметно. Это и есть изменение скважности.-->
+
+<h2 id="сравнение-режимов-нумерации-пинов">Сравнение режимов нумерации пинов</h2>
+<p>Одна из главных ошибок новичков — путаница в номерах пинов. Код, написанный для одной платы, может работать некорректно на другой, если не выбран правильный режим. В таблице ниже показано различие между физическими номерами и номерами BCM.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Физический пин (Board)</th>
+<th>Назначение</th>
+<th>Номер BCM (Broadcom)</th>
+<th>Тип сигнала</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>3.3V Power</td>
+<td>-</td>
+<td>Питание</td>
+</tr>
+<tr>
+<td>2</td>
+<td>5V Power</td>
+<td>-</td>
+<td>Питание</td>
+</tr>
+<tr>
+<td>3</td>
+<td>I2C SDA</td>
+<td>2</td>
+<td>Данные (I2C)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>5V Power</td>
+<td>-</td>
+<td>Питание</td>
+</tr>
+<tr>
+<td>5</td>
+<td>I2C SCL</td>
+<td>3</td>
+<td>Ключ (I2C)</td>
+</tr>
+<tr>
+<td>11</td>
+<td>GPIO17</td>
+<td>17</td>
+<td>Универсальный</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Использование режима <code>GPIO.BOARD</code> привязывает код к физическому расположению контактов. Это удобно для сборки прототипов на макетной плате, где вы видите нумерацию на самой плате. Однако, если вы замените модель платы (например, с 40 на 26 пинов), код сломается, так как физическое положение контактов изменится. <strong>Режим BOARD</strong> не переносим между разными ревизиями железа.</p>
+<p>Режим <code>GPIO.BCM</code> использует номера каналов процессора. Это профессиональный подход, так как логические номера пинов (например, GPIO 17) остаются неизменными на всех моделях <em>Raspberry Pi</em>. Это позволяет переписать код под новую модель платы без переделки самой схемы, просто изменив подключение проводов. <strong>Режим BCM</strong> — это стандарт де-факто для промышленного использования и переносимых проектов.</p>
+
+<blockquote>
+<p>⚠️ Внимание</summary><div class="pb-accordion-body"><p> Если вы используете библиотеку <code>gpiozero</code>, по умолчанию она использует режим BCM. Однако при переходе на <code>RPi.GPIO</code> необходимо явно указывать <code>GPIO.setmode(GPIO.BCM)</code> в начале скрипта, иначе программа выдаст ошибку конфигурации.</p>
+</blockquote>
+
+
+
+<h2 id="безопасность-и-защита-от-перегрузок">Безопасность и защита от перегрузок</h2>
+<p>Прямое подключение мощных потребителей к GPIO — верный способ убить плату. Максимальный ток через один пин ограничен 16 мА, а суммарный ток по всем пинам не должен превышать 50-60 мА. Подключение светодиода без резистора или двигателя напрямую приведет к <strong>перегреву</strong> и выходу из строя драйверов ввода-вывода. Всегда используйте транзисторы, MOSFET-ключи или оптоизоляторы.</p>
+<p>Электростатический разряд (ESD) также может быть фатальным. Даже тонкая искра от сухого пальца способна повредить чувствительные полупроводники. Работайте в сухом помещении, желательно на антистатическом коврике, и заземляйте себя перед касанием контактов. <strong>Изоляция</strong> цепи управления от цепи нагрузки критична, особенно если нагрузка питается от сети 220В.</p>
+<p>При работе с индуктивными нагрузками (реле, моторы) возникают обратные ЭДС, которые могут "ударить" по плате скачком напряжения. Параллельно катушке реле всегда нужно ставить <strong>защитный диод</strong> (например, 1N4007), чтобы замыкать эти импульсы. Без диода пики напряжения могут пробить входные каскады микроконтроллера, вызывая непредсказуемые сбои.</p>
+
+
+
+<h2 id="частые-вопросы-и-решения-проблем">Частые вопросы и решения проблем</h2>
+<p>Частая проблема — разрешение на доступ к GPIO. В современных версиях Linux доступ к портам ограничен правами суперпользователя. Чтобы не запускать скрипты через <code>sudo</code>, добавьте пользователя в группу <code>gpio</code>. Это делается командой <code>sudo usermod -a -G gpio <username></code>. После этого перезагрузка не требуется, но сессия должна обновиться. <strong>Права доступа</strong> — первое, что нужно проверить при ошибке "Permission denied".</p>
+<p>Иногда пины "залипают" или не реагируют на изменения. Это может быть связано с конфликтом устройств. Пин 12 и 13 по умолчанию могут использоваться I2C или SPI интерфейсами. Перед использованием их как обычных GPIO нужно отключить соответствующие интерфейсы в конфиге. Проверьте конфигурацию в файле <code>/boot/config.txt</code>. <strong>Конфликт ресурсов</strong> — частая причина неработоспособности.</p>
+<p>Если управление реле работает нестабильно, возможно, источник питания не справляется с скачками тока при срабатывании. Используйте отдельный блок питания для реле или добавьте развязывающий конденсатор. Плохое заземление системы также приводит к ложным срабатываниям. <strong>Качество питания</strong> напрямую влияет на стабильность цифровых сигналов.</p>
+
+<details>
+<summary>Как проверить, какие пины уже заняты?</summary>
+<p>Используйте утилиту <code>gpio readall</code> из пакета <em>wiringPi</em> или просмотрите файл <code>/sys/class/gpio/export</code>. Также можно посмотреть вывод <code>dmesg</code> после подключения устройства, чтобы увидеть ошибки ядра.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать GPIO для передачи звука?</summary>
+<p>Теоретически можно, используя ШИМ и внешний ЦАП (цифро-аналоговый преобразователь). Однако качество будет низким, а нагрузка на процессор высокой. Лучше использовать HDMI или USB-звуковую карту.</p>
+</details>
+
+<details>
+<summary>Какой максимальный ток можно снять с пина?</summary>
+<p>Безопасный предел — 12-14 мА. Абсолютный максимум — 16 мА, но при этом пин может перегреться. Суммарный ток со всех пинов не должен превышать 50 мА. Для больших токов используйте внешние ключи.</p>
+</details>
+
+<details>
+<summary>Почему скрипт не видит пин?</summary>
+<p>Возможно, выбран неверный режим нумерации (Board вместо BCM) или пин уже занят другим процессом. Проверьте настройки <code>setmode</code> и отключите лишние интерфейсы в конфигурации.</p>
+</details>
+
+<blockquote>
+<p>⚠️ Внимание: Актуальность конфигурационных файлов и путей к библиотекам может меняться при обновлении версии ОС Raspberry Pi OS. Всегда сверяйтесь с официальной документацией перед внедрением новых скриптов в продакшн.</p>
+</blockquote></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/r/ra/raspoznavanie-lits-home-assistant.html" class="pb-related-card">
+                <span class="pb-related-title">Распознавание лиц в Home Assistant: Настройка и интеграции 2026</span>
+                <span class="pb-related-desc">Полное руководство по внедрению распознавания лиц в Home Assistant. Обзор Frigate, DeepStack, Code p</span>
+            </a><a href="/umnyj-dom/o/ot/otpugivatel-dlya-myshej-i-krys.html" class="pb-related-card">
+                <span class="pb-related-title">Ультразвуковой отпугиватель для мышей и крыс: выбор и настройка</span>
+                <span class="pb-related-desc">Полный гид по выбору электронных отпугивателей грызунов. Типы устройств, частоты, правила установки </span>
+            </a><a href="/umnyj-dom/p/po/podklyuchenie-chajnika-polaris-k-alise.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить чайник Polaris к Алисе: полная инструкция 2026</span>
+                <span class="pb-related-desc">Узнайте, как легко подключить умный чайник Polaris к голосовому помощнику Алиса. Пошаговая настройка</span>
+            </a><a href="/umnyj-dom/s/sd/sdelat-universalnyj-klyuch-dlya-domofona.html" class="pb-related-card">
+                <span class="pb-related-title">Сделать универсальный ключ для домофона: виды, покупка и настройка</span>
+                <span class="pb-related-desc">Узнайте, как сделать универсальный ключ для домофона. Обзор магнитных, чип-ключей, мобильных приложе</span>
+            </a><a href="/umnyj-dom/u/um/umnaya-kamera-ot-yandeks.html" class="pb-related-card">
+                <span class="pb-related-title">Умная камера от Яндекс: обзор моделей, настройки и интеграция</span>
+                <span class="pb-related-desc">Полный гайд по умным камерам Яндекса: выбор модели, настройка обнаружения, работа с Яндекс Станцией </span>
+            </a><a href="/umnyj-dom/k/ka/kak-rabotaet-domofon-dom-ru.html" class="pb-related-card">
+                <span class="pb-related-title">Как работает домофон Дом.ru: настройка, тарифы и управление входом</span>
+                <span class="pb-related-desc">Узнайте, как устроена система домофонии Дом.ru. Подробно о тарифах, управлении через приложение, вид</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

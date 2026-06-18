@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Датчик протечки в Home Assistant: настройка, интеграция и автоматизация — Техно Гид</title>
+    <meta name="description" content="Полное руководство по подключению датчиков протечки воды к Home Assistant. Обзор протоколов, сценарии аварийного отключения и выбор оборудования.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/h/ho/home-assistant-datchik-protechki.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Датчик протечки в Home Assistant: настройка, интеграция и автоматизация">
+    <meta property="og:description" content="Полное руководство по подключению датчиков протечки воды к Home Assistant. Обзор протоколов, сценарии аварийного отключения и выбор оборудования.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Датчик протечки в Home Assistant: настройка, интеграция и автоматизация</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-протокола-связи-и-совместимости-оборудования">Выбор протокола связи и совместимости оборудования</a></li><li><a href="#подключение-и-интеграция-в-экосистему-home-assistant">Подключение и интеграция в экосистему Home Assistant</a></li><li><a href="#настройка-сценариев-автоматического-реагирования">Настройка сценариев автоматического реагирования</a></li><li><a href="#анализ-ложных-срабатываний-и-помех">Анализ ложных срабатываний и помех</a></li><li><a href="#интеграция-с-системами-перекрытия-воды">Интеграция с системами перекрытия воды</a></li><li><a href="#аварийные-уведомления-и-удаленный-мониторинг">Аварийные уведомления и удаленный мониторинг</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/k/ka/kak-vklyuchit-ultrafioletovuyu-lampu.html">Как включить ультрафиолетовую лампу: пошаговая инструкция и меры безопасности</a></li><li><a href="/umnyj-dom/k/ka/karcher-k-3-kupit.html">Kärcher K 3 купить: цены, модели и советы по выбору</a></li><li><a href="/umnyj-dom/p/po/polaris-pwk-1712cgld-wifi-iq-home.html">Полный обзор микроволновки Polaris PWK 1712CGLD с Wi-Fi и IQ Home</a></li><li><a href="/umnyj-dom/d/da/dahua-programma-dlya-poiska-kamer.html">Программа для поиска камер Dahua: поиск по IP и настройка</a></li><li><a href="/umnyj-dom/k/ka/kak-vyklyuchit-robot-pylesos-xiaomi-polnostyu.html">Как полностью выключить робот-пылесос Xiaomi: 3 проверенных способа</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как настроить датчик протечки воды в Home Assistant для защиты квартиры</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-протокола-связи-и-совместимости-оборудования">Выбор протокола связи и совместимости оборудования</a></li><li><a href="#подключение-и-интеграция-в-экосистему-home-assistant">Подключение и интеграция в экосистему Home Assistant</a></li><li><a href="#настройка-сценариев-автоматического-реагирования">Настройка сценариев автоматического реагирования</a></li><li><a href="#анализ-ложных-срабатываний-и-помех">Анализ ложных срабатываний и помех</a></li><li><a href="#интеграция-с-системами-перекрытия-воды">Интеграция с системами перекрытия воды</a></li><li><a href="#аварийные-уведомления-и-удаленный-мониторинг">Аварийные уведомления и удаленный мониторинг</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Наличие воды в подвале или на кухне — это одна из самых частых и дорогостоящих проблем в частных домах и квартирах. Обычный человеческий фактор, когда мы забываем закрыть кран или не замечаем течь, может привести к катастрофическим последствиям для вашего жилья и имущества соседей. Именно поэтому интеграция <strong>датчиков протечки</strong> в систему <em>Home Assistant</em> становится критически важным элементом современного <em>умного дома</em>.</p>
+
+<p>Система <em>Home Assistant</em> обладает уникальной возможностью не просто пассивно фиксировать факт появления воды, но и мгновенно реагировать на него. В отличие от простых автономных сигнализаций, централизованная платформа позволяет создавать сложные сценарии, включающие отправку уведомлений на смартфон, включение сирены, подсветку и даже механическое перекрытие водоснабжения через <strong>управляемые краны</strong>. Это превращает обычный датчик в полноценную систему безопасности.</p>
+
+<h2 id="выбор-протокола-связи-и-совместимости-оборудования">Выбор протокола связи и совместимости оборудования</h2>
+
+<p>Первым и самым важным этапом настройки является правильный выбор оборудования, которое будет взаимодействовать с вашим <em>Home Assistant</em>. На рынке представлено множество устройств, использующих различные протоколы связи: Zigbee, Z-Wave, Wi-Fi и проприетарные решения. Для стабильной работы системы в условиях квартиры лучше всего подходят технологии <strong>Zigbee</strong> или <strong>Z-Wave</strong>, так как они не создают нагрузки на домашнюю Wi-Fi сеть и работают через mesh-сеть устройств.</p>
+
+<p>При выборе датчика важно обращать внимание на тип батареи и возможность её быстрой замены. Некоторые модели, такие как <em>Aqara Water Leak Sensor</em> или <em>Philips Hue Water Leak Sensor</em>, имеют встроенные элементы питания, которые служат годы, но их замена требует аккуратности. Другие устройства, например, датчики от <em>Tuya</em>, часто используют стандартные батарейки ААА, что упрощает обслуживание в долгосрочной перспективе.</p>
+
+<ul>
+<li>🔹 <strong>Zigbee</strong> — идеален для большого количества датчиков, создает ячеистую сеть, требует шлюз или USB-координатор.</li>
+<li>🔹 <strong>Z-Wave</strong> — более дорогое оборудование, но обеспечивает высочайшую надежность и лучшую дальность сигнала в сложных стенах.</li>
+<li>🔹 <strong>Wi-Fi</strong> — простота настройки без шлюзов, но создает большую нагрузку на роутер и быстрее разряжает батареи.</li>
+</ul>
+
+<p>Не стоит забывать о физической форме датчика. Для установки под раковиной или в ванной комнате часто требуются сверхтонкие модели, которые помещаются даже в самых узких зазорах. <mark>Критически важно, чтобы чувствительные контакты датчика находились в нижней части корпуса, так как вода течет именно вниз, и малейший наклон может снизить эффективность срабатывания.</mark> Ошибки при выборе габаритов устройства могут привести к тому, что датчик просто не сможет быть установлен в необходимое место.</p>
+
+<h2 id="подключение-и-интеграция-в-экосистему-home-assistant">Подключение и интеграция в экосистему Home Assistant</h2>
+
+<p>После того как оборудование выбрано и приобретено, наступает этап его физического подключения и настройки программной части. Если вы используете <strong>Zigbee</strong> устройства, вам потребуется USB-координатор (например, <em>ConBee II</em>, <em>Sonoff Dongle</em> или <em>CC2652</em>), который подключается к серверу с <em>Home Assistant</em>. Без этого устройства датчики не смогут передать сигнал о протечке в центр управления.</p>
+
+<p>Процесс интеграции обычно происходит автоматически через встроенные в <em>Home Assistant</em> компоненты. Достаточно включить режим сопряжения на датчике (обычно нажатием кнопки в течение нескольких секунд) и подождать, пока система обнаружит новое устройство. В некоторых случаях, особенно с устройствами <em>Tuya</em> или <em>Xiaomi</em>, может потребоваться установка дополнительных интеграций через <code>HACS</code> (Home Assistant Community Store), чтобы получить полный доступ ко всем функциям.</p>
+
+<div class="pb-poll" id="poll-2bc793ad"><div class="pb-poll-question">📊 Какой протокол вы используете для датчиков протечки?</div><div class="pb-poll-option" data-poll="2bc793ad" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Zigbee</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="2bc793ad" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Z-Wave</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="2bc793ad" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Wi-Fi</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="2bc793ad" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Проводной датчик</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<p>Важно правильно разместить координатор сети. Если он находится в металлическом корпусе сервера или глубоко внутри шкафа, сигнал от датчиков может быть нестабильным. Оптимальное решение — использовать <code>USB-удлинитель</code> и вынести координатор в открытое пространство комнаты, вдали от источников электромагнитных помех.</p>
+
+<details class="pb-accordion"><summary>Что делать, если датчик не находит сеть?</summary><div class="pb-accordion-body"><p>Если датчик не подключается, попробуйте сбросить его до заводских настроек (обычно удерживание кнопки 10 секунд) и убедитесь, что координатор Zigbee находится как можно ближе к месту установки. Иногда помогает временное отключение других мощных беспроводных устройств, создающих помехи на частоте 2.4 ГГц.</p></div></details>
+
+<p>После успешного подключения в интерфейсе <em>Home Assistant</em> появится новая сущность. Её название может отличаться в зависимости от интеграции, но чаще всего это <code>sensor.water_leak</code> с состояниями <code>dry</code> (сухой) или <code>wet</code> (мокрый). Проверьте работу устройства, нанеся несколько капель воды на контакты — состояние должно измениться мгновенно.</p>
+
+<h2 id="настройка-сценариев-автоматического-реагирования">Настройка сценариев автоматического реагирования</h2>
+
+<p>Самая мощная функция <em>Home Assistant</em> заключается в создании автоматизаций, которые срабатывают без участия человека. Как только датчик фиксирует влагу (<code>wet</code>), система должна выполнить строго заданный алгоритм действий. Базовый сценарий включает отправку уведомления владельцу, однако в случае серьезной аварии этого явно недостаточно.</p>
+
+<p>Для полноценной защиты необходимо настроить цепочку действий. При обнаружении протечки система должна немедленно перекрыть воду через <strong>умные краны</strong>, подключить сирену для привлечения внимания и отправить push-уведомление с фотографией, если в доме установлены камеры. Это требует использования <code>Automation</code> в конфигурации или визуального редактора.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Алгоритм аварийного реагирования</h4><label class="check-item"><input type="checkbox"><span>Датчик обнаружил воду</span></label><label class="check-item"><input type="checkbox"><span>Отправить сигнал на умный кран</span></label><label class="check-item"><input type="checkbox"><span>Перекрыть подачу воды</span></label><label class="check-item"><input type="checkbox"><span>Включить сирену и свет</span></label><label class="check-item"><input type="checkbox"><span>Отправить уведомление владельцу</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<p>Важно учесть задержку срабатывания для ложных срабатываний. Иногда на датчик может попасть конденсат или брызги, которые не являются настоящей протечкой. Поэтому в сценарий можно добавить условие: если состояние <code>wet</code> держится более 30 секунд, только тогда выполнять полное перекрытие кранов. Это предотвратит ненужные отключения воды из-за случайных брызг душа.</p>
+
+<blockquote>⚠️ Внимание: Перед настройкой автоматического перекрытия воды убедитесь, что установленные краны имеют механический привод. Некоторые дешевые модели могут заклинить в закрытом положении, что потребует ручного вмешательства, если датчик сработает ложно.</blockquote>
+
+<p>Сложные сценарии могут включать проверку времени суток. Если вы находитесь дома, система может просто включить свет и сирену, чтобы вы сами перекрыли кран. Если же вы отсутствуете (определяется по геолокации телефонов или статусу устройств), система перейдет в режим полной блокировки подачи воды.</p>
+
+<h2 id="анализ-ложных-срабатываний-и-помех">Анализ ложных срабатываний и помех</h2>
+
+<p>Одной из главных проблем при эксплуатации беспроводных датчиков является риск ложных срабатываний. В условиях высокой влажности, например, в ванной комнате или под стиральной машиной, на контакты датчика может конденсироваться влага, вызывая сигнал тревоги даже при отсутствии реальной течи. Это может привести к тому, что система перекроет воду без причины, оставив вас без водоснабжения.</p>
+
+<p>Чтобы минимизировать такие риски, необходимо правильно выбирать место установки. Датчик не должен стоять непосредственно под местом, где происходит активное использование воды (душ, раковина), если это не зона контроля. Используйте <strong>подставки-расширители</strong> (обычно идут в комплекте), чтобы контактная часть находилась в самой нижней точке, но сама электроника была защищена от прямых брызг.</p>
+
+<p>Также стоит учитывать качество батарей. Падение напряжения в элементах питания может вызывать нестабильную работу сенсора, приводя к самопроизвольным сигналам "мокрого" состояния. Регулярная проверка заряда батареи в интерфейсе <em>Home Assistant</em> поможет избежать таких сюрпризов.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Тип датчика</th>
+<th>Вероятность ложного срабатывания</th>
+<th>Сложность установки</th>
+<th>Рекомендуемая зона</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Тонкий Zigbee (Aqara)</td>
+<td>Низкая</td>
+<td>Легкая</td>
+<td>Под раковиной, ванна</td>
+</tr>
+<tr>
+<td>Wi-Fi датчик с камерой</td>
+<td>Средняя</td>
+<td>Средняя</td>
+<td>Общая площадь</td>
+</tr>
+<tr>
+<td>Проводной датчик</td>
+<td>Минимальная</td>
+<td>Высокая</td>
+<td>Стационарные места</td>
+</tr>
+<tr>
+<td>Z-Wave датчик</td>
+<td>Низкая</td>
+<td>Средняя</td>
+<td>Подвал, котельная</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Если вы используете датчики с проводным подключением, проблема конденсата решается гораздо проще, так как проводная передача сигнала менее подвержена радиопомехам, а сами контакты можно дополнительно защитить гидрофобным составом, не влияя на чувствительность.</p>
+
+<h2 id="интеграция-с-системами-перекрытия-воды">Интеграция с системами перекрытия воды</h2>
+
+<p>Сердцем системы защиты от протечек является не сам датчик, а исполнительное устройство — <strong>умный кран</strong>. В экосистеме <em>Home Assistant</em> отлично работают краны различных брендов: <em>Gardena</em>, <em>Shark</em>, <em>Aqara</em> или промышленные решения с электромеханическими приводами. Эти устройства должны быть интегрированы в систему как отдельное устройство (switch или cover).</p>
+
+<p>Важно убедиться, что краны имеют возможность аварийного открытия и закрытия в ручном режиме. В случае поломки электроники или сбоя питания система должна позволять механически открыть или закрыть подачу воды. Это критический аспект безопасности, который часто упускают при проектировании.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>При выборе умных кранов обращайте внимание на тип подключения (резьба, быстроразъемные соединения) и диаметр трубы. Неправильный выбор фитинга может привести к протечке в месте установки крана, сводя на нет всю систему защиты.</p></aside>
+
+<p>Логика работы сценария должна быть двусторонней: не только датчик должен управлять краном, но и кран должен информировать о своем состоянии. Если кран заклинил и не может перекрыть воду, система должна подать мощное уведомление с требованием немедленного ручного вмешательства.</p>
+
+<h2 id="аварийные-уведомления-и-удаленный-мониторинг">Аварийные уведомления и удаленный мониторинг</h2>
+
+<p>Когда происходит протечка, время играет решающую роль. Уведомления, отправляемые через <em>Home Assistant</em>, могут быть доставлены на любые устройства: смартфоны, планшеты, умные часы или даже в мессенджеры (Telegram, WhatsApp) через интеграции. Настройка каналов оповещения должна быть приоритетной задачей.</p>
+
+<p>Используйте <strong>мультимедийные уведомления</strong>. Вместо простого текста "Обнаружена вода" отправьте сообщение, содержащее:
+<ul>
+<li>🔹 Название конкретного датчика (например, "Датчик под мойкой на кухне").</li>
+<li>🔹 Время возникновения события.</li>
+<li>🔹 Ссылку на виджет с камерой наблюдения в этой зоне.</li>
+<li>🔹 Кнопку быстрого действия "Открыть кран" (на случай ложного срабатывания).</li>
+</ul>
+
+<p>Для владельцев <em>Home Assistant</em> с облачной интеграцией (Nabu Casa) или собственными серверами отправка уведомлений работает стабильно даже при отсутствии интернета, если используется локальная сеть, но для удаленного доступа извне необходим стабильный канал связи.</p>
+
+<blockquote>⚠️ Внимание: Проверьте настройки уведомлений в вашем мессенджере. Иногда спам-фильтры блокируют сообщения от ботов, если они приходят слишком часто. Настройте "тихий режим" для тестовых уведомлений, но "громкий" с сиреной для аварийных.</blockquote>
+
+<p>Регулярно проверяйте работоспособность системы уведомлений. Раз в месяц запускайте тестовый сценарий, чтобы убедиться, что вы точно получите сигнал в случае реальной аварии. Отложенные или заблокированные уведомления могут стоить вам ремонта.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Эффективность системы защиты от протечек зависит не только от качества датчиков, но и от скорости реакции на уведомление. Дублируйте каналы связи, чтобы гарантировать получение сигнала в любой ситуации.</p></aside>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Как часто нужно менять батарейки в датчиках протечки?</summary>
+<p>Частота замены зависит от модели и протокола. Zigbee-датчики обычно служат от 1 до 2 лет. Home Assistant автоматически отслеживает уровень заряда батареи и отправляет уведомление, когда он падает ниже 20%.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать датчик протечки без интернета?</summary>
+<p>Да, если у вас локальный сервер Home Assistant. Датчики Zigbee/Z-Wave работают напрямую с координатором, а сценарии выполняются локально. Интернет нужен только для уведомлений на телефон, если вы находитесь вне дома.</p>
+</details>
+
+<details>
+<summary>Что делать, если датчик сработал ложно и перекрыл воду?</summary>
+<p>Сразу проверьте состояние крана в интерфейсе Home Assistant. Если это ошибка, вы можете вручную открыть кран через приложение. Для предотвращения повторения такого сценария настройте задержку срабатывания в автоматизации (например, 30 секунд).</p>
+</details>
+
+<details>
+<summary>Поддерживает ли Home Assistant проводные датчики протечки?</summary>
+<p>Да, проводные датчики можно подключить через модули ввода-вывода (GPIO на Raspberry Pi) или специализированные Zigbee/Z-Wave шлюзы, которые поддерживают входные сигналы от сухих контактов.</p>
+</details>
+
+<details>
+<summary>Нужен ли отдельный сервер для работы датчиков?</summary>
+<p>Нет, достаточно одного устройства с установленным Home Assistant (Raspberry Pi, Mini PC, NAS). Все датчики подключаются к этому центральному узлу.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/k/ka/kak-vklyuchit-ultrafioletovuyu-lampu.html" class="pb-related-card">
+                <span class="pb-related-title">Как включить ультрафиолетовую лампу: пошаговая инструкция и меры безопасности</span>
+                <span class="pb-related-desc">Пошаговая инструкция по включению УФ-лампы для обеззараживания помещений и ламп-сумрачника. Техника </span>
+            </a><a href="/umnyj-dom/k/ka/karcher-k-3-kupit.html" class="pb-related-card">
+                <span class="pb-related-title">Kärcher K 3 купить: цены, модели и советы по выбору</span>
+                <span class="pb-related-desc">Где выгодно купить Kärcher K 3 в 2026 году. Сравнение моделей K 3, K 3 Power Control и K 3 Compact. </span>
+            </a><a href="/umnyj-dom/p/po/polaris-pwk-1712cgld-wifi-iq-home.html" class="pb-related-card">
+                <span class="pb-related-title">Полный обзор микроволновки Polaris PWK 1712CGLD с Wi-Fi и IQ Home</span>
+                <span class="pb-related-desc">Детальный анализ СВЧ Polaris PWK 1712CGLD: управление через Wi-Fi, функции IQ Home, режимы готовки, </span>
+            </a><a href="/umnyj-dom/d/da/dahua-programma-dlya-poiska-kamer.html" class="pb-related-card">
+                <span class="pb-related-title">Программа для поиска камер Dahua: поиск по IP и настройка</span>
+                <span class="pb-related-desc">Полный обзор утилиты ConfigTool и IP Finder для поиска IP-адресов камер Dahua. Инструкция по смене а</span>
+            </a><a href="/umnyj-dom/k/ka/kak-vyklyuchit-robot-pylesos-xiaomi-polnostyu.html" class="pb-related-card">
+                <span class="pb-related-title">Как полностью выключить робот-пылесос Xiaomi: 3 проверенных способа</span>
+                <span class="pb-related-desc">Инструкция отключения робота-пылесоса Xiaomi. Полное обесточивание, выключение кнопки, разрядка и ос</span>
+            </a><a href="/umnyj-dom/k/ka/kak-podklyuchit-ik-pult-yandeks.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить ИК-пульт Яндекс Станции: инструкция</span>
+                <span class="pb-related-desc">Полная настройка инфракрасного пульта Яндекс Станции. Как добавить телевизор, кондиционер и другую т</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

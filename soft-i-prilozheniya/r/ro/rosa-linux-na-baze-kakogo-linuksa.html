@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Rosa Linux: на базе какого дистрибутива и особенности сборки — Техно Гид</title>
+    <meta name="description" content="Подробный разбор архитектуры Rosa Linux. Узнайте, на базе какого ядра и пакетной базы работает система, отличие от Mandriva и ROSA Fresh.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/soft-i-prilozheniya/r/ro/rosa-linux-na-baze-kakogo-linuksa.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Rosa Linux: на базе какого дистрибутива и особенности сборки">
+    <meta property="og:description" content="Подробный разбор архитектуры Rosa Linux. Узнайте, на базе какого ядра и пакетной базы работает система, отличие от Mandriva и ROSA Fresh.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/soft-i-prilozheniya/">Софт и Приложения</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Rosa Linux: на базе какого дистрибутива и особенности сборки</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#историческая-связь-с-mandriva-и-независимость">Историческая связь с Mandriva и независимость</a></li><li><a href="#архитектура-пакетной-базы-и-формат-rpm">Архитектура пакетной базы и формат RPM</a></li><li><a href="#отличия-десктопной-rosa-fresh-от-серверной-rhel">Отличия десктопной ROSA Fresh от серверной RHEL</a></li><li><a href="#ядро-системы-и-поддержка-оборудования">Ядро системы и поддержка оборудования</a></li><li><a href="#сравнение-с-другими-российскими-дистрибутивами">Сравнение с другими российскими дистрибутивами</a></li><li><a href="#инструкция-по-первоначальной-настройке-репозиториев">Инструкция по первоначальной настройке репозиториев</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/soft-i-prilozheniya/k/ka/kak-posmotret-probki-v-yandeks-kartakh.html">Как посмотреть пробки в Яндекс.Картах: полная инструкция</a></li><li><a href="/soft-i-prilozheniya/s/sk/skachat-navitel-na-android-besplatno.html">Скачать Навител Навигатор на Android бесплатно: официальная версия и карты</a></li><li><a href="/soft-i-prilozheniya/b/be/besplatnye-alternativy-microsoft-office.html">Лучшие бесплатные альтернативы Microsoft Office: Обзор 2026</a></li><li><a href="/soft-i-prilozheniya/s/sk/skachat-photoshop-mac-torrent.html">Скачать Photoshop для Mac: риски торрентов и безопасные альтернативы</a></li><li><a href="/soft-i-prilozheniya/k/ki/kinozal-rasshirenie-dlya-yandeksa.html">Кинозал для Яндекса: Настройка, Обзор и Расширение для браузера</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>На базе какого Linux работает Rosa Linux: история и архитектура</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#историческая-связь-с-mandriva-и-независимость">Историческая связь с Mandriva и независимость</a></li><li><a href="#архитектура-пакетной-базы-и-формат-rpm">Архитектура пакетной базы и формат RPM</a></li><li><a href="#отличия-десктопной-rosa-fresh-от-серверной-rhel">Отличия десктопной ROSA Fresh от серверной RHEL</a></li><li><a href="#ядро-системы-и-поддержка-оборудования">Ядро системы и поддержка оборудования</a></li><li><a href="#сравнение-с-другими-российскими-дистрибутивами">Сравнение с другими российскими дистрибутивами</a></li><li><a href="#инструкция-по-первоначальной-настройке-репозиториев">Инструкция по первоначальной настройке репозиториев</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Многие пользователи, выбирая отечественную операционную систему, задаются вопросом о происхождении <strong>Rosa Linux</strong>. Это не просто очередной клон Ubuntu или Debian, а самобытный проект с богатой историей, уходящей корнями в легендарную Mandriva. Понимание того, на базе какого <em>дистрибутива</em> построена система, критически важно для администраторов и продвинутых пользователей, так как это определяет структуру пакетов и методы управления программным обеспечением.</p>
+
+<p>В основе современной ветки <strong>ROSA Fresh</strong> лежит собственная независимая база пакетов, которая исторически отделилась от Mandriva Linux еще в 2011 году. Однако архитектура системы сохранила ключевые принципы предшественника, включая использование уникального формата пакетов <code>.rpm</code> и собственного менеджера пакетов. Это делает её отличной от большинства популярных сегодня дистрибутивов, базирующихся на Debian.</p>
+
+<p>Для корпоративного сегмента компания выпускает версию <strong>ROSA Enterprise Linux Server</strong> (RHEL), которая, в свою очередь, имеет совершенно другую родословную и базируется на технологиях Red Hat. Таким образом, отвечая на вопрос "на базе какого линукса", необходимо четко разделять десктопные и серверные редакции, так как их фундаментальные отличия влияют на совместимость ПО и методы администрирования.</p>
+
+<h2 id="историческая-связь-с-mandriva-и-независимость">Историческая связь с Mandriva и независимость</h2>
+
+<p>Изначально проект <em>Rosa Linux</em> развивался как ответвление от французского дистрибутива Mandriva. В 2011 году, когда компания Mandriva S.A. столкнулась с финансовыми трудностями, российская компания ООО «НТЦ РОСА» выкупила часть активов и создала собственную инфраструктуру разработки. С этого момента <strong>ROSA</strong> стала полностью независимым проектом, хотя и сохранила совместимость с инфраструктурой Mandriva на ранних этапах.</p>
+
+<p>Современные версии системы, такие как <strong>R4</strong> или <strong>R11</strong>, уже не являются прямыми форками в классическом понимании. Разработчики ведут собственные репозитории, адаптируют ядро и создают уникальные инструменты конфигурации. Тем не менее, наследие Mandriva прослеживается в логике работы утилит <code>urpmi</code> и структуре каталогов конфигурации.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Не пытайтесь использовать репозитории от старых версий Mandriva или Mageia в современной Rosa Fresh. Это приведет к конфликту зависимостей и возможной неработоспособности системы из-за различий в версиях библиотек.</p>
+</blockquote>
+
+<p>Важно отметить, что независимость позволила инженерам РОСА внедрить собственные технологии, такие как система быстрой загрузки <strong>Bootup</strong> и уникальные механизмы восстановления системы. Эти наработки отличают дистрибутив от других RPM-сборок и делают его более адаптированным под специфические требования российских пользователей и госструктур.</p>
+
+<div class="pb-poll" id="poll-6230349d"><div class="pb-poll-question">📊 Какой дистрибутив Linux вы используете чаще всего?</div><div class="pb-poll-option" data-poll="6230349d" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Ubuntu/Debian</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6230349d" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Fedora/CentOS</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6230349d" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Rosa Linux</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6230349d" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Arch Linux</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6230349d" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другой</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="архитектура-пакетной-базы-и-формат-rpm">Архитектура пакетной базы и формат RPM</h2>
+
+<p>Фундаментом десктопной версии <strong>ROSA Fresh</strong> является пакетная база на основе формата <code>RPM</code> (Red Hat Package Manager). Это означает, что установка программ происходит не через исходные коды или универсальные контейнеры (хотя поддержка Flatpak и Snap присутствует), а через нативные бинарные пакеты. Управление этими пакетами осуществляется утилитой <code>urpmi</code> и её графической надстройкой <code>rpmdrake</code>.</p>
+
+<p>В отличие от Debian-подобных систем, где зависимости разрешаются строго последовательно, в RPM-мире ROSA используется гибкая система тегов и возможностей (capabilities). Это позволяет устанавливать программное обеспечение, которое может требовать специфических версий библиотек, без жесткой привязки к монолитному обновлению всей системы. Для пользователя это означает возможность выбора между стабильностью и новизной софта.</p>
+
+<p>Разработчики уделяют особое внимание безопасности репозиториев. Все пакеты подписываются цифровыми ключами, что гарантирует их подлинность. При установке ПО система автоматически проверяет эти подписи, предотвращая внедрение вредоносного кода через каналы обновления.</p>
+
+<ul>
+<li>📦 Формат пакетов: <code>.rpm</code>, совместимый с Fedora, openSUSE и CentOS.</li>
+<li>🛠 Менеджер пакетов: <code>urpmi</code> (командная строка) и <code>rpmdrake</code> (GUI).</li>
+<li>🔄 Механизм обновлений: Rolling-release элементы в сочетании с фиксированными релизами.</li>
+<li>🔒 Безопасность: Обязательная GPG-подпись всех пакетов в официальных репозиториях.</li>
+</ul>
+
+<p>Стоит упомянуть, что в последних версиях системы была внедрена поддержка технологии <strong>Mga-urpmi</strong>, которая позволяет подключать сторонние репозитории (например, от проекта Mageia) с минимальными рисками конфликтов, хотя официальная поддержка такой конфигурации не гарантируется.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для ускорения загрузки пакетов настройте в файле конфигурации urpmi использование ближайшего к вам зеркала репозитория. Это может увеличить скорость установки программ в 2-3 раза.</p></aside>
+
+<h2 id="отличия-десктопной-rosa-fresh-от-серверной-rhel">Отличия десктопной ROSA Fresh от серверной RHEL</h2>
+
+<p>Пользователи часто путают две основные линейки продуктов компании, полагая, что они идентичны. На самом деле <strong>ROSA Fresh</strong> и <strong>ROSA Enterprise Linux Server</strong> (RHEL) — это две разные операционные системы с разным целевым назначением и, что самое важное, разной базой. Десктопная версия ориентирована на конечного пользователя, мультимедиа и удобство работы.</p>
+
+<p>Серверная версия <strong>RHEL</strong> исторически базировалась на исходных кодах Red Hat Enterprise Linux. Это обеспечивало бинарную совместимость с экосистемой RHEL и CentOS, что было критически важно для корпоративного сектора, использующего специфическое серверное ПО. Однако в свете изменений в политике Red Hat, компания РОСА заявляет о движении в сторону большей независимости и серверной версии также.</p>
+
+<p>Технические различия между версиями существенны. В десктопной сборке используется более свежее ядро Linux, новые версии графических окружений (KDE Plasma, GNOME) и драйверов. Серверная же версия prioritizes стабильность и длительную поддержку (LTS), используя проверенные временем компоненты, которые могут быть на несколько версий старше, но гарантируют безотказную работу 24/7.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Пакеты от серверной версии ROSA Enterprise нельзя устанавливать в десктопную ROSA Fresh и наоборот. Различия в версиях системных библиотек (glibc, kernel) приведут к поломке загрузчика и невозможности запуска системы.</p>
+</blockquote>
+
+<p>Выбор между этими версиями должен зависеть от задач. Если вам нужна рабочая станция для разработчика или офисного сотрудника — выбирайте <strong>Fresh</strong>. Если вы разворачиваете файловый сервер или базу данных — ваш выбор <strong>RHEL</strong> или его современные аналоги от РОСА.</p>
+
+<h2 id="ядро-системы-и-поддержка-оборудования">Ядро системы и поддержка оборудования</h2>
+
+<p>Одним из ключевых преимуществ <strong>Rosa Linux</strong> является работа с ядром системы. Разработчики не просто берут ванильное ядро от <em>kernel.org</em>, а применяют к нему собственный набор патчей. Эти патчи направлены на улучшение производительности файловой системы, оптимизацию работы с оперативной памятью и поддержку специфического российского оборудования.</p>
+
+<p>В десктопных редакциях часто используются версии ядра с долгосрочной поддержкой (LTS), но с бэкпортированными драйверами для новых видеокарт и Wi-Fi адаптеров. Это позволяет системе корректно работать как на старом паркe техники в бюджетных организациях, так и на современных игровых станциях. Поддержка проприетарных драйверов NVIDIA и AMD реализована через отдельные репозитории <code>non-free</code>.</p>
+
+<p>Особое внимание уделяется поддержке отечественных процессоров, таких как <strong>Эльбрус</strong> и <strong>Байкал</strong>. Для этих архитектур собираются специализированные версии ядра и системных библиотек, что делает ROSA одной из немногих систем, способных полноценно работать на импортонезависимом "железе".</p>
+
+<details class="pb-accordion"><summary>Технические детали ядер</summary><div class="pb-accordion-body"><p>В десктопной Rosa Fresh обычно используется ядро версии 5.10 или новее с патчами для улучшения отзывчивости интерфейса (MuQSS или BFS планировщики в некоторых сборках), тогда как серверная версия может использовать более консервативное ядро 4.19 или 5.4 для максимальной стабильности.</p></div></details>
+
+<p>Для диагностики проблем с оборудованием в систему встроены утилиты <code>hwinfo</code> и <code>lshw</code>, а также графический центр управления, который автоматически определяет подключенные устройства и предлагает установить недостающие драйверы. Это существенно упрощает жизнь пользователям, не желающим работать с командной строкой.</p>
+
+<h2 id="сравнение-с-другими-российскими-дистрибутивами">Сравнение с другими российскими дистрибутивами</h2>
+
+<p>На рынке отечественного ПО присутствует несколько крупных игроков, и понимание различий между ними помогает сделать правильный выбор. В отличие от <strong>Astra Linux</strong>, которая ориентирована в первую очередь на безопасность и сертификацию ФСТЭК (и имеет свои сложные механизмы мандатного доступа), <strong>Rosa Linux</strong> делает ставку на удобство и совместимость с привычным пользовательским опытом.</p>
+
+<p>По сравнению с <strong>ALT Linux</strong>, который также использует формат пакетов RPM и имеет глубокие корни в российской IT-индустрии, Rosa предлагает более современный и "полированный" интерфейс "из коробки". ALT Linux часто выбирают системные администраторы старой школы за его гибкость, тогда как Rosa привлекательнее для массового пользователя благодаря интеграции мультимедиа кодеков и драйверов в базовую поставку.</p>
+
+<p>Ниже приведена таблица, сравнивающая ключевые характеристики популярных российских систем на базе RPM и Debian:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Характеристика</th>
+<th>ROSA Fresh</th>
+<th>ALT Linux</th>
+<th>Astra Linux</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Пакетный менеджер</td>
+<td>urpmi / rpmdrake</td>
+<td>apt-rpm</td>
+<td>apt (deb)</td>
+</tr>
+<tr>
+<td>Базовая основа</td>
+<td>Независимая (наследие Mandriva)</td>
+<td>Независимая (Sisyphus)</td>
+<td>Debian</td>
+</tr>
+<tr>
+<td>Целевая аудитория</td>
+<td>Десктоп, образование</td>
+<td>Серверы, энтузиасты</td>
+<td>Госсектор, силовые структуры</td>
+</tr>
+<tr>
+<td>Сложность настройки</td>
+<td>Низкая</td>
+<td>Средняя/Высокая</td>
+<td>Высокая (из-за средств защиты)</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Выбор конкретного дистрибутива должен диктоваться задачами. Для обычного офиса или дома <strong>Rosa</strong> часто оказывается наиболее сбалансированным вариантом, не требующим глубоких знаний Linux для начала работы.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>ROSA Fresh сочетает в себе легкость установки Debian-подобных систем и мощь управления пакетами RPM-семейства, являясь уникальным гибридом на рынке.</p></aside>
+
+<h2 id="инструкция-по-первоначальной-настройке-репозиториев">Инструкция по первоначальной настройке репозиториев</h2>
+
+<p>После установки системы первым делом необходимо убедиться, что подключены актуальные источники программного обеспечения. По умолчанию в системе могут быть активированы только базовые репозитории. Для получения полного доступа к драйверам и дополнительному ПО потребуется включить медиарепозитории.</p>
+
+<p>Процесс настройки можно выполнить через графический интерфейс или командную строку. Графический способ предпочтителен для новичков: откройте меню приложений, найдите раздел <code>Система</code> и запустите утилиту <code>Управление репозиториями</code>. Здесь вы увидите список доступных источников.</p>
+
+<p>Для продвинутых пользователей доступна настройка через терминал. Это дает более тонкий контроль над приоритетами источников и позволяет отключить ненужные зеркала. Важно следить за статусом подключения к каждому репозиторию, чтобы избежать ошибок при обновлении.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Настройка источников ПО</h4><label class="check-item"><input type="checkbox"><span>Запустить Центр управления системой</span></label><label class="check-item"><input type="checkbox"><span>Перейти в раздел Репозитории</span></label><label class="check-item"><input type="checkbox"><span>Включить медиарепозиторий non-free</span></label><label class="check-item"><input type="checkbox"><span>Обновить базу данных пакетов</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>Команда для обновления базы данных пакетов в терминале выглядит следующим образом:</p>
+<pre><code>sudo urpmi.update -a</code></pre>
+
+<p>После выполнения этой команды система скачает актуальные списки пакетов со всех подключенных серверов. Теперь вы готовы устанавливать любое доступное программное обеспечение, включая проприетарные кодеки для воспроизведения видео форматов MP4 или MKV.</p>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли установить пакеты от Fedora на Rosa Linux?</summary>
+<p>Теоретически, поскольку обе системы используют формат <code>.rpm</code>, такая возможность существует. Однако на практике это <strong>не рекомендуется</strong>. Различия в версиях системных библиотек и зависимостях почти гарантированно приведут к конфликтам ("dependency hell"), которые сложно разрешить. Используйте только родные репозитории ROSA или универсальные форматы типа Flatpak.</p>
+</details>
+
+<details>
+<summary>Является ли Rosa Linux полностью бесплатной?</summary>
+<p>Да, дистрибутив <strong>ROSA Fresh</strong> распространяется свободно по лицензии GPL и другим открытым лицензиям. Вы можете скачать образ с официального сайта, установить его на неограниченное количество компьютеров и модифицировать код. Платными являются только услуги технической поддержки и специализированные корпоративные сборки с расширенным циклом обслуживания.</p>
+</details>
+
+<details>
+<summary>Поддерживает ли система работу с принтерами Canon и HP?</summary>
+<p>Большинство современных принтеров поддерживаются благодаря драйверам <em>CUPS</em> и пакету <code>hplip</code> для техники HP, которые входят в состав системы или доступны в репозиториях. Для некоторых моделей Canon может потребоваться ручная установка драйверов с сайта производителя, так как они не всегда попадают в открытые репозитории из-за лицензионных ограничений.</p>
+</details>
+
+<details>
+<summary>Как часто выходят новые версии Rosa Fresh?</summary>
+<p>Ранее проект придерживался фиксированного цикла выпуска релизов (например, R4, R5, R6) раз в 1-2 года. Однако в последнее время наблюдается переход к более гибкой модели обновлений, когда критические компоненты и окружение рабочего стола обновляются чаще, приближаясь к модели <strong>rolling-release</strong> в рамках одного мажорного выпуска.</p>
+</details>
+
+<details>
+<summary>Сложно ли перейти на Rosa Linux с Windows?</summary>
+<p>Переход облегчен благодаря интуитивному интерфейсу KDE Plasma, который визуально напоминает привычную среду Windows. В системе предустановлен офисный пакет, браузер и медиаплеер. Главной сложностью может стать привыкание к установке программ через центр управления или репозитории вместо скачивания <code>.exe</code> файлов из интернета, но это быстро становится преимуществом в плане безопасности.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/soft-i-prilozheniya/k/ka/kak-posmotret-probki-v-yandeks-kartakh.html" class="pb-related-card">
+                <span class="pb-related-title">Как посмотреть пробки в Яндекс.Картах: полная инструкция</span>
+                <span class="pb-related-desc">Узнайте, как посмотреть пробки в Яндекс.Картах на телефоне и компьютере. Инструкция по настройке сло</span>
+            </a><a href="/soft-i-prilozheniya/s/sk/skachat-navitel-na-android-besplatno.html" class="pb-related-card">
+                <span class="pb-related-title">Скачать Навител Навигатор на Android бесплатно: официальная версия и карты</span>
+                <span class="pb-related-desc">Инструкция как скачать Навител на Андроид бесплатно. Обзор версий, установка карт, лицензирование и </span>
+            </a><a href="/soft-i-prilozheniya/b/be/besplatnye-alternativy-microsoft-office.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшие бесплатные альтернативы Microsoft Office: Обзор 2026</span>
+                <span class="pb-related-desc">Ищете замену Microsoft Office? Полный обзор бесплатных офисных пакетов: LibreOffice, Google Docs, WP</span>
+            </a><a href="/soft-i-prilozheniya/s/sk/skachat-photoshop-mac-torrent.html" class="pb-related-card">
+                <span class="pb-related-title">Скачать Photoshop для Mac: риски торрентов и безопасные альтернативы</span>
+                <span class="pb-related-desc">Почему опасно искать Photoshop Mac торрент? Разбор рисков вирусов, нестабильности и юридических проб</span>
+            </a><a href="/soft-i-prilozheniya/k/ki/kinozal-rasshirenie-dlya-yandeksa.html" class="pb-related-card">
+                <span class="pb-related-title">Кинозал для Яндекса: Настройка, Обзор и Расширение для браузера</span>
+                <span class="pb-related-desc">Полный разбор расширения Кинозал для Яндекс.Браузера. Как установить, настроить стриминг и избежать </span>
+            </a><a href="/soft-i-prilozheniya/k/ka/karta-gps-bez-interneta-dlya-android.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшие GPS-карты без интернета для Android: полный гид 2026</span>
+                <span class="pb-related-desc">Ищете надежные офлайн карты для Андроид? Обзор топовых приложений, пошаговая инструкция по настройке</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

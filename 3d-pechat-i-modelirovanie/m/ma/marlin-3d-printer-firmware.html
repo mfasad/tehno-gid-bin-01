@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Marlin 3D Printer Firmware: Настройка и Прошивка — Техно Гид</title>
+    <meta name="description" content="Полное руководство по Marlin: установка, настройка параметров, компиляция кода и решение частых ошибок при прошивке 3D принтера.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/3d-pechat-i-modelirovanie/m/ma/marlin-3d-printer-firmware.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Marlin 3D Printer Firmware: Настройка и Прошивка">
+    <meta property="og:description" content="Полное руководство по Marlin: установка, настройка параметров, компиляция кода и решение частых ошибок при прошивке 3D принтера.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/3d-pechat-i-modelirovanie/">3D Печать и Моделирование</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Marlin 3D Printer Firmware: Настройка и Прошивка</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-среды-разработки-и-установка-зависимостей">Подготовка среды разработки и установка зависимостей</a></li><li><a href="#структура-конфигурационных-файлов-и-базовые-настройки">Структура конфигурационных файлов и базовые настройки</a></li><li><a href="#настройка-шаговых-двигателей-и-механики">Настройка шаговых двигателей и механики</a></li><li><a href="#процесс-компиляции-и-загрузка-прошивки">Процесс компиляции и загрузка прошивки</a></li><li><a href="#калибровка-и-тонкая-настройка-через-lcd-меню">Калибровка и тонкая настройка через LCD меню</a></li><li><a href="#расширенные-функции-и-безопасность-системы">Расширенные функции и безопасность системы</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-qidi-q1pro.html">3D принтер Qidi Q1 Pro: Обзор, характеристики и настройка</a></li><li><a href="/3d-pechat-i-modelirovanie/k/ka/kak-pravilno-pechatat-petg-plastikom.html">Как правильно печатать PETG пластиком: настройки и советы</a></li><li><a href="/3d-pechat-i-modelirovanie/c/ch/chto-raspechatat-na-3d-printere-dlya-prodazhi.html">Что распечатать на 3D принтере для продажи: Топ идей</a></li><li><a href="/3d-pechat-i-modelirovanie/p/po/podelki-iz-3d-printera.html">Поделки из 3D принтера: идеи, технологии и полезные модели</a></li><li><a href="/3d-pechat-i-modelirovanie/z/za/zarabotat-na-3d-printere.html">Заработок на 3D принтере: реальные способы, бизнес-идеи и старт</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Marlin 3D Printer Firmware: Полный Гид по Настройке</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-среды-разработки-и-установка-зависимостей">Подготовка среды разработки и установка зависимостей</a></li><li><a href="#структура-конфигурационных-файлов-и-базовые-настройки">Структура конфигурационных файлов и базовые настройки</a></li><li><a href="#настройка-шаговых-двигателей-и-механики">Настройка шаговых двигателей и механики</a></li><li><a href="#процесс-компиляции-и-загрузка-прошивки">Процесс компиляции и загрузка прошивки</a></li><li><a href="#калибровка-и-тонкая-настройка-через-lcd-меню">Калибровка и тонкая настройка через LCD меню</a></li><li><a href="#расширенные-функции-и-безопасность-системы">Расширенные функции и безопасность системы</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Прошивка <em>Marlin</em> является де-факто стандартом в мире любительской и полупрофессиональной 3D-печати. Она превращает набор механических компонентов, двигателей и нагревателей в интеллектуальное устройство, способное создавать сложные трехмерные объекты. Несмотря на появление альтернатив вроде <em>Klipper</em>, Marlin остается наиболее универсальным решением, поддерживаемым подавляющим большинством плат управления. Понимание работы этой системы открывает пользователю двери к тонкой настройке качества печати, безопасности и скорости работы оборудования.</p>
+
+<p>Многие новички боятся слова «прошивка», представляя сложный процесс программирования. На деле же работа с <strong>Marlin firmware</strong> сводится к редактированию текстовых файлов с понятными параметрами и компиляции готового кода. Эта статья проведет вас через все этапы: от подготовки среды разработки до загрузки финального бинарного файла в память контроллера. Мы разберем ключевые настройки, которые влияют на точность позиционирования и температурные режимы.</p>
+
+<p><mark>Критически важным этапом является резервное копирование текущей конфигурации перед любыми изменениями, так как некорректные значения могут привести к перегреву или механическим повреждениям принтера.</mark> Давайте погрузимся в архитектуру Marlin и разберем, как заставить ваш 3D-принтер работать именно так, как нужно вам.</p>
+
+<h2 id="подготовка-среды-разработки-и-установка-зависимостей">Подготовка среды разработки и установка зависимостей</h2>
+
+<p>Для работы с исходным кодом прошивки вам потребуется интегрированная среда разработки (IDE). Золотым стандартом в сообществе является <em>PlatformIO</em>, работающая как расширение для редактора <em>Visual Studio Code</em>. Хотя Arduino IDE все еще используется, PlatformIO предлагает более продвинутые инструменты управления библиотеками и сборкой проектов, что критично для тяжелых проектов вроде Marlin. Установка происходит через магазин расширений VS Code и занимает всего несколько минут.</p>
+
+<p>После установки плагина необходимо клонировать репозиторий Marlin с официального сайта GitHub. Не скачивайте архивы со сторонних ресурсов, так как они могут содержать устаревшие версии или вредоносные изменения. В терминале или через интерфейс Git выполните клонирование последней стабильной ветки. Это обеспечит доступ к актуальным функциям безопасности и поддержки новых материнских плат.</p>
+
+<p>Откройте папку проекта в VS Code. Система автоматически обнаружит файл <code>platformio.ini</code> и начнет загрузку необходимых зависимостей. Этот процесс может занять время в зависимости от скорости вашего интернет-соединения, так как скачиваются компиляторы для архитектуры AVR и ARM. Убедитесь, что у вас достаточно свободного места на диске.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> При первом запуске PlatformIO может потребовать установку драйверов для последовательного порта. Если ваша плата управления не определяется в системе, проверьте диспетчер устройств и установите драйверы CH340 или CP2102 в зависимости от чипа преобразователя USB-UART на вашей плате.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте ветку "bugfix-2.1.x" или "2.1.x" для максимальной стабильности. Ветка "master" может содержать экспериментальный код, который еще не прошел полное тестирование на всех типах оборудования.</p></aside>
+
+<h2 id="структура-конфигурационных-файлов-и-базовые-настройки">Структура конфигурационных файлов и базовые настройки</h2>
+
+<p>Вся магия настройки происходит в папке <code>Marlin/Configuration.h</code> и <code>Marlin/Configuration_adv.h</code>. Эти два файла содержат тысячи строк кода, но вам нужно изменить лишь небольшую их часть. Первым делом необходимо раскомментировать строку, определяющую вашу материнскую плату. Это делается через директиву <code>#define MOTHERBOARD</code>, где вместо комментария указывается конкретный идентификатор платы из списка.</p>
+
+<p>Далее следует настройка температурных датчиков. Неправильный выбор типа термистора может привести к тому, что принтер будет показывать температуру 0°C или, что хуже, уйдет в перегрев. В разделе термисторов найдите строки <code>TEMP_SENSOR_0</code> для экструдера и <code>TEMP_SENSOR_BED</code> для стола. Значения зависят от производителя нагревательных элементов и обычно указаны в документации к вашему комплекту.</p>
+
+<p>Кинематика принтера — еще один фундаментальный параметр. Для большинства классических дельта-принтеров используется кинематика Cartesian, в то время как для специфических моделей вроде <em>Anycubic Kossel</em> или <em>Flybot</em> требуется выбрать режим Delta. Ошибка в этом пункте сделает движения осей абсолютно хаотичными и непредсказуемыми.</p>
+
+<ul>
+<li>🔧 Проверьте количество экструдеров: параметр <code>EXTRUDERS</code> должен соответствовать физическому количеству печатающих голов.</li>
+<li>🌡️ Убедитесь, что включена защита от перегрева <code>THERMAL_PROTECTION_HOTENDS</code> и <code>THERMAL_PROTECTION_BED</code>.</li>
+<li>📏 Задайте размеры области печати через <code>X_BED_SIZE</code>, <code>Y_BED_SIZE</code> и <code>Z_MAX_POS</code>.</li>
+</ul>
+
+<p>Не забывайте, что после изменения любого параметра в <code>Configuration.h</code> необходимо пересобрать проект. Игнорирование этого правила приведет к тому, что в память контроллера будет записана старая версия прошивки, и все ваши усилия пропадут даром. Всегда дважды проверяйте синтаксис: отсутствие точки с запятой или лишняя косая черта могут остановить компиляцию.</p>
+
+<h2 id="настройка-шаговых-двигателей-и-механики">Настройка шаговых двигателей и механики</h2>
+
+<p>Точность печати напрямую зависит от правильности настройки шаговых двигателей. В Marlin за это отвечают параметры шагов на миллиметр, обозначаемые как <code>DEFAULT_AXIS_STEPS_PER_UNIT</code>. Значения по умолчанию часто не соответствуют реальности из-за различий в микрошаге драйверов или механических передачах. Вам необходимо рассчитать эти значения математически или подобрать их экспериментальным путем.</p>
+
+<p>Если вы используете драйверы с функцией определения тока, такими как <em>TMC2208</em> или <em>TMC2209</em>, в конфигурации нужно активировать соответствующие определения. Это позволяет управлять током двигателей программно, снижая шум и нагрев. Для этого раскомментируйте строки вида <code>#define X_DRIVER_TYPE TMC2209</code> для каждой оси. Автоматическая настройка тока (Hybrid Threshold) также доступна в расширенных настройках.</p>
+
+<p>Концевые выключатели (эндстопы) требуют правильной логики срабатывания. Некоторые датчики работают на замыкание, другие — на размыкание. Параметр <code>X_MIN_ENDSTOP_INVERTING</code> позволяет инвертировать сигнал, если принтер думает, что ось уже в крайнем положении, хотя физически она находится в центре. Неправильная настройка здесь приведет к тому, что каретка упрется в рамку и начнет скрипеть мотором.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка механики перед прошивкой</h4><label class="check-item"><input type="checkbox"><span>Проверить натяжение ремней</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в отсутствии люфтов</span></label><label class="check-item"><input type="checkbox"><span>Смазать направляющие</span></label><label class="check-item"><input type="checkbox"><span>Проверить вращение винтов Z</span></label><label class="check-item"><input type="checkbox"><span>Проверить подключение концевиков</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<p>Особое внимание уделите настройке ускорений и джерков (рывков). Слишком высокие значения ускорения могут привести к потере шагов и смещению слоев, особенно на принтерах с тяжелой кареткой. Значения <code>DEFAULT_MAX_ACCELERATION</code> и <code>DEFAULT_JUNCTION_DEVIATION_MM</code> следует подбирать осторожно, начиная с консервативных значений и постепенно увеличивая их до появления артефактов на тестовой печати.</p>
+
+<h2 id="процесс-компиляции-и-загрузка-прошивки">Процесс компиляции и загрузка прошивки</h2>
+
+<p>Когда конфигурация готова, наступает этап сборки. В нижней панели VS Code нажмите на галочку (Build) или используйте сочетание клавиш. PlatformIO запустит процесс компиляции, который преобразует код C++ в машинный код для микроконтроллера. В консоли вы увидите прогресс бар и список компилируемых файлов. Успешное завершение обозначается сообщением "BUILD SUCCESS".</p>
+
+<p>После сборки в папке проекта появится файл с расширением <code>.bin</code> (для плат с загрузчиком SD-карты) или <code>.hex</code> (для прямой прошивки через USB). Самый простой способ обновления для плат типа <em>Creality 4.2.7</em> или <em>MKS Robin</em> — копирование файла <code>firmware.bin</code> на пустую SD-карту, отформатированную в FAT32. Вставьте карту в выключенный принтер, включите его и подождите несколько секунд.</p>
+
+<p>Для плат, подключаемых через USB (например, <em>Arduino Mega</em> с <em>RAMPS 1.4</em> или <em>BTT SKR Mini</em>), используется прямая загрузка. Выберите порт в статусной строке VS Code и нажмите кнопку "Upload" (стрелка вправо). Устройство перезагрузится, и новая прошивка будет записана во флеш-память. В этот момент принтер может издать звуковой сигнал, подтверждающий успех.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Никогда не отключайте питание или USB-кабель во время процесса загрузки (Upload). Прерывание записи во флеш-память может "окирпичить" контроллер, сделав его неспособным принимать новые команды без использования внешнего программатора ISP.</p>
+</blockquote>
+
+<details class="pb-accordion"><summary>Что делать, если загрузка не удается?</summary><div class="pb-accordion-body"><p>Если вы получаете ошибку тайм-аута, проверьте, не занято ли соединение другим приложением (например, слайсером или терминалом). Также попробуйте нажать кнопку сброса (Reset) на плате непосредственно перед началом загрузки, чтобы войти в режим бутлоадера вручную.</p></div></details>
+
+<h2 id="калибровка-и-тонкая-настройка-через-lcd-меню">Калибровка и тонкая настройка через LCD меню</h2>
+
+<p>После успешной прошивки работа с Marlin не заканчивается. Большинство современных сборок поддерживают сохранение настроек в EEPROM (энергонезависимую память). Это значит, что вы можете корректировать параметры прямо с экрана принтера, не перекомпилируя код каждый раз. Меню <code>Configuration</code> позволяет менять шаги, температуры и скорости на лету.</p>
+
+<p>Ключевой командой для пользователей является <code>M500</code>, которая сохраняет текущие параметры в память. Без выполнения этой команды все изменения, сделанные через меню или терминал (например, коррекция шагов <code>M92</code>), сбросятся после выключения питания. Всегда выполняйте <code>M500</code> после успешной калибровки осей.</p>
+
+<p>Для точной настройки шагов используйте метод печати тестового куба размером 20 мм. Измерьте получившуюся деталь штангенциркулем. Если размер составляет 19.5 мм, значит, принтер недоэкструдировал или прошел меньшее расстояние. Рассчитайте новый коэффициент по формуле: <code>(Текущие шаги / Измеренный размер) * Ожидаемый размер</code>. Введите новое значение через команду <code>M92 X[новое_значение]</code> и сохраните.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Команда G-кода</th>
+<th>Описание</th>
+<th>Пример значения</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Шаги оси X</td>
+<td><code>M92 X</code></td>
+<td>Количество шагов на 1 мм</td>
+<td>80.00</td>
+</tr>
+<tr>
+<td>Температура стола</td>
+<td><code>M140 S</code></td>
+<td>Установка целевой температуры</td>
+<td><code>M140 S60</code></td>
+</tr>
+<tr>
+<td>Скорость вентилятора</td>
+<td><code>M106 S</code></td>
+<td>Мощность обдува (0-255)</td>
+<td><code>M106 S127</code></td>
+</tr>
+<tr>
+<td>Сохранение настроек</td>
+<td><code>M500</code></td>
+<td>Запись в EEPROM</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Сброс настроек</td>
+<td><code>M502</code></td>
+<td>Возврат к дефолтным из прошивки</td>
+<td>-</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Используйте команду <code>M503</code> для вывода текущих активных настроек в терминал. Это отличный способ проверить, какие именно значения сейчас использует контроллер, прежде чем вносить изменения. Если вы запутались в правках, команда <code>M502</code> вернет настройки к тем, что «зашиты» в коде прошивки, а <code>M500</code> сохранит этот сброс.</p>
+
+<div class="pb-poll" id="poll-aa6af71c"><div class="pb-poll-question">📊 Какой контроллер установлен в вашем 3D принтере?</div><div class="pb-poll-option" data-poll="aa6af71c" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">8-bit AVR (Mega2560)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="aa6af71c" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">32-bit ARM (STM32)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="aa6af71c" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">ESP32 (Wi-Fi)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="aa6af71c" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Другой / Не знаю</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="расширенные-функции-и-безопасность-системы">Расширенные функции и безопасность системы</h2>
+
+<p>Современный Marlin — это не просто драйвер двигателей, это комплексная система безопасности. Функция <strong>Thermal Runaway Protection</strong> (защита от теплового разгона) мониторит температуру нагревателя. Если включен нагрев, но датчик не фиксирует рост температуры в течение заданного времени, принтер аварийно остановится. Это предотвращает пожары в случае отвалившегося термистора.</p>
+
+<p>Для пользователей, желающих автоматизировать процессы, доступна поддержка авто-уровня стола через датчики <em>BLTouch</em> или <em>Inductive Sensor</em>. Настройка сетки выравнивания (<code>AUTO_BED_LEVELING_BILINEAR</code>) позволяет компенсировать неровности стола программно. Это требует точной калибровки Z-offset — расстояния между соплом и датчиком, чтобы первое кольцо ложилось идеально.</p>
+
+<p>Также стоит упомянуть функцию <code>POWER_LOSS_RECOVERY</code>. При внезапном отключении электричества принтер сохранит координаты и состояние печати на SD-карту. После возобновления питания вы сможете продолжить печать с места обрыва, что критически важно для длительных проектов, идущих несколько суток.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Функция восстановления после сбоя питания требует исправной SD-карты и достаточного места на ней. Регулярно очищайте карту от старых файлов, чтобы избежать ошибок записи в критический момент.</p>
+</blockquote>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Как узнать, какая версия Marlin установлена на моем принтере?</summary>
+<p>Отправьте команду <code>M115</code> через терминал в слайсере (Cura, PrusaSlicer) или через LCD меню, если там есть пункт "Info". Принтер вернет строку с версией прошивки, названием платы и датой компиляции.</p>
+</details>
+
+<details>
+<summary>Принтер пищит и выдает ошибку "Heating failed", что делать?</summary>
+<p>Это сработала защита от теплового разгона. Проверьте подключение термистора к плате, убедитесь, что нагревательный элемент исправен и получает напряжение. Также проверьте, правильно ли выбран тип термистора в файле <code>Configuration.h</code>.</p>
+</details>
+
+<details>
+<summary>Можно ли обновить Marlin без компьютера, только через SD-карту?</summary>
+<p>Да, если ваша плата поддерживает загрузчик из SD-карты (например, большинство плат Creality и BTT). Вам нужно просто переименовать скомпилированный файл в <code>firmware.bin</code> и положить его в корень карты.</p>
+</details>
+
+<details>
+<summary>Почему после прошивки сбросились все мои настройки уровня стола?</summary>
+<p>Скорее всего, вы обновили прошивку, но не сохранили настройки старой версии перед этим, либо новая прошивка имеет другие значения по умолчанию. Используйте авто-уровень заново и выполните команду <code>M500</code>.</p>
+</details>
+
+<details>
+<summary>Как включить поддержку Wi-Fi или Bluetooth в Marlin?</summary>
+<p>Это зависит от аппаратной части. Для плат с ESP32 нужно активировать соответствующие определения в конфигурации. Для обычных плат потребуется подключение внешнего модуля (например, ESP-01S) и настройка последовательного порта для связи с ним.</p>
+</details>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Успешная работа с Marlin зависит не от сложности кода, а от внимательности при настройке параметров безопасности и механики. Всегда тестируйте изменения на холостом ходу перед реальной печатью.</p></aside></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-qidi-q1pro.html" class="pb-related-card">
+                <span class="pb-related-title">3D принтер Qidi Q1 Pro: Обзор, характеристики и настройка</span>
+                <span class="pb-related-desc">Полный обзор 3D принтера Qidi Q1 Pro. Тесты печати ABS, PLA и PETG. Особенности CoreXY, горячего сто</span>
+            </a><a href="/3d-pechat-i-modelirovanie/k/ka/kak-pravilno-pechatat-petg-plastikom.html" class="pb-related-card">
+                <span class="pb-related-title">Как правильно печатать PETG пластиком: настройки и советы</span>
+                <span class="pb-related-desc">Полное руководство по 3D-печати PETG. Температуры, скорость, обдув и устранение дефектов для идеальн</span>
+            </a><a href="/3d-pechat-i-modelirovanie/c/ch/chto-raspechatat-na-3d-printere-dlya-prodazhi.html" class="pb-related-card">
+                <span class="pb-related-title">Что распечатать на 3D принтере для продажи: Топ идей</span>
+                <span class="pb-related-desc">Гид по востребованным товарам для 3D-печати. Узнайте, что выгодно печатать на продажу: от декора до </span>
+            </a><a href="/3d-pechat-i-modelirovanie/p/po/podelki-iz-3d-printera.html" class="pb-related-card">
+                <span class="pb-related-title">Поделки из 3D принтера: идеи, технологии и полезные модели</span>
+                <span class="pb-related-desc">Идеи для 3D печати: от полезных бытовых мелочей до сложных механизмов. Обзор материалов, софта и гот</span>
+            </a><a href="/3d-pechat-i-modelirovanie/z/za/zarabotat-na-3d-printere.html" class="pb-related-card">
+                <span class="pb-related-title">Заработок на 3D принтере: реальные способы, бизнес-идеи и старт</span>
+                <span class="pb-related-desc">Как превратить 3D принтер в источник дохода? Обзор ниш, расчет рентабельности, выбор материалов и ст</span>
+            </a><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-dlya-avto.html" class="pb-related-card">
+                <span class="pb-related-title">3D принтер для авто: выбор, материалы и печать запчастей</span>
+                <span class="pb-related-desc">Как выбрать 3D принтер для автотюнинга и ремонта? Обзор материалов PLA, PETG, ABS, технологии печати</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

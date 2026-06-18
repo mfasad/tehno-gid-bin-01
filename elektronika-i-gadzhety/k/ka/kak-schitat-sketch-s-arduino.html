@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как считать скетч с платы Arduino: пошаговая инструкция — Техно Гид</title>
+    <meta name="description" content="Подробное руководство по извлечению прошивки из микроконтроллера Arduino. Узнайте, как использовать avrdude для бэкапа кода и настройки фьюзов.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/elektronika-i-gadzhety/k/ka/kak-schitat-sketch-s-arduino.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как считать скетч с платы Arduino: пошаговая инструкция">
+    <meta property="og:description" content="Подробное руководство по извлечению прошивки из микроконтроллера Arduino. Узнайте, как использовать avrdude для бэкапа кода и настройки фьюзов.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/elektronika-i-gadzhety/">Электроника и Гаджеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как считать скетч с платы Arduino: пошаговая инструкция</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-оборудования-и-программного-обеспечения">Подготовка оборудования и программного обеспечения</a></li><li><a href="#определение-порта-и-параметров-связи">Определение порта и параметров связи</a></li><li><a href="#использование-утилиты-avrdude-для-чтения-памяти">Использование утилиты avrdude для чтения памяти</a></li><li><a href="#интерпретация-результатов-и-форматы-файлов">Интерпретация результатов и форматы файлов</a></li><li><a href="#чтение-конфигурационных-битов-fuses">Чтение конфигурационных битов (Fuses)</a></li><li><a href="#восстановление-и-запись-прошивки-на-новую-плату">Восстановление и запись прошивки на новую плату</a></li><li><a href="#частые-ошибки-и-методы-их-устранения">Частые ошибки и методы их устранения</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/elektronika-i-gadzhety/s/so/soocas-water-flosser-remont.html">Ремонт ирригатора Soocas W3: диагностика и устранение поломок</a></li><li><a href="/elektronika-i-gadzhety/m/ma/maska-v-samolete-dlya-passazhirov.html">Маска в самолете: правила носки, типы СИЗ и требования авиакомпаний</a></li><li><a href="/elektronika-i-gadzhety/c/ch/chto-delat-esli-gnezdo-dlya-zaryadki-ne-rabotaet.html">Гнездо зарядки не работает: Диагностика и ремонт разъемов</a></li><li><a href="/elektronika-i-gadzhety/t/tr/trigger-v-skhemotekhnike-eto.html">Триггер в схемотехнике: устройство, виды и принцип работы</a></li><li><a href="/elektronika-i-gadzhety/k/ka/kak-razobrat-zaryadku-ot-ajfona.html">Как разобрать зарядку iPhone: полная инструкция и советы</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как считать скетч с Arduino: полное руководство по бэкапу прошивки</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-оборудования-и-программного-обеспечения">Подготовка оборудования и программного обеспечения</a></li><li><a href="#определение-порта-и-параметров-связи">Определение порта и параметров связи</a></li><li><a href="#использование-утилиты-avrdude-для-чтения-памяти">Использование утилиты avrdude для чтения памяти</a></li><li><a href="#интерпретация-результатов-и-форматы-файлов">Интерпретация результатов и форматы файлов</a></li><li><a href="#чтение-конфигурационных-битов-fuses">Чтение конфигурационных битов (Fuses)</a></li><li><a href="#восстановление-и-запись-прошивки-на-новую-плату">Восстановление и запись прошивки на новую плату</a></li><li><a href="#частые-ошибки-и-методы-их-устранения">Частые ошибки и методы их устранения</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Многие начинающие разработчики и опытные инженеры сталкиваются с ситуацией, когда необходимо сохранить программный код, уже находящийся на плате <em>Arduino</em>. Это может быть вызвано утратой исходных файлов на компьютере, необходимостью анализа чужого устройства или созданием резервной копии перед внесением изменений в <strong>аппаратную часть</strong>. К сожалению, стандартная среда разработки <em>Arduino IDE</em> не предоставляет встроенной кнопки для прямого извлечения машинного кода обратно в читаемый формат <code>C++</code>.</p>
+
+<p>Тем не менее, технически возможно скопировать бинарный файл прошивки (HEX) непосредственно из энергонезависимой памяти микроконтроллера. Этот процесс требует использования сторонних утилит командной строки, таких как <strong>avrdude</strong>, которые взаимодействуют с загрузчиком платы через последовательный порт. Понимание этого механизма критически важно для любого специалиста, занимающегося <em>реверс-инжинирингом</em> или обслуживанием устройств на базе микроконтроллеров <em>ATmega</em>.</p>
+
+<p>В этой статье мы подробно разберем методику безопасного считывания данных, необходимую конфигурацию оборудования и типичные ошибки, возникающие при попытке доступа к памяти чипа. Вы узнаете, как превратить «черный ящик» с готовой прошивкой в файл, который можно анализировать или перепрошивать на другие устройства аналогичной архитектуры.</p>
+
+<h2 id="подготовка-оборудования-и-программного-обеспечения">Подготовка оборудования и программного обеспечения</h2>
+
+<p>Перед началом процедуры убедитесь, что у вас есть физический доступ к плате и установлен драйвер для конвертера <code>USB-to-Serial</code>. Для большинства клонов <em>Arduino Uno</em> на базе чипа <em>CH340</em> или <em>CP2102</em> потребуется ручная установка драйверов, так как операционная система может не распознать устройство автоматически. Подключите плату к компьютеру и проверьте, какой <strong>COM-порт</strong> был назначен системе в диспетчере устройств.</p>
+
+<p>Основным инструментом для работы будет утилита <strong>avrdude</strong>. Она обычно поставляется в комплекте с <em>Arduino IDE</em>, поэтому отдельная установка может не потребоваться. Путь к исполняемому файлу часто выглядит как <code>C:\Program Files (x86)\Arduino\hardware\tools\avr\bin\avrdude.exe</code> для Windows или находится в системных путях на Linux и macOS. Вам также потребуется знать точное название модели вашего микроконтроллера, например, <em>ATmega328P</em>.</p>
+
+<p>Для корректной работы необходимо определить параметры связи. Скорость обмена данными (baud rate) зависит от используемого загрузчика. Для стандартного <em>Arduino Uno</em> это обычно <code>115200</code> бит/с, тогда как для плат с чипом <em>ATmega32U4</em> (например, <em>Leonardo</em>) используется скорость <code>57600</code>. Неправильный выбор скорости приведет к ошибке синхронизации и невозможности считать данные.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если вы не уверены в модели чипа, посмотрите маркировку на черном квадратном корпусе микроконтроллера — там всегда указаны точные буквы и цифры, например, 328P-PU.</p></aside>
+
+<h2 id="определение-порта-и-параметров-связи">Определение порта и параметров связи</h2>
+
+<p>Успех операции напрямую зависит от правильного указания порта в командной строке. В Windows порты обозначаются как <code>COM3</code>, <code>COM4</code> и так далее, в то время как в Linux и macOS они имеют вид <code>/dev/ttyUSB0</code> или <code>/dev/cu.usbmodem1411</code>. Ошибка даже в одной цифре сделает устройство недоступным для утилиты <strong>avrdude</strong>.</p>
+
+<p>Чтобы проверить доступность платы, можно запустить простую команду проверки сигнатуры. Это действие не изменяет содержимое памяти, а лишь считывает идентификационный код чипа. Если вы получили ответ с тремя байтами сигнатуры (обычно <code>0x1E 0x95 0x0F</code> для <em>ATmega328P</em>), значит, связь установлена корректно и можно переходить к чтению.</p>
+
+<p>Обратите внимание на состояние светодиодов на плате. При подключении питания и связи индикатор <code>L</code> (или <code>TX/RX</code>) может мигать, что свидетельствует о работе загрузчика. Если светодиоды не реагируют, проверьте кабель USB — некоторые кабели предназначены только для зарядки и не передают данные. Используйте только качественные экранированные шнуры для минимизации помех.</p>
+
+<ul>
+<li>🔌 Проверьте, что кабель USB поддерживает передачу данных, а не только зарядку.</li>
+<li>💻 Убедитесь, что в диспетчере устройств нет желтых значков предупреждения рядом с портом.</li>
+<li>⚡ Не подключайте плату через дешевые USB-хабы без внешнего питания.</li>
+<li>🛡️ Отключите антивирус на время работы с портами, если он блокирует доступ к COM-интерфейсу.</li>
+</ul>
+
+<div class="pb-poll" id="poll-b97f5703"><div class="pb-poll-question">📊 Какая плата Arduino у вас чаще всего в работе?</div><div class="pb-poll-option" data-poll="b97f5703" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Arduino Uno</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="b97f5703" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Arduino Nano</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="b97f5703" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Arduino Mega</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="b97f5703" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Arduino Leonardo</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="b97f5703" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другая плата</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="использование-утилиты-avrdude-для-чтения-памяти">Использование утилиты avrdude для чтения памяти</h2>
+
+<p>Процесс считывания прошивки выполняется через терминал или командную строку. Синтаксис команды может показаться сложным из-за обилия флагов, но каждый из них отвечает за конкретный параметр взаимодействия. Ключевым параметром является <code>-U</code>, который указывает утилите, какую операцию выполнить и с каким типом памяти работать.</p>
+
+<p>Для чтения основной программы используется память типа <code>flash</code>. Команда должна включать указание порта (<code>-p</code>), programmer типа (<code>-c</code>), скорость (<code>-b</code>) и файл вывода. Важно использовать абсолютный путь к файлу сохранения, чтобы избежать ошибок прав доступа или путаницы с директориями.</p>
+
+<pre><code>avrdude -C"путь_к_конфигу" -v -patmega328p -carduino -P COM3 -b115200 -U flash:r:"C:\backup\sketch.hex":i</code></pre>
+
+<p>В данном примере флаг <code>-U flash:r:..."</code> означает чтение (<code>r</code>) из флеш-памяти в файл формата Intel HEX (<code>i</code>). Если команда выполнена успешно, в консоли появится отчет о количестве прочитанных байт, и файл сохранится в указанной директории. Этот файл содержит машинный код, который можно впоследствии записать на другую плату.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед запуском команды</h4><label class="check-item"><input type="checkbox"><span>Установлен драйвер CH340/CP2102</span></label><label class="check-item"><input type="checkbox"><span>Известен номер COM-порта</span></label><label class="check-item"><input type="checkbox"><span>Установлена утилита avrdude</span></label><label class="check-item"><input type="checkbox"><span>Создана папка для бэкапа</span></label><label class="check-item"><input type="checkbox"><span>Плата подключена кабелем данных</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="интерпретация-результатов-и-форматы-файлов">Интерпретация результатов и форматы файлов</h2>
+
+<p>Полученный файл с расширением <code>.hex</code> представляет собой текстовое представление двоичных данных в формате Intel HEX. Это не исходный код на языке <em>C++</em>, который вы писали в редакторе, а скомпилированная последовательность инструкций процессора. Прямое восстановление исходного кода с комментариями и именами переменных из этого файла невозможно без сложных процедур декомпиляции.</p>
+
+<p>Однако файл <strong>HEX</strong> полностью пригоден для перепрошивки другого микроконтроллера. Вы можете использовать ту же утилиту <em>avrdude</em> или интерфейс <em>Arduino IDE</em> (через сторонние инструменты) для записи этого образа в новую плату. Устройство будет функционировать абсолютно идентично оригиналу, так как побитовая копия программы сохраняется полностью.</p>
+
+<p>Для анализа содержимого файла можно использовать специальные HEX-редакторы или дизассемблеры, такие как <em>avr-objdump</em>. Они позволяют увидеть ассемблерный код и понять логику работы устройства на низком уровне. Это полезно при отладке ошибок или изучении работы чужих алгоритмов, но требует глубоких знаний архитектуры <em>AVR</em>.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Попытка открыть HEX-файл в обычном текстовом редакторе и отредактировать его вручную приведет к повреждению контрольных сумм и неработоспособности прошивки. Любые изменения должны вноситься только специализированным ПО.</p>
+</blockquote>
+
+<h2 id="чтение-конфигурационных-битов-fuses">Чтение конфигурационных битов (Fuses)</h2>
+
+<p>Помимо основного кода программы, в микроконтроллере хранятся важные настройки, называемые <strong>Fuses</strong> (предохранители). Они определяют тактовую частоту, источник тактирования, размер загрузчика и другие критические параметры. При переносе прошивки на новую плату крайне важно сохранить эти настройки, иначе устройство может не запуститься или работать некорректно.</p>
+
+<p>Считать значения фьюзов можно с помощью тех же команд <em>avrdude</em>, указывая память <code>lfuse</code>, <code>hfuse</code> и <code>efuse</code> (для расширенных настроек). Эти данные представляют собой однобайтовые или двухбайтовые значения в шестнадцатеричном формате. Их необходимо записать в отдельный файл или сохранить в логе.</p>
+
+<p>Таблица ниже демонстрирует основные типы памяти, доступные для чтения в типичном микроконтроллере <em>ATmega328P</em>:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Тип памяти</th>
+<th>Описание</th>
+<th>Команда avrdude</th>
+<th>Объем (пример)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Flash</td>
+<td>Основная программа</td>
+<td><code>-U flash:r:file.hex:i</code></td>
+<td>32 Кбайт</td>
+</tr>
+<tr>
+<td>EEPROM</td>
+<td>Энергонезависимые данные</td>
+<td><code>-U eeprom:r:file.eep:i</code></td>
+<td>1 Кбайт</td>
+</tr>
+<tr>
+<td>Low Fuse</td>
+<td>Низкие настройки (клок)</td>
+<td><code>-U lfuse:r:file.lf:r</code></td>
+<td>1 байт</td>
+</tr>
+<tr>
+<td>High Fuse</td>
+<td>Высокие настройки (бутлоадер)</td>
+<td><code>-U hfuse:r:file.hf:r</code></td>
+<td>1 байт</td>
+</tr>
+</tbody>
+</table></div>
+
+<details class="pb-accordion"><summary>Зачем нужны биты блокировки (Lock Bits)?</summary><div class="pb-accordion-body"><p>Биты блокировки защищают память от чтения и записи. Если они установлены в определенное положение, считать прошивку через стандартный интерфейс ISP или UART будет невозможно без полного стирания чипа.</p></div></details>
+
+<h2 id="восстановление-и-запись-прошивки-на-новую-плату">Восстановление и запись прошивки на новую плату</h2>
+
+<p>После успешного считывания у вас на руках есть полный образ системы. Для записи на новую плату процесс аналогичен, но используется флаг <code>w</code> (write) вместо <code>r</code> (read). Команда будет выглядеть как <code>-U flash:w:"путь_к_файлу.hex":i</code>. Убедитесь, что новая плата имеет идентичный микроконтроллер и настройки фьюзов.</p>
+
+<p>Если вы планируете массовое копирование устройства, рекомендуется создать скрипт, который автоматически считывает фьюзы, затем прошивает память и устанавливает те же фьюзы на целевом устройстве. Это гарантирует полную идентичность клонов оригиналу. Не забывайте, что запись фьюзов — опасная операция, ошибка может «забриковать» чип.</p>
+
+<p>В некоторых случаях может потребоваться отключение верификации при записи, если используются нестандартные загрузчики, но делать это следует с осторожностью. Всегда проверяйте работоспособность устройства после перепрошивки, подключая его к источнику питания и наблюдая за реакцией периферии.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Полный бэкап устройства включает в себя три компонента: файл прошивки (Flash), файл данных (EEPROM) и значения всех регистров Fuse. Отсутствие любого из них может привести к сбою.</p></aside>
+
+<h2 id="частые-ошибки-и-методы-их-устранения">Частые ошибки и методы их устранения</h2>
+
+<p>Самая распространенная ошибка — <code>stk500_getsync</code>. Она означает, что компьютер не может синхронизироваться с загрузчиком платы. Причины могут быть в неверно выбранном порте, неправильной скорости передачи данных или неисправном кабеле. Попробуйте нажать кнопку сброса (<code>Reset</code>) на плате непосредственно перед запуском команды.</p>
+
+<p>Другая проблема — доступ запрещен (<code>Access denied</code>). Это часто случается, если порт занят другим приложением, например, открытым окном <em>Arduino IDE</em> или терминалом <code>Serial Monitor</code>. Закройте все программы, использующие COM-порт, и повторите попытку. На Linux может потребоваться добавление пользователя в группу <code>dialout</code>.</p>
+
+<p>Если утилита сообщает о неверной сигнатуре устройства, возможно, вы выбрали неверный тип процессора в параметре <code>-p</code>. Сверьте маркировку на чипе. Также стоит проверить, не сбиты ли фьюзы тактирования на внешние источники, которых нет на плате, что делает чип «мертвым» без внешнего генератора.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Неправильная установка битов фьюзов (например, отключение внутреннего генератора без подключения внешнего кварца) сделает микроконтроллер неработоспособным. Для восстановления потребуется программатор ISP и внешний источник тактирования.</p>
+</blockquote>
+
+<details class="pb-accordion"><summary>Что делать, если чип не определяется?</summary><div class="pb-accordion-body"><p>Попробуйте подать тактовый сигнал на XTAL1 от другого работающего Arduino, настроенного как генератор (Clock Out). Это временно «оживит» чип для перепрошивки правильных настроек.</p></div></details>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Можно ли получить исходный код (.ino) из считанного HEX-файла?</summary>
+<p>Нет, напрямую это невозможно. HEX-файл содержит машинный код, из которого удалены все комментарии, имена переменных и структура исходного текста. Существуют инструменты для декомпиляции в ассемблер или псевдокод C, но они не восстанавливают оригинальный код один в один.</p>
+</details>
+
+<details>
+<summary>Будет ли работать считанная прошивка на плате с другим объемом памяти?</summary>
+<p>Только если объем программы меньше размера памяти новой платы. Если вы попытаетесь записать прошивку от <em>Arduino Mega</em> (64Кб+) в <em>Arduino Uno</em> (32Кб), процесс записи прервется ошибкой переполнения, либо данные будут усечены, что приведет к сбою.</p>
+</details>
+
+<details>
+<summary>Зачем нужно считывать EEPROM отдельно?</summary>
+<p>В EEPROM часто хранятся калибровочные данные, настройки пользователя или счетчики ресурсов, которые не являются частью основной программы. При перепрошивке только Flash-памяти эти данные могут быть утеряны или сброшены, если не сделать их отдельный бэкап.</p>
+</details>
+
+<details>
+<summary>Можно ли защитить свою прошивку от считывания?</summary>
+<p>Да, с помощью установки битов блокировки (Lock Bits). При установке максимального уровня защиты чтение памяти через внешние интерфейсы блокируется. Однако снять эту защиту можно только полным стиранием чипа, что уничтожит саму прошивку.</p>
+</details>
+
+<details>
+<summary>Работает ли этот метод для плат на базе ESP8266 или ESP32?</summary>
+<p>Принцип тот же, но утилита <em>avrdude</em> не подходит. Для чипов <em>Espressif</em> используется инструмент <code>esptool.py</code>. Команды и параметры портов будут отличаться, так как архитектура процессора совершенно другая.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/elektronika-i-gadzhety/s/so/soocas-water-flosser-remont.html" class="pb-related-card">
+                <span class="pb-related-title">Ремонт ирригатора Soocas W3: диагностика и устранение поломок</span>
+                <span class="pb-related-desc">Самостоятельный ремонт ирригатора Soocas. Разборка, замена шланга, чистка клапана, устранение протеч</span>
+            </a><a href="/elektronika-i-gadzhety/m/ma/maska-v-samolete-dlya-passazhirov.html" class="pb-related-card">
+                <span class="pb-related-title">Маска в самолете: правила носки, типы СИЗ и требования авиакомпаний</span>
+                <span class="pb-related-desc">Полный гид по использованию масок в авиации. Какие СИЗ обязательны, как правильно надевать респирато</span>
+            </a><a href="/elektronika-i-gadzhety/c/ch/chto-delat-esli-gnezdo-dlya-zaryadki-ne-rabotaet.html" class="pb-related-card">
+                <span class="pb-related-title">Гнездо зарядки не работает: Диагностика и ремонт разъемов</span>
+                <span class="pb-related-desc">Разъем для зарядки перестал отвечать? Узнайте, как самостоятельно диагностировать проблему, почистит</span>
+            </a><a href="/elektronika-i-gadzhety/t/tr/trigger-v-skhemotekhnike-eto.html" class="pb-related-card">
+                <span class="pb-related-title">Триггер в схемотехнике: устройство, виды и принцип работы</span>
+                <span class="pb-related-desc">Подробный разбор триггера в схемотехнике. Устройство, типы RS, D, JK, таблицы истинности. Применение</span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kak-razobrat-zaryadku-ot-ajfona.html" class="pb-related-card">
+                <span class="pb-related-title">Как разобрать зарядку iPhone: полная инструкция и советы</span>
+                <span class="pb-related-desc">Узнайте, как разобрать блок питания iPhone. Пошаговая инструкция, необходимые инструменты, меры пред</span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kakaya-antenna-nuzhna-dlya-dachi.html" class="pb-related-card">
+                <span class="pb-related-title">Какую антенну выбрать для дачи: обзор типов и советы по установке</span>
+                <span class="pb-related-desc">Полный гид по выбору антенны для дачи: как определить диапазон, рассчитать мощность и установить уст</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

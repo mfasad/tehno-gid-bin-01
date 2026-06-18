@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как передать файл по SSH в Linux: scp, sftp и rsync — Техно Гид</title>
+    <meta name="description" content="Полный гайд по передаче файлов через SSH в Linux. Использование команд scp, sftp и rsync для безопасной копирования данных между серверами.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/k/ka/kak-peredat-fajl-po-ssh-linux.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как передать файл по SSH в Linux: scp, sftp и rsync">
+    <meta property="og:description" content="Полный гайд по передаче файлов через SSH в Linux. Использование команд scp, sftp и rsync для безопасной копирования данных между серверами.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как передать файл по SSH в Linux: scp, sftp и rsync</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#использование-команды-scp-для-быстрой-передачи">Использование команды scp для быстрой передачи</a></li><li><a href="#интерактивная-работа-через-протокол-sftp">Интерактивная работа через протокол SFTP</a></li><li><a href="#синхронизация-данных-с-помощью-rsync">Синхронизация данных с помощью rsync</a></li><li><a href="#сравнительная-таблица-методов-передачи">Сравнительная таблица методов передачи</a></li><li><a href="#настройка-аутентификации-по-ключам">Настройка аутентификации по ключам</a></li><li><a href="#типичные-ошибки-и-методы-их-устранения">Типичные ошибки и методы их устранения</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/p/po/pochemu-slabyj-signal-routera.html">Почему слабый сигнал роутера: 7 главных причин и способы их устранения</a></li><li><a href="/set-i-internet/k/ka/kak-usilit-signal-sotovoj-svyazi-megafon.html">Как усилить сигнал МегаФон: реальные способы и оборудование</a></li><li><a href="/set-i-internet/k/ka/karta-sotovykh-vyshek-s-chastotami.html">Карта сотовых вышек с частотами: поиск и настройка телефона</a></li><li><a href="/set-i-internet/s/sl/slabyj-signal-vaj-faj-routera-kak-usilit.html">Слабый сигнал Wi-Fi роутера: эффективные способы усилить сеть</a></li><li><a href="/set-i-internet/k/ka/kak-najti-papku-hosts.html">Как найти файл hosts: полное руководство для Windows и macOS</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как передать файл по SSH в Linux: лучшие методы</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#использование-команды-scp-для-быстрой-передачи">Использование команды scp для быстрой передачи</a></li><li><a href="#интерактивная-работа-через-протокол-sftp">Интерактивная работа через протокол SFTP</a></li><li><a href="#синхронизация-данных-с-помощью-rsync">Синхронизация данных с помощью rsync</a></li><li><a href="#сравнительная-таблица-методов-передачи">Сравнительная таблица методов передачи</a></li><li><a href="#настройка-аутентификации-по-ключам">Настройка аутентификации по ключам</a></li><li><a href="#типичные-ошибки-и-методы-их-устранения">Типичные ошибки и методы их устранения</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>В среде Linux удаленное администрирование — это рутинная задача для системных инженеров, и часто возникает необходимость переместить данные с локальной машины на удаленный сервер или обратно. Стандартный протокол <strong>SSH</strong> обеспечивает не только защищенный командный доступ к оболочке, но и служит надежным туннелем для передачи файлов. Использование шифрованного канала критически важно при работе с конфиденциальными данными в публичных сетях. Вам не нужно устанавливать дополнительное программное обеспечение, если у вас уже настроен доступ по SSH, так как необходимые утилиты входят в стандартные дистрибутивы.</p>
+
+<p>Существует несколько основных способов реализации этой задачи: от простейших консольных команд до интерактивных сессий и синхронизации каталогов. Выбор конкретного инструмента зависит от размера передаваемых данных, частоты операций и ваших личных предпочтений в работе с терминалом. Некоторые методы подходят для разовой отправки документа, другие незаменимы при регулярном бэкапе целых директорий. Понимание различий между ними позволит вам оптимизировать рабочий процесс и избежать ошибок при копировании.</p>
+
+<h2 id="использование-команды-scp-для-быстрой-передачи">Использование команды scp для быстрой передачи</h2>
+
+<p>Утилита <code>scp</code> (secure copy) является самым популярным и простым инструментом для копирования файлов через SSH. Она работает по принципу, аналогичному стандартной команде <code>cp</code>, но добавляет к синтаксису адресацию удаленного хоста. Эта программа использует протокол SSH для аутентификации и передачи данных, гарантируя их целостность и конфиденциальность в пути. Для работы вам потребуется лишь знать IP-адрес или доменное имя удаленной машины, а также имя пользователя.</p>
+
+<p>Синтаксис команды предельно лаконичен: вы указываете путь к исходному файлу и путь к назначению. Если вы хотите загрузить файл на сервер, путь к удаленной папке должен включать имя пользователя и адрес хоста, разделенные символом <code>@</code>. В обратном случае, при скачивании файла с сервера, вы просто меняете аргументы местами. Пароль запрашивается автоматически, если не настроены SSH-ключи, что делает процесс интуитивно понятным для новичков.</p>
+
+<p>Для передачи целой папки со всей вложенной структурой необходимо использовать флаг <code>-r</code> (recursive). Это особенно полезно при переносе проектов веб-сайтов или конфигурационных директорий. Без этого флага команда попытается скопировать только саму папку как файл, что приведет к ошибке или некорректному результату.</p>
+
+<p>Важно учитывать пропускную способность канала и размер файлов. При передаче больших объемов данных <code>scp</code> может не показывать прогресс по умолчанию, что создает иллюзию зависания процесса. Решением является добавление флага <code>-v</code> для отладки или использование альтернативных утилит с поддержкой индикатора прогресса.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте флаг -C в команде scp для включения сжатия данных на лету. Это значительно ускорит передачу текстовых файлов и логов через медленные каналы связи, хотя и увеличит нагрузку на процессор.</p></aside>
+
+<ul>
+<li>🚀 Команда <code>scp file.txt user@host:/path/</code> загружает файл на удаленный сервер.</li>
+<li>📥 Команда <code>scp user@host:/path/file.txt .</code> скачивает файл в текущую локальную директорию.</li>
+<li>📁 Флаг <code>-r</code> обязателен для копирования директорий и всех их подпапок.</li>
+<li>🔐 Аутентификация происходит так же, как при обычном входе по SSH.</li>
+</ul>
+
+<h2 id="интерактивная-работа-через-протокол-sftp">Интерактивная работа через протокол SFTP</h2>
+
+<p>Когда требуется не просто скопировать файл, а управлять удаленной файловой системой, на помощь приходит <strong>SFTP</strong> (SSH File Transfer Protocol). В отличие от <code>scp</code>, эта утилита запускает интерактивную сессию, напоминающую работу в FTP-клиенте, но с полным шифрованием трафика. Вы получаете доступ к набору команд для навигации, создания папок, изменения прав доступа и удаления файлов прямо на удаленном сервере.</p>
+
+<p>Для начала работы достаточно ввести команду <code>sftp user@host</code> в терминале. После успешной аутентификации вы попадете в оболочку <code>sftp></code>, где доступны команды, похожие на стандартные команды Bash, такие как <code>cd</code>, <code>ls</code>, <code>mkdir</code>. Однако для загрузки и выгрузки файлов используются специфические команды <code>put</code> и <code>get</code>. Это позволяет гибко управлять процессом, выбирая нужные файлы из списка без необходимости вводить полные пути каждый раз.</p>
+
+<p>Одним из преимуществ SFTP является возможность возобновления прерванной загрузки. Если соединение разорвется в середине передачи большого архива, вы сможете продолжить загрузку с места обрыва, используя флаг <code>-a</code> (append). Это экономит время и трафик, так как не нужно начинать процесс заново. Кроме того, SFTP корректно обрабатывает имена файлов с пробелами и специальными символами, что иногда вызывает проблемы в <code>scp</code>.</p>
+
+<blockquote>
+<p>⚠️ Внимание: В интерактивной сессии SFTP будьте предельно осторожны с командой <code>rm</code>. Удаление файлов на удаленном сервере происходит мгновенно и без возможности восстановления через корзину. Всегда перепроверяйте путь перед подтверждением удаления.</p>
+</blockquote>
+
+<p>Для автоматизации рутинных задач можно использовать пакетный режим работы SFTP. Вы можете создать текстовый файл со списком команд и передать его утилите через стандартный ввод или ключ <code>-b</code>. Это позволяет выполнять сложные сценарии передачи данных без вмешательства пользователя, что удобно для скриптов резервного копирования.</p>
+
+<div class="pb-poll" id="poll-87d61754"><div class="pb-poll-question">📊 Какой способ передачи файлов вы используете чаще всего?</div><div class="pb-poll-option" data-poll="87d61754" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">SCP (командная строка)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="87d61754" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">SFTP (интерактивный режим)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="87d61754" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Rsync (синхронизация)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="87d61754" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Графический клиент (FileZilla/WinSCP)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="синхронизация-данных-с-помощью-rsync">Синхронизация данных с помощью rsync</h2>
+
+<p>Для профессиональной работы с большими объемами данных или для регулярного резервного копирования золотым стандартом считается утилита <code>rsync</code>. Она умеет работать через SSH-туннель и обладает интеллектуальным алгоритмом передачи: вместо копирования всего файла заново, <code>rsync</code> сравнивает контрольные суммы блоков и передает только те части, которые изменились. Это делает её невероятно эффективной при обновлении больших баз данных или исходных кодов.</p>
+
+<p>Базовый синтаксис похож на <code>scp</code>, но требует указания протокола или использования удаленного синтаксиса через двоеточие. Ключевая особенность — использование флагов <code>-avz</code>. Флаг <code>-a</code> (archive) сохраняет все атрибуты файлов, включая права доступа, владельца и временные метки. Флаг <code>-v</code> обеспечивает подробный вывод процесса, а <code>-z</code> включает сжатие данных перед отправкой по сети.</p>
+
+<pre><code>rsync -avz -e ssh /local/path/ user@remote_host:/remote/path/</code></pre>
+
+<p>Важной функцией является возможность исключения определенных файлов из синхронизации с помощью флага <code>--exclude</code>. Это позволяет игнорировать временные файлы, кэш или логи, которые не нужно переносить на сервер. Такая гибкость делает <code>rsync</code> незаменимым инструментом для деплоя веб-приложений и поддержки актуальности контента на нескольких серверах одновременно.</p>
+
+<details class="pb-accordion"><summary>Как работает алгоритм дельта-кодирования?</summary><div class="pb-accordion-body"><p>Rsync разбивает файлы на блоки и вычисляет их хэш-суммы. При повторном запуске он сравнивает хэши удаленных и локальных блоков. Если блок не изменился, он не передается по сети, что экономит до 90% трафика при незначительных правках в больших файлах.</p></div></details>
+
+<h2 id="сравнительная-таблица-методов-передачи">Сравнительная таблица методов передачи</h2>
+
+<p>Выбор инструмента зависит от конкретной задачи. Ниже приведено сравнение основных характеристик утилит для работы с SSH, чтобы вы могли быстро сориентироваться в ситуации.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Характеристика</th>
+<th>SCP</th>
+<th>SFTP</th>
+<th>Rsync</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Режим работы</td>
+<td>Командная строка</td>
+<td>Интерактивный / Пакетный</td>
+<td>Командная строка</td>
+</tr>
+<tr>
+<td>Докачка файлов</td>
+<td>Нет (в стандартной реализации)</td>
+<td>Да (флаг -a)</td>
+<td>Да (автоматически)</td>
+</tr>
+<tr>
+<td>Скорость при обновлении</td>
+<td>Копирует файл целиком</td>
+<td>Копирует файл целиком</td>
+<td>Только изменения (дельта)</td>
+</tr>
+<tr>
+<td>Сохранение атрибутов</td>
+<td>Требует флагов</td>
+<td>Автоматически</td>
+<td>Полное (флаг -a)</td>
+</tr>
+<tr>
+<td>Сложность освоения</td>
+<td>Низкая</td>
+<td>Средняя</td>
+<td>Высокая</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Как видно из таблицы, <code>scp</code> идеален для разовых операций "взял и забыл". <em>SFTP</em> подходит для ручного управления файлами на удаленной машине, когда нужно посмотреть, что куда положить. <code>rsync</code> — это выбор системных администраторов для автоматизации и поддержки зеркал данных.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для разовых мелких файлов используйте scp, для интерактивного управления — sftp, а для регулярных бэкапов и больших проектов — исключительно rsync.</p></aside>
+
+<h2 id="настройка-аутентификации-по-ключам">Настройка аутентификации по ключам</h2>
+
+<p>Ввод пароля при каждой передаче файла быстро становится утомительным, особенно в скриптах автоматизации. Решением является настройка аутентификации по <strong>SSH-ключам</strong>. Этот метод не только ускоряет работу, но и повышает безопасность, позволяя отключить вход по паролям вообще. Вам потребуется сгенерировать пару ключей: приватный (хранится у вас) и публичный (размещается на сервере).</p>
+
+<p>Для генерации ключей используется команда <code>ssh-keygen</code>. Обычно достаточно нажать Enter для принятия значений по умолчанию, чтобы создать файлы <code>id_rsa</code> и <code>id_rsa.pub</code> в директории <code>~/.ssh/</code>. Затем публичный ключ необходимо скопировать на удаленный сервер. Для этого существует удобная утилита <code>ssh-copy-id</code>, которая автоматически создаст нужную директорию и файл <code>authorized_keys</code> с правильными правами доступа.</p>
+
+<pre><code>ssh-copy-id user@remote_host</code></pre>
+
+<p>После выполнения этой команды попробуйте подключиться к серверу или передать файл. Если система не запрашивает пароль, настройка прошла успешно. Убедитесь, что права на файлы ключей строго ограничены: приватный ключ должен иметь права <code>600</code>, а папка <code>.ssh</code> — <code>700</code>. В противном случае SSH-клиент может отказаться использовать ключи из соображений безопасности.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Никогда не передавайте свой приватный ключ (<code>id_rsa</code>) другим пользователям и не копируйте его на общедоступные серверы. Компрометация приватного ключа равносильна передаче пароля от вашего аккаунта злоумышленникам.</p>
+</blockquote>
+
+<h2 id="типичные-ошибки-и-методы-их-устранения">Типичные ошибки и методы их устранения</h2>
+
+<p>При работе с передачей файлов по SSH пользователи часто сталкиваются с проблемами прав доступа и ошибками подключения. Одной из самых распространенных является ошибка <code>Permission denied (publickey,password)</code>. Она возникает, когда сервер отвергает ваши учетные данные. Причины могут быть разными: от неверного пароля до неправильных прав на файлы ключей или отключенной аутентификации на стороне сервера в конфиге <code>sshd_config</code>.</p>
+
+<p>Другая частая проблема — ошибка <code>no space left on device</code>. Она говорит о том, что на удаленном сервере закончилось дисковое пространство. Перед передачей больших файлов полезно проверить свободное место командой <code>df -h</code>. Также стоит обращать внимание на права записи в целевую директорию: у вашего пользователя должно быть разрешение на создание файлов в указанной папке.</p>
+
+<p>Иногда передача прерывается из-за нестабильности сети или таймаутов. В таких случаях помогает увеличение времени ожидания или использование более устойчивых протоколов. Если вы используете <code>scp</code> и соединение часто рвется, переход на <code>rsync</code> с его способностью продолжать загрузку может спасти ситуацию. Также полезно использовать утилиту <code>screen</code> или <code>tmux</code> на удаленной машине, чтобы процесс не прерывался при разрыве SSH-сессии.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Диагностика проблем с подключением</h4><label class="check-item"><input type="checkbox"><span>Проверить доступность хоста (ping)</span></label><label class="check-item"><input type="checkbox"><span>Убедиться, что порт 22 открыт</span></label><label class="check-item"><input type="checkbox"><span>Проверить права на ключи (chmod 600)</span></label><label class="check-item"><input type="checkbox"><span>Посмотреть логи /var/log/auth.log на сервере</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<details>
+<summary>Можно ли передавать файлы без ввода пароля каждый раз?</summary>
+<p>Да, это возможно при настройке аутентификации по SSH-ключам. После генерации пары ключей и копирования публичного ключа на сервер (через ssh-copy-id), система будет пускать вас автоматически. Для еще большего удобства можно использовать ssh-agent, который хранит разблокированные ключи в памяти в течение сессии.</p>
+</details>
+
+<details>
+<summary>Как передать файл, если порт SSH не стандартный (не 22)?</summary>
+<p>Для команды scp используйте флаг -P (заглавная буква): <code>scp -P 2222 file.txt user@host:</code>. Для rsync флаг указывается внутри аргумента -e: <code>rsync -e "ssh -p 2222" ...</code>. В SFTP порт указывается прямо в строке подключения через флак -oPort: <code>sftp -oPort=2222 user@host</code>.</p>
+</details>
+
+<details>
+<summary>Безопасно ли передавать файлы через общественный Wi-Fi?</summary>
+<p>Да, протокол SSH шифрует весь трафик, включая данные файлов и аутентификационную информацию. Перехватить содержимое передаваемого файла в незашифрованном виде через публичную сеть практически невозможно при использовании стандартных настроек шифрования.</p>
+</details>
+
+<details>
+<summary>Что делать, если scp копирует файл с именем папки вместо содержимого?</summary>
+<p>Скорее всего, вы забыли указать слэш в конце пути к папке или не использовали флаг -r. Если вы копируете директорию, убедитесь, что используете <code>scp -r local_folder user@host:remote_folder/</code>. Отсутствие слэша в конце пути назначения иногда интерпретируется как имя нового файла.</p>
+</details>
+
+<details>
+<summary>Можно ли ограничить скорость передачи файлов?</summary>
+<p>Да, в утилите rsync есть флаг <code>--bwlimit</code>, позволяющий ограничить пропускную способность в Кбит/с. Например, <code>rsync --bwlimit=1000 ...</code> ограничит скорость до 1 Мбит/с, чтобы не забивать канал связи и оставить ресурсы для других задач.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/p/po/pochemu-slabyj-signal-routera.html" class="pb-related-card">
+                <span class="pb-related-title">Почему слабый сигнал роутера: 7 главных причин и способы их устранения</span>
+                <span class="pb-related-desc">Слабый интернет в квартире? Узнайте основные причины слабого сигнала Wi-Fi роутера, как правильно ра</span>
+            </a><a href="/set-i-internet/k/ka/kak-usilit-signal-sotovoj-svyazi-megafon.html" class="pb-related-card">
+                <span class="pb-related-title">Как усилить сигнал МегаФон: реальные способы и оборудование</span>
+                <span class="pb-related-desc">Пошаговая инструкция: как улучшить связь МегаФон в доме и машине. Обзор репитеров, настройка телефон</span>
+            </a><a href="/set-i-internet/k/ka/karta-sotovykh-vyshek-s-chastotami.html" class="pb-related-card">
+                <span class="pb-related-title">Карта сотовых вышек с частотами: поиск и настройка телефона</span>
+                <span class="pb-related-desc">Как найти вышки сотовой связи на карте и узнать частоты. Настройка телефона для 4G/5G. Программы для</span>
+            </a><a href="/set-i-internet/s/sl/slabyj-signal-vaj-faj-routera-kak-usilit.html" class="pb-related-card">
+                <span class="pb-related-title">Слабый сигнал Wi-Fi роутера: эффективные способы усилить сеть</span>
+                <span class="pb-related-desc">Почему пропадает интернет и как усилить сигнал Wi-Fi роутера самостоятельно. Простые настройки, смен</span>
+            </a><a href="/set-i-internet/k/ka/kak-najti-papku-hosts.html" class="pb-related-card">
+                <span class="pb-related-title">Как найти файл hosts: полное руководство для Windows и macOS</span>
+                <span class="pb-related-desc">Пошаговая инструкция: как открыть и отредактировать файл hosts на Windows 10/11 и macOS. Узнайте, гд</span>
+            </a><a href="/set-i-internet/p/pe/perekhodnik-dlya-modema-na-router.html" class="pb-related-card">
+                <span class="pb-related-title">Переходник модема в роутер: виды, подключение и настройка</span>
+                <span class="pb-related-desc">Как подключить USB-модем к роутеру через специальный переходник. Обзор совместимости, типов интерфей</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как подключить WiFi модуль к Arduino: ESP8266, ESP32 и шилды — Техно Гид</title>
+    <meta name="description" content="Полная инструкция по подключению WiFi модулей к Arduino. Обзор ESP8266, ESP32, шилдов и протоколов. Настройка сети и отправка данных.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/a/ar/arduino-wifi-modul-podklyuchenie.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как подключить WiFi модуль к Arduino: ESP8266, ESP32 и шилды">
+    <meta property="og:description" content="Полная инструкция по подключению WiFi модулей к Arduino. Обзор ESP8266, ESP32, шилдов и протоколов. Настройка сети и отправка данных.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как подключить WiFi модуль к Arduino: ESP8266, ESP32 и шилды</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-подходящего-модуля-для-вашей-задачи">Выбор подходящего модуля для вашей задачи</a></li><li><a href="#схемы-подключения-через-uart-и-spi">Схемы подключения через UART и SPI</a></li><li><a href="#установка-библиотек-и-настройка-среды">Установка библиотек и настройка среды</a></li><li><a href="#настройка-соединения-с-точкой-доступа">Настройка соединения с точкой доступа</a></li><li><a href="#режим-точки-доступа-access-point">Режим точки доступа (Access Point)</a></li><li><a href="#передача-данных-и-веб-сервер">Передача данных и веб-сервер</a></li><li><a href="#оптимизация-энергопотребления-и-безопасности">Оптимизация энергопотребления и безопасности</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/v/vo/vozmozhnosti-umnogo-doma-s-alisoj.html">Умный дом с Алисой: полный обзор возможностей, сценариев и гаджетов</a></li><li><a href="/umnyj-dom/a/al/alisa-ne-vosproizvodit-muzyku-na-kolonke.html">Алиса не воспроизводит музыку на колонке: решения</a></li><li><a href="/umnyj-dom/k/ka/kak-podklyuchit-ulichnuyu-kameru-cherez-vaj-faj.html">Как подключить уличную камеру через Wi-Fi: пошаговая инструкция</a></li><li><a href="/umnyj-dom/k/ko/kontejner-dlya-vody-dlya-robota-pylesosa-xiaomi-vacuum-mop-2.html">Бак для воды Xiaomi Vacuum Mop 2: выбор, установка и уход</a></li><li><a href="/umnyj-dom/r/ro/robot-pylesos-khaomi-mi-robot-vacuum-mop.html">Робот-пылесос Xiaomi Mi Robot Vacuum-Mop: обзор, функции и настройка</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Подключение WiFi модуля к Arduino: полное руководство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-подходящего-модуля-для-вашей-задачи">Выбор подходящего модуля для вашей задачи</a></li><li><a href="#схемы-подключения-через-uart-и-spi">Схемы подключения через UART и SPI</a></li><li><a href="#установка-библиотек-и-настройка-среды">Установка библиотек и настройка среды</a></li><li><a href="#настройка-соединения-с-точкой-доступа">Настройка соединения с точкой доступа</a></li><li><a href="#режим-точки-доступа-access-point">Режим точки доступа (Access Point)</a></li><li><a href="#передача-данных-и-веб-сервер">Передача данных и веб-сервер</a></li><li><a href="#оптимизация-энергопотребления-и-безопасности">Оптимизация энергопотребления и безопасности</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Создание устройств, способных обмениваться данными через интернет, открывает перед разработчиками <strong>огромные возможности</strong>. Подключение WiFi модуля к плате Arduino превращает простой микроконтроллер в полноценный узел <strong>Интернета вещей (IoT)</strong>. Это позволяет управлять светом, температурой или получать данные с датчиков прямо со смартфона, не прокладывая лишние провода.</p>
+
+<p>В отличие от проводных решений, беспроводная связь требует внимательного отношения к <strong>энергопотреблению</strong> и настройке <strong>сетевых протоколов</strong>. Вы можете выбрать один из нескольких путей: использовать специализированный модуль, такой как <em>ESP8266</em> или <em>ESP32</em>, либо подключить отдельный адаптер к классической плате Arduino Uno через интерфейс SPI или UART. Каждый подход имеет свои плюсы и минусы, которые мы разберем подробно.</p>
+
+<h2 id="выбор-подходящего-модуля-для-вашей-задачи">Выбор подходящего модуля для вашей задачи</h2>
+
+<p>Перед началом сборки необходимо определиться с аппаратной платформой. Классическая Arduino Uno не имеет встроенного Wi-Fi, поэтому для нее потребуется внешний модуль. Самым популярным решением является <em>ESP8266</em> (например, модель NodeMCU или Wemos D1), который по сути является полноценным микроконтроллером с поддержкой сети.</p>
+
+<p>Если вам нужна большая производительность и Bluetooth, стоит обратить внимание на <em>ESP32</em>. Эта плата заменяет собой и Arduino, и Wi-Fi адаптер в одном корпусе. Для проектов, где критична точность и использование стандартных библиотек Arduino, иногда выбирают модуль <em>WiFi Shield</em> на базе чипов Atheros или Microchip, подключаемый через шину <strong>SPI</strong>.</p>
+
+<p>Важно учитывать напряжение питания. Модули <em>ESP8266</em> работают от <code>3.3В</code>, в то время как большинство плат Arduino Uno имеют логику <code>5В</code>. Прямое подключение выводов данных без согласования уровней может привести к выходу устройства из строя. Это ключевой момент при сборке схемы.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Непосредственное подключение выводов GPIO модуля ESP8266 к выводам 5В Arduino может сжечь чип. Всегда используйте логический преобразователь (level shifter) или делитель напряжения.</p>
+</blockquote>
+
+<p>Иногда разработчики выбирают гибридные решения, такие как модуль <em>WiFi101</em> или <em>EDU</em>, которые поддерживают более высокие напряжения, но они часто уступают в функционале и скорости работы по сравнению с чипами от Espressif.</p>
+
+<p>Для стационарных устройств, где важна надежность, часто предпочтительнее использовать готовые шилды. Они не требуют пайки проводов и обеспечивают более стабильное соединение. Однако для компактных проектов лучше подходят миниатюрные модули, впаянные напрямую на плату.</p>
+
+<div class="pb-poll" id="poll-0c076dea"><div class="pb-poll-question">📊 Какой модуль вы планируете использовать для проекта?</div><div class="pb-poll-option" data-poll="0c076dea" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">ESP8266 (NodeMCU)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0c076dea" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">ESP32</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0c076dea" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">WiFi Shield для Arduino</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0c076dea" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Другой (RTL8710 и др.)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="схемы-подключения-через-uart-и-spi">Схемы подключения через UART и SPI</h2>
+
+<p>Метод подключения зависит от типа выбранного интерфейса. Самый простой способ для Arduino Uno — использование последовательного порта (UART). В этом случае вы подключаете модуль к выводам <code>RX</code> и <code>TX</code>. Однако это блокирует стандартный порт, который используется для отладки через компьютер. Для решения этой проблемы часто используют программный последовательный порт.</p>
+
+<p>Пример подключения через <em>SoftwareSerial</em> выглядит следующим образом: вывод <code>TX</code> модуля подключается к пину <code>2</code> Arduino, а <code>RX</code> — к пину <code>3</code>. Без этого питания чип не запустится.</p>
+
+<p>Более быстрый и надежный вариант — подключение через шину <strong>SPI</strong>. В этом случае используется больше выводов, но скорость передачи данных значительно выше. Для шилдов обычно используются пины <code>10</code> (CS), <code>11</code> (MOSI), <code>12</code> (MISO) и <code>13</code> (SCK). Также требуется отдельный вывод для сброса (<code>RESET</code>) и прерывания (<code>IRQ</code>).</p>
+
+<h3>Сравнение интерфейсов подключения</h3>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Интерфейс</th>
+<th>Скорость</th>
+<th>Количество выводов</th>
+<th>Сложность настройки</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UART (Hardware)</td>
+<td>Средняя</td>
+<td>Минимальное</td>
+<td>Низкая</td>
+</tr>
+<tr>
+<td>UART (Software)</td>
+<td>Низкая</td>
+<td>Минимальное</td>
+<td>Средняя</td>
+</tr>
+<tr>
+<td>SPI</td>
+<td>Высокая</td>
+<td>Большое</td>
+<td>Высокая</td>
+</tr>
+<tr>
+<td>I2C (редко)</td>
+<td>Низкая</td>
+<td>Минимальное</td>
+<td>Средняя</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Иногда возникает необходимость использовать виртуальный порт для отладки, если вы используете плату <em>Arduino Mega</em>, которая имеет несколько аппаратных UART портов. Это позволяет не жертвовать основным портом для связи с компьютером.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> При использовании SoftwareSerial на частотах выше <code>9600</code> бод возможны потери пакетов данных, особенно если модуль активно передает большие объемы информации.</p>
+</blockquote>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка схемы подключения</h4><label class="check-item"><input type="checkbox"><span>Подключить VCC к 3.3В (не 5В!)</span></label><label class="check-item"><input type="checkbox"><span>Подключить GND к общей земле</span></label><label class="check-item"><input type="checkbox"><span>Проверить уровень логических сигналов</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в надежности пайки или контактов</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="установка-библиотек-и-настройка-среды">Установка библиотек и настройка среды</h2>
+
+<p>После физического подключения наступает этап программного обеспечения. Вам потребуется среда <strong>Arduino IDE</strong>, в которую нужно добавить поддержку сторонних плат. Для модулей <em>ESP8266</em> и <em>ESP32</em> это делается через «Менеджер плат» (Boards Manager). Введите в поиске название чипа и установите соответствующий пакет.</p>
+
+<p>Для работы с отдельными модулями через UART или SPI используются специализированные библиотеки. Самой популярной является <code>ESP8266WiFi.h</code> для чипов ESP, или <code>WiFiNINA.h</code> для новых плат Arduino. Если вы используете старый шилд, возможно, придется найти библиотеку <code>WiFi.h</code> от оригинального производителя.</p>
+
+<p>Убедитесь, что вы выбрали правильную плату в меню <code>Tools → Board</code>. Если вы подключаете отдельный модуль к Arduino Uno, выбирайте <em>Arduino Uno</em>. Если используете NodeMCU как самостоятельную плату, выбирайте <em>LOLIN(WEMOS) D1 R2 & mini</em> или аналог.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> При загрузке скетча в ESP32 иногда требуется удерживать кнопку <code>BOOT</code> на плате до появления сообщения «Connecting..» в консоли загрузчика.</p>
+</blockquote>
+
+<p>Драйверы для чипов-преобразователей USB-UART (например, CH340 или CP2102) часто устанавливаются автоматически, но на некоторых системах их приходится скачивать вручную с сайта производителя. Без них компьютер просто не увидит устройство в диспетчере устройств.</p>
+
+<details class="pb-accordion"><summary>Проблемы с драйверами CH340</summary><div class="pb-accordion-body"><p>Часто на Windows 10/11 драйверы ставятся автоматически. Если нет — скачайте CH341SER.EXE с официальной страницы WCH. На Mac может потребоваться установка драйвера через терминал с правами администратора.</p></div></details>
+
+<h2 id="настройка-соединения-с-точкой-доступа">Настройка соединения с точкой доступа</h2>
+
+<p>Фундаментальная задача — заставить модуль найти вашу домашнюю сеть. Код должен содержать имя сети (<code>ssid</code>) и пароль (<code>password</code>). Функция <code>WiFi.begin(ssid, password)</code> инициирует процесс поиска. Цикл <code>while (WiFi.status() != WL_CONNECTED)</code> позволяет ожидать успешного подключения перед началом работы.</p>
+
+<p>Статус соединения можно отследить по светодиоду на плате или выводить в консоль. Объект <code>WiFi.localIP()</code> вернет присвоенный адрес, который необходим для взаимодействия с устройством из сети. Запомните этот IP, чтобы через браузер или Telnet обращаться к вашему гаджету.</p>
+
+<p>Важно настроить таймауты. Если сеть недоступна, модуль может бесконечно пытаться подключиться, «вешая» основной цикл программы. Рекомендуется использовать <code>WiFi.setSleepMode()</code> для экономии энергии, если устройство работает от батареи, но это может увеличить время отклика.</p>
+
+<p>Иногда сигнал в месте установки слабый. В этом случае поможет антенна с большим коэффициентом усиления или реле ретрансляции. Для проверки качества сигнала используйте функцию <code>WiFi.RSSI()</code>, которая показывает уровень сигнала в дБм.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для стабильной работы в домашней сети настройте статический IP-адрес для вашего устройства через роутер (DHCP Reservation), чтобы адрес не менялся после перезагрузки роутера.</p></aside>
+
+<h2 id="режим-точки-доступа-access-point">Режим точки доступа (Access Point)</h2>
+
+<p>Если вы не хотите зависеть от домашнего роутера, модуль может сам стать точкой доступа. В этом режиме <em>Arduino</em> создает собственную сеть, к которой подключаются смартфоны или ноутбуки. Это удобно для первичной настройки устройства или создания локальной сети для группы датчиков.</p>
+
+<p>Для активации этого режима используется функция <code>WiFi.softAP(ssid, password)</code>. После запуска модуль выдает IP-адрес <code>192.168.4.1</code>. На устройстве клиента нужно подключиться к этой сети Wi-Fi, и тогда вы сможете открыть веб-интерфейс управления.</p>
+
+<p>Этот режим потребляет больше энергии, так как модуль постоянно транслирует сигнал. Однако он гарантирует подключение, даже если интернет на объекте отсутствует. Это идеальный вариант для полевых условий или временных инсталляций.</p>
+
+<p>Можно объединить режимы: одновременно быть клиентом роутера и точкой доступа. Но это сильно нагружает чип и может вызывать нестабильность соединения. Лучше выбирать один режим в зависимости от текущей задачи.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Режим точки доступа ideal для начальной конфигурации устройства, когда нет доступа к локальной сети, но требует ручного подключения клиента к сети устройства.</p></aside>
+
+<h2 id="передача-данных-и-веб-сервер">Передача данных и веб-сервер</h2>
+
+<p>Самое популярное применение — создание веб-сервера на плате. Вы можете отправлять HTML-страницу, которая отображает данные с датчиков или содержит кнопки управления. Для этого создается объект <code>WiFiServer</code> и обрабатываются входящие HTTP-запросы. Простой сервер может реагировать на клик по кнопке в браузере, включая реле.</p>
+
+<p>Более современные подходы используют протокол <strong>MQTT</strong>. Он работает по принципу «издатель-подписчик» и позволяет передавать данные на облачный сервер (например, MQTT Broker) с минимальными затратами ресурсов. Это стандарт де-факто для умного дома.</p>
+
+<p>Для работы с MQTT нужна библиотека, такая как <code>PubSubClient</code>. Она берет на себя обработку сетевых пакетов и позволяет отправлять сообщения в топики (topics). Это дает возможность управлять устройством через сторонние хаб-системы, такие как Home Assistant.</p>
+
+<p>При разработке веб-интерфейсов старайтесь минимизировать размер страницы. Передача тяжелых картинок через встроенный веб-сервер Arduino может привести к переполнению буфера. Используйте простые текстовые ответы или JSON для передачи данных.</p>
+
+<details class="pb-accordion"><summary>Оптимизация веб-сервера</summary><div class="pb-accordion-body"><p>Если страница грузится долго, разделите HTML на части или используйте AJAX для обновления данных без перезагрузки всей страницы. Это снижает нагрузку на процессор.</p></div></details>
+
+<h2 id="оптимизация-энергопотребления-и-безопасности">Оптимизация энергопотребления и безопасности</h2>
+
+<p>Для автономных устройств критично управление питанием. Модули Wi-Fi потребляют много энергии в момент передачи данных. Используйте глубокий сон (<code>deep sleep</code>), чтобы выключать радиомодуль между передачами. Модуль просыпается по таймеру, отправляет данные и снова засыпает.</p>
+
+<p>Не забывайте о безопасности. Передавать пароли в открытом виде в коде — плохая практика. Хотя для домашнего использования это часто допустимо, в публичных сетях необходимо шифрование. Используйте библиотеки, поддерживающие <strong>TLS/SSL</strong> соединения, если передаете конфиденциальные данные.</p>
+
+<p>Физическая защита тоже важна. Модуль может перегреваться при длительной работе на максимальной мощности. Обеспечьте вентиляцию или используйте радиаторы, если корпус устройства герметичный. Перегрев приводит к сбоям в работе и нестабильному соединению.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Глубокий сон — лучший способ продлить жизнь батарейного устройства, но он требует перепрошивки при каждом пробуждении, что усложняет логику программы.</p></aside>
+
+<p>В заключение, подключение Wi-Fi к Arduino — это мощный инструмент, требующий балансировки между производительностью и энергозатратами. Правильный выбор модуля и грамотная настройка кода обеспечат стабильную работу вашего проекта.</p>
+
+<details>
+<summary>Какой модуль лучше: ESP8266 или ESP32?</summary>
+<p>ESP32 имеет вдвое больше ядер, встроенный Bluetooth и лучше работает с высоким напряжением. Однако ESP8266 дешевле и проще в освоении для новичков, если не нужна высокая скорость.</p>
+</details>
+
+<details>
+<summary>Можно ли подключить WiFi модуль к Arduino без шилда?</summary>
+<p>Да, модуль можно подключить напрямую к контактным отверстиям (breadboard) или впаять провода. Главное — соблюдать схему распиновки и обеспечить стабильное питание 3.3В.</p>
+</details>
+
+<details>
+<summary>Что делать, если модуль не подключается к сети?</summary>
+<p>Проверьте правильность ввода SSID и пароля (учитывайте регистр). Убедитесь, что роутер не блокирует новые устройства или не использует специальный протокол шифрования, который модуль не поддерживает (например, WPA3 на старых чипах).</p>
+</details>
+
+<details>
+<summary>Как узнать IP-адрес устройства после подключения?</summary>
+<p>Самый простой способ — открыть монитор порта в Arduino IDE и посмотреть вывод функции <code>WiFi.localIP()</code>. Также этот адрес можно найти в панели управления роутера в списке подключенных клиентов.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/v/vo/vozmozhnosti-umnogo-doma-s-alisoj.html" class="pb-related-card">
+                <span class="pb-related-title">Умный дом с Алисой: полный обзор возможностей, сценариев и гаджетов</span>
+                <span class="pb-related-desc">Как создать умный дом с Яндекс Алисой? Разбор устройств, сценариев, голосового управления и интеграц</span>
+            </a><a href="/umnyj-dom/a/al/alisa-ne-vosproizvodit-muzyku-na-kolonke.html" class="pb-related-card">
+                <span class="pb-related-title">Алиса не воспроизводит музыку на колонке: решения</span>
+                <span class="pb-related-desc">Не работает музыка на Яндекс Станции? Полный гид по устранению ошибок, сбоям подписки, настройке Wi-</span>
+            </a><a href="/umnyj-dom/k/ka/kak-podklyuchit-ulichnuyu-kameru-cherez-vaj-faj.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить уличную камеру через Wi-Fi: пошаговая инструкция</span>
+                <span class="pb-related-desc">Полное руководство по настройке беспроводной уличной камеры. Выбор места, подключение к роутеру, нас</span>
+            </a><a href="/umnyj-dom/k/ko/kontejner-dlya-vody-dlya-robota-pylesosa-xiaomi-vacuum-mop-2.html" class="pb-related-card">
+                <span class="pb-related-title">Бак для воды Xiaomi Vacuum Mop 2: выбор, установка и уход</span>
+                <span class="pb-related-desc">Как подобрать и обслуживать контейнер для воды робота-пылесоса Xiaomi Vacuum Mop 2. Разбор отличий б</span>
+            </a><a href="/umnyj-dom/r/ro/robot-pylesos-khaomi-mi-robot-vacuum-mop.html" class="pb-related-card">
+                <span class="pb-related-title">Робот-пылесос Xiaomi Mi Robot Vacuum-Mop: обзор, функции и настройка</span>
+                <span class="pb-related-desc">Полный гид по роботу-пылесосу Xiaomi Mi Robot Vacuum-Mop. Характеристики, настройка, управление, кар</span>
+            </a><a href="/umnyj-dom/r/ra/raspolozhenie-obekta-po-koordinatam.html" class="pb-related-card">
+                <span class="pb-related-title">Как определить и использовать координаты объекта: GPS, карты и геолокация</span>
+                <span class="pb-related-desc">Полное руководство по работе с географическими координатами. Как найти точку на карте, перевести фор</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как ставить стены в RUST: строительные основы и защита базы — Техно Гид</title>
+    <meta name="description" content="Полное руководство по строительству стен в игре Rust. Виды материалов, схема защиты от рейдов, хитрости прокладки и разбор ошибок новичков.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/igry-i-razvlecheniya/k/ka/kak-stavit-steny-v-raste.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как ставить стены в RUST: строительные основы и защита базы">
+    <meta property="og:description" content="Полное руководство по строительству стен в игре Rust. Виды материалов, схема защиты от рейдов, хитрости прокладки и разбор ошибок новичков.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/igry-i-razvlecheniya/">Игры и Развлечения</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как ставить стены в RUST: строительные основы и защита базы</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-материалов-и-их-характеристики">Выбор материалов и их характеристики</a></li><li><a href="#механика-установки-и-планирование">Механика установки и планирование</a></li><li><a href="#распространенные-ошибки-новичков">Распространенные ошибки новичков</a></li><li><a href="#защита-от-рейдов-и-укрепление">Защита от рейдов и укрепление</a></li><li><a href="#геометрия-и-сложные-конструкции">Геометрия и сложные конструкции</a></li><li><a href="#инструменты-для-демонтажа-и-ремонта">Инструменты для демонтажа и ремонта</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/igry-i-razvlecheniya/k/ka/kak-nazyvayutsya-figury-v-tetrise.html">Как называются фигуры в Тетрисе: названия, формы и латинские обозначения</a></li><li><a href="/igry-i-razvlecheniya/m/mo/mod-na-delorian-v-gta-5.html">Мод на Делориан в GTA 5: установка и настройка физики</a></li><li><a href="/igry-i-razvlecheniya/s/sm/smotret-mf-zhil-byl-pes.html">Мультфильм Жил-был Пёс: смотреть онлайн бесплатно</a></li><li><a href="/igry-i-razvlecheniya/m/mo/mozhno-li-zaryazhat-dzhojstik-ps4-zaryadkoj-ot-telefona.html">Можно ли заряжать джойстик PS4 зарядкой от телефона? Безопасно ли это?</a></li><li><a href="/igry-i-razvlecheniya/g/gr/gruzovichok-leva-igrushka-mashinka.html">Грузовичок Лева: обзор игрушечной машинки и советы по выбору</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как ставить стены в RUST: полное руководство по строительству и защите</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-материалов-и-их-характеристики">Выбор материалов и их характеристики</a></li><li><a href="#механика-установки-и-планирование">Механика установки и планирование</a></li><li><a href="#распространенные-ошибки-новичков">Распространенные ошибки новичков</a></li><li><a href="#защита-от-рейдов-и-укрепление">Защита от рейдов и укрепление</a></li><li><a href="#геометрия-и-сложные-конструкции">Геометрия и сложные конструкции</a></li><li><a href="#инструменты-для-демонтажа-и-ремонта">Инструменты для демонтажа и ремонта</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Создание прочного убежища — это фундамент выживания в суровом мире <em>Rust</em>. Без надежной защиты ваши ресурсы, оружие и припасы станут легкой добычей для других игроков. Процесс возведения стен кажется простым: взял камень, поставил блок, и дело сделано. Однако, если вы хотите, чтобы ваша база простояла не один день, необходимо понимать механику <strong>строительного планировщика</strong> и особенности <strong>материалов</strong>.</p>
+
+<p>Многие новички совершают фатальную ошибку, пытаясь строить стены в хаотичном порядке. Это приводит к создаваемым <strong>слипшимся стенам</strong>, которые невозможно укрепить или разобрать без потери значительной части ресурсов. Грамотное планирование позволяет не только экономить материалы, но и создавать сложные <strong>схемы защиты</strong>, через которые рейдеры не пройдут часами.</p>
+
+<h2 id="выбор-материалов-и-их-характеристики">Выбор материалов и их характеристики</h2>
+
+<p>Перед тем как начать строительство, нужно определиться, из чего будут сделаны ваши стены. В игре существует несколько основных типов материалов, каждый из которых имеет свои <strong>показатели прочности</strong> и <strong>время разрушения</strong> инструментами рейдеров. Выбор материала зависит от стадии игры и того, насколько долго вы планируете удерживать территорию.</p>
+
+<p>Самым первым и доступным материалом является <em>деревянная стена</em>. Она идеально подходит для создания временных укрытий или"мусорных" строений, которые вы готовы потерять. Однако опытные игроки знают, что дерево разрушается очень быстро даже простейшими инструментами, поэтому использовать его для сохранения ценных вещей <strong>бессмысленно</strong>.</p>
+
+<p>Следующим этапом является <em>каменная стена</em>. Это"золотая середина" для большинства игроков. Камень значительно крепче дерева, но при этом требует больше ресурсов для постройки. Чтобы пробить каменную стену, рейдерам понадобятся взрывчатка или специализированные инструменты, что делает её отличным выбором для <strong>основного периметра</strong> базы.</p>
+
+<p>Для защиты самых ценных вещей, таких как ящики с оружием или спальники, необходимо использовать <em>стальную стену</em>. Этот материал обладает максимальной прочностью среди доступных для постройки блоков. Взлом стальной стены требует огромного количества взрывчатки и времени, что делает её практически непробиваемой для одиночных игроков или небольших групп.</p>
+
+<p>Таблица ниже наглядно демонстрирует разницу в стоимости и прочности основных типов стен, чтобы вы могли спланировать свои ресурсы заранее:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Материал</th>
+<th>Стоимость (ресурсы)</th>
+<th>Здоровье (HP)</th>
+<th>Время разрушения (топором)</th>
+<th>Необходимая взрывчатка (C4)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Дерево</td>
+<td>300 дерева</td>
+<td>500</td>
+<td>~30 секунд</td>
+<td>0 (разрушается топором)</td>
+</tr>
+<tr>
+<td>Камень</td>
+<td>150 камня, 200 дерева</td>
+<td>650</td>
+<td>~5 минут</td>
+<td>2-3 блока (в зависимости от урона)</td>
+</tr>
+<tr>
+<td>Сталь</td>
+<td>100 металла, 500 дерева</td>
+<td>2600</td>
+<td>~20 минут</td>
+<td>1 блок C4 (при прямой атаке)</td>
+</tr>
+<tr>
+<td>Укреплённый бетон</td>
+<td>300 металла, 1000 дерева</td>
+<td>8000</td>
+<td>~1 час</td>
+<td>4-6 блоков C4</td>
+</tr>
+</tbody>
+</table></div>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Укрепленный бетон требует наличия верстака 3-го уровня и доступа к редким ресурсам, таким как кремний и сера, поэтому его строительство доступно только на поздних этапах игры.</p>
+</blockquote>
+
+<h2 id="механика-установки-и-планирование">Механика установки и планирование</h2>
+
+<p>Процесс установки стены начинается с выбора <strong>строительного планера</strong> (Blueprint). Просто нажать правой кнопкой мыши на землю недостаточно, так как игра накладывает строгие ограничения на геометрию построек. Вы должны учитывать <strong>сетку привязки</strong>, которая не позволяет размещать стены криво или с зазорами.</p>
+
+<p>Чтобы поставить стену правильно, вам нужно сначала разместить <strong>фундамент</strong> или <strong>потолок</strong>. Стены всегда крепятся к этим элементам. Если вы попытаетесь поставить стену в воздухе без опоры, игра не позволит вам этого сделать, и вы увидите красный силуэт, указывающий на ошибку. Это фундаментальное правило <strong>строительной физики</strong> в Rust.</p>
+
+<p>Важным аспектом является <strong>высота стен</strong>. Игровой движок позволяет строить стены высотой в один блок или два блока (двойные стены). Двойные стены не только выше, но и требуют больше ресурсов, но они создают неудобства для врагов при попытке забросать вас гранатами или взрывчаткой с крыши.</p>
+
+<p>Иногда возникает необходимость поставить стену под углом или в сложном месте. Для этого используется механика <strong>перетаскивания</strong> планера. Удерживая правую кнопку мыши, вы можете вращать и двигать силуэт стены, чтобы он идеально совпал с уже существующими блоками. Это требует практики и хорошего глазомера.</p>
+
+<div class="pb-poll" id="poll-aae394a8"><div class="pb-poll-question">📊 Какой материал стен вы используете чаще всего?</div><div class="pb-poll-option" data-poll="aae394a8" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Дерево (для мусора)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="aae394a8" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Камень (основа)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="aae394a8" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Сталь (сейф)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="aae394a8" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Укрепленный бетон (топ)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="распространенные-ошибки-новичков">Распространенные ошибки новичков</h2>
+
+<p>Одной из самых частых ошибок является создание так называемого <strong>слипшегося блока</strong>. Это происходит, когда вы ставите стены вплотную друг к другу или к другим блокам без соблюдения правил сетки. В результате такие стены невозможно удалить или укрепить, и они превращаются в"мертвый груз", блокирующий доступ к вашим помещениям.</p>
+
+<p>Другая проблема — игнорирование <strong>зоны действия</strong> инструментов. Если вы стоите слишком далеко от стены, вы не сможете её поставить или укрепить. Вам нужно подходить максимально близко к точке установки, чтобы <strong>инженерный лом</strong> или <strong>молоток</strong> сработали корректно. Игнорирование этого фактора приводит к бесконечным попыткам установки, которые завершаются неудачей.</p>
+
+<p>Также новички часто забывают про <strong>заполнители</strong>. Если вы поставили стену, но не закрыли её дверью или окном, рейдер сможет быстро уничтожить её через проем. Всегда планируйте, куда будут входить враги, и защищайте эти точки <strong>дополнительными блоками</strong> или ловушками.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед строительством</h4><label class="check-item"><input type="checkbox"><span>Есть ли фундамент или потолок рядом?</span></label><label class="check-item"><input type="checkbox"><span>Достаточно ли ресурсов?</span></label><label class="check-item"><input type="checkbox"><span>Выбран ли правильный материал?</span></label><label class="check-item"><input type="checkbox"><span>Нет ли рядом врагов?</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Никогда не ставьте стены вплотную друг к другу без перекрывающего блока сверху или снизу, иначе вы создадите"слипшийся" блок, который нельзя разобрать без использования инструментов для демонтажа всей конструкции.</p>
+</blockquote>
+
+<h2 id="защита-от-рейдов-и-укрепление">Защита от рейдов и укрепление</h2>
+
+<p>После того как стена поставлена, её нужно <strong>укрепить</strong>. Для этого используется <em>строительный молоток</em>. При нажатии на стену она изменит цвет и станет прочнее. Без укрепления даже каменная стена разрушается очень быстро. Укрепление — это обязательный шаг, который часто упускают новички в пылу строительства.</p>
+
+<p>Стратегия защиты также включает в себя создание <strong>коридоров</strong> и <strong>ловушек</strong>. Просто поставить стену недостаточно; нужно продумать, как враг будет подбираться к ней. Использование <strong>колючей проволоки</strong> и <strong>мин</strong> перед стеной замедляет рейдеров, давая вам время на реакцию. Чем дольше враг тратит на подходы, тем выше шансы на отражение атаки.</p>
+
+<p>Важно помнить о <strong>слабых местах</strong>. Рейдеры часто ищут углы, где можно разместить взрывчатку с минимальными потерями. Поэтому никогда не оставляйте"карманов" или ниш, в которые можно вплотную подойти к стене. Все углы должны быть защищены или заполнены <strong>дополнительными блоками</strong>.</p>
+
+<details class="pb-accordion"><summary>Что такое"спойлер" в контексте строительства?</summary><div class="pb-accordion-body"><p>Спойлер — это блок, который ставится поверх или сбоку от стены, чтобы предотвратить доступ к ней. Это может быть потолок, дверь или окно, которые блокируют прямой контакт с основной стеной.</p></div></details>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Всегда ставьте дверь в стене, даже если она закрыта. Дверь дает возможность быстро войти внутрь, а также служит дополнительным барьером для взрывчатки, если она правильно расположена.</p></aside>
+
+<h2 id="геометрия-и-сложные-конструкции">Геометрия и сложные конструкции</h2>
+
+<p>Строительство в <em>Rust</em> — это не просто выкладывание кирпичей, это настоящая инженерная задача. <strong>Сложные формы</strong> позволяют создавать базы, которые трудно взломать. Например, использование"ступенек" или"пирамид" затрудняет размещение взрывчатки, так как рейдеры не могут подойти вплотную к стене.</p>
+
+<p>Одной из популярных тактик является создание <strong>двойных стен</strong> с пустотой между ними. Это пространство можно использовать для прокладки туннелей, размещения ловушек или просто для увеличения толщины защиты. Рейдеры, пробивающие внешнюю стену, оказываются в ловушке между двумя слоями брони.</p>
+
+<p>Иногда требуется построить стену под нестандартным углом. Для этого можно использовать <strong>наклонные блоки</strong> или <strong>потолки</strong> в качестве основы. Это позволяет создавать уникальные архитектурные формы, которые сбивают с толку врагов и замедляют их продвижение. Однако такие конструкции требуют больше ресурсов и времени на постройку.</p>
+
+<p>Не забывайте про <strong>визуальную маскировку</strong>. Ваша база не должна выделяться среди окружения. Используйте <strong>камни</strong> и <strong>дерево</strong> в сочетании с природным ландшафтом, чтобы создать иллюзию скалы или леса. Это помогает избежать случайных обнаружений другими игроками.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильная геометрия базы важнее её размера: компактная и хорошо укрепленная структура выстоит дольше, чем огромная, но плохо защищенная.</p></aside>
+
+<h2 id="инструменты-для-демонтажа-и-ремонта">Инструменты для демонтажа и ремонта</h2>
+
+<p>Иногда стена ставится неправильно или требуется её срочная замена. Для этого используются специальные инструменты: <em>инженерный лом</em> и <em>молоток</em>. Важно понимать, что демонтаж стены занимает время и требует ресурсов, если она была укреплена.</p>
+
+<p>Если стена повреждена взрывчаткой или выстрелами, её можно <strong>починить</strong>. Для этого используется <em>ремонтный молоток</em> и ресурсы (камень, дерево или металл). Ремонт — это экономически выгодный способ восстановить защиту, чем строить новую стену с нуля.</p>
+
+<p>Также существует возможность <strong>переноса</strong> стен. Если вы ошиблись с планировкой, можно разобрать часть конструкции и поставить её в нужное место. Однако это требует точности и осторожности, чтобы не разрушить соседние блоки.</p>
+
+<p>В таблице ниже представлены основные инструменты и их функции при работе со стенами:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Инструмент</th>
+<th>Основное назначение</th>
+<th>Требования</th>
+<th>Эффективность</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Строительный молоток</td>
+<td>Укрепление и строительство</td>
+<td>Высший верстак</td>
+<td>Высокая</td>
+</tr>
+<tr>
+<td>Инженерный лом</td>
+<td>Демонтаж стен</td>
+<td>Нет</td>
+<td>Средняя</td>
+</tr>
+<tr>
+<td>Ремонтный молоток</td>
+<td>Восстановление здоровья</td>
+<td>Ресурсы</td>
+<td>Высокая</td>
+</tr>
+<tr>
+<td>Молоток (обычный)</td>
+<td>Строительство (ранняя игра)</td>
+<td>Нет</td>
+<td>Низкая</td>
+</tr>
+</tbody>
+</table></div>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> При демонтаже укреплённых стен используйте инженерный лом, так как обычный молоток может не справиться с задачей или потребовать слишком много времени.</p>
+</blockquote>
+
+<details class="pb-accordion"><summary>Как избежать слипания стен?</summary><div class="pb-accordion-body"><p>Чтобы избежать слипания, всегда оставляйте зазор в один блок между стенами или используйте потолки и фундаменты как разделители. Это предотвратит образование неразборчивых блоков.</p></div></details>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Регулярный осмотр и ремонт стен после рейдов критически важен для сохранения целостности вашей базы и предотвращения проникновения врагов.</p></aside>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Как поставить стену, если она не ставится?</summary>
+<p>Если стена не ставится, проверьте, есть ли рядом фундамент или потолок. Убедитесь, что вы не создаете"слипшийся" блок. Также проверьте, хватит ли у вас ресурсов и не мешает ли (рельеф) ставке.</p>
+</details>
+
+<details>
+<summary>Какая стена самая прочная в Rust?</summary>
+<p>Самой прочной стеной является укреплённый бетон. Она требует 3-й уровень верстака и редкие ресурсы, но обладает максимальной защитой от взрывчатки и инструментов.</p>
+</details>
+
+<details>
+<summary>Можно ли ставить стены на воде?</summary>
+<p>Нет, стены нельзя ставить непосредственно на воду. Вам нужно сначала построить фундамент, который будет плавать или опираться на сушу, и только потом ставить на него стены.</p>
+</details>
+
+<details>
+<summary>Сколько времени нужно на укрепление стены?</summary>
+<p>Процесс укрепления одной стены занимает несколько секунд, если вы находитесь рядом и используете строительный молоток. Однако для больших баз это может занять много времени, поэтому планируйте это заранее.</p>
+</details>
+
+<details>
+<summary>Что делать, если стена"слиплась"?</summary>
+<p>Если стена слиплась, её нельзя разобрать обычным образом. Вам придется использовать инструменты для демонтажа всей конструкции или разрушить её взрывчаткой, что приведет к потере ресурсов.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/igry-i-razvlecheniya/k/ka/kak-nazyvayutsya-figury-v-tetrise.html" class="pb-related-card">
+                <span class="pb-related-title">Как называются фигуры в Тетрисе: названия, формы и латинские обозначения</span>
+                <span class="pb-related-desc">Полный гид по фигурам в Тетрисе. Узнайте, как называются тетрамино, их латинские названия, формы и о</span>
+            </a><a href="/igry-i-razvlecheniya/m/mo/mod-na-delorian-v-gta-5.html" class="pb-related-card">
+                <span class="pb-related-title">Мод на Делориан в GTA 5: установка и настройка физики</span>
+                <span class="pb-related-desc">Полный гайд по установке мода DeLorean DMC-12 в GTA 5. Настройка скриптов, физики полета и устранени</span>
+            </a><a href="/igry-i-razvlecheniya/s/sm/smotret-mf-zhil-byl-pes.html" class="pb-related-card">
+                <span class="pb-related-title">Мультфильм Жил-был Пёс: смотреть онлайн бесплатно</span>
+                <span class="pb-related-desc">История создания, сюжеты и герои легендарного мультфильма Жил-был Пёс. Где смотреть, интересные факт</span>
+            </a><a href="/igry-i-razvlecheniya/m/mo/mozhno-li-zaryazhat-dzhojstik-ps4-zaryadkoj-ot-telefona.html" class="pb-related-card">
+                <span class="pb-related-title">Можно ли заряжать джойстик PS4 зарядкой от телефона? Безопасно ли это?</span>
+                <span class="pb-related-desc">Полный разбор совместимости зарядных устройств. Узнайте, какая сила тока нужна DualShock 4, риски ис</span>
+            </a><a href="/igry-i-razvlecheniya/g/gr/gruzovichok-leva-igrushka-mashinka.html" class="pb-related-card">
+                <span class="pb-related-title">Грузовичок Лева: обзор игрушечной машинки и советы по выбору</span>
+                <span class="pb-related-desc">Полный обзор популярной игрушечной машинки «Грузовичок Лева». Характеристики, материалы, особенности</span>
+            </a><a href="/igry-i-razvlecheniya/n/ni/nik-dlya-pabg-mobajl-simvoly.html" class="pb-related-card">
+                <span class="pb-related-title">Ник для Пабг Мобайл символы: красивые и редкие знаки</span>
+                <span class="pb-related-desc">Как сделать уникальный никнейм в PUBG Mobile с символами и иероглифами. Полный список спецзнаков, ге</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

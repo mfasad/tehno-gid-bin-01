@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как правильно запитать ESP32 от 12 вольт: схемы и стабилизаторы — Техно Гид</title>
+    <meta name="description" content="Полное руководство по подключению ESP32 к 12В. Выбор LDO, расчет тока, схемы понижения напряжения и защита от перегрева для надежной работы.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/elektronika-i-gadzhety/p/pi/pitanie-esp32-ot-12v.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как правильно запитать ESP32 от 12 вольт: схемы и стабилизаторы">
+    <meta property="og:description" content="Полное руководство по подключению ESP32 к 12В. Выбор LDO, расчет тока, схемы понижения напряжения и защита от перегрева для надежной работы.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/elektronika-i-gadzhety/">Электроника и Гаджеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как правильно запитать ESP32 от 12 вольт: схемы и стабилизаторы</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#технические-ограничения-и-требования-к-напряжению">Технические ограничения и требования к напряжению</a></li><li><a href="#линейные-стабилизаторы-ldo-против-импульсных-преобразователей">Линейные стабилизаторы (LDO) против импульсных преобразователей</a></li><li><a href="#схемы-подключения-и-выбор-компонентов">Схемы подключения и выбор компонентов</a></li><li><a href="#расчет-рассеиваемой-мощности-и-теплоотвод">Расчет рассеиваемой мощности и теплоотвод</a></li><li><a href="#защита-от-помех-и-перенапряжения">Защита от помех и перенапряжения</a></li><li><a href="#особенности-питания-от-автомобильной-сети">Особенности питания от автомобильной сети</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/elektronika-i-gadzhety/k/ka/kak-pravilno-ustanovit-uf-lampu.html">Как правильно установить УФ-лампу: пошаговая инструкция</a></li><li><a href="/elektronika-i-gadzhety/b/by/byvaet-li-vremya-24-00.html">Бывает ли время 24:00? Объяснение стандартов времени и форматов</a></li><li><a href="/elektronika-i-gadzhety/k/ka/kak-proverit-air-pods-4-na-original.html">Как проверить AirPods 4 на оригинал: 7 способов</a></li><li><a href="/elektronika-i-gadzhety/v/ve/vesy-ksiaomi-kakie-batarejki.html">Какие батарейки нужны для весов Xiaomi: полный гид</a></li><li><a href="/elektronika-i-gadzhety/p/pr/proshivka-arduino-pro-mini-cherez-usb-to-ttl.html">Прошивка Arduino Pro Mini через USB to TTL: Полное руководство</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Подключение и питание ESP32 от источника 12 вольт</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#технические-ограничения-и-требования-к-напряжению">Технические ограничения и требования к напряжению</a></li><li><a href="#линейные-стабилизаторы-ldo-против-импульсных-преобразователей">Линейные стабилизаторы (LDO) против импульсных преобразователей</a></li><li><a href="#схемы-подключения-и-выбор-компонентов">Схемы подключения и выбор компонентов</a></li><li><a href="#расчет-рассеиваемой-мощности-и-теплоотвод">Расчет рассеиваемой мощности и теплоотвод</a></li><li><a href="#защита-от-помех-и-перенапряжения">Защита от помех и перенапряжения</a></li><li><a href="#особенности-питания-от-автомобильной-сети">Особенности питания от автомобильной сети</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Питание микроконтроллера ESP32 от источника 12 вольт является одной из самых распространенных задач при создании автономных IoT-устройств, так как именно такое напряжение часто используется в стандартных блоках питания и промышленных сетях. Однако прямое подключение чипа к такому напряжению невозможно из-за его низкого рабочего диапазона, что требует использования промежуточных схем стабилизации и преобразования.</p>
+
+<p>В этой статье мы детально разберем, какие компоненты необходимы для безопасного снижения напряжения, как рассчитать тепловые потери и почему выбор неправильного стабилизатора может привести к выходу контроллера из строя.</p>
+
+<h2 id="технические-ограничения-и-требования-к-напряжению">Технические ограничения и требования к напряжению</h2>
+
+<p>Микроконтроллер <strong>ESP32</strong> спроектирован для работы с низким напряжением питания, и его ядро требует строго 3.3 вольта для стабильной работы. Попытка подать 12 вольт напрямую на конденсаторы или входные пины без предварительной обработки приведет к мгновенному термическому разрушению кристалла.</p>
+
+<p>Большинство отладочных плат, таких как <em>ESP32 DevKit V1</em>, уже оснащены встроенным линейным стабилизатором, но их возможности часто ограничены. Встроенные компоненты рассчитаны на определенный диапазон входного напряжения, и превышение этого порога создает критическую нагрузку на схему.</p>
+
+<p>Ключевым параметром здесь является не только выходное напряжение, но и допустимый ток нагрузки. При работе Wi-Fi модуля в режиме передачи потребление тока может кратковременно подскакивать до 500 мА, что необходимо учитывать при выборе внешнего источника питания.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>При выборе внешнего стабилизатора всегда берите запас по току минимум в 2 раза от пикового потребления ESP32.</p></aside>
+
+<p>Игнорирование требований к качеству напряжения может вызвать перезагрузки платы или нестабильную работу беспроводных интерфейсов.</p>
+
+<h2 id="линейные-стабилизаторы-ldo-против-импульсных-преобразователей">Линейные стабилизаторы (LDO) против импульсных преобразователей</h2>
+
+<p>Для снижения напряжения с 12В до 3.3В существуют два основных подхода: использование линейных регуляторов (LDO) или импульсных преобразователей (DC-DC Buck). Выбор между ними зависит от требований к энергоэффективности и уровню шума в цепи.</p>
+
+<p>Линейные стабилизаторы, такие как популярный <em>AMS1117-3.3</em> или более современные <em>XC6206</em>, работают по принципу рассеивания лишней энергии в виде тепла. Разница между входными 12В и выходными 3.3В составляет 8.7 вольта, и при токе 200 мА на стабилизаторе будет выделяться около 1.7 Вт тепла.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При использовании LDO с разницей напряжений более 5 вольт обязательно устанавливайте радиатор или обеспечьте принудительное охлаждение, иначе компонент перегреется и отключится.</p>
+</blockquote>
+
+<p>В отличие от линейных схем, импульсные преобразователи (например, на базе чипа <em>MP1584</em> или <em>LM2596</em>) преобразуют напряжение с высоким КПД, часто превышающим 90%. Они не греются так сильно, но генерируют высокочастотные помехи, которые могут влиять на чувствительные аналоговые датчики.</p>
+
+<p>Если ваше устройство будет работать от батареи или аккумулятора, импульсная схема является безальтернативным выбором для продления времени автономной работы.</p>
+
+<div class="pb-poll" id="poll-d74f4bc3"><div class="pb-poll-question">📊 Какой тип стабилизатора вы планируете использовать?</div><div class="pb-poll-option" data-poll="d74f4bc3" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">LDO (линейный)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d74f4bc3" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">DC-DC Buck (импульсный)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d74f4bc3" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Готовый модуль AMS1117</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d74f4bc3" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Самодельная схема</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="схемы-подключения-и-выбор-компонентов">Схемы подключения и выбор компонентов</h2>
+
+<p>При построении схемы питания необходимо правильно расположить компоненты, чтобы минимизировать падение напряжения на дорожках и обеспечить стабильность работы ESP32.Input конденсаторы должны располагаться как можно ближе к входу стабилизатора.</p>
+
+<p>Для линейных стабилизаторов рекомендуется использовать входной конденсатор емкостью не менее 10 мкФ и выходной — 22 мкФ. Это помогает сгладить пульсации и предотвратить самовозбуждение схемы при резком скачке потребления тока модулем Wi-Fi.</p>
+
+<p>Если вы используете импульсный преобразователь, важно следить за длиной соединительных проводов. Длинная проводка от источника 12В до платы вносит паразитную индуктивность, которая может вызвать выбросы напряжения, опасные для микроконтроллера.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка схемы подключения</h4><label class="check-item"><input type="checkbox"><span>Проверить полярность входного питания</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в наличии конденсаторов</span></label><label class="check-item"><input type="checkbox"><span>Замерить выходное напряжение мультиметром</span></label><label class="check-item"><input type="checkbox"><span>Проверить нагрев стабилизатора под нагрузкой</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>В таблице ниже приведено сравнение популярных решений для понижения напряжения:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Компонент</th>
+<th>Тип</th>
+<th>Макс. ток</th>
+<th>КПД</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AMS1117-3.3</td>
+<td>LDO</td>
+<td>800 мА</td>
+<td>~30-40%</td>
+</tr>
+<tr>
+<td>XC6206P332</td>
+<td>LDO</td>
+<td>200 мА</td>
+<td>~35%</td>
+</tr>
+<tr>
+<td>MP1584EN</td>
+<td>DC-DC Buck</td>
+<td>3 А</td>
+<td>~92%</td>
+</tr>
+<tr>
+<td>LM2596S</td>
+<td>DC-DC Buck</td>
+<td>3 А</td>
+<td>~85-90%</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Выбор конкретного элемента зависит от того, сколько места у вас есть на плате и какой уровень энергопотребления ожидается в проекте.</p>
+
+<h2 id="расчет-рассеиваемой-мощности-и-теплоотвод">Расчет рассеиваемой мощности и теплоотвод</h2>
+
+<p>Многие начинающие разработчики недооценивают тепловыделение при питании ESP32 от 12 вольт через линейный стабилизатор. Формула расчета мощности проста: <code>P = (Vin - Vout) * I</code>.</p>
+
+<p>Рассмотрим пример: если входное напряжение составляет 12В, выходное 3.3В, а средний ток потребления равен 300 мА (0.3 А), то рассеиваемая мощность составит <code>(12 - 3.3) * 0.3 = 2.61 Вт</code>. Для маленького корпуса SOT-223, в котором выполнен AMS1117, это критически много.</p>
+
+<p>Без радиатора такой стабилизатор нагреется до температуры отключения за несколько секунд работы под нагрузкой. В лучшем случае плата уйдет в перезагрузку, в худшем — произойдет деградация пайки или разрушение компонента.</p>
+
+<details class="pb-accordion"><summary>Как рассчитать необходимый радиатор?</summary><div class="pb-accordion-body"><p>Тепловое сопротивление перехода кристалл-корпус у AMS1117 составляет около 15-20 °C/Вт. При мощности 2.6 Вт температура кристалла вырастет на 40-50 градусов выше температуры корпуса. Если корпус нагреется до 80°C, кристалл будет уже около 130°C, что близко к пределу.</p></div></details>
+
+<p>Для снижения температуры можно увеличить входное напряжение до минимально необходимого (например, 5-6В вместо 12В) на предыдущем этапе преобразования, либо использовать каскадное включение стабилизаторов.</p>
+
+<h2 id="защита-от-помех-и-перенапряжения">Защита от помех и перенапряжения</h2>
+
+<p>Источники питания на 12 вольт, особенно автомобильные или дешевые адаптеры, часто выдают напряжение с высокими пульсациями и выбросами. Для защиты ESP32 необходимо внедрить в схему элементы фильтрации.</p>
+
+<p>На входе схемы обязательно должен стоять предохранитель или самовосстанавливающийся предохранитель (Polyfuse) на ток, немного превышающий максимальное потребление системы. Это спасет проводку от возгорания при коротком замыкании.</p>
+
+<ul>
+<li>🛡️ Используйте варистор или TVS-диод на входе 12В для гашения высоковольтных импульсов.</li>
+<li>🔋 Добавьте керамический конденсатор 100 нФ параллельно электролитическому для фильтрации высокочастотных шумов.</li>
+<li>⚡ Убедитесь, что диод Шоттки стоит в цепи питания, если есть риск обратной полярности подключения.</li>
+</ul>
+
+<p>Особое внимание стоит уделить "земле" (GND). В схемах с импульсными преобразователями земля силовой части и земля сигнальной части должны сходиться в одной точке, чтобы избежать наводок на линии данных.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильная организация "земли" и входная фильтрация важнее, чем выбор дорогого стабилизатора, для стабильной работы Wi-Fi.</p></aside>
+
+<h2 id="особенности-питания-от-автомобильной-сети">Особенности питания от автомобильной сети</h2>
+
+<p>Если вы планируете использовать ESP32 в автомобиле, где напряжение бортовой сети номинально 12В, следует помнить о нестабильности этого стандарта. При работающем двигателе напряжение может подниматься до 14.5В, а при запуске стартера происходить просадки до 6-7В.</p>
+
+<p>Кроме того, автомобильная сеть богата на электромагнитные помехи от генератора и системы зажигания. Простой линейный стабилизатор может не справиться с такими условиями без дополнительной обвязки.</p>
+
+<p>Рекомендуется использовать специализированные автомобильные DC-DC преобразователи с широким диапазоном входного напряжения (например, от 6В до 36В). Такие модули гарантируют стабильные 3.3В или 5В независимо от скачков в бортовой сети.</p>
+
+<blockquote>
+<p>⚠️ Внимание: В автомобиле всегда подключайте устройство через замок зажигания или реле, чтобы ESP32 не высаживал аккумулятор, когда машина заглушена.</p>
+</blockquote>
+
+<p>Также стоит учесть температурный режим: летом в салоне автомобиля температура может превышать 60°C, что снижает допустимый ток через стабилизаторы.</p>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли подать 12В напрямую на пин VIN отладочной платы ESP32?</summary>
+<p>Это зависит от конкретной модели платы. Большинство плат типа DevKit V1 имеют встроенный LDO (обычно AMS1117), допускающий вход до 12-15В. Однако проверьте маркировку стабилизатора: если там стоит XC6206, максимальное входное напряжение часто ограничено 6В. Превышение приведет к сгоранию.</p>
+</details>
+
+<details>
+<summary>Почему ESP32 перезагружается при включении Wi-Fi?</summary>
+<p>Чаще всего это происходит из-за просадки напряжения под нагрузкой. При включении передатчика ток резко возрастает. Если источник 12В слабый, провода тонкие или стабилизатор перегревается, напряжение на ядре падает ниже 3.0В, вызывая сброс (Brownout). Попробуйте укоротить провода питания или добавить конденсатор большой емкости (470-1000 мкФ) параллельно входу 3.3В.</p>
+</details>
+
+<details>
+<summary>Какой провод лучше использовать для подключения 12В?</summary>
+<p>Для токов до 1А достаточно провода сечением 0.5 мм². Важно, чтобы провод был как можно короче. Если длина превышает 1 метр, увеличьте сечение до 0.75 мм², чтобы компенсировать падение напряжения на сопротивлении жилы.</p>
+</details>
+
+<details>
+<summary>Можно ли запитать ESP32 от 12В через диод?</summary>
+<p>Обычный кремниевый диод падает примерно на 0.7В, диод Шоттки — на 0.3В. Этого недостаточно, чтобы снизить 12В до безопасных 3.3В. Диоды используются только для защиты от обратной полярности, но не как основные элементы понижения напряжения в этой схеме.</p>
+</details>
+
+<details>
+<summary>Нужен ли отдельный стабилизатор, если на плате уже есть один?</summary>
+<p>Если встроенный стабилизатор греется или не справляется с током, внешний DC-DC преобразователь, выдающий 5В или 3.3В, станет отличным решением. В таком случае внешний модуль берет на себя основную нагрузку по понижению напряжения с 12В, разгружая onboard-компоненты.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/elektronika-i-gadzhety/k/ka/kak-pravilno-ustanovit-uf-lampu.html" class="pb-related-card">
+                <span class="pb-related-title">Как правильно установить УФ-лампу: пошаговая инструкция</span>
+                <span class="pb-related-desc">Подробное руководство по монтажу УФ-лампы для стерилизации. Советы по выбору, подключению и безопасн</span>
+            </a><a href="/elektronika-i-gadzhety/b/by/byvaet-li-vremya-24-00.html" class="pb-related-card">
+                <span class="pb-related-title">Бывает ли время 24:00? Объяснение стандартов времени и форматов</span>
+                <span class="pb-related-desc">Разбор формата 24:00 и 00:00. Почему существует путаница, как работают часы в компьютерах, стандарты</span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kak-proverit-air-pods-4-na-original.html" class="pb-related-card">
+                <span class="pb-related-title">Как проверить AirPods 4 на оригинал: 7 способов</span>
+                <span class="pb-related-desc">Полная инструкция по проверке подлинности AirPods 4. Серийные номера, iOS-тесты, вес, звук и настрой</span>
+            </a><a href="/elektronika-i-gadzhety/v/ve/vesy-ksiaomi-kakie-batarejki.html" class="pb-related-card">
+                <span class="pb-related-title">Какие батарейки нужны для весов Xiaomi: полный гид</span>
+                <span class="pb-related-desc">Узнайте, какие батарейки нужны для весов Xiaomi. Типы элементов питания, замена, ошибки подключения </span>
+            </a><a href="/elektronika-i-gadzhety/p/pr/proshivka-arduino-pro-mini-cherez-usb-to-ttl.html" class="pb-related-card">
+                <span class="pb-related-title">Прошивка Arduino Pro Mini через USB to TTL: Полное руководство</span>
+                <span class="pb-related-desc">Как прошить Arduino Pro Mini через USB to TTL конвертер. Схема подключения, драйверы CH340, настройк</span>
+            </a><a href="/elektronika-i-gadzhety/h/hu/huawei-watch-fit-3-solo-b19v.html" class="pb-related-card">
+                <span class="pb-related-title">Huawei Watch Fit 3 Solo B19V: Полный обзор и настройка</span>
+                <span class="pb-related-desc">Подробный разбор умных часов Huawei Watch Fit 3 Solo B19V. Характеристики, методы синхронизации, ана</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

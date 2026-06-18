@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>G-код для плазменной резки: синтакс, настройки и организация координат — Техно Гид</title>
+    <meta name="description" content="Полное руководство по программированию плазменной резки G-кодом. Разбор команд, подготовка файлов, выбор режимов и особенности работы станков.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/3d-pechat-i-modelirovanie/g/g-/g-kod-dlya-plazmennoj-rezki.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="G-код для плазменной резки: синтакс, настройки и организация координат">
+    <meta property="og:description" content="Полное руководство по программированию плазменной резки G-кодом. Разбор команд, подготовка файлов, выбор режимов и особенности работы станков.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/3d-pechat-i-modelirovanie/">3D Печать и Моделирование</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">G-код для плазменной резки: синтакс, настройки и организация координат</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#основы-синтаксиса-и-структура-программы">Основы синтаксиса и структура программы</a></li><li><a href="#ключевые-команды-движения-и-резки">Ключевые команды движения и резки</a></li><li><a href="#управление-высотой-и-технологические-циклы">Управление высотой и технологические циклы</a></li><li><a href="#оптимизация-траектории-и-вводвывод">Оптимизация траектории и ввод/вывод</a></li><li><a href="#специфические-команды-для-плазменных-станков">Специфические команды для плазменных станков</a></li><li><a href="#распространенные-ошибки-и-их-предотвращение">Распространенные ошибки и их предотвращение</a></li><li><a href="#таблица-основных-команд-плазменной-резки">Таблица основных команд плазменной резки</a></li><li><a href="#интеграция-cadcam-и-постпроцессоры">Интеграция CAD/CAM и постпроцессоры</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/3d-pechat-i-modelirovanie/f/fl/flashforge-adventurer-5m-klipper.html">FlashForge Adventurer 5M: Полное руководство по прошивке и настройке Klipper</a></li><li><a href="/3d-pechat-i-modelirovanie/c/ch/chto-mozhno-napechatat-na-3d-printere-dlya-prodazhi.html">Что печатать на 3D-принтере для продажи: ТОП идей</a></li><li><a href="/3d-pechat-i-modelirovanie/k/kl/klyuchnitsa-na-3-d-printere.html">Ключница на 3D принтере: модели, настройки и материалы</a></li><li><a href="/3d-pechat-i-modelirovanie/k/ka/kak-pomenyat-soplo-na-3d-printere-ender-3.html">Как поменять сопло на 3D принтере Ender 3: пошаговая инструкция</a></li><li><a href="/3d-pechat-i-modelirovanie/s/sk/skorost-retrakta-dlya-petg.html">Скорость ретракта для PETG: настройки для чистых моделей</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>G-код для плазменной резки: полное руководство по программированию и настройке</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#основы-синтаксиса-и-структура-программы">Основы синтаксиса и структура программы</a></li><li><a href="#ключевые-команды-движения-и-резки">Ключевые команды движения и резки</a></li><li><a href="#управление-высотой-и-технологические-циклы">Управление высотой и технологические циклы</a></li><li><a href="#оптимизация-траектории-и-вводвывод">Оптимизация траектории и ввод/вывод</a></li><li><a href="#специфические-команды-для-плазменных-станков">Специфические команды для плазменных станков</a></li><li><a href="#распространенные-ошибки-и-их-предотвращение">Распространенные ошибки и их предотвращение</a></li><li><a href="#таблица-основных-команд-плазменной-резки">Таблица основных команд плазменной резки</a></li><li><a href="#интеграция-cadcam-и-постпроцессоры">Интеграция CAD/CAM и постпроцессоры</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Плазменная резка металла представляет собой высокоточный процесс, требующий четкого цифрового управления оборудованием. Ядром этого управления является <strong>G-код</strong> — набор инструкций, которые передаются ЧПУ-станции для формирования траектории движения горелки. Понимание синтаксиса и логики команд позволяет не только вырезать детали, но и оптимизировать время работы, расход сжатого воздуха и ресурс consumables.</p>
+<p>Многие новички ошибочно полагают, что достаточно просто нарисовать контур в CAD-системе и отправить его в станок. На практике, для качественной резки требуется глубокое знание специфических команд, отвечающих за <strong>ввод горелки</strong>, <strong>контроль высоты</strong> (THC) и обходы углов. Ошибки в коде могут привести к браку детали или даже повреждению сопла плазмотрона.</p>
+
+<h2 id="основы-синтаксиса-и-структура-программы">Основы синтаксиса и структура программы</h2>
+<p>Любая программа для плазменной резки начинается с инициализации станка и задании системы координат. Стандарт <strong>G-код</strong> использует буквенно-цифровые команды, где буква указывает на функцию, а число — на параметр. Например, <code>G0</code> отвечает за быстрое перемещение без резки, а <code>G1</code> — за рабочую подачу с включенной подачей тока. </p>
+<p>Перед началом работы необходимо задать <strong>систему координат</strong>, обычно используя команду <code>G54</code>, которая указывает контроллеру, где находится начало координат детали на столе. Без правильного задания нуля (работы) все последующие перемещения будут некорректными. Оператор должен физически установить горелку в точку (0,0) и подтвердить это нажатием соответствующей кнопки или вводом команды в диалоговом окне.</p>
+<p>Критически важным элементом является <strong>подготовка головки</strong> к резке. Это включает в себя команду открытия дуги и команду подъема горелки до рабочего зазора. В большинстве программных постпроцессоров эти действия объединяются в макросы, но понимание их структуры позволяет вручную исправлять ошибки при сбое оборудования.</p>
+
+<h2 id="ключевые-команды-движения-и-резки">Ключевые команды движения и резки</h2>
+<p>Базовые команды перемещения <code>G0</code> и <code>G1</code> являются фундаментом любой программы. <code>G0</code> используется для быстрого перемещения горелки в стартовую точку реза или между деталями. Скорость этого перемещения обычно максимальна и ограничена только механикой станка. Однако при подходе к материалу необходимо быть осторожным, чтобы не задеть поверхность инструмента.</p>
+<p>Команда <code>G1</code> активирует рабочий режим. Именно в этот момент контроллер подает команду на розжиг <strong>плазменной дуги</strong> и начинает движение с заданной скоростью. Скорость подачи (F) в этом блоке определяет качество реза: слишком высокая приведет к прожигу, слишком низкая — к оплавлению края. Каждый металл и толщина требуют индивидуальной настройки этого параметра.</p>
+<p>Для сложных контуров часто используются команды круговой интерполяции <code>G2</code> и <code>G3</code>. <code>G2</code> задает движение по часовой стрелке, а <code>G3</code> — против часовой. Эти команды позволяют вырезать радиусные элементы без использования множества мелких прямых отрезков, что повышает точность и снижает нагрузку на сервоприводы. Параметры радиуса задаются через <code>R</code> или координаты центра дуги <code>I</code> и <code>J</code>.</p>
+
+<h2 id="управление-высотой-и-технологические-циклы">Управление высотой и технологические циклы</h2>
+<p>Одной из самых сложных задач является поддержание постоянного зазора между соплом плазмотрона и металлом. Для этого используется система <strong>THC</strong> (Torch Height Control). В G-коде это реализуется через специфические команды, которые активируют датчик высоты и корректируют положение Z-оси по ходу реза. Без активной системы THC <strong>плазменная резка</strong> невозможна на неровных поверхностях или при изменении толщины материала.</p>
+<p>Команда <code>G38.x</code> часто используется для механического касания поверхности для поиска нуля по высоте. Контроллер опускает горелку до касания, фиксирует координату и поднимает горелку на безопасную высоту. Этот процесс может быть автоматизирован в начале программы. Важно учитывать, что при касании может произойти налипание окалины, поэтому некоторые системы используют бесконтактные датчики.</p>
+<p>Существуют также команды для управления <strong>перфорацией</strong> (пробивкой отверстий внутри контура). Перед началом реза по внутреннему контуру горелка должна пробить материал. Для этого используется команда задержки по времени, позволяющая дуге полностью прожечь металл перед началом движения. Инструкции для пробивки часто содержат команды подачи газа или изменения полярности.</p>
+
+<div class="pb-poll" id="poll-d1b69246"><div class="pb-poll-question">📊 Какой постпроцессор вы используете чаще всего?</div><div class="pb-poll-option" data-poll="d1b69246" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">SheetCam</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d1b69246" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Fusion 360</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d1b69246" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">LaserCut</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d1b69246" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">WinCut</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d1b69246" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Свой пост</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="оптимизация-траектории-и-вводвывод">Оптимизация траектории и ввод/вывод</h2>
+<p>Эффективность резки напрямую зависит от стратегии движения горелки. Правильный выбор точки ввода (Lead-in) позволяет избежать дефектов в самом начале реза. Обычно используется метод ввода по касательной с небольшой дугой, чтобы дуга успела разогреться и стабилизироваться до выхода на основной контур. Прямой ввод перпендикулярно кромке часто приводит к "рыльцу" на детали.</p>
+<p>При резке нескольких деталей необходимо учитывать время на <strong>ввод и вывод</strong> горелки. Оптимальная стратегия — минимизировать холостые пробеги. Программисты часто используют команды изменения порядка обхода, чтобы резать детали последовательно, переходя от одной к другой кратчайшим путем. Это экономит время и снижает износ механики.</p>
+<p>Важным аспектом является использование <strong>команд объезда</strong> (Lead-out) при завершении реза. Горелка не должна отключаться мгновенно в конце линии, так как это может вызвать залипание дуги или дефект на краю. Команда вывода заставляет горелку пройти небольшой отрезок за пределами детали, после чего дуга гаснет и происходит быстрый отвод.</p>
+
+<h2 id="специфические-команды-для-плазменных-станков">Специфические команды для плазменных станков</h2>
+<p>Помимо стандартных G-кодов, каждый контроллер имеет свой набор специфических M-кодов для управления <strong>плазменной горелкой</strong>. Например, код <code>M3</code> может включать дугу, а <code>M5</code> — выключать. Однако на многих современных станках используются команды, начинающиеся с <code>G</code> или <code>M</code> с 100 по 199, которые активируют функции розжига, подъема стола или подачи воздуха. Эти коды зависят от производителя контроллера.</p>
+<p>Команда <code>G91</code> (инкрементальное позиционирование) иногда используется для управления перемещениями относительно текущей позиции, что удобно при точечной резке или перфорации. Команда <code>G90</code> возвращает управление к абсолютным координатам. Смешивание этих режимов в одной программе без четкого понимания может привести к катастрофическим ошибкам траектории.</p>
+<p>Для управления вспомогательными функциями, такими как подача <strong>сжатого воздуха</strong> или включение вытяжки, также используются M-коды. Обычно они располагаются в начале и конце программы. Например, перед розжигом дуги должен быть открыт клапан газа, а после ее гашения — закрыт, чтобы избежать перегрева сопла в нерабочем состоянии.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед запуском</h4><label class="check-item"><input type="checkbox"><span>Проверить нулевую точку</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в наличии газа</span></label><label class="check-item"><input type="checkbox"><span>Проверить высоту зазора</span></label><label class="check-item"><input type="checkbox"><span>Очистить сопло от брызг</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<details class="pb-accordion"><summary>Скрытая информация о микросекундах</summary><div class="pb-accordion-body"><p>При высокоскоростной резке тонкого металла (до 1 мм) задержка срабатывания дуги может быть критичной. Некоторые контроллеры позволяют настраивать <strong>время задержки</strong> между подачей команды M3 и началом движения G1 в микросекундах, что позволяет сократить брак в начале реза.</p></div></details>
+
+<h2 id="распространенные-ошибки-и-их-предотвращение">Распространенные ошибки и их предотвращение</h2>
+<p>Одной из самых частых проблем является игнорирование <strong>радиуса скругления</strong> при программировании острых углов. Плазма не может мгновенно изменить направление движения на 90 градусов. Если вырезать острый угол без скругления, угол будет оплавлен и шире, чем требуется. Программисты должны заранее скруглять углы в CAD-модели или использовать функции постпроцессора для автоматического скругления.</p>
+<p>Другая серьезная ошибка — неправильный выбор <strong>скорости подачи</strong>. Если скорость слишком низкая, металл перегревается и провисает, а снизу образуется широкая окалина. Если слишком высокая, дуга может погаснуть, не прожигая металл насквозь, что приведет к браку детали и загрязнению сопла. Для каждого материала и толщины существуют таблицы оптимальных режимов, которые нужно строго соблюдать.</p>
+<p>Нередко встречается проблема "застревания" горелки в углу при резке тонкого металла из-за инерции движения. Это решается использованием команд плавного торможения или изменением стратегии обхода углов. Оператор должен внимательно следить за состоянием реза в первые минуты работы, чтобы вовремя скорректировать параметры.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильная настройка скорости подачи и задержки пробивки — это 90% успеха при резке тонколистового металла, так как именно эти параметры определяют отсутствие брака в начале и конце реза.</p></aside>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Всегда проверяйте состояние сопла перед запуском сложного G-кода. Изношенное сопло может изменить форму дуги, и даже идеально написанный код не даст качественного реза.</p></aside>
+
+<h2 id="таблица-основных-команд-плазменной-резки">Таблица основных команд плазменной резки</h2>
+<p>Ниже приведена сводная таблица наиболее часто используемых команд при программировании плазменных станков. Эти данные являются общими, но могут варьироваться в зависимости от конкретной модели контроллера.</p>
+<div class="pb-table-wrap"><table>
+ <thead>
+  <tr>
+   <th>Команда</th>
+   <th>Описание действия</th>
+   <th>Область применения</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td><code>G0 X Y</code></td>
+   <td>Быстрое перемещение</td>
+   <td>Переход между деталями, подгонка к точке реза</td>
+  </tr>
+  <tr>
+   <td><code>G1 X Y F</code></td>
+   <td>Рабочее перемещение с подачей</td>
+   <td>Непосредственно резка контура</td>
+  </tr>
+  <tr>
+   <td><code>G54</code></td>
+   <td>Выбор системы координат</td>
+   <td>Установка начала отсчета (нуля) детали</td>
+  </tr>
+  <tr>
+   <td><code>M3 / M5</code></td>
+   <td>Вкл/Выкл дуги</td>
+   <td>Розжиг и гашение плазменной дуги</td>
+  </tr>
+  <tr>
+   <td><code>G38.2</code></td>
+   <td>Касание поверхности</td>
+   <td>Автоматическое определение высоты материала</td>
+  </tr>
+ </tbody>
+</table></div>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Использование команды <code>G38.2</code> (касание) требует проверки механики Z-оси. Если датчик касания настроен неверно, горелка может врезаться в стол или деталь с высокой скоростью, что приведет к дорогостоящему ремонту сервопривода.</p>
+</blockquote>
+
+<h2 id="интеграция-cadcam-и-постпроцессоры">Интеграция CAD/CAM и постпроцессоры</h2>
+<p>Ручное написание G-кода для плазменной резки сегодня практически не применяется для сложных деталей. Основной поток идет через CAM-системы, которые генерируют код из векторных чертежей. <strong>Постпроцессор</strong> играет здесь ключевую роль: это программа-переводчик, которая адаптирует универсальные команды под конкретный контроллер станка.</p>
+<p>Выбор правильного постпроцессора критичен. Если постпроцессор не знает особенностей вашего контроллера (например, специфических M-кодов для розжига), программа не сработает. Инженер должен убедиться, что постпроцессор настроен на <strong>текущую версию</strong> прошивки станка и учитывает все технологические нюансы, такие как задержки и скругления.</p>
+<p>Современные системы позволяют встраивать <strong>параметрическую резку</strong>, где код меняется в зависимости от размеров детали. Это позволяет создавать гибкие программы для производства множества деталей разного размера без перерисовки чертежа. Однако при этом необходимо тщательно тестировать генератор кода на предмет ошибок границ.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Перед первым запуском сгенерированного CAM-кода на реальном станке обязательно проведите <strong>сухой прогон</strong> (без включения дуги) на высоте 20-30 мм над материалом. Это позволит визуально обнаружить ошибки пересечений или некорректных перемещений.</p>
+</blockquote>
+
+<details class="pb-accordion"><summary>Дополнительная информация о микроскопических зазорах</summary><div class="pb-accordion-body"><p>При резке тонкой стали (менее 1 мм) зазор между соплом и металлом должен быть минимальным, но не допускающим касания. Часто используется <strong>автоматическая подстройка</strong> зазора по напряжению дуги, так как оно линейно зависит от высоты.</p></div></details>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+ <summary>Что делать, если дуга гаснет в начале реза?</summary>
+ <p>Чаще всего это связано с недостаточной задержкой перед началом движения. Увеличьте время паузы между командой розжига <code>M3</code> и началом движения <code>G1</code>. Также проверьте настройки давления газа и исправность электрода.</p>
+</details>
+
+<details>
+ <summary>Как настроить зазор при резке рваного листа?</summary>
+ <p>Для неровных поверхностей необходимо включить функцию <strong>THC</strong> (управление высотой). Настройте чувствительность датчика так, чтобы он реагировал на изменения высоты, но не срабатывал ложно на мелкие неровности. Используйте команды <code>G38.x</code> для калибровки перед началом реза.</p>
+</details>
+
+<details>
+ <summary>Почему углы деталей получаются округлыми?</summary>
+ <p>Это физическое ограничение плазмы и инерция станка. Для острых углов используйте команду <strong>скругления углов</strong> в постпроцессоре или вручную добавьте малые радиусы в CAD-модели. Также можно снизить скорость движения в углах.</p>
+</details>
+
+<details>
+ <summary>Можно ли использовать G-код для лазера на плазменном станке?</summary>
+ <p>Нет, напрямую использовать нельзя. Хотя базовые команды движения <code>G0</code>, <code>G1</code> одинаковы, команды управления лучом и скоростью резки кардинально отличаются. Необходима полная переработка постпроцессора и настройка технологических режимов.</p>
+</details>
+
+<details>
+ <summary>Как исправить ошибку "Out of bounds" при запуске программы?</summary>
+ <p>Проверьте, не превышает ли контур детали габариты рабочего стола. Убедитесь, что начало координат (<code>G54</code>) установлено верно. Иногда проблема в том, что деталь нарисована со смещением относительно центра поля.</p>
+</details>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Параметры <strong>скорости резки</strong> и <strong>силы тока</strong> могут различаться даже для одной и той же марки стали, если она имеет разную твердость или толщину. Всегда сверяйтесь с актуальными таблицами режимов от производителя плазмотрона.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Успешная плазменная резка — это не просто код, а синергия правильного G-кода, грамотно настроенного постпроцессора и точной физической калибровки станка перед каждым циклом работы.</p></aside></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/3d-pechat-i-modelirovanie/f/fl/flashforge-adventurer-5m-klipper.html" class="pb-related-card">
+                <span class="pb-related-title">FlashForge Adventurer 5M: Полное руководство по прошивке и настройке Klipper</span>
+                <span class="pb-related-desc">Разбираем особенности прошивки Klipper для принтера FlashForge Adventurer 5M. Инструкция по установк</span>
+            </a><a href="/3d-pechat-i-modelirovanie/c/ch/chto-mozhno-napechatat-na-3d-printere-dlya-prodazhi.html" class="pb-related-card">
+                <span class="pb-related-title">Что печатать на 3D-принтере для продажи: ТОП идей</span>
+                <span class="pb-related-desc">Актуальные идеи для бизнеса на 3D-печати. Что печатать на 3D-принтере на продажу: декор, автозапчаст</span>
+            </a><a href="/3d-pechat-i-modelirovanie/k/kl/klyuchnitsa-na-3-d-printere.html" class="pb-related-card">
+                <span class="pb-related-title">Ключница на 3D принтере: модели, настройки и материалы</span>
+                <span class="pb-related-desc">Полный гайд по созданию ключницы на 3D принтере. Выбор пластика, настройка печати, обзор лучших моде</span>
+            </a><a href="/3d-pechat-i-modelirovanie/k/ka/kak-pomenyat-soplo-na-3d-printere-ender-3.html" class="pb-related-card">
+                <span class="pb-related-title">Как поменять сопло на 3D принтере Ender 3: пошаговая инструкция</span>
+                <span class="pb-related-desc">Полный гайд по замене горячего сопла на Ender 3 V1/V2/Pro. Узнайте, какие инструменты нужны, как изб</span>
+            </a><a href="/3d-pechat-i-modelirovanie/s/sk/skorost-retrakta-dlya-petg.html" class="pb-related-card">
+                <span class="pb-related-title">Скорость ретракта для PETG: настройки для чистых моделей</span>
+                <span class="pb-related-desc">Как настроить скорость ретракта для PETG пластика. Оптимальные значения, длина отката и советы по бо</span>
+            </a><a href="/3d-pechat-i-modelirovanie/c/ch/chto-mozhno-izgotovit-na-3d-printere-dlya-prodazhi.html" class="pb-related-card">
+                <span class="pb-related-title">Что можно изготовить на 3д принтере для продажи: идеи и ниши</span>
+                <span class="pb-related-desc">Полный гайд по нишам для заработка на 3D печати. Окупаемость, популярные материалы, анализ спроса и </span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

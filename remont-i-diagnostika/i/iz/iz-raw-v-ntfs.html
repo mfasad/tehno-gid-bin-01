@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как конвертировать RAW в NTFS без потери данных — Техно Гид</title>
+    <meta name="description" content="Полное руководство: исправление ошибки RAW диска, конвертация в NTFS через CMD и DiskPart. Сохранение файлов, причины сбоя файловой системы.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/remont-i-diagnostika/i/iz/iz-raw-v-ntfs.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как конвертировать RAW в NTFS без потери данных">
+    <meta property="og:description" content="Полное руководство: исправление ошибки RAW диска, конвертация в NTFS через CMD и DiskPart. Сохранение файлов, причины сбоя файловой системы.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/remont-i-diagnostika/">Ремонт и Диагностика</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как конвертировать RAW в NTFS без потери данных</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#причины-появления-файловой-системы-raw">Причины появления файловой системы RAW</a></li><li><a href="#диагностика-состояния-диска-перед-конвертацией">Диагностика состояния диска перед конвертацией</a></li><li><a href="#подготовка-к-восстановлению-резервное-копирование">Подготовка к восстановлению: резервное копирование</a></li><li><a href="#метод-1-конвертация-через-командную-строку-chkdsk">Метод 1: Конвертация через командную строку (CHKDSK)</a></li><li><a href="#метод-2-использование-утилиты-diskpart">Метод 2: Использование утилиты DiskPart</a></li><li><a href="#альтернативные-программы-для-конвертации">Альтернативные программы для конвертации</a></li><li><a href="#профилактика-появления-ошибок-raw">Профилактика появления ошибок RAW</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/remont-i-diagnostika/3/3e/3e-oshibka-stiralnoj-mashiny-samsung-kak-ustranit.html">Ошибка 3E в стиральной машине Samsung: как устранить</a></li><li><a href="/remont-i-diagnostika/k/ka/kak-pereshit-kompyuternoe-kreslo.html">Как перешить компьютерное кресло: пошаговая инструкция</a></li><li><a href="/remont-i-diagnostika/k/kh/kholodilnik-samsung-ne-morozit-chto-delat.html">Холодильник Samsung не морозит: причины и как починить самому</a></li><li><a href="/remont-i-diagnostika/k/ka/kak-snyat-krestovinu-s-ofisnogo-kresla-na-kolesikakh.html">Как снять крестовину с офисного кресла: пошаговая инструкция</a></li><li><a href="/remont-i-diagnostika/t/te/tester-bloka-pitaniya-kompyutera-svoimi-rukami.html">Тестер блока питания компьютера своими руками: схема и сборка</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Конвертация RAW в NTFS: восстановление диска и данных</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#причины-появления-файловой-системы-raw">Причины появления файловой системы RAW</a></li><li><a href="#диагностика-состояния-диска-перед-конвертацией">Диагностика состояния диска перед конвертацией</a></li><li><a href="#подготовка-к-восстановлению-резервное-копирование">Подготовка к восстановлению: резервное копирование</a></li><li><a href="#метод-1-конвертация-через-командную-строку-chkdsk">Метод 1: Конвертация через командную строку (CHKDSK)</a></li><li><a href="#метод-2-использование-утилиты-diskpart">Метод 2: Использование утилиты DiskPart</a></li><li><a href="#альтернативные-программы-для-конвертации">Альтернативные программы для конвертации</a></li><li><a href="#профилактика-появления-ошибок-raw">Профилактика появления ошибок RAW</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Внезапное появление ошибки <strong>RAW</strong> вместо привычной файловой системы NTFS на жестком диске или флеш-накопителе часто вызывает панику у пользователей. Вместо доступа к файлам операционная система предлагает отформатировать носитель, что неизбежно приведет к потере всей сохраненной информации. Однако форматирование — это не единственный и не всегда лучший выход из ситуации.</p>
+
+<p>Проблема возникает, когда Windows не может распознать структуру файловой системы раздела. Это может быть следствием логических ошибок, некорректного извлечения устройства или сбоя питания. В данной статье мы разберем, как безопасно <strong>конвертировать RAW в NTFS</strong>, используя встроенные инструменты системы, и обсудим методы восстановления данных перед началом любых манипуляций.</p>
+
+<div class="pb-poll" id="poll-3e01b4bb"><div class="pb-poll-question">📊 С каким типом накопителя произошла проблема?</div><div class="pb-poll-option" data-poll="3e01b4bb" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Внешний жесткий диск (HDD)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="3e01b4bb" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Внутренний SSD</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="3e01b4bb" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">USB-флешка</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="3e01b4bb" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Карта памяти SD</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="3e01b4bb" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другое</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="причины-появления-файловой-системы-raw">Причины появления файловой системы RAW</h2>
+
+<p>Прежде чем приступать к восстановлению, необходимо понять природу сбоя. Файловая система <em>NTFS</em> является стандартом для Windows, обеспечивая надежность и поддержку больших файлов. Когда система видит метку RAW, это означает, что загрузочный сектор поврежден или таблица размещения файлов (MFT) недоступна для чтения.</p>
+
+<p>Чаще всего пользователи сталкиваются с этой проблемой после аварийного отключения питания или принудительного извлечения USB-накопителя без использования функции <code>Безопасное извлечение устройства</code>. Механические повреждения секторов на старых HDD также могут привести к тому, что контроллер диска перестает корректно передавать данные о структуре разделов.</p>
+
+<p>Иногда виновником становится вирусное ПО или сбой в работе драйверов контроллера после обновления операционной системы. В редких случаях RAW отображается на новых, еще не инициализированных дисках, которые пользователь просто забыл отформатировать после подключения.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если диск издает посторонние звуки (щелчки, писк), немедленно отключите его. Программное восстановление в таком случае невозможно и может добить механику.</p></aside>
+
+<h2 id="диагностика-состояния-диска-перед-конвертацией">Диагностика состояния диска перед конвертацией</h2>
+
+<p>Запуск процесса конвертации вслепую может усугубить ситуацию, если диск имеет физические дефекты. Первым шагом должна стать проверка видимости накопителя в системных утилитах. Откройте <code>Управление дисками</code>, нажав комбинацию клавиш <code>Win + R</code> и введя команду <code>diskmgmt.msc</code>.</p>
+
+<p>В открывшемся окне найдите проблемный раздел. Если его файловая система отображается как RAW, а статус — «Исправен», то шансы на успешное восстановление высоки. Если же диск отображается как «Не распределен» или имеет статус «Не инициализирован», потребуется другая стратегия действий.</p>
+
+<ul>
+<li>🔍 Проверьте букву диска: иногда конфликт букв приводит к ошибке доступа.</li>
+<li>💾 Оцените объем: соответствует ли отображаемый размер реальному объему накопителя?</li>
+<li>⚡ Проверьте кабель: попробуйте подключить диск к другому порту USB или SATA.</li>
+</ul>
+
+<p>Убедитесь, что операционная система вообще видит физическое устройство в <code>Диспетчере устройств</code>. Если контроллер диска отображается с желтым восклицательным знаком, проблема может крыться в драйверах, а не в самой файловой системе.</p>
+
+<details class="pb-accordion"><summary>Почему нельзя игнорировать ошибку RAW?</summary><div class="pb-accordion-body"><p>Игнорирование проблемы и продолжение записи данных на RAW-раздел приведет к перезаписи служебной информации, что сделает восстановление файлов невозможным даже для профессионалов.</p></div></details>
+
+<h2 id="подготовка-к-восстановлению-резервное-копирование">Подготовка к восстановлению: резервное копирование</h2>
+
+<p>Самый критичный этап — сохранение данных. Любая операция с файловой системой несет риск. Если на диске есть важная информация, настоятельно рекомендуется сначала попытаться скопировать файлы, прежде чем запускать команды конвертации.</p>
+
+<p>Используйте специализированный софт для восстановления данных, такой как <em>R-Studio</em>, <em>DMDE</em> или <em>Recuva</em>. Эти программы умеют читать поврежденные структуры RAW и позволяют сохранить файлы на другой, исправный носитель. Только после создания резервной копии можно переходить к лечению диска.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к восстановлению данных</h4><label class="check-item"><input type="checkbox"><span>Скачать программу для восстановления</span></label><label class="check-item"><input type="checkbox"><span>Подготовить свободное место на другом диске</span></label><label class="check-item"><input type="checkbox"><span>Не записывать новые файлы на проблемный носитель</span></label><label class="check-item"><input type="checkbox"><span>Проверить кабель подключения</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<blockquote>
+<p>⚠️ Внимание: Никогда не сохраняйте восстанавливаемые файлы на тот же самый диск, с которого вы их читаете. Это гарантированно приведет к потере данных.</p>
+</blockquote>
+
+<h2 id="метод-1-конвертация-через-командную-строку-chkdsk">Метод 1: Конвертация через командную строку (CHKDSK)</h2>
+
+<p>Наиболее эффективный и безопасный способ исправить ошибку без форматирования — использование утилиты <code>chkdsk</code>. Эта встроенная служба Windows проверяет целостность файловой системы и пытается исправить логические ошибки, конвертируя RAW обратно в NTFS.</p>
+
+<p>Для запуска вам потребуются права администратора. Откройте командную строку (CMD) от имени администратора через поиск в меню Пуск. Введите команду, заменив <code>X</code> на букву вашего проблемного диска:</p>
+
+<pre><code>chkdsk X: /f /r</code></pre>
+
+<p>Ключ <code>/f</code> исправляет ошибки, а <code>/r</code> находит поврежденные сектора и восстанавливает читаемую информацию. Процесс может занять от нескольких минут до нескольких часов в зависимости от объема диска и степени повреждений.</p>
+
+<p>Если система выдаст сообщение о том, что <code>CHKDSK недопустим для дисков RAW</code>, это означает, что повреждения слишком серьезны для автоматического исправления, либо диск имеет физический дефект. В таком случае переходите к следующему методу или используйте программы для восстановления данных.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Утилита chkdsk работает только с логическими ошибками. Если диск имеет физические повреждения ("битые" сектора), команда может зависнуть или завершиться ошибкой.</p></aside>
+
+<h2 id="метод-2-использование-утилиты-diskpart">Метод 2: Использование утилиты DiskPart</h2>
+
+<p>Если стандартная проверка не помогла, можно попробовать более мощный инструмент — <code>DiskPart</code>. Этот метод требует осторожности, так как неправильное использование может привести к удалению разделов. Мы используем его для очистки атрибутов и повторной инициализации таблицы разделов.</p>
+
+<p>Запустите командную строку от имени администратора и введите <code>diskpart</code>. Далее следуйте инструкциям, внимательно выбирая номер диска. Ошибка в выборе номера приведет к потере данных на другом накопителе.</p>
+
+<pre><code>list disk
+<p>select disk N</p>
+<p>clean</p>
+<p>convert gpt</p>
+<p>create partition primary</p>
+<p>format fs=ntfs quick</p>
+<p>assign</code></pre></p>
+
+<p>Обратите внимание: команда <code>clean</code> полностью удаляет все разделы на выбранном диске. Используйте этот метод только если данные уже сохранены или не представляют ценности, а ваша цель — просто вернуть диску работоспособность.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Команда</th>
+<th>Описание действия</th>
+<th>Риск потери данных</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>list disk</code></td>
+<td>Отображает список всех подключенных дисков</td>
+<td>Нет</td>
+</tr>
+<tr>
+<td><code>select disk N</code></td>
+<td>Выбирает диск для работы (N — номер)</td>
+<td>Высокий (при ошибке выбора)</td>
+</tr>
+<tr>
+<td><code>clean</code></td>
+<td>Полная очистка структуры разделов</td>
+<td>Полная потеря данных</td>
+</tr>
+<tr>
+<td><code>format fs=ntfs</code></td>
+<td>Создает новую файловую систему NTFS</td>
+<td>Полная потеря данных</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>После выполнения этих действий диск будет полностью чистым, с новой файловой системой NTFS и готовым к использованию. Это крайняя мера, когда логическое восстановление невозможно.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Интерфейс и поведение утилиты DiskPart могут незначительно отличаться в разных версиях Windows (10, 11, Server). Всегда перепроверяйте номер диска перед вводом команды очистки.</p>
+</blockquote>
+
+<h2 id="альтернативные-программы-для-конвертации">Альтернативные программы для конвертации</h2>
+
+<p>Когда встроенные средства Windows бессильны, на помощь приходят сторонние утилиты управления разделами. Программы вроде <em>AOMEI Partition Assistant</em>, <em>MiniTool Partition Wizard</em> или <em>Acronis Disk Director</em> обладают более продвинутыми алгоритмами работы с поврежденными таблицами разделов.</p>
+
+<p>Многие из этих приложений имеют функцию «Конвертировать в NTFS» или «Восстановить раздел», которая работает в обход стандартных ограничений Windows. Они часто могут прочитать RAW-раздел там, где проводник видит пустоту, и позволить скопировать файлы перед форматированием.</p>
+
+<ul>
+<li>🛡️ Создание загрузочного носителя: многие программы позволяют создать USB для работы вне системы.</li>
+<li>📊 Визуализация: графическое отображение структуры диска упрощает диагностику.</li>
+<li>⚙️ Глубокое сканирование: поиск потерянных разделов по сигнатурам файлов.</li>
+</ul>
+
+<p>Использование стороннего ПО особенно актуально, если диск используется в качестве загрузочного или системного, и доступ к нему из-под работающей Windows ограничен.</p>
+
+<details class="pb-accordion"><summary>Стоит ли покупать платные версии программ?</summary><div class="pb-accordion-body"><p>Для разового восстановления часто достаточно бесплатных версий (Free Edition), которые позволяют просканировать диск и показать файлы. Оплата требуется обычно только для функции записи восстановленных данных.</p></div></details>
+
+<h2 id="профилактика-появления-ошибок-raw">Профилактика появления ошибок RAW</h2>
+
+<p>Чтобы избежать повторения ситуации, важно соблюдать правила эксплуатации накопителей. Регулярное обслуживание файловой системы и правильный режим выключения компьютера сведут риски к минимуму.</p>
+
+<p>Настройте автоматическую проверку диска при загрузке, если система часто работает нестабильно. Также рекомендуется периодически делать дефрагментацию (для HDD) или оптимизацию (для SSD) через встроенные средства Windows.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Регулярное резервное копирование важных данных на облачные сервисы или второй физический диск — единственная 100% гарантия сохранности информации при любых сбоях.</p></aside>
+
+<p>Не забывайте использовать функцию безопасного извлечения для всех внешних носителей. Даже современная система кэширования записи может не успеть завершить операцию, если выдернуть флешку в момент активности.</p>
+
+<details>
+<summary>Можно ли восстановить данные после форматирования RAW в NTFS?</summary>
+<p>Да, если форматирование было быстрым. При быстром форматировании стирается только оглавление диска, а сами данные остаются на секторах до момента их перезаписи новыми файлами. Используйте программы для восстановления данных сразу после форматирования.</p>
+</details>
+
+<details>
+<summary>Почему команда chkdsk пишет "недопустимо для дисков RAW"?</summary>
+<p>Это означает, что повреждена сама служебная информация, описывающая файловую систему. Утилита не может определить тип ФС, чтобы проверить её. В этом случае поможет только форматирование или использование специализированного ПО для восстановления разделов.</p>
+</details>
+
+<details>
+<summary>Сколько времени занимает конвертация большого диска (2 ТБ+)?</summary>
+<p>Процесс может занять от 30 минут до нескольких часов. Время зависит от скорости вращения шпинделя (для HDD), количества битых секторов и объема проверяемых данных. Прерывать процесс категорически не рекомендуется.</p>
+</details>
+
+<details>
+<summary>Исчезнут ли файлы после исправления ошибки RAW?</summary>
+<p>При использовании команды <code>chkdsk</code> файлы должны сохраниться. Однако поврежденные фрагменты могут быть перемещены в папку <code>FOUND.000</code> с расширением <code>.chk</code>. При использовании команды <code>clean</code> в DiskPart все данные будут удалены безвозвратно.</p>
+</details>
+
+<details>
+<summary>Что делать, если диск определяется как RAW, но объем показывает 0 байт?</summary>
+<p>Это признак серьезного повреждения таблицы разделов или контроллера памяти. Шансы на восстановление своими силами минимальны. Рекомендуется обратиться в специализированный сервис, особенно если данные критически важны.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/remont-i-diagnostika/3/3e/3e-oshibka-stiralnoj-mashiny-samsung-kak-ustranit.html" class="pb-related-card">
+                <span class="pb-related-title">Ошибка 3E в стиральной машине Samsung: как устранить</span>
+                <span class="pb-related-desc">Подробная инструкция по устранению ошибки 3E в стиральных машинах Samsung. Проверка таходатчика, мот</span>
+            </a><a href="/remont-i-diagnostika/k/ka/kak-pereshit-kompyuternoe-kreslo.html" class="pb-related-card">
+                <span class="pb-related-title">Как перешить компьютерное кресло: пошаговая инструкция</span>
+                <span class="pb-related-desc">Узнайте, как самостоятельно заменить обивку на офисном кресле. Пошаговая инструкция по перетяжке, вы</span>
+            </a><a href="/remont-i-diagnostika/k/kh/kholodilnik-samsung-ne-morozit-chto-delat.html" class="pb-related-card">
+                <span class="pb-related-title">Холодильник Samsung не морозит: причины и как починить самому</span>
+                <span class="pb-related-desc">Почему холодильник Samsung не морозит? Диагностика неисправностей компрессора, датчиков и системы No</span>
+            </a><a href="/remont-i-diagnostika/k/ka/kak-snyat-krestovinu-s-ofisnogo-kresla-na-kolesikakh.html" class="pb-related-card">
+                <span class="pb-related-title">Как снять крестовину с офисного кресла: пошаговая инструкция</span>
+                <span class="pb-related-desc">Подробное руководство по демонтажу крестовины офисного стула. Советы по снятию газлифта, разборке пл</span>
+            </a><a href="/remont-i-diagnostika/t/te/tester-bloka-pitaniya-kompyutera-svoimi-rukami.html" class="pb-related-card">
+                <span class="pb-related-title">Тестер блока питания компьютера своими руками: схема и сборка</span>
+                <span class="pb-related-desc">Как сделать тестер БП своими руками: схемы, компоненты, проверка напряжений. Диагностика компьютерно</span>
+            </a><a href="/remont-i-diagnostika/m/mo/mozhno-li-zamenit-micro-usb-na-type-c.html" class="pb-related-card">
+                <span class="pb-related-title">Замена Micro USB на Type-C: можно ли и как сделать</span>
+                <span class="pb-related-desc">Можно ли заменить разъем Micro USB на Type-C? Подробная инструкция, необходимые инструменты и риски </span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Настройка PPPoE на OpenWrt: Пошаговая инструкция и устранение ошибок — Техно Гид</title>
+    <meta name="description" content="Полное руководство по настройке подключения PPPoE на роутерах с OpenWrt. Настройка интерфейса, MTU, статический IP и решение частых проблем.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/n/na/nastrojka-pppoe-na-openwrt.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Настройка PPPoE на OpenWrt: Пошаговая инструкция и устранение ошибок">
+    <meta property="og:description" content="Полное руководство по настройке подключения PPPoE на роутерах с OpenWrt. Настройка интерфейса, MTU, статический IP и решение частых проблем.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Настройка PPPoE на OpenWrt: Пошаговая инструкция и устранение ошибок</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-оборудования-и-проверка-доступа">Подготовка оборудования и проверка доступа</a></li><li><a href="#создание-нового-сетевого-интерфейса">Создание нового сетевого интерфейса</a></li><li><a href="#настройка-параметров-mtu-и-dns">Настройка параметров MTU и DNS</a></li><li><a href="#параметры-сессии-и-автопереподключение">Параметры сессии и автопереподключение</a></li><li><a href="#устранение-типичных-ошибок-подключения">Устранение типичных ошибок подключения</a></li><li><a href="#настройка-через-командную-строку-cli">Настройка через командную строку (CLI)</a></li><li><a href="#продвинутые-настройки-vlan-и-статические-ip">Продвинутые настройки: VLAN и статические IP</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/k/ka/kak-zagruzit-rolik-v-tik-tok.html">Как загрузить ролик в ТикТок: пошаговая инструкция и настройки</a></li><li><a href="/set-i-internet/t/ti/tianjie-4g-wifi-router.html">Tianjie 4G WiFi роутер: обзор, настройка и особенности использования</a></li><li><a href="/set-i-internet/s/st/standart-obzhimki-rj-45.html">Стандарт обжимки RJ-45: схемы T568A и T568B</a></li><li><a href="/set-i-internet/k/ka/kakoj-operator-luchshe-rabotaet-kogda-glushat-internet.html">Какой оператор лучше работает при глушении интернета</a></li><li><a href="/set-i-internet/s/sl/slushat-radiolyubitelej-onlajn-cherez-internet.html">Слушать радиолюбителей онлайн: сервисы, частоты и SDRApi</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Настройка PPPoE на OpenWrt: Полный гайд по подключению</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-оборудования-и-проверка-доступа">Подготовка оборудования и проверка доступа</a></li><li><a href="#создание-нового-сетевого-интерфейса">Создание нового сетевого интерфейса</a></li><li><a href="#настройка-параметров-mtu-и-dns">Настройка параметров MTU и DNS</a></li><li><a href="#параметры-сессии-и-автопереподключение">Параметры сессии и автопереподключение</a></li><li><a href="#устранение-типичных-ошибок-подключения">Устранение типичных ошибок подключения</a></li><li><a href="#настройка-через-командную-строку-cli">Настройка через командную строку (CLI)</a></li><li><a href="#продвинутые-настройки-vlan-и-статические-ip">Продвинутые настройки: VLAN и статические IP</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Подключение к интернету через протокол <code>PPPoE</code> остается стандартом для большинства провайдеров, предоставляющих услуги по технологии <em>xDSL</em> или оптоволоконным линиям с авторизацией по логину и паролю. Роутер на базе <em>OpenWrt</em> является мощным инструментом для организации такой сети, предлагая гибкость и стабильность, недоступные в прошивках от вендоров.</p>
+
+<p>В отличие от автоматического получения IP-адреса, <strong>PPPoE</strong> требует явного указания учетных данных и корректной настройки параметров сессии. Ошибки в конфигурации часто приводят к тому, что устройство не может установить соединение, несмотря на физически исправный кабель и рабочий порт провайдера.</p>
+
+<p>В данном материале мы разберем процесс настройки через веб-интерфейс <em>LUCI</em>, а также вспомним методы командной строки для опытных пользователей. Мы сосредоточимся на том, как правильно задать <strong>MTU</strong>, настроить <strong>DNS</strong> и обеспечить автоматическое переподключение при сбоях.</p>
+
+<h2 id="подготовка-оборудования-и-проверка-доступа">Подготовка оборудования и проверка доступа</h2>
+
+<p>Прежде чем приступать к редактированию конфигурационных файлов, необходимо убедиться, что физическое подключение выполнено верно. Кабель от провайдера (WAN) должен быть подключен в порт <strong>WAN</strong> или <strong>WAN4</strong> на устройстве. Если вы используете <em>OpenWrt</em> с пометкой <code>LAN</code> в названии интерфейса, возможно, потребуется переназначить порты в разделе <code>Сеть → Коммутатор</code>.</p>
+
+<p>Важно проверить, что вы получили доступ к веб-интерфейсу роутера. Обычно адрес по умолчанию — <code>192.168.1.1</code>. Если вы ранее настраивали устройство, IP-адрес мог быть изменен. Введите адрес в браузере и авторизуйтесь, используя <strong>пароль root</strong>. Если доступ к веб-интерфейсу потерян, придется сбрасывать настройки до заводских, зажав кнопку <code>Reset</code> на задней панели.</p>
+
+<blockquote>⚠️ Внимание: Перед началом настройки убедитесь, что у вас на руках есть логин и пароль от интернет-канала. Эти данные выдаются провайдером и часто указаны в договоре или личном кабинете. Без них настроить подключение невозможно.</blockquote>
+
+<p>Некоторые провайдеры используют <strong>MAC-адрес</strong> для привязки оборудования. Если раньше доступ был у компьютера, а теперь вы подключаете роутер, может потребоваться клонирование MAC-адреса или регистрация нового устройства у оператора. В интерфейсе <em>OpenWrt</em> это делается в настройках конкретного интерфейса.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед настройкой</h4><label class="check-item"><input type="checkbox"><span>Кабель провайдера в порту WAN</span></label><label class="check-item"><input type="checkbox"><span>Есть доступ к 192.168.1.1</span></label><label class="check-item"><input type="checkbox"><span>Логин и пароль от провайдера на руках</span></label><label class="check-item"><input type="checkbox"><span>Знаете тип подключения (PPPoE, DHCP, Static)</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="создание-нового-сетевого-интерфейса">Создание нового сетевого интерфейса</h2>
+
+<p>Переходим в раздел <code>Сеть → Интерфейсы</code>. Здесь вы увидите список существующих сетей, таких как <strong>LAN</strong> (локальная сеть) и, возможно, <strong>WAN</strong>. Для настройки нового подключения нажмите кнопку <strong>Добавить новый интерфейс</strong>. В открывшемся окне введите имя будущего интерфейса, например, <code>pppoe-wan</code>, и выберите протокол <strong>PPP over Ethernet</strong>.</p>
+
+<p>После выбора протокола система предложит указать физическое устройство (интерфейс), к которому будет привязано соединение. Выберите порт, в который воткнут кабель провайдера. Обычно это <code>eth0</code>, <code>eth1</code> или <code>br-wan</code>, в зависимости от вашей конфигурации. Если вы не уверены, лучше выбрать все физические порты, кроме LAN, чтобы не потерять доступ к роутеру.</p>
+
+<p>Перейдите на вкладку <strong>Общие настройки</strong>. Здесь необходимо ввести логин и пароль, полученные у провайдера. Обратите внимание на поля <strong>Имя пользователя</strong> и <strong>Пароль</strong>. Ошибки в регистре букв или лишние пробелы приведут к отказу в доступе <strong>Auth</strong>. Также проверьте поле <code>Override MTU</code>. Стандартное значение для PPPoE — <code>1492</code>, но некоторые провайдеры требуют <code>1480</code> или <code>1490</code>.</p>
+
+<details class="pb-accordion"><summary>Почему важно правильно выбрать физический интерфейс?</summary><div class="pb-accordion-body"><p>Если выбрать неверный порт (например, LAN), роутер попытается отправить пакеты PPPoE во внутреннюю сеть, что приведет к конфликту или полной неработоспособности интернета. Всегда сверяйте порт в разделе "Коммутатор".</p></div></details>
+
+<p>На вкладке <strong>Настройка DHCP</strong> убедитесь, что галочка "Предлагать DHCP-сервер" снята для WAN-интерфейса. Этот интерфейс должен получать адрес от провайдера или быть точкой аутентификации, но не раздавать адреса внутри сети, если вы не используете сложные схемы маршрутизации.</p>
+
+<h2 id="настройка-параметров-mtu-и-dns">Настройка параметров MTU и DNS</h2>
+
+<p>Критически важным параметром для протокола <strong>PPPoE</strong> является размер пакета данных <strong>MTU</strong> (Maximum Transmission Unit). Из-за накладных расходов на заголовок PPPoE, стандартный MTU Ethernet в <code>1500</code> байт не подходит. Если вы оставите значение по умолчанию, некоторые сайты могут не открываться, а видео — тормозить.</p>
+
+<p>Рекомендуемое значение для поля <code>Override MTU</code> — <strong>1492</strong>. Это значение работает в 95% случаев. Однако, если провайдер использует дополнительные тегирование (VLAN) или специфическую инкапсуляцию, значение может быть меньше. Если вы наблюдаете фрагментацию пакетов, попробуйте снизить MTU до <code>1480</code> или <code>1460</code>.</p>
+
+<blockquote>⚠️ Внимание: Неправильно заданный MTU может привести к тому, что большие пакеты будут отбрасываться маршрутизатором. Это проявляется в том, что загрузка файлов прерывается, а веб-страницы загружаются частично или не открываются вовсе.</blockquote>
+
+<p>Также стоит обратить внимание на DNS-серверы. По умолчанию роутер будет использовать DNS, которые предоставляет провайдер. Иногда они работают медленно или блокируют доступ к определенным ресурсам. Вы можете указать публичные DNS, такие как <code>Cloudflare (1.1.1.1)</code> или <code>Google (8.8.8.8)</code> в разделе <strong>Настройки DNS</strong>.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Рекомендуемое значение</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Протокол</td>
+<td>PPP over Ethernet</td>
+<td>Тип подключения к провайдеру</td>
+</tr>
+<tr>
+<td>MTU</td>
+<td>1492</td>
+<td>Максимальный размер пакета (с учетом заголовка)</td>
+</tr>
+<tr>
+<td>Keep Alive</td>
+<td>10 секунд</td>
+<td>Интервал отправки пакетов для поддержания сессии</td>
+</tr>
+<tr>
+<td>Таймаут</td>
+<td>60 секунд</td>
+<td>Время ожидания ответа до переподключения</td>
+</tr>
+</tbody>
+</table></div>
+
+<div class="pb-poll" id="poll-8e8ecdf8"><div class="pb-poll-question">📊 Какой провайдер вы используете?</div><div class="pb-poll-option" data-poll="8e8ecdf8" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Ростелеком</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="8e8ecdf8" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Билайн</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="8e8ecdf8" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">МТС</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="8e8ecdf8" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Дом.ру</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="8e8ecdf8" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другой</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="параметры-сессии-и-автопереподключение">Параметры сессии и автопереподключение</h2>
+
+<p>Для стабильной работы соединения необходимо настроить параметры <strong>Keep Alive</strong>. Эта функция отправляет специальные пакеты проверки состояния сессии. Если роутер не получает ответ от провайдера в течение заданного времени, он инициирует переподключение. Это помогает восстановить связь после временных сбоев в сети провайдера.</p>
+
+<p>В разделе <strong>Общие настройки</strong> найдите поле <code>Уровень</code> или <strong>Keep Alive</strong>. Установите интервал проверки, например, <code>10</code> секунд, и количество неудачных попыток перед переподключением — <code>5</code>. Это обеспечит баланс между стабильностью и нагрузкой на канал. Слишком частые проверки могут быть расценены провайдером как атака, а слишком редкие — приведут к долгому ожиданию восстановления связи.</p>
+
+<p>Также проверьте опцию <strong>Обнулять IP-адрес</strong>. Если провайдер выдает динамический IP, эта опция не обязательна, но если вы используете статический IP, убедитесь, что он прописан корректно в дополнительных настройках протокола. В некоторых случаях провайдеры требуют отключения опции <code>Use default gateway</code>, если у вас настроена сложная маршрутизация.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если после настройки связь пропадает через несколько минут, попробуйте увеличить значение "Таймаут" до 120 секунд. Некоторые дешевые модемы или провайдеры требуют больше времени на синхронизацию сессии.</p></aside>
+
+<h2 id="устранение-типичных-ошибок-подключения">Устранение типичных ошибок подключения</h2>
+
+<p>Частой ошибкой является получение сообщения <strong>Auth failed</strong> (ошибка авторизации). Это означает, что логин или пароль указаны неверно. Внимательно проверьте регистр букв, так как большинство провайдеров чувствительны к этому. Также убедитесь, что вы не вводите лишние пробелы в начале или конце строки.</p>
+
+<p>Другой распространенной проблемой является <strong>Loop detection</strong>. Если роутер обнаруживает, что он сам отправляет пакеты в свою же сеть, он блокирует соединение. Обычно это происходит, если оба порта (WAN и LAN) подключены к одному и тому же коммутатору или если настройка портов в <code>Network → Switch</code> выполнена неверно.</p>
+
+<p>Если статус соединения постоянно меняется между <strong>Up</strong> и <strong>Connecting</strong>, проверьте физический кабель. Поврежденный оптический модуль или некачественный патч-корд могут вызывать частые разрывы. Также попробуйте изменить режим работы <strong>Auto negotiation</strong> на жесткое значение скорости и дуплекса в настройках порта.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Корректная настройка MTU и Keep Alive — залог стабильной работы PPPoE сессии. Игнорирование этих параметров часто приводит к "плавающему" интернету, который то работает, то не работает.</p></aside>
+
+<h2 id="настройка-через-командную-строку-cli">Настройка через командную строку (CLI)</h2>
+
+<p>Для опытных пользователей настройка через консоль может быть быстрее и надежнее. Используйте утилиту <code>uci</code> (Unified Configuration Interface) для изменения параметров. Сначала создайте новый интерфейс PPPoE, добавив его в конфигурацию. Это позволяет избежать ошибок графического интерфейса.</p>
+
+<p>Для создания интерфейса выполните следующие команды в терминале роутера (через SSH):</p>
+
+<pre><code>uci set network.pppoe=interface
+<p>uci set network.pppoe.proto=pppoe</p>
+<p>uci set network.pppoe.ifname='eth0'</p>
+<p>uci set network.pppoe.username='ваш_логин'</p>
+<p>uci set network.pppoe.password='ваш_пароль'</p>
+<p>uci commit network</code></pre></p>
+
+<p>После внесения изменений необходимо перезапустить сетевой сервис или переподключить интерфейс. Команда <code>/etc/init.d/network restart</code> перезапустит все сетевые службы, что может временно прервать доступ к роутеру. Будьте осторожны при выполнении этой команды, если настраиваете устройство удаленно.</p>
+
+<blockquote>⚠️ Внимание: Ошибка в команде <code>uci</code> может привести к потере конфигурации. Всегда делайте резервную копию перед внесением изменений через консоль. Используйте команду <code>cat /etc/config/network > /tmp/network.bak</code> для сохранения текущих настроек.</blockquote>
+
+<h2 id="продвинутые-настройки-vlan-и-статические-ip">Продвинутые настройки: VLAN и статические IP</h2>
+
+<p>В некоторых случаях провайдеры требуют использования <strong>VLAN</strong> тегования. Это означает, что ваш трафик должен быть помечен определенным идентификатором (например, <code>VLAN 10</code>). В <em>OpenWrt</code> это реализуется через создание отдельного VLAN-интерфейса, который затем привязывается к физическому порту.</p>
+
+<p>Если провайдер предоставляет статический IP-адрес, вам нужно настроить интерфейс не как <strong>PPPoE</strong>, а как <strong>Static address</strong>. В этом случае в разделе <strong>Общие настройки</strong> вы вручную вводите IP-адрес, маску подсети, шлюз и DNS-серверы. Протокол <strong>PPPoE</strong> используется только для авторизации, а IP-адрес назначается статически от провайдера.</p>
+
+<p>Для настройки статического IP введите данные в поля <code>IP-адрес</code>, <code>Шлюз</code> и <code>DNS</code>. Убедитесь, что маска подсети соответствует требованиям провайдера (обычно <code>255.255.255.0</code>). Неправильная маска может привести к тому, что роутер не сможет найти шлюз и отправит пакеты в никуда.</p>
+
+<details class="pb-accordion"><summary>Что делать, если провайдер требует VLAN?</summary><div class="pb-accordion-body"><p>Создайте новый интерфейс в разделе "Сеть → Интерфейсы", выберите "Непривязанный" и укажите VLAN ID в настройках. Затем привяжите этот интерфейс к порту WAN. Это позволяет изолировать трафик провайдера от локальной сети.</p></div></details>
+
+<p>Иногда требуется настроить <strong>IPv6</strong> параллельно с IPv4. В разделе <strong>Настройки IPv6</strong> выберите режим <strong>SLAAC</strong> или <strong>DHCPv6</strong> в зависимости от требований провайдера. Если провайдер не поддерживает IPv6, выберите <strong>Отключено</strong>, чтобы избежать лишних попыток подключения, которые могут замедлять работу сети.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Проверка настроек VLAN критична для провайдеров, использующих tagged трафик. Без правильного тега сессия PPPoE не будет установлена, даже при правильном логине и пароле.</p></aside>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Как проверить статус подключения PPPoE?</summary>
+<p>Перейдите в раздел <code>Сеть → Интерфейсы</code> и найдите ваш интерфейс. Статус будет отображаться как <strong>Up</em> (подключено) или <strong>Unknown</em> (ошибка). Также можно использовать команду <code>logread | grep pppoe</code> в терминале для просмотра логов.</p>
+</details>
+
+<details>
+<summary>Что делать, если роутер не может получить IP-адрес?</summary>
+<p>Проверьте правильность ввода логина и пароля. Убедитесь, что кабель подключен в правильный порт. Если проблема сохраняется, попробуйте перезагрузить роутер и провайдерское оборудование.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать PPPoE на Wi-Fi роутере?</summary>
+<p>Да, большинство роутеров с <em>OpenWrt</strong> поддерживают PPPoE на беспроводных интерфейсах, если провайдер предоставляет доступ по Wi-Fi. Однако чаще используется проводное подключение.</p>
+</details>
+
+<details>
+<summary>Как сбросить настройки PPPoE?</summary>
+<p>Удалите интерфейс в разделе <code>Сеть → Интерфейсы</code> или выполните команду <code>uci delete network.pppoe</code> в терминале, затем перезапустите сеть.</p>
+</details>
+
+<details>
+<summary>Почему интернет работает плохо после настройки?</summary>
+<p>Проверьте значение <strong>MTU</em>. Если оно слишком большое, пакеты будут фрагментироваться. Уменьшите MTU до <code>1480</code> или <code>1460</code> и проверьте скорость.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/k/ka/kak-zagruzit-rolik-v-tik-tok.html" class="pb-related-card">
+                <span class="pb-related-title">Как загрузить ролик в ТикТок: пошаговая инструкция и настройки</span>
+                <span class="pb-related-desc">Пошаговая инструкция: как загрузить ролик в ТикТок с телефона и ПК. Настройка качества, удаление вод</span>
+            </a><a href="/set-i-internet/t/ti/tianjie-4g-wifi-router.html" class="pb-related-card">
+                <span class="pb-related-title">Tianjie 4G WiFi роутер: обзор, настройка и особенности использования</span>
+                <span class="pb-related-desc">Полный разбор роутера Tianjie 4G WiFi: характеристики, сравнение моделей, пошаговая настройка MIFI и</span>
+            </a><a href="/set-i-internet/s/st/standart-obzhimki-rj-45.html" class="pb-related-card">
+                <span class="pb-related-title">Стандарт обжимки RJ-45: схемы T568A и T568B</span>
+                <span class="pb-related-desc">Полная инструкция по обжимке кабеля витая пара по стандартам T568A и B. Схемы распиновки, выбор инст</span>
+            </a><a href="/set-i-internet/k/ka/kakoj-operator-luchshe-rabotaet-kogda-glushat-internet.html" class="pb-related-card">
+                <span class="pb-related-title">Какой оператор лучше работает при глушении интернета</span>
+                <span class="pb-related-desc">Полный разбор того, какой сотовый оператор эффективнее работает при блокировках. Сравнение технологи</span>
+            </a><a href="/set-i-internet/s/sl/slushat-radiolyubitelej-onlajn-cherez-internet.html" class="pb-related-card">
+                <span class="pb-related-title">Слушать радиолюбителей онлайн: сервисы, частоты и SDRApi</span>
+                <span class="pb-related-desc">Узнайте, как слушать эфир радиолюбителей через интернет. Обзор онлайн-радиосканеров, плейсментов SDR</span>
+            </a><a href="/set-i-internet/k/ka/kak-nazyvaetsya-vilka-dlya-interneta.html" class="pb-related-card">
+                <span class="pb-related-title">Как называется вилка для интернета: RJ-45, коннектор и кабель</span>
+                <span class="pb-related-desc">Узнайте, как правильно называется вилка для интернета. Разбор коннектора RJ-45, типов кабелей и схем</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Что такое UART порт: полное руководство по подключению и настройке — Техно Гид</title>
+    <meta name="description" content="Подробный разбор UART интерфейса: распиновка, назначение контактов, скорость передачи и отличия от USB. Как подключиться к микроконтроллерам и оборудованию.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/elektronika-i-gadzhety/c/ch/chto-takoe-uart-port.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Что такое UART порт: полное руководство по подключению и настройке">
+    <meta property="og:description" content="Подробный разбор UART интерфейса: распиновка, назначение контактов, скорость передачи и отличия от USB. Как подключиться к микроконтроллерам и оборудованию.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/elektronika-i-gadzhety/">Электроника и Гаджеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Что такое UART порт: полное руководство по подключению и настройке</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#принцип-асинхронной-передачи-данных">Принцип асинхронной передачи данных</a></li><li><a href="#физическая-реализация-и-распиновка-контактов">Физическая реализация и распиновка контактов</a></li><li><a href="#отличия-ttl-uart-от-стандарта-rs-232">Отличия TTL UART от стандарта RS-232</a></li><li><a href="#настройка-скорости-и-параметров-связи">Настройка скорости и параметров связи</a></li><li><a href="#подключение-через-usb-uart-адаптеры">Подключение через USB-UART адаптеры</a></li><li><a href="#диагностика-проблем-и-типичные-ошибки">Диагностика проблем и типичные ошибки</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/elektronika-i-gadzhety/v/ve/vertikalnyj-pylesos-syaomi-otzyvy.html">Вертикальный пылесос Xiaomi: честные отзывы, плюсы, минусы и выбор модели</a></li><li><a href="/elektronika-i-gadzhety/p/pr/proektor-svoimi-rukami-v-domashnikh-usloviyakh-bez-lupy.html">Проектор своими руками в домашних условиях без лупы: Пошаговая инструкция</a></li><li><a href="/elektronika-i-gadzhety/s/so/soni-erikson-raskladushka-starye-modeli.html">Сони Эриксон раскладушка: старые модели, характеристики и цены</a></li><li><a href="/elektronika-i-gadzhety/v/ve/vesy-dlya-zerna-skanvord-5-bukv.html">Весы для зерна сканворд 5 букв: ответы и устройство приборов</a></li><li><a href="/elektronika-i-gadzhety/h/hu/huawei-watch-fit-se-obzor.html">Huawei Watch Fit SE: Полный обзор, характеристики и тесты</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Что такое UART порт и как он работает в электронике</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#принцип-асинхронной-передачи-данных">Принцип асинхронной передачи данных</a></li><li><a href="#физическая-реализация-и-распиновка-контактов">Физическая реализация и распиновка контактов</a></li><li><a href="#отличия-ttl-uart-от-стандарта-rs-232">Отличия TTL UART от стандарта RS-232</a></li><li><a href="#настройка-скорости-и-параметров-связи">Настройка скорости и параметров связи</a></li><li><a href="#подключение-через-usb-uart-адаптеры">Подключение через USB-UART адаптеры</a></li><li><a href="#диагностика-проблем-и-типичные-ошибки">Диагностика проблем и типичные ошибки</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>В мире цифровой электроники и микроконтроллеров существует множество способов передачи данных между устройствами. Однако, когда речь заходит о базовом, надежном и простом обмене информацией, инженеры чаще всего обращаются к классическому последовательному интерфейсу. <strong>UART порт</strong> (Universal Asynchronous Receiver-Transmitter) остается стандартом де-факто для отладки прошивок, конфигурирования сетевого оборудования и общения с платами разработки вроде <em>Arduino</em> или <em>Raspberry Pi</em>.</p>
+
+<p>Понимание принципов работы этого интерфейса критически важно для любого специалиста, занимающегося ремонтом или разработкой электроники. В отличие от сложных высокоскоростных шин, этот протокол требует минимального количества проводов и не нуждается в тактовом сигнале, передаваемом по отдельной линии. Давайте разберемся, как именно происходит этот "диалог" между чипами и почему он до сих пор не утратил своей актуальности в эпоху гигабитных скоростей.</p>
+
+<h2 id="принцип-асинхронной-передачи-данных">Принцип асинхронной передачи данных</h2>
+
+<p>Аббревиатура UART расшифровывается как универсальный асинхронный приёмопередатчик. Ключевое слово здесь — <strong>асинхронный</strong>. Это означает, что передающее и принимающее устройства не имеют общего тактового генератора или отдельного провода для синхронизации импульсов. Вместо этого они договариваются о скорости обмена данными заранее.</p>
+
+<p>Оба устройства должны быть настроены на одинаковую скорость, известную как <strong>бодрейт</strong> (baud rate). Если отправитель посылает биты со скоростью 9600 бод, а приемник ожидает 115200 бод, вместо осмысленного текста вы получите набор бессвязных символов или "кракозябры". Согласование параметров происходит на этапе проектирования схемы или настройки терминальной программы.</p>
+
+<p>Процесс передачи каждого байта информации обрамляется специальными служебными битами. В начале посылается стартовый бит, который сообщает приемнику о начале передачи, а в конце — один или два стоповых бита, сигнализирующие об окончании пакета. Именно эта структура позволяет приемнику синхронизироваться с потоком данных "на лету", не требуя внешней синхронизации.</p>
+
+<blockquote>⚠️ Внимание: Несоответствие уровня напряжения логики (например, подключение 5В устройства к 3.3В порту) может привести к необратимому повреждению контроллера. Всегда проверяйте спецификации перед соединением проводов.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте логический анализатор или осциллограф для визуализации формы сигнала, если вы сомневаетесь в корректности передачи данных или наличии помех в линии.</p></aside>
+
+<h2 id="физическая-реализация-и-распиновка-контактов">Физическая реализация и распиновка контактов</h2>
+
+<p>Несмотря на то, что сам протокол определяет логику работы, физическое подключение обычно осуществляется через четыре основных контакта. В большинстве случаев для полноценного обмена данными достаточно всего двух линий, но для управления потоком могут потребоваться дополнительные сигналы.</p>
+
+<p>Основными линиями являются <strong>Tx</strong> (Transmit) и <strong>Rx</strong> (Receive). Линия Tx отвечает за передачу данных от устройства, а линия Rx — за их прием. При соединении двух устройств по схеме "точка-точка" необходимо перекрестить эти линии: Tx первого устройства подключается к Rx второго, и наоборот.</p>
+
+<p>Дополнительно в разъеме часто присутствуют линии питания и заземления. Контакт <strong>GND</strong> (Ground) является обязательным, так как он обеспечивает общую точку отсчета напряжений для обоих устройств. Без общего "земляного" провода передача данных невозможна, даже если сигнальные линии подключены верно.</p>
+
+<p>Иногда встречаются сигналы управления потоком RTS (Request To Send) и CTS (Clear To Send). Они используются в аппаратном контроле потока данных (Hardware Flow Control), чтобы предотвратить потерю информации при переполнении буфера приемника. В простых схемах отладки эти контакты часто остаются неподключенными.</p>
+
+<div class="pb-poll" id="poll-6d36c93e"><div class="pb-poll-question">📊 С каким типом UART интерфейсов вы сталкиваетесь чаще всего?</div><div class="pb-poll-option" data-poll="6d36c93e" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">TTL (3.3В/5В)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6d36c93e" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">RS-232 (±12В)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6d36c93e" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">RS-485 (дифференциальный)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6d36c93e" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">USB-UART конвертеры</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="отличия-ttl-uart-от-стандарта-rs-232">Отличия TTL UART от стандарта RS-232</h2>
+
+<p>Одной из самых распространенных ошибок новичков является путаница между логическими уровнями различных стандартов. Хотя протокол передачи данных может быть идентичным, электрические характеристики сигналов кардинально различаются, что делает прямое соединение невозможным без преобразователя.</p>
+
+<p>В микроконтроллерах и платах разработки используется логика <strong>TTL</strong> (Transistor-Transistor Logic). Здесь логический "0" соответствует напряжению около 0В, а логическая "1" — напряжению питания чипа, обычно 3.3В или 5В. Это низковольтные сигналы, безопасные для современной цифровой электроники.</p>
+
+<p>Классический компьютерный порт RS-232, который можно встретить в старом промышленном оборудовании или серверных стойках, использует инвертированную логику и гораздо более высокие напряжения. Здесь логический "0" кодируется положительным напряжением от +3В до +15В, а логическая "1" — отрицательным от -3В до -15В.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>TTL UART</th>
+<th>RS-232</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Логическая "1" (Mark)</td>
+<td>3.3В или 5В</td>
+<td>от -3В до -15В</td>
+</tr>
+<tr>
+<td>Логический "0" (Space)</td>
+<td>0В</td>
+<td>от +3В до +15В</td>
+</tr>
+<tr>
+<td>Максимальная длина кабеля</td>
+<1 метр</td>
+<td>до 15 метров</td>
+</tr>
+<tr>
+<td>Помехоустойчивость</td>
+<td>Низкая</td>
+<td>Высокая</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Для связи между устройствами с разными стандартами необходимо использовать специальные конвертеры уровня, построенные на микросхемах вроде <em>MAX232</em> или <em>SP3232</em>. Эти чипы преобразуют низковольтные сигналы микроконтроллера в высоковольтные сигналы стандарта RS-232 и обратно.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Никогда не подключайте порт RS-232 напрямую к GPIO пинам микроконтроллера — высокое напряжение гарантированно выведет порт из строя.</p></aside>
+
+<h2 id="настройка-скорости-и-параметров-связи">Настройка скорости и параметров связи</h2>
+
+<p>Успешная коммуникация зависит не только от правильного физического подключения, но и от точной настройки программных параметров терминала. Помимо скорости передачи (бодрейта), существует ряд других параметров, которые должны совпадать на обоих концах линии.</p>
+
+<p>Наиболее распространенная конфигурация обозначается как <strong>8N1</strong>. Это означает 8 бит данных, отсутствие бита четности (None) и 1 стоповый бит. Такая настройка подходит для подавляющего большинства современных устройств и микроконтроллеров.</p>
+
+<p>Бит четности (Parity) используется для простейшей проверки целостности данных. Он может быть установлен в значение Even (четный) или Odd (нечетный). Если в передаваемом байте количество единиц не соответствует заданному правилу четности, приемник может зарегистрировать ошибку передачи.</p>
+
+<p>Выбор неправильной скорости приводит к тому, что принимающая сторона считывает биты не в те моменты времени, когда они актуальны. В результате сдвиг фазы накапливается, и байты читаются с ошибками. Популярные значения бодрейта включают 9600, 19200, 57600 и 115200.</p>
+
+<blockquote>⚠️ Внимание: При работе с длинными кабелями на высоких скоростях (выше 57600 бод) могут возникать искажения сигнала. В таких случаях рекомендуется снизить скорость передачи или использовать экранированный провод.</blockquote>
+
+<details class="pb-accordion"><summary>Как рассчитать время передачи байта?</summary><div class="pb-accordion-body"><p>При скорости 9600 бод передача одного бита занимает примерно 104 мкс. С учетом стартового и стопового бита (всего 10 бит на байт), передача одного символа занимает около 1.04 мс.</p></div></details>
+
+<h2 id="подключение-через-usb-uart-адаптеры">Подключение через USB-UART адаптеры</h2>
+
+<p>Современные компьютеры и ноутбуки практически лишились физических COM-портов типа DB9. Для подключения к электронике инженеры используют USB-UART адаптеры, которые эмулируют последовательный порт через интерфейс USB.</p>
+
+<p>Внутри таких адаптеров находится микросхема-преобразователь, наиболее популярными из которых являются чипы от компании <em>FTDI</em> (например, <em>FT232RL</em>), а также решения от <em>Silicon Labs</em> (<em>CP2102</em>) и <em>Prolific</em> (<em>PL2303</em>). Эти устройства требуют установки драйверов в операционную систему.</p>
+
+<p>После подключения адаптера к USB-порту компьютера и установки драйверов, в диспетчере устройств появится новый виртуальный COM-порт. Именно к этому порту нужно подключаться в терминальных программах, таких как <em>PuTTY</em>, <em>Tera Term</em> или <em>Arduino IDE</em>.</p>
+
+<p>При выборе адаптера стоит обращать внимание на поддержку напряжений. Многие дешевые модели имеют перемычку для переключения между 3.3В и 5В, что делает их универсальными для работы с различными платами. Более дорогие модели могут иметь встроенную гальваническую развязку для защиты компьютера от высоковольтных скачков.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка работы USB-UART адаптера</h4><label class="check-item"><input type="checkbox"><span>Установить драйверы чипа (FTDI/CP2102)</span></label><label class="check-item"><input type="checkbox"><span>Подключить адаптер к USB</span></label><label class="check-item"><input type="checkbox"><span>Найти номер COM-порта в диспетчере</span></label><label class="check-item"><input type="checkbox"><span>Замкнуть Tx и Rx перемычкой для теста эхо</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="диагностика-проблем-и-типичные-ошибки">Диагностика проблем и типичные ошибки</h2>
+
+<p>Даже при правильной схеме подключения пользователи часто сталкиваются с отсутствием связи. Первым делом необходимо проверить целостность проводов и надежность контактов в разъемах. Плохой контакт на линии GND является самой частой причиной нестабильной работы.</p>
+
+<p>Если на экране терминала отображаются нечитаемые символы, в 99% случаев проблема кроется в неверно выбранной скорости передачи (бодрейте). Попробуйте перебрать стандартные значения, начиная с 9600 или 115200, пока не получите читаемый текст.</p>
+
+<p>Еще одной распространенной ошибкой является перепутанные линии Tx и Rx. Если вы видите тишину в терминале при отправке данных, попробуйте поменять местами провода сигнальных линий. Помните правило: выход одного устройства должен идти на вход другого.</p>
+
+<p>В некоторых случаях проблема может быть в отсутствии драйверов или конфликте портов в операционной системе. Переподключение устройства в другой USB-разъем или перезагрузка компьютера часто помогают решить программные сбои.</p>
+
+<details>
+<summary>Можно ли использовать UART для передачи звука или видео?</summary>
+<p>Теоретически возможно передать любые данные, но пропускная способность стандартного UART слишком мала для мультимедиа. Даже на максимальной скорости в несколько мегабит в секунду передача видео невозможна в реальном времени. Интерфейс предназначен для команд и текстовых данных.</p>
+</details>
+
+<details>
+<summary>В чем разница между UART, USART и I2C?</summary>
+<p>UART — асинхронный интерфейс без тактовой линии. USART (Universal Synchronous/Asynchronous Receiver-Transmitter) поддерживает также синхронный режим с тактированием. I2C — это совершенно другой протокол, использующий две линии (данные и такт) и адресацию устройств, что позволяет подключать множество приборов к одной шине.</p>
+</details>
+
+<details>
+<summary>Какое максимальное расстояние поддерживает UART?</summary>
+<p>Для стандартного TTL UART расстояние ограничено несколькими десятками сантиметров из-за низкого напряжения и восприимчивости к помехам. Стандарт RS-232 позволяет работать на дистанции до 15 метров, а промышленный стандарт RS-485 (также использующий асинхронную передачу) поддерживает длину линии до 1200 метров.</p>
+</details>
+
+<details>
+<summary>Почему мой адаптер не определяется в системе?</summary>
+<p>Скорее всего, не установлены драйверы для конкретной микросхемы конвертера (FTDI, CH340, CP2102). Скачайте драйвер с официального сайта производителя чипа. Также проверьте кабель USB, некоторые кабели предназначены только для зарядки и не имеют линий передачи данных.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/elektronika-i-gadzhety/v/ve/vertikalnyj-pylesos-syaomi-otzyvy.html" class="pb-related-card">
+                <span class="pb-related-title">Вертикальный пылесос Xiaomi: честные отзывы, плюсы, минусы и выбор модели</span>
+                <span class="pb-related-desc">Читайте объективные отзывы о вертикальных пылесосах Xiaomi. Разбор моделей, характеристики, реальные</span>
+            </a><a href="/elektronika-i-gadzhety/p/pr/proektor-svoimi-rukami-v-domashnikh-usloviyakh-bez-lupy.html" class="pb-related-card">
+                <span class="pb-related-title">Проектор своими руками в домашних условиях без лупы: Пошаговая инструкция</span>
+                <span class="pb-related-desc">Узнайте, как сделать проектор своими руками без лупы, используя смартфон, коробку и линзу Френеля. П</span>
+            </a><a href="/elektronika-i-gadzhety/s/so/soni-erikson-raskladushka-starye-modeli.html" class="pb-related-card">
+                <span class="pb-related-title">Сони Эриксон раскладушка: старые модели, характеристики и цены</span>
+                <span class="pb-related-desc">Обзор легендарных кнопочных телефонов Sony Ericsson в форм-факторе раскладушка. Модели Z530, Z610, Z</span>
+            </a><a href="/elektronika-i-gadzhety/v/ve/vesy-dlya-zerna-skanvord-5-bukv.html" class="pb-related-card">
+                <span class="pb-related-title">Весы для зерна сканворд 5 букв: ответы и устройство приборов</span>
+                <span class="pb-related-desc">Ищете ответ на сканворд? Узнайте, что такое весы для зерна (5 букв). Подробный обзор конструкций, пр</span>
+            </a><a href="/elektronika-i-gadzhety/h/hu/huawei-watch-fit-se-obzor.html" class="pb-related-card">
+                <span class="pb-related-title">Huawei Watch Fit SE: Полный обзор, характеристики и тесты</span>
+                <span class="pb-related-desc">Подробный обзор смарт-часов Huawei Watch Fit SE. Тест автономности, точность GPS, анализ корпуса и э</span>
+            </a><a href="/elektronika-i-gadzhety/n/na/nastrojki-bortovogo-kompyutera-kugoo-m4-pro.html" class="pb-related-card">
+                <span class="pb-related-title">Настройки бортового компьютера Kugoo M4 Pro: полная инструкция</span>
+                <span class="pb-related-desc">Подробный гид по настройке бортового компьютера электросамоката Kugoo M4 Pro. Как изменить ограничит</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

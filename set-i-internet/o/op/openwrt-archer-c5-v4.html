@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>OpenWRT для TP-Link Archer C5 v4: Установка, настройки и тонкости — Техно Гид</title>
+    <meta name="description" content="Полная инструкция по перепрошивке TP-Link Archer C5 версии 4 на OpenWRT. Обзор аппаратной платформы, выбор образа, пошаговая установка и тонкая настройка роутера.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/o/op/openwrt-archer-c5-v4.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="OpenWRT для TP-Link Archer C5 v4: Установка, настройки и тонкости">
+    <meta property="og:description" content="Полная инструкция по перепрошивке TP-Link Archer C5 версии 4 на OpenWRT. Обзор аппаратной платформы, выбор образа, пошаговая установка и тонкая настройка роутера.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">OpenWRT для TP-Link Archer C5 v4: Установка, настройки и тонкости</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-модернизацию-роутера">Введение в модернизацию роутера</a></li><li><a href="#аппаратная-специфика-версии-4">Аппаратная специфика версии 4</a></li><li><a href="#подготовка-к-установке-и-выбор-образа">Подготовка к установке и выбор образа</a></li><li><a href="#процесс-первичной-установки">Процесс первичной установки</a></li><li><a href="#настройка-сети-и-wi-fi">Настройка сети и Wi-Fi</a></li><li><a href="#установка-дополнительных-пакетов">Установка дополнительных пакетов</a></li><li><a href="#таблица-совместимости-и-характеристики">Таблица совместимости и характеристики</a></li><li><a href="#решение-частых-проблем">Решение частых проблем</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/k/ka/kak-uskorit-usb-modem.html">Как ускорить USB модем: 7 способов повысить скорость интернета</a></li><li><a href="/set-i-internet/m/mo/moshchnyj-usilitel-signala-sotovoj-svyazi.html">Мощный усилитель сигнала сотовой связи: выбор, установка и законность</a></li><li><a href="/set-i-internet/k/ka/kak-protyanut-kabel-interneta-v-kvartire.html">Как протянуть интернет-кабель в квартире: пошаговая инструкция</a></li><li><a href="/set-i-internet/k/ka/kak-razvesti-internet-kabel-po-kvartire.html">Как развести интернет кабель по квартире: полная инструкция 2026</a></li><li><a href="/set-i-internet/i/in/internet-24-ggts-i-5-ggts-v-chem-raznitsa.html">Wi-Fi 2.4 ГГц и 5 ГГц: Полная разница, скорости и как выбрать</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Переход на OpenWRT: Полное руководство для TP-Link Archer C5 v4</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-модернизацию-роутера">Введение в модернизацию роутера</a></li><li><a href="#аппаратная-специфика-версии-4">Аппаратная специфика версии 4</a></li><li><a href="#подготовка-к-установке-и-выбор-образа">Подготовка к установке и выбор образа</a></li><li><a href="#процесс-первичной-установки">Процесс первичной установки</a></li><li><a href="#настройка-сети-и-wi-fi">Настройка сети и Wi-Fi</a></li><li><a href="#установка-дополнительных-пакетов">Установка дополнительных пакетов</a></li><li><a href="#таблица-совместимости-и-характеристики">Таблица совместимости и характеристики</a></li><li><a href="#решение-частых-проблем">Решение частых проблем</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-модернизацию-роутера">Введение в модернизацию роутера</h2>
+<p>TP-Link <em>Archer C5</em> версии 4 — это популярная модель бюджетного сегмента, которая часто становится объектом внимания энтузиастов. Хотя стандартное прошивочное обеспечение производителя функционально, оно ограничивает возможности тонкой настройки и безопасности.</p>
+<p>Установка альтернативной операционной системы <strong>OpenWRT</strong> превращает этот роутер в мощный инструмент для построения сложных сетевых топологий. Вы получаете полный контроль над трафиком, возможность запуска сторонних пакетов и продвинутый файрвол.</p>
+<p>Однако версия 4 имеет свои <strong>особенности</strong>, отличающие её от предыдущих ревизий. Неправильный выбор образа может привести к неработоспособности устройства, поэтому важно внимательно изучить спецификации перед началом работы.</p>
+
+<h2 id="аппаратная-специфика-версии-4">Аппаратная специфика версии 4</h2>
+<p>Прежде чем приступать к миганию, необходимо убедиться, что вы имеете дело именно с версией 4. Визуально она может не отличаться от других версий, но внутренняя начинка может кардинально меняться. <strong>Процессор</strong> в этой ревизии базируется на архитектуре MediaTek, что требует использования специфических сборок ядра.</p>
+<p>Критически важным параметром является объем <strong>оперативной памяти</strong> (RAM) и флеш-памяти. Для <em>Archer C5 v4</em> эти показатели часто ограничены, что накладывает отпечаток на выбор пакетов, которые вы сможете установить. Переполнение памяти при загрузке может вызвать нестабильную работу системы.</p>
+<p>Обратите внимание на маркировку на наклейке внизу корпуса. Если там указано"V4.0" или"Hardware Version 4", вам необходим образ, совместимый именно с этой ревизией. Использование образа от v1 или v2 приведет к тому, что роутер превратится в"кирпич".</p>
+
+<blockquote>
+<p>⚠️ Внимание: Убедитесь, что вы скачиваете образ именно для модели <em>Mediatek MT7621</em>, так как другие версии Archer C5 могут использовать чипы Qualcomm, которые несовместимы с этим руководством.</p>
+</blockquote>
+
+<h2 id="подготовка-к-установке-и-выбор-образа">Подготовка к установке и выбор образа</h2>
+<p>Скачивание правильного образа — это 90% успеха. Официальный репозиторий <strong>OpenWRT</strong> содержит специализированные файлы для различных архитектур. Вам нужно найти раздел, посвященный устройствам MediaTek, и уточнить подмодель устройства.</p>
+<p>Обычно доступны два типа файлов: заводской образ (factory.img) и образ для прошивки через веб-интерфейс (sysupgrade.bin). Для первого раза, когда вы еще находитесь на родной прошивке, используйте <code>factory.bin</code>. Это позволяет загрузить систему через стандартную утилиту обновления.</p>
+<p>После успешной установки нужно будет использовать <code>sysupgrade.bin</code> для обновления системы в будущем. Всегда проверяйте контрольные суммы (SHA256) скачанных файлов на сайте разработчика, чтобы исключить риск повреждения данных при загрузке.</p>
+<p>Иногда стандартный образ может не поддерживать все функции Wi-Fi модулей. В таких случаях рекомендуется использовать"Snapshot" версии или кастомные сборки от сообщества, где драйверы уже адаптированы под конкретную версию <strong>медиа-контроллера</strong>.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к перепрошивке</h4><label class="check-item"><input type="checkbox"><span>Скачать заводской образ OpenWRT</span></label><label class="check-item"><input type="checkbox"><span>Проверить контрольную сумму файла</span></label><label class="check-item"><input type="checkbox"><span>Подготовить кабель Ethernet</span></label><label class="check-item"><input type="checkbox"><span>Скачать драйверы для USB-порта (если нужно)</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<blockquote>
+<p>⚠️ Внимание: Если вы планируете использовать провайдер с привязкой по MAC-адресу, обязательно пропишите текущий адрес в настройках или сохраните его перед сбросом, иначе интернет может не работать после установки новой системы.</p>
+</blockquote>
+
+<h2 id="процесс-первичной-установки">Процесс первичной установки</h2>
+<p>Подключите компьютер к роутеру через кабель в LAN-порт. Перейдите в веб-интерфейс родной прошивки, найдите раздел"Системные инструменты" или"Обновление ПО". Загрузите файл <code>factory.bin</code> и подождите завершения процесса. Не прерывайте питание в это время.</p>
+<p>После перезагрузки устройство получит новый IP-адрес, обычно это <code>192.168.1.1</code>. Вам потребуется вручную прописать статический IP на компьютере в диапазоне <code>192.168.1.x</code>, чтобы получить доступ к панели управления OpenWRT.</p>
+<p>Первый вход в систему осуществляется без пароля (или с паролем по умолчанию, указанным в документации). Сразу после входа рекомендуется сменить пароль администратора и настроить сетевые интерфейсы под ваши нужды. <strong>Настройка сети</strong> — это критический этап, требующий внимания.</p>
+<p>Если роутер не загружается, попробуйте загрузиться в режиме восстановления (TFTP). Для этого нужно сбросить настройки кнопкой Reset и подключить кабель, пока индикатор мигает определенным образом. Это сложный, но надежный способ спасения устройства.</p>
+
+<div class="pb-poll" id="poll-e903dd43"><div class="pb-poll-question">📊 Сколько устройств подключено к вашему роутеру?</div><div class="pb-poll-option" data-poll="e903dd43" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Менее 5</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e903dd43" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">5-15 устройств</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e903dd43" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">15-30 устройств</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e903dd43" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Более 30 устройств</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<blockquote>
+<p>⚠️ Внимание: После установки OpenWRT Wi-Fi сети могут быть отключены по умолчанию. Вам придется зайти в раздел"Беспроводная сеть" и вручную активировать точки доступа 2.4 ГГц и 5 ГГц.</p>
+</blockquote>
+
+<h2 id="настройка-сети-и-wi-fi">Настройка сети и Wi-Fi</h2>
+<p>В отличие от родного интерфейса, OpenWRT предоставляет гибкую настройку параметров беспроводной сети. Вы можетено управлять мощностью передачи сигнала, каналами и шириной полосы пропускания. Это позволяет избежать интерференции с соседскими сетями.</p>
+<p>Для обеспечения безопасности настоятельно рекомендуется использовать протокол шифрования <strong>WPA2</strong> или <strong>WPA3</strong> (если железо поддерживает). Настройка режима работы (AP, Client, Repeater) осуществляется через меню"Wireless".</p>
+<p>Особое внимание уделите разделу <code>Network → Wireless</code>. Здесь вы увидите список радиомодулей. Убедитесь, что оба диапазона (2.4 ГГц и 5 ГГц) активны и имеют назначенные SSID. Иногда драйверы для <em>MT7621</em> требуют принудительного включения определенных опций в конфигурационном файле.</p>
+<p>Для продвинутых пользователей доступна настройка QoS (Quality of Service), которая позволяет приоритизировать трафик. Это важно, если вы используете роутер для онлайн-игр или видеоконференций, чтобы исключить задержки при загрузке файлов.</p>
+
+<details class="pb-accordion"><summary>Особенности драйверов MT76</summary><div class="pb-accordion-body"><p>Драйверы MediaTek в ядре Linux постоянно обновляются. Версия v4 роутера использует специфический чип, который требует последних патчей для корректной работы 5 ГГц диапазона на высокой скорости.</p></div></details>
+
+<p>Настройка DHCP-сервера также должна быть проверена. Убедитесь, что диапазон раздаваемых адресов не конфликтует с другими устройствами в вашей сети, если вы используете несколько роутеров.</p>
+
+<h2 id="установка-дополнительных-пакетов">Установка дополнительных пакетов</h2>
+<p>Сила OpenWRT заключается в его модульности. Вы можете установить <strong>AdGuard Home</strong> для блокировки рекламы на всех устройствах сети или <strong>OpenVPN</strong> для создания защищенного туннеля. Все это делается через встроенный менеджер пакетов <code>opkg</code>.</p>
+<p>Для начала обновите список пакетов, выполнив команду <code>opkg update</code>. Затем можно устанавливать нужные утилиты, например, <code>opkg install luci-app-adblock</code>. Однако помните, что объем памяти ограничен, и установка лишних модулей может привести к ошибкам.</p>
+<p>Если вам не хватает места, рассмотрите возможность подключения внешнего USB-накопителя. В настройках файловой системы можно смонтировать диск в точку <code>/overlay</code>, что значительно расширит возможности для хранения конфигураций и лог-файлов.</p>
+<p>Некоторые пакеты требуют установки зависимостей. Менеджер пакетов обычно решает эту задачу автоматически, но иногда возникают конфликты версий. В таких случаях придется вручную удалять старые библиотеки или искать более совместимые версии софта.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед установкой тяжелых пакетов вроде Tor-шлюза проверьте загрузку процессора через команду top, чтобы убедиться, что аппаратная часть справится с нагрузкой.</p></aside>
+
+<h2 id="таблица-совместимости-и-характеристики">Таблица совместимости и характеристики</h2>
+<p>Ниже приведена сводная таблица ключевых характеристик и требований для корректной работы OpenWRT на данной модели.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Значение / Требование</th>
+<th>Примечание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Процессор</td>
+<td>MT7621 @ 880 MHz</td>
+<td>Двухъядерный, требует 64-битных сборок</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>128 МБ / 256 МБ</td>
+<td>Зависит от ревизии платы (проверьте наклейку)</td>
+</tr>
+<tr>
+<td>Flash</td>
+<td>16 МБ</td>
+<td>Ограничено для установки пакетов</td>
+</tr>
+<tr>
+<td>Wi-Fi чип</td>
+<td>MT7612E + MT7603E</td>
+<td>Требуется специфический драйвер Linux</td>
+</tr>
+<tr>
+<td>Интерфейс</td>
+<td>5x Gigabit LAN/WAN</td>
+<td>Поддержка VLAN на аппаратном уровне</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Эти данные являются базовыми для принятия решения о целесообразности перепрошивки. Если вам требуется высокая производительность в VPN, 128 МБ RAM могут стать узким местом.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Обновление списка пакетов opkg и установка только необходимых модулей критически важно для стабильной работы системы на малом объеме памяти.</p></aside>
+
+<h2 id="решение-частых-проблем">Решение частых проблем</h2>
+<p>Иногда после обновления пользователи сталкиваются с потерей Wi-Fi сигнала или нестабильным соединением. В 90% случаев это связано с неправильной настройкой регуляций мощности сигнала или устаревшими драйверами. Попробуйте обновить ядро до последней стабильной версии.</p>
+<p>Если роутер постоянно перезагружается, проверьте файл конфигурации <code>/etc/config/network</code>. Ошибка в синтаксисе или циклическая ссылка могут вызвать сбой демона сети. В таких ситуациях помогает загрузка в безопасном режиме через кнопку Reset.</p>
+<p>Нестабильность портов USB (если они есть в модификации) часто решается установкой пакетов <code>kmod-usb-core</code> и <code>kmod-usb-storage</code>. Без них система не увидит подключенные накопители или модемы.</p>
+<p>Сложности с переходом на OpenWRT часто возникают из-за различий в логике работы. Вы привыкли к простым настройкам, а здесь получаете множество параметров. Не бойтесь экспериментировать, но делайте это постепенно, записывая изменения.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При использовании USB-модемов для раздачи интернета убедитесь, что их драйверы уже включены в ваше ядро или доступны в репозитории, иначе система не распознает устройство сразу после подключения.</p>
+</blockquote>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Можно ли вернуть оригинальную прошивку TP-Link после установки OpenWRT?</summary>
+<p>Да, это возможно. Для этого нужно загрузить оригинальный файл прошивки (обычно <code>tplink_recovery.bin</code>) через режим восстановления или веб-интерфейс OpenWRT, если он позволяет загружать кастомные образы. Однако процесс может быть не таким простым, как обратное обновление, и требует точного следования инструкциям производителя.</p>
+</details>
+
+<details>
+<summary>Почему Wi-Fi работает медленно после установки OpenWRT?</summary>
+<p>Скорость может падать из-за использования программного шифрования вместо аппаратного, если драйверы не настроены корректно. Также проверьте настройки канала и ширины полосы. Иногда помогает принудительная установка драйверов <code>mac80211</code> и ручной выбор канала, чтобы избежать помех.</p>
+</details>
+
+<details>
+<summary>Нужен ли USB-кабель для прошивки?</summary>
+<p>Обычно достаточно сетевого подключения через Ethernet для использования веб-интерфейса. Тег <code>UART</code> или USB-кабель (TTL) потребуется только в случае, если устройство превратилось в"кирпич" и не загружается по сети, и вам нужно получить доступ к консоли для восстановления.</p>
+</details>
+
+<details>
+<summary>Работает ли OpenWRT с IPv6 на этой модели?</summary>
+<p>Да, <em>Archer C5 v4</em> поддерживает IPv6. Однако для корректной работы необходимо правильно настроить параметры <code>ULA</code> и <code>Prefix Delegation</code> в интерфейсе. Некоторые провайдеры могут требовать специфических настроек DHCPv6, которые нужно вводить вручную.</p>
+</details>
+
+<details>
+<summary>Как проверить, какой версии OpenWRT установлен у меня?</summary>
+<p>Зайдите в веб-интерфейс, перейдите в раздел"Система" (System) и посмотрите пункт"Обзор" (Overview). Там будет указана версия ядра и дата сборки. Также можно использовать команду <code>cat /etc/openwrt_release</code> в терминале через SSH.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/k/ka/kak-uskorit-usb-modem.html" class="pb-related-card">
+                <span class="pb-related-title">Как ускорить USB модем: 7 способов повысить скорость интернета</span>
+                <span class="pb-related-desc">Практические советы по увеличению скорости USB-модема. Настройка прошивки, антенны, выбора оператора</span>
+            </a><a href="/set-i-internet/m/mo/moshchnyj-usilitel-signala-sotovoj-svyazi.html" class="pb-related-card">
+                <span class="pb-related-title">Мощный усилитель сигнала сотовой связи: выбор, установка и законность</span>
+                <span class="pb-related-desc">Полный гайд по выбору и установке мощного репитера сотовой связи. Разбор частот, мощности, легальнос</span>
+            </a><a href="/set-i-internet/k/ka/kak-protyanut-kabel-interneta-v-kvartire.html" class="pb-related-card">
+                <span class="pb-related-title">Как протянуть интернет-кабель в квартире: пошаговая инструкция</span>
+                <span class="pb-related-desc">Полное руководство по прокладке сетевого кабеля в квартире. Выбор кабеля, способы монтажа, инструмен</span>
+            </a><a href="/set-i-internet/k/ka/kak-razvesti-internet-kabel-po-kvartire.html" class="pb-related-card">
+                <span class="pb-related-title">Как развести интернет кабель по квартире: полная инструкция 2026</span>
+                <span class="pb-related-desc">Поквартирная разводка интернета своими руками. Выбор кабеля, монтаж, обжим коннекторов и настройка т</span>
+            </a><a href="/set-i-internet/i/in/internet-24-ggts-i-5-ggts-v-chem-raznitsa.html" class="pb-related-card">
+                <span class="pb-related-title">Wi-Fi 2.4 ГГц и 5 ГГц: Полная разница, скорости и как выбрать</span>
+                <span class="pb-related-desc">Узнайте, чем отличается диапазон 2.4 ГГц от 5 ГГц. Сравнение скорости, дальности и помех. Советы по </span>
+            </a><a href="/set-i-internet/k/ka/kak-ostavit-nomer-telefona-i-perejti-na-drugogo-operatora.html" class="pb-related-card">
+                <span class="pb-related-title">Как сохранить номер при смене оператора: пошаговая инструкция</span>
+                <span class="pb-related-desc">Полный гид по переходу на другого оператора с сохранением номера (MNP). Условия, сроки, причины отка</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

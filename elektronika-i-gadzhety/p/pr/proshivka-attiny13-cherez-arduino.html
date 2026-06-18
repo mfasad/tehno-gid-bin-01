@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Прошивка ATtiny13 через Arduino: Полная инструкция — Техно Гид</title>
+    <meta name="description" content="Как прошить ATtiny13 с помощью Arduino Uno. Подробное руководство по подключению, настройке IDE и загрузке кода. Схемы и советы.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/elektronika-i-gadzhety/p/pr/proshivka-attiny13-cherez-arduino.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Прошивка ATtiny13 через Arduino: Полная инструкция">
+    <meta property="og:description" content="Как прошить ATtiny13 с помощью Arduino Uno. Подробное руководство по подключению, настройке IDE и загрузке кода. Схемы и советы.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/elektronika-i-gadzhety/">Электроника и Гаджеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Прошивка ATtiny13 через Arduino: Полная инструкция</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-оборудования-и-выбор-платы-программатора">Подготовка оборудования и выбор платы-программатора</a></li><li><a href="#установка-поддержки-attiny-в-arduino-ide">Установка поддержки ATtiny в Arduino IDE</a></li><li><a href="#схема-подключения-attiny13-к-arduino">Схема подключения ATtiny13 к Arduino</a></li><li><a href="#загрузка-скетча-arduinoisp">Загрузка скетча ArduinoISP</a></li><li><a href="#процесс-записи-прошивки-и-настройка-фьюзов">Процесс записи прошивки и настройка фьюзов</a></li><li><a href="#отладка-и-проверка-работоспособности-схемы">Отладка и проверка работоспособности схемы</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/elektronika-i-gadzhety/k/kt/kto-izobrel-pervyj-v-mire-telefon.html">Кто изобрел телефон: споры, факты и история создания</a></li><li><a href="/elektronika-i-gadzhety/s/sp/sputnikovyj-telefon-kakoj-vybrat.html">Спутниковый телефон: какой выбрать для экстремальных путешествий</a></li><li><a href="/elektronika-i-gadzhety/p/po/pochemu-ne-obrazuetsya-pena-v-dispensere.html">Почему не образуется пена в диспенсере: причины и решение</a></li><li><a href="/elektronika-i-gadzhety/k/ka/kak-vyglyadit-nokia-3310.html">Как выглядит Nokia 3310: Внешний вид, дизайн и особенности модели</a></li><li><a href="/elektronika-i-gadzhety/k/ku/kupit-korrektor-dlya-paltsev-nog.html">Купить корректор для пальцев ног: выбор, виды и цены</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Прошивка ATtiny13 через Arduino: Пошаговое руководство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-оборудования-и-выбор-платы-программатора">Подготовка оборудования и выбор платы-программатора</a></li><li><a href="#установка-поддержки-attiny-в-arduino-ide">Установка поддержки ATtiny в Arduino IDE</a></li><li><a href="#схема-подключения-attiny13-к-arduino">Схема подключения ATtiny13 к Arduino</a></li><li><a href="#загрузка-скетча-arduinoisp">Загрузка скетча ArduinoISP</a></li><li><a href="#процесс-записи-прошивки-и-настройка-фьюзов">Процесс записи прошивки и настройка фьюзов</a></li><li><a href="#отладка-и-проверка-работоспособности-схемы">Отладка и проверка работоспособности схемы</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Микроконтроллеры семейства <em>ATtiny</em> от компании <em>Microchip</em> (ранее <em>Atmel</em>) давно завоевали популярность среди радиолюбителей благодаря своей компактности и низкой стоимости. Модель <strong>ATtiny13</strong> является одной из самых доступных в линейке, обладая 6 выводами и встроенным тактовым генератором. Однако работа с ним напрямую через стандартный программатор может быть сложной для новичков из-за необходимости настройки фьюзов и специальных утилит.</p>
+
+<p>К счастью, существует элегантное решение, позволяющее превратить популярную плату <em>Arduino Uno</em> или <em>Nano</em> в полноценный программатор <strong>ISP</strong> (In-System Programming). Этот метод не требует покупки дополнительного оборудования и позволяет загружать скетчи прямо из привычной среды разработки <em>Arduino IDE</em>. Вы получаете возможность использовать всю мощь экосистемы Ардуино для создания миниатюрных автономных устройств на базе крошечного чипа.</p>
+
+<p>В этой статье мы детально разберем процесс подготовки оборудования, настройки программного обеспечения и физической коммутации проводов. Вы узнаете, как избежать распространенных ошибок при пайке и проверке соединений, а также поймете принципы работы внутреннего тактирования. Использование <mark>внутреннего генератора 9.6 МГц</mark> является стандартным решением для ATtiny13, что упрощает схему до минимума, убирая необходимость во внешних кварцевых резонаторах.</p>
+
+<h2 id="подготовка-оборудования-и-выбор-платы-программатора">Подготовка оборудования и выбор платы-программатора</h2>
+
+<p>Для начала вам потребуется сама плата Arduino, которая будет выступать в роли программатора. Наиболее подходящими вариантами являются модели на базе чипа <em>ATmega328P</em>, такие как <strong>Arduino Uno</strong> или <strong>Arduino Nano</strong>. Эти платы стабильно работают в режиме ISP и имеют необходимую прошивку для эмуляции программатора. Важно убедиться, что ваша плата исправна и корректно определяется компьютером.</p>
+
+<p>Помимо основной платы, вам понадобится целевой микроконтроллер <em>ATtiny13A</em> или <em>ATtiny13</em>. Обратите внимание, что версия с буквой "A" является более современной и энергоэффективной, хотя метод прошивки для них практически идентичен. Также подготовьте макетную плату (breadboard) и соединительные провода типа "папа-папа".</p>
+
+<p>Качество соединений играет критическую роль в успехе операции. Плохой контакт может привести к ошибкам верификации или повреждению порта. Рекомендуется использовать новые провода с надежной изоляцией. Если вы планируете прошивать чип многократно, имеет смысл собрать простой адаптер из панельки для микросхем, чтобы не вставлять сам чип каждый раз в макетную плату.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Перед началом любых манипуляций с проводами обязательно отключите плату Arduino от USB-порта компьютера. Подключение или отключение проводов под напряжением может вызвать короткое замыкание и вывести порт USB или микроконтроллер из строя.</p>
+</blockquote>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка готовности к прошивке</h4><label class="check-item"><input type="checkbox"><span>Наличие платы Arduino Uno/Nano</span></label><label class="check-item"><input type="checkbox"><span>Наличие чипа ATtiny13/13A</span></label><label class="check-item"><input type="checkbox"><span>Установленная Arduino IDE</span></label><label class="check-item"><input type="checkbox"><span>Наличие соединительных проводов</span></label><label class="check-item"><input type="checkbox"><span>Работающий USB-кабель</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="установка-поддержки-attiny-в-arduino-ide">Установка поддержки ATtiny в Arduino IDE</h2>
+
+<p>Стандартная установка среды <em>Arduino IDE</em> не содержит библиотек для работы с микроконтроллерами серии <strong>ATtiny</strong>. Чтобы добавить эту возможность, необходимо установить сторонние ядра разработчиков. Существует несколько популярных репозиториев, но наиболее стабильным и проверенным временем является пакет от <em>David Mellis</em> или <em>Spence Konde</em>.</p>
+
+<p>Процесс установки может отличаться в зависимости от версии IDE. В новых версиях (1.8.x и 2.x) удобнее всего использовать менеджер плат. Вам нужно открыть настройки и добавить URL репозитория в поле дополнительных ссылок. После этого в диспетчере плат появится возможность установить пакет "ATtinyCore".</p>
+
+<p>Альтернативный метод предполагает ручное скачивание архива с GitHub и распаковку его в папку <code>hardware</code> внутри директории скетчей. Этот способ чаще использовался в старых версиях IDE, но все еще актуален, если автоматическая установка по каким-то причинам недоступна. После установки ядер обязательно перезапустите среду разработки.</p>
+
+<details class="pb-accordion"><summary>Ссылка на репозиторий для установки</summary><div class="pb-accordion-body"><p>Для установки через менеджер плат используйте следующую ссылку в настройках: https://mcudude.github.io/MicroCore/package_MCUdude_MicroCore_index.json. Этот пакет обеспечивает отличную поддержку ATtiny13 и оптимизирован для малого объема памяти.</p></div></details>
+
+<p>После успешной установки в меню выбора плат появится новая категория. Выберите <code>ATtiny13</code> из списка. Критически важно правильно настроить параметры: в качестве процессора укажите <code>ATtiny13</code>, а в разделе "Clock" (тактирование) выберите <code>Internal 9.6 MHz</code>. Именно эта частота является штатной для данного чипа и обеспечивает оптимальную скорость работы периферии.</p>
+
+<h2 id="схема-подключения-attiny13-к-arduino">Схема подключения ATtiny13 к Arduino</h2>
+
+<p>Физическое соединение осуществляется по протоколу <strong>SPI</strong> (Serial Peripheral Interface). Пины на плате Arduino имеют строгое назначение для режима программатора. Ошибки в распайке — самая частая причина неудачной прошивки. Внимательно сверяйтесь с распиновкой вашей конкретной модели Arduino, так как расположение выводов на <em>Uno</em> и <em>Nano</em> может визуально отличаться, хотя логика подключения едина.</p>
+
+<p>Для Arduino Uno соединения выглядят следующим образом: пин 10 подключается к выводу RESET целевого чипа, пин 11 к MOSI, пин 12 к MISO, а пин 13 к SCK. Также необходимо соединить линии питания: 5V к VCC и GND к GND. Нумерация выводов у самого ATtiny13 начинается против часовой стрелки от ключа-выреза на корпусе.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Пин Arduino Uno</th>
+<th>Функция SPI</th>
+<th>Пин ATtiny13 (номер вывода)</th>
+<th>Назначение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>RESET</td>
+<td>1</td>
+<td>Сброс программатора</td>
+</tr>
+<tr>
+<td>11</td>
+<td>MOSI</td>
+<td>7</td>
+<td>Master Out Slave In</td>
+</tr>
+<tr>
+<td>12</td>
+<td>MISO</td>
+<td>6</td>
+<td>Master In Slave Out</td>
+</tr>
+<tr>
+<td>13</td>
+<td>SCK</td>
+<td>8</td>
+<td>Тактовый сигнал</td>
+</tr>
+<tr>
+<td>5V</td>
+<td>VCC</td>
+<td>8</td>
+<td>Питание (+5В)</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Обратите внимание, что выводы 7 и 8 на ATtiny13 совмещают функции питания и данных. Вывод 8 является одновременно VCC и SCK в разных контекстах, но при прошивке мы используем его строго как тактовый вход, а питание подаем на тот же пин. Вывод 2 и 3 можно использовать для подключения светодиода для проверки работы прошивки после завершения процесса.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте конденсатор 10 мкФ между пином RESET и GND на плате Arduino, если она самопроизвольно перезагружается во время прошивки. Это предотвратит сброс программатора при открытии порта.</p></aside>
+
+<h2 id="загрузка-скетча-arduinoisp">Загрузка скетча ArduinoISP</h2>
+
+<p>Прежде чем прошивать сам микроконтроллер <em>ATtiny13</em>, необходимо превратить вашу плату Arduino в программатор. Для этого в среде разработки существует стандартный пример, который называется <strong>ArduinoISP</strong>. Найдите его в меню: <code>File → Examples → 01.Basics → ArduinoISP</code>. В некоторых версиях IDE путь может немного отличаться, но суть остается прежней.</p>
+
+<p>Загрузите этот скетч на плату Arduino, предварительно выбрав в настройках вашу модель (например, <em>Arduino Uno</em>) и правильный порт COM. После успешной загрузки на плате должны замигать специальные светодиоды, индицирующие режим ожидания команды. Зеленый светодиод (Heartbeat) будет мигать, показывая, что программатор активен и готов к работе.</p>
+
+<p>Теперь, когда Arduino работает в режиме ISP, можно переходить к загрузке кода на целевой чип. Напишите простой тестовый скетч, например, мигание светодиодом (Blink). В функции <code>setup</code> объявите пин, к которому подключен светодиод, как выход, а в <code>loop</code> реализуйте циклическое включение и выключение с задержкой.</p>
+
+<p>При компиляции кода для ATtiny13 вы можете столкнуться с предупреждениями о размере памяти. У этого чипа всего 1 Кбайт флеш-памяти, поэтому сложные библиотеки и функции могут не поместиться. Старайтесь писать код максимально лаконично, избегая лишних вызовов функций и тяжелых вычислений с плавающей точкой.</p>
+
+<h2 id="процесс-записи-прошивки-и-настройка-фьюзов">Процесс записи прошивки и настройка фьюзов</h2>
+
+<p>Самый ответственный этап — непосредственная записьhex-кода в микросхему. В меню инструментов Arduino IDE выберите пункт <code>Upload Using Programmer</code> (Загрузить через программатор). Не используйте обычную кнопку "Загрузить", так как она попытается отправить код через последовательный порт, которого у ATtiny13 в данном режиме нет.</p>
+
+<p>В этот момент среда разработки скомпилирует код, сформирует бинарный файл и отправит его через SPI-интерфейс на чип. Процесс занимает несколько секунд. Если все прошло успешно, в нижней части окна появится сообщение "Done uploading". Если же возникла ошибка, проверьте надежность контактов и правильность выбора типа процессора.</p>
+
+<p>Отдельного внимания заслуживают <strong>фьюзы</strong> (fuse bits). Это биты конфигурации, которые определяют источник тактирования, делитель частоты и другие аппаратные настройки. При использовании ядер MicroCore или пакетов от David Mellis, правильные фьюзы устанавливаются автоматически при выборе опции "Internal 9.6 MHz". Ручная настройка фьюзов требуется только в специфических случаях, например, при использовании внешнего кварца.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Неправильная установка фьюзов может "заблокировать" микроконтроллер, сделав его недоступным для дальнейшей прошивки через ISP. Всегда дважды проверяйте настройки тактирования перед записью конфигурации.</p>
+</blockquote>
+
+<div class="pb-poll" id="poll-e236194d"><div class="pb-poll-question">📊 Какой программатор вы планируете использовать?</div><div class="pb-poll-option" data-poll="e236194d" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Arduino Uno</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e236194d" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Arduino Nano</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e236194d" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">USBasp</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e236194d" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Другой ISP-программатор</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="отладка-и-проверка-работоспособности-схемы">Отладка и проверка работоспособности схемы</h2>
+
+<p>После успешной загрузки кода отключите провода программатора от ATtiny13. Теперь чип должен работать автономно. Для проверки подключите питание 5В непосредственно к выводам VCC и GND микроконтроллера. Если вы использовали тестовый скетч Blink, подключенный светодиод должен начать мигать.</p>
+
+<p>Если светодиод не мигает, проверьте полярность подключения. Ошибка в подключении питания даже на пару секунд может привести к выходу чипа из строя, хотя ATtiny13 достаточно живуч. Также убедитесь, что вывод, к которому подключен светодиод, правильно указан в коде. В ATtiny13 нумерация портов в коде может отличаться от физической нумерации выводов корпуса.</p>
+
+<p>Для более сложной отладки можно использовать логический анализатор или осциллограф, подключив их к выводам данных. Это позволит увидеть, генерирует ли микроконтроллер сигналы ШИМ или передает ли данные по последовательному интерфейсу (если реализована программная эмуляция UART). Однако для большинства любительских задач визуальной проверки светодиода вполне достаточно.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Автономная работа ATtiny13 возможна только после отключения проводов программатора. Пока подключен Arduino Uno, питание может поступать некорректно, или линии данных могут находиться в подтянутом состоянии, мешая работе скетча.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли использовать Arduino Mega для прошивки ATtiny13?</summary>
+<p>Да, можно, но схема подключения будет отличаться. На Arduino Mega пины SPI расположены на разъеме ICSP в центре платы, а не на цифровых пинах 10-13. Вам потребуется найти документацию к конкретной плате Mega и подключить провода к соответствующим контактам разъема ISP (MISO, MOSI, SCK, RESET, VCC, GND).</p>
+</details>
+
+<details>
+<summary>Почему возникает ошибка "avrdude: stk500_getsync() not in sync"?</summary>
+<p>Эта ошибка чаще всего указывает на проблему связи между компьютером и платой-программатором. Проверьте, выбран ли правильный порт COM в меню инструментов. Также убедитесь, что вы выбрали метод загрузки "Upload Using Programmer", а не обычную загрузку. Иногда помогает переподключение USB-кабеля.</p>
+</details>
+
+<details>
+<summary>Как вернуть Arduino Uno в нормальный режим работы после прошивки?</summary>
+<p>Для этого достаточно просто загрузить на плату любой другой скетч, например, стандартный пример "Blink", используя обычную кнопку загрузки. Новая прошивка перезапишет код ArduinoISP, и плата снова станет работать как обычный контроллер Arduino.</p>
+</details>
+
+<details>
+<summary>Какой максимальный ток можно снять с выводов ATtiny13?</summary>
+<p>Суммарный ток через все порты микроконтроллера не должен превышать 60 мА. Максимальный ток на один отдельный вывод ограничен значением 40 мА, но рекомендуется не превышать 20 мА для надежной работы. Для управления мощной нагрузкой обязательно используйте транзисторы или драйверы.</p>
+</details>
+
+<details>
+<summary>Поддерживает ли ATtiny13 аппаратный UART?</summary>
+<p>Нет, у модели ATtiny13 отсутствует аппаратный модуль USART. Однако можно реализовать программный UART (SoftwareSerial), используя любые свободные выводы. Это позволит обмениваться данными с компьютером или другими устройствами, хотя скорость и стабильность будут ниже, чем у аппаратной реализации.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/elektronika-i-gadzhety/k/kt/kto-izobrel-pervyj-v-mire-telefon.html" class="pb-related-card">
+                <span class="pb-related-title">Кто изобрел телефон: споры, факты и история создания</span>
+                <span class="pb-related-desc">Кто изобрел первый телефон в мире? Полный разбор патентной войны между Беллом, Греем и Мейччи. Истор</span>
+            </a><a href="/elektronika-i-gadzhety/s/sp/sputnikovyj-telefon-kakoj-vybrat.html" class="pb-related-card">
+                <span class="pb-related-title">Спутниковый телефон: какой выбрать для экстремальных путешествий</span>
+                <span class="pb-related-desc">Как подобрать спутниковый телефон для связи без покрытия сотовых сетей. Обзор стандартов Iridium, In</span>
+            </a><a href="/elektronika-i-gadzhety/p/po/pochemu-ne-obrazuetsya-pena-v-dispensere.html" class="pb-related-card">
+                <span class="pb-related-title">Почему не образуется пена в диспенсере: причины и решение</span>
+                <span class="pb-related-desc">Разбираем причины отсутствия пены в мыльном диспенсере. Настройки, концентрация, поломки и советы по</span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kak-vyglyadit-nokia-3310.html" class="pb-related-card">
+                <span class="pb-related-title">Как выглядит Nokia 3310: Внешний вид, дизайн и особенности модели</span>
+                <span class="pb-related-desc">Подробный обзор внешнего вида легендарного телефона Nokia 3310. Характеристики корпуса, дисплея, кла</span>
+            </a><a href="/elektronika-i-gadzhety/k/ku/kupit-korrektor-dlya-paltsev-nog.html" class="pb-related-card">
+                <span class="pb-related-title">Купить корректор для пальцев ног: выбор, виды и цены</span>
+                <span class="pb-related-desc">Где купить корректор для пальцев ног? Экспертный обзор гелевых, силиконовых и ортопедических фиксато</span>
+            </a><a href="/elektronika-i-gadzhety/s/sm/smart-chasy-khuavej-votch-fit-3-obzor.html" class="pb-related-card">
+                <span class="pb-related-title">Обзор Huawei Watch Fit 3: характеристики, тест и вердикт</span>
+                <span class="pb-related-desc">Полный обзор Huawei Watch Fit 3. Дизайн, автономность, функции здоровья и спорта. Стоит ли покупать </span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

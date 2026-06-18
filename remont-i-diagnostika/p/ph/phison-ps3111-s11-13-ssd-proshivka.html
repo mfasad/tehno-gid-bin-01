@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Phison PS3111 S11: прошивка, ремонт и восстановление SSD — Техно Гид</title>
+    <meta name="description" content="Полное руководство по прошивке контроллера Phison PS3111 S11. Утилиты, базы данных, восстановление NAND и ремонт SSD своими руками.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/remont-i-diagnostika/p/ph/phison-ps3111-s11-13-ssd-proshivka.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Phison PS3111 S11: прошивка, ремонт и восстановление SSD">
+    <meta property="og:description" content="Полное руководство по прошивке контроллера Phison PS3111 S11. Утилиты, базы данных, восстановление NAND и ремонт SSD своими руками.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/remont-i-diagnostika/">Ремонт и Диагностика</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Phison PS3111 S11: прошивка, ремонт и восстановление SSD</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#диагностика-неисправности-и-определение-контроллера">Диагностика неисправности и определение контроллера</a></li><li><a href="#подготовка-к-перепрошивке-режим-rom-и-утилиты">Подготовка к перепрошивке: режим ROM и утилиты</a></li><li><a href="#поиск-совместимой-прошивки-и-базы-nand">Поиск совместимой прошивки и базы NAND</a></li><li><a href="#процесс-прошивки-и-настройка-параметров">Процесс прошивки и настройка параметров</a></li><li><a href="#возможные-ошибки-и-методы-их-устранения">Возможные ошибки и методы их устранения</a></li><li><a href="#профилактика-и-рекомендации-по-эксплуатации">Профилактика и рекомендации по эксплуатации</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/remont-i-diagnostika/r/re/remont-pulta-du-televizora.html">Ремонт пульта ДУ телевизора: диагностика и починка своими руками</a></li><li><a href="/remont-i-diagnostika/v/vm/vmts-8220-soderzhanie-dragmetallov.html">Содержание драгметаллов во ВМЦ 8220: точный разбор состава</a></li><li><a href="/remont-i-diagnostika/n/ne/ne-vklyuchaetsya-blok-pitaniya-kompyutera-prichiny.html">Блок питания не включается: основные причины и способы устранения</a></li><li><a href="/remont-i-diagnostika/k/ko/kompyuter-ne-vklyuchaetsya-do-biosa.html">Компьютер не включается до BIOS: полный гид по диагностике</a></li><li><a href="/remont-i-diagnostika/r/re/resurs-zatvora-canon-5d-mark-iii.html">Ресурс затвора Canon 5D Mark III: реальные цифры и диагностика</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Ремонт и прошивка контроллера Phison PS3111 S11</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#диагностика-неисправности-и-определение-контроллера">Диагностика неисправности и определение контроллера</a></li><li><a href="#подготовка-к-перепрошивке-режим-rom-и-утилиты">Подготовка к перепрошивке: режим ROM и утилиты</a></li><li><a href="#поиск-совместимой-прошивки-и-базы-nand">Поиск совместимой прошивки и базы NAND</a></li><li><a href="#процесс-прошивки-и-настройка-параметров">Процесс прошивки и настройка параметров</a></li><li><a href="#возможные-ошибки-и-методы-их-устранения">Возможные ошибки и методы их устранения</a></li><li><a href="#профилактика-и-рекомендации-по-эксплуатации">Профилактика и рекомендации по эксплуатации</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Ситуация, когда твердотельный накопитель <em>SSD</em> внезапно перестает определяться или показывает нулевой объем, знакома многим пользователям бюджетных моделей. В основе множества таких устройств лежит контроллер <strong>Phison PS3111 S11</strong>, который отличается простотой, но при ошибках записи данных может блокировать работу накопителя. Восстановление работоспособности в таких случаях возможно только через перепрошивку контроллера в специальном режиме.</p>
+
+<p>Процесс восстановления не требует паяльника, но предполагает наличие специфического программного обеспечения и понимания структуры работы флеш-памяти. Вам потребуется перевести накопитель в тестовый режим, подобрать корректную версию утилиты <em>MPTool</em> и найти совместимую базу данных <strong>NAND ID</strong>. Ошибки на любом из этих этапов могут привести к полной потере данных или превращению диска в"кирпич".</p>
+
+<p>В этой статье мы детально разберем алгоритм действий для оживления накопителей на базе <em>S11</em>. Вы узнаете, как правильно замкнуть контакты для входа в режим программирования, где искать актуальные утилиты и как настроить параметры прошивки под конкретный тип чипов памяти. Информация актуальна для моделей Kingston, Smartbuy, Goodram и других брендов, использующих данную платформу.</p>
+
+<h2 id="диагностика-неисправности-и-определение-контроллера">Диагностика неисправности и определение контроллера</h2>
+
+<p>Первым шагом перед любыми манипуляциями является точная идентификация"железа". Если ваш диск определяется в системе как устройство с объемом 0 байт или с названием <code>Phison 2307</code> (что является стандартным заглушкой для этого контроллера в аварийном режиме), это хороший знак. Это означает, что контроллер <strong>PS3111 S11</strong> жив и готов к общению, но его внутренняя таблица трансляции адресов (FTL) повреждена.</p>
+
+<p>Для точной диагностики используйте утилиту <em>Flash ID</em>. Скачайте версию, совместимую с S11, и запустите её от имени администратора. Программа покажет детальную информацию о типе установленной памяти, количестве каналов и текущем состоянии контроллера. Эти данные критически важны для следующего этапа — выбора правильной версии прошивальщика.</p>
+
+<blockquote>⚠️ Внимание: Если утилита Flash ID не видит накопитель или выдает ошибку чтения, возможно, проблема аппаратная. Проверьте целостность дорожек на плате и отсутствие сгоревших элементов питания перед попыткой программного восстановления.</blockquote>
+
+<p>Обратите внимание на строку <code>NAND Code</code> в отчете утилиты. Именно этот код нужно будет искать в базе данных прошивальщика. Без совпадения этого параметра процесс записи новой прошивки завершится ошибкой, так как утилита не сможет корректно инициализировать чипы памяти.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед запуском диагностических утилит отключите все лишние USB-устройства, чтобы избежать конфликтов драйверов и нестабильной работы портов.</p></aside>
+
+<h2 id="подготовка-к-перепрошивке-режим-rom-и-утилиты">Подготовка к перепрошивке: режим ROM и утилиты</h2>
+
+<p>Для записи новой микропрограммы контроллер должен находиться в специальном режиме <strong>ROM Mode</strong>. В обычном состоянии он пытается загрузиться с NAND-памяти, которая может быть повреждена. Чтобы перевести <em>Phison PS3111 S11</em> в режим программирования, необходимо замкнуть определенные контакты на печатной плате при подключении к USB-порту.</p>
+
+<p>На большинстве плат с этим контроллером нужно замкнуть контакты тестовой точки <code>TP</code> (Test Point) с землей (<code>GND</code>). Обычно это пара отверстий рядом с контроллером или специальные площадки, подписанные на шелкографии. Замыкание нужно удерживать в момент подключения кабеля к компьютеру, пока система не издаст звук подключения нового устройства.</p>
+
+<p>После успешного входа в режим в диспетчере устройств Windows появится запись <code>Phison 2307 USB Device</code>. Теперь можно запускать утилиту <em>MPALL</em> или <em>S11_MP_Tool</em>. Важно использовать версию, которая поддерживает вашу ревизию контроллера и тип памяти. Часто подходят версии в диапазоне от 3.20.00 до 3.26.00, но выбор зависит от конкретной даты выпуска диска.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к перепрошивке</h4><label class="check-item"><input type="checkbox"><span>Скачать утилиту MPTool для S11</span></label><label class="check-item"><input type="checkbox"><span>Замкнуть контакты TP и GND</span></label><label class="check-item"><input type="checkbox"><span>Подключить диск при замкнутых контактах</span></label><label class="check-item"><input type="checkbox"><span>Убедиться, что диск виден как 2307 Device</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>Интерфейс программатора может выглядеть пугающе из-за обилия настроек. Однако для базового восстановления достаточно нажать кнопку <code>Update</code> или <code>Start</code>, если утилита сама подтянула параметры из базы. В более сложных случаях потребуется ручная настройка через кнопку <code>Setting</code>, где нужно будет ввести пароль (часто <code>320</code> или <code>1234</code>).</p>
+
+<h2 id="поиск-совместимой-прошивки-и-базы-nand">Поиск совместимой прошивки и базы NAND</h2>
+
+<p>Самая сложная часть процесса — найти утилиту, в базе которой есть запись для ваших чипов памяти. Контроллер <strong>Phison</strong> жестко привязан к специфическим таймингам и типам ячеек <em>TLC</em> или <em>3D NAND</em>. Если вы попытаетесь прошить диск прошивкой от другого типа памяти, процесс завершится ошибкой <code>Error 13</code> или <code>Error 10</code>.</p>
+
+<p>Существует несколько крупных репозиториев, где энтузиасты собирают базы данных прошивок. При поиске ориентируйтесь не только на версию утилиты, но и на код памяти, который вы узнали на этапе диагностики. Иногда приходится перебирать 5-10 разных версий <em>MPTool</em>, прежде чем одна из них"подхватит" ваш накопитель.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Код ошибки</th>
+<th>Вероятная причина</th>
+<th>Решение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Error 10</td>
+<td>Неверный тип NAND или поврежденная память</td>
+<td>Попробовать другую версию MPTool или сменить параметр ECC</td>
+</tr>
+<tr>
+<td>Error 13</td>
+<td>Несовместимость ID флеш-памяти</td>
+<td>Найти прошивку с поддержкой конкретного кода NAND</td>
+</tr>
+<tr>
+<td>Error 35</td>
+<td>Сбой записи в служебную область</td>
+<td>Проверить контакты, возможно, плохой контакт с платой</td>
+</tr>
+<tr>
+<td>Error 52</td>
+<td>Превышено количество блоков (Bad Blocks)</td>
+<td>Диск физически изношен, восстановление невозможно</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>В некоторых случаях помогает изменение настроек <strong>ECC</strong> (коррекция ошибок). Если память сильно изношена, увеличение уровня коррекции может позволить записать прошивку, ценой небольшого снижения доступного объема. Это делается в расширенных настройках утилиты в разделе <code>NAND Setting</code>.</p>
+
+<details class="pb-accordion"><summary>Где искать прошивки?</summary><div class="pb-accordion-body"><p>Основные источники — специализированные форумы по ремонту накопителей (например, usbdev.ru или vgoforum). Избегайте скачивания утилит с сомнительных файлообменников, так как они могут содержать вирусы или быть модифицированными.</p></div></details>
+
+<h2 id="процесс-прошивки-и-настройка-параметров">Процесс прошивки и настройка параметров</h2>
+
+<p>После того как утилита увидела накопитель и подгрузила базу, можно приступать к записи. В окне программы отобразится список подключенных устройств. Убедитесь, что выбран именно ваш диск, а не какая-либо другая флешка, подключенная к системе. Нажмите кнопку <code>Start</code> для начала процесса.</p>
+
+<p>Процедура записи занимает от 30 секунд до нескольких минут. В это время происходит форматирование служебной области, создание новой таблицы трансляции и проверка блоков памяти. Не прерывайте питание и не отключайте кабель, даже если прогресс-бар замер на месте на долгое время — контроллер может выполнять сложные операции калибровки.</p>
+
+<blockquote>⚠️ Внимание: В ходе прошивки все пользовательские данные будут безвозвратно удалены. Если информация на диске критически важна, сначала попробуйте методы восстановления данных через утилиты типа PC-3000, а не перепрошивку.</blockquote>
+
+<p>По завершении процесса утилита выдаст сообщение <code>Pass</code> зеленым цветом. После этого необходимо отключить диск от USB, убрать перемычку с контактов <code>TP</code> и подключить его в штатном режиме. Система должна определить накопитель как новое устройство с полным объемом.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Успешная прошивка возвращает диску заводские параметры, но не гарантирует его долговечность, если износ ячеек памяти был близок к предельному.</p></aside>
+
+<h2 id="возможные-ошибки-и-методы-их-устранения">Возможные ошибки и методы их устранения</h2>
+
+<p>Далеко не всегда первая попытка заканчивается успехом. Часто пользователи сталкиваются с ситуацией, когда утилита видит диск, но отказывается его прошивать. Одна из распространенных проблем — несовпадение количества чипов памяти в настройках и на плате. Контроллер <em>S11</em> поддерживает различные конфигурации, и ошибка в этом параметре блокирует запись.</p>
+
+<p>Также стоит обратить внимание на версию драйверов. Иногда стандартные драйверы Windows конфликтуют с утилитой прошивки. В таких случаях помогает установка драйверов вручную через диспетчер устройств или использование компьютера с другой версией ОС, например, Windows 7 или 10 старой сборки, где меньше системных ограничений.</p>
+
+<ul>
+<li>🔴 <strong>Диск не определяется:</strong> Проверьте замыкание контактов, попробуйте другой USB-кабель или порт USB 2.0 вместо 3.0.</li>
+<li>🟡 <strong>Ошибка инициализации:</strong> Попробуйте запустить утилиту от имени администратора и в режиме совместимости.</li>
+<li>🔵 <strong>Прошивка прошла, но диск не виден:</strong> Возможно, требуется инициализация диска в управлении дисками Windows или сброс настроек BIOS.</li>
+</ul>
+
+<p>Если ничего не помогает, существует вероятность, что один из чипов памяти вышел из строя физически. В этом случае программные методы бессильны, и требуется замена неисправного чипа в сервисном центре, что экономически часто нецелесообразно для бюджетных моделей.</p>
+
+<h2 id="профилактика-и-рекомендации-по-эксплуатации">Профилактика и рекомендации по эксплуатации</h2>
+
+<p>Контроллеры <strong>Phison PS3111 S11</strong> чувствительны к резким отключениям питания. Чтобы продлить жизнь восстановленному диску, старайтесь всегда использовать безопасное извлечение устройства перед отключением кабеля. Это позволяет контроллеру завершить все фоновые операции записи и обновить служебные таблицы.</p>
+
+<p>Регулярно делайте резервные копии важных данных. Помните, что любой SSD, переживший процедуру перепрошивки, считается восстановленным условно. Его надежность может быть ниже, чем у нового устройства, так как износ ячеек памяти никуда не делся, а лишь был сброшен программно.</p>
+
+<blockquote>⚠️ Внимание: Технические характеристики и совместимость утилит могут меняться с выходом новых ревизий контроллеров. Всегда сверяйте информацию с официальными даташитами или последними сообщениями на профильных форумах перед началом работ.</blockquote>
+
+<p>Для мониторинга здоровья диска после восстановления используйте утилиты <em>CrystalDiskInfo</em> или <em>SSD-Z</em>. Следите за параметрами <code>Reallocated Sector Count</code> и <code>Media Wearout Indicator</code>. Если эти значения быстро ухудшаются, диск следует заменить в ближайшее время.</p>
+
+<div class="pb-poll" id="poll-2fe04a7b"><div class="pb-poll-question">📊 Сталкивались ли вы с поломкой SSD контроллера Phison?</div><div class="pb-poll-option" data-poll="2fe04a7b" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Да, успешно восстановил</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="2fe04a7b" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Да, диск пришлось выбросить</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="2fe04a7b" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Нет, мои диски работают стабильно</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="2fe04a7b" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Пока не знаю, что это за контроллер</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли восстановить данные после прошивки Phison S11?</summary>
+<p>Нет, процесс перепрошивки включает в себя полное низкоуровневое форматирование и создание новой таблицы трансляции. Старые данные становятся недоступными для логического восстановления. Для спасения информации требуются дорогостоящие методы работы с дампами памяти в лабораторных условиях.</p>
+</details>
+
+<details>
+<summary>Подойдет ли прошивка от Kingston для диска Smartbuy на том же контроллере?</summary>
+<p>Не всегда. Несмотря на одинаковый контроллер <em>PS3111</em>, производители используют разную память NAND и могут применять собственные модификации прошивки. Лучше искать утилиту, которая определяет именно ваш код памяти, а не ориентироваться на бренд диска.</p>
+</details>
+
+<details>
+<summary>Что делать, если утилита выдает ошибку"Device is busy"?</summary>
+<p>Это означает, что другой процесс или утилита захватила доступ к диску. Закройте все программы, работающие с дисками, включая антивирус и проводник. Иногда помогает перезагрузка компьютера и запуск утилиты сразу после старта системы.</p>
+</details>
+
+<details>
+<summary>Опасно ли замыкать контакты TP на плате?</summary>
+<p>При аккуратном выполнении процедуры риск минимален. Используйте пинцет или тонкий провод. Главное — не замкнуть соседние элементы питания или конденсаторы, чтобы не вызвать короткое замыкание в цепи 3.3В или 5В.</p>
+</details>
+
+<details>
+<summary>Сколько раз можно перепрошивать SSD?</summary>
+<p>Технически количество циклов перепрошивки ограничено ресурсом служебной области памяти, но на практике диск можно перепрошивать десятки раз. Основное ограничение — физический износ ячеек памяти, а не сам факт записи микрокода.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/remont-i-diagnostika/r/re/remont-pulta-du-televizora.html" class="pb-related-card">
+                <span class="pb-related-title">Ремонт пульта ДУ телевизора: диагностика и починка своими руками</span>
+                <span class="pb-related-desc">Подробная инструкция по ремонту пультов дистанционного управления. Как разобрать, проверить ИК-диод,</span>
+            </a><a href="/remont-i-diagnostika/v/vm/vmts-8220-soderzhanie-dragmetallov.html" class="pb-related-card">
+                <span class="pb-related-title">Содержание драгметаллов во ВМЦ 8220: точный разбор состава</span>
+                <span class="pb-related-desc">Подробный анализ содержания золота, серебра и палладия в ВМЦ 8220. Таблица нормативов, методы извлеч</span>
+            </a><a href="/remont-i-diagnostika/n/ne/ne-vklyuchaetsya-blok-pitaniya-kompyutera-prichiny.html" class="pb-related-card">
+                <span class="pb-related-title">Блок питания не включается: основные причины и способы устранения</span>
+                <span class="pb-related-desc">Компьютер не запускается? Узнайте основные причины, почему блок питания не включается. Пошаговая диа</span>
+            </a><a href="/remont-i-diagnostika/k/ko/kompyuter-ne-vklyuchaetsya-do-biosa.html" class="pb-related-card">
+                <span class="pb-related-title">Компьютер не включается до BIOS: полный гид по диагностике</span>
+                <span class="pb-related-desc">ПК не запускается, черный экран, нет сигнала? Узнайте причины сбоя POST, проверьте оперативную памят</span>
+            </a><a href="/remont-i-diagnostika/r/re/resurs-zatvora-canon-5d-mark-iii.html" class="pb-related-card">
+                <span class="pb-related-title">Ресурс затвора Canon 5D Mark III: реальные цифры и диагностика</span>
+                <span class="pb-related-desc">Узнайте реальный ресурс затвора Canon 5D Mark III. Как проверить пробег, продлить жизнь механизму и </span>
+            </a><a href="/remont-i-diagnostika/k/ka/kak-ponyat-chto-blok-pitaniya-peregrevaetsya.html" class="pb-related-card">
+                <span class="pb-related-title">Как понять что блок питания перегревается: признаки и диагностика</span>
+                <span class="pb-related-desc">Узнайте как понять что блок питания перегревается: симптомы, шум, запахи. Инструкция по измерению те</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

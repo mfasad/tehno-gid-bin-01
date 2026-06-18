@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>RT-AX55 и RT-AC51U: Проброс портов для игр и серверов — Техно Гид</title>
+    <meta name="description" content="Экспертная инструкция по настройке проброса портов на ASUS RT-AX55 и RT-AC51U. Решение ошибок NAT, настройка DMZ и статических IP для игр.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/r/rt/rt-gm-2-probros-portov.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="RT-AX55 и RT-AC51U: Проброс портов для игр и серверов">
+    <meta property="og:description" content="Экспертная инструкция по настройке проброса портов на ASUS RT-AX55 и RT-AC51U. Решение ошибок NAT, настройка DMZ и статических IP для игр.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">RT-AX55 и RT-AC51U: Проброс портов для игр и серверов</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-локальной-сети-статический-ip-адрес">Подготовка локальной сети: Статический IP-адрес</a></li><li><a href="#доступ-к-интерфейсу-управления-asuswrt">Доступ к интерфейсу управления ASUSWRT</a></li><li><a href="#настройка-virtual-server-port-forwarding">Настройка Virtual Server / Port Forwarding</a></li><li><a href="#особенности-настройки-для-игровых-консолей">Особенности настройки для игровых консолей</a></li><li><a href="#альтернативные-методы-upnp-и-dmz">Альтернативные методы: UPnP и DMZ</a></li><li><a href="#диагностика-и-проверка-открытых-портов">Диагностика и проверка открытых портов</a></li><li><a href="#частые-проблемы-и-их-решение">Частые проблемы и их решение</a></li><li><a href="#вопросы-и-ответы-faq">Вопросы и ответы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/k/ka/kak-pereproshit-router-xiaomi.html">Как перепрошить роутер Xiaomi: полная инструкция</a></li><li><a href="/set-i-internet/g/gd/gde-vzyat-login-i-parol-rostelekom-dlya-nastrojki-routera.html">Где взять логин и пароль Ростелеком для роутера: все способы</a></li><li><a href="/set-i-internet/v/vy/vyshki-gsm-na-karte.html">Как найти вышки GSM на карте: интерактивные сервисы и способы</a></li><li><a href="/set-i-internet/a/ak/aktivatsiya-novoj-sim-karty-megafon.html">Активация сим-карты Мегафон: пошаговая инструкция и сроки</a></li><li><a href="/set-i-internet/w/wi/wi-fi-repeater-nastrojka.html">Как настроить Wi-Fi репитер: пошаговая инструкция и советы</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Настройка проброса портов на роутерах ASUS RT-AX55 и RT-AC51U</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-локальной-сети-статический-ip-адрес">Подготовка локальной сети: Статический IP-адрес</a></li><li><a href="#доступ-к-интерфейсу-управления-asuswrt">Доступ к интерфейсу управления ASUSWRT</a></li><li><a href="#настройка-virtual-server-port-forwarding">Настройка Virtual Server / Port Forwarding</a></li><li><a href="#особенности-настройки-для-игровых-консолей">Особенности настройки для игровых консолей</a></li><li><a href="#альтернативные-методы-upnp-и-dmz">Альтернативные методы: UPnP и DMZ</a></li><li><a href="#диагностика-и-проверка-открытых-портов">Диагностика и проверка открытых портов</a></li><li><a href="#частые-проблемы-и-их-решение">Частые проблемы и их решение</a></li><li><a href="#вопросы-и-ответы-faq">Вопросы и ответы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Проблемы с подключением в сетевых играх, невозможность запустить торрент-клиент или недоступность домашнего видеонаблюдения извне чаще всего сводятся к одной причине — строгому <strong>NAT (Network Address Translation)</strong>. Современные маршрутизаторы, такие как <em>ASUS RT-AX55</em> или <em>RT-AC51U</em>, по умолчанию блокируют входящие соединения для защиты вашей локальной сети от внешних угроз. Однако для полноценной работы P2P-сетей и игровых консолей необходимо открыть конкретные "двери" в этой защите.</p>
+
+<p>Процесс <strong>проброса портов</strong> (Port Forwarding) на оборудовании ASUS кажется сложным только на первый взгляд. Интерфейс прошивки <em>ASUSWRT</em> логичен и структурирован, позволяя даже новичку настроить доступ к устройствам за пару минут. Главное — понимать разницу между внешним и внутренним адресом, а также четко следовать последовательности действий, чтобы не нарушить безопасность всей домашней сети.</p>
+
+<p>В этой статье мы детально разберем алгоритм настройки для популярных моделей <mark>RT-AX55 и RT-AC51U</mark>, которые часто используются провайдерами и домашними пользователями. Вы узнаете, как избежать типичных ошибок, почему статический IP-адрес является обязательным условием успеха и какие альтернативы существуют, если стандартный метод не сработал.</p>
+
+<h2 id="подготовка-локальной-сети-статический-ip-адрес">Подготовка локальной сети: Статический IP-адрес</h2>
+
+<p>Прежде чем открывать порты, необходимо закрепить за вашим устройством (ПК, консолью или камерой) постоянный <strong>локальный IP-адрес</strong>. По умолчанию роутер выдает адреса динамически через DHCP, и после перезагрузки ваше устройство может получить новый адрес. В таком случае правило проброса перестанет работать, так как будет направлять трафик на несуществующий в сети адрес.</p>
+
+<p>Самый надежный способ — настроить привязку MAC-адреса к IP прямо в интерфейсе роутера. Для этого перейдите в меню <code>Дополнительные настройки</code>, затем выберите раздел <code>Локальная сеть (LAN)</code> и вкладку <code>DHCP-сервер</code>. Здесь вы увидите список подключенных клиентов. Найдите свое устройство по имени или MAC-адресу и нажмите кнопку ручной настройки.</p>
+
+<p>В открывшемся окне введите желаемый IP-адрес, например, <code>192.168.1.150</code>. Важно убедиться, что этот адрес находится в той же подсети, что и сам роутер (обычно <code>192.168.1.1</code>), но не попадает в диапазон автоматической выдачи, если он жестко задан. После сохранения настроек и перезагрузки устройства оно всегда будет получать один и тот же адрес.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Запишите MAC-адрес и закрепленный IP-адрес вашего устройства на бумажке или в заметках телефона. Это сэкономит время при настройке правил в будущем или при смене оборудования.</p></aside>
+
+<p>Альтернативный вариант — настройка статического IP непосредственно на сетевой карте компьютера или в параметрах сети консоли. Этот метод менее удобен тем, что при смене роутера настройки придется вбивать заново, но он работает независимо от настроек DHCP сервера маршрутизатора.</p>
+
+<h2 id="доступ-к-интерфейсу-управления-asuswrt">Доступ к интерфейсу управления ASUSWRT</h2>
+
+<p>Для начала работы необходимо войти в панель управления роутером. Откройте любой браузер на устройстве, подключенном к сети ASUS, и в адресной строке введите <code>192.168.1.1</code> или доменное имя <code>router.asus.com</code>. Если вы используете модель <em>RT-AX55</em> с поддержкой Wi-Fi 6, убедитесь, что вы подключены к правильной частоте, хотя для настройки это не критично.</p>
+
+<p>При первом входе система может запросить логин и пароль. По умолчанию это <code>admin</code> / <code>admin</code>, однако в целях безопасности настоятельно рекомендуется изменить эти данные сразу после первой авторизации. Если вы не меняли пароль ранее, а стандартный не подходит, возможно, потребуется сброс устройства до заводских настроек.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Если ваш провайдер выдал вам "серый" IP-адрес (находящийся за NAT провайдера), то проброс портов на роутере не даст результата. Входящий трафик просто не дойдет до вашего устройства. Проверьте WAN-IP в статусе роутера: если он отличается от того, что показывает сайт 2ip.ru, звоните в поддержку провайдера.</p>
+</blockquote>
+
+<p>Интерфейс <em>ASUSWRT</em> единообразен для большинства моделей, включая <em>RT-AC51U</em>. После входа вы увидите главную страницу с картой сети. Нас интересует раздел <code>Дополнительные настройки</code> в левом вертикальном меню. Именно здесь скрыты все продвинутые инструменты управления трафиком.</p>
+
+<div class="pb-poll" id="poll-dea7e8ac"><div class="pb-poll-question">📊 Какой тип подключения вы настраиваете?</div><div class="pb-poll-option" data-poll="dea7e8ac" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Игровая консоль (PS5/Xbox)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="dea7e8ac" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">IP-камера видеонаблюдения</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="dea7e8ac" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Торрент-клиент на ПК</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="dea7e8ac" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Сервер Minecraft/Веб-сервер</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="dea7e8ac" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другое</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="настройка-virtual-server-port-forwarding">Настройка Virtual Server / Port Forwarding</h2>
+
+<p>Основной инструмент для открытия доступа находится в разделе <code>Дополнительные настройки</code> -> <code>Переадресация портов</code> (Port Forwarding). В некоторых версиях прошивки этот раздел может называться <code>Virtual Server</code>. Здесь мы создаем правило, которое говорит роутеру: "Весь трафик, приходящий на порт X из интернета, отправляй на устройство с IP Y".</p>
+
+<p>Нажмите кнопку <code>Добавить профиль</code> (значок плюс). Откроется форма, где нужно заполнить несколько полей. Имя службы (Service Name) может быть любым, например, "Minecraft" или "Camera", это нужно лишь для вашего удобства. Поле <strong>IP-адрес</strong> должно содержать тот статический адрес, который вы закрепили на предыдущем этапе.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр настройки</th>
+<th>Значение / Пример</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Имя службы</td>
+<td><code>Game_Server</code></td>
+<td>Произвольное название правила</td>
+</tr>
+<tr>
+<td>Диапазон портов</td>
+<td><code>25565</code></td>
+<td>Порт, который слушает приложение</td>
+</tr>
+<tr>
+<td>Локальный порт</td>
+<td><code>25565</code></td>
+<td>Обычно совпадает с диапазоном портов</td>
+</tr>
+<tr>
+<td>Локальный IP</td>
+<td><code>192.168.1.150</code></td>
+<td>Адрес вашего устройства в сети</td>
+</tr>
+<tr>
+<td>Протокол</td>
+<td><code>TCP&UDP</code></td>
+<td>Тип трафика (часто нужны оба)</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Самый важный параметр — <strong>Диапазон портов</strong> (Port Range). Сюда нужно вписать номер порта, который требует ваше приложение. Для многих игр и программ достаточно указать один порт. Если требуется диапазон, используйте дефис, например, <code>27015-27030</code>. Локальный порт обычно дублирует внешний, но в специфических сценариях их можно разнести.</p>
+
+<p>Выбор протокола критичен. Большинство современных игр и торрентов используют оба протокола — <code>TCP</code> и <code>UDP</code>. В интерфейсе ASUS обычно есть выпадающий список, где можно выбрать <code>TCP&UDP</code> сразу. Если такой опции нет, придется создать два одинаковых правила: одно для TCP, другое для UDP.</p>
+
+<h2 id="особенности-настройки-для-игровых-консолей">Особенности настройки для игровых консолей</h2>
+
+<p>Владельцы консолей PlayStation и Xbox часто сталкиваются с ошибкой "Строгий NAT" (NAT Type 3 или Strict), что мешает голосовому чату и поиску соперников. Для моделей <em>RT-AX55</em> и <em>RT-AC51U</em> процедура стандартная, но есть нюансы с конкретными портами Sony и Microsoft.</p>
+
+<p>Для PlayStation 4 и 5 ключевыми являются порты TCP: 80, 443, 3478-3480 и UDP: 3478-3479. Добавьте их в таблицу переадресации, указав IP-адрес вашей консоли. После применения настроек обязательно выполните тест соединения в меню сети консоли. Статус должен измениться на "NAT Тип 2" (Moderate), что является оптимальным балансом безопасности и доступности.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка настроек для консоли</h4><label class="check-item"><input type="checkbox"><span>Закреплен статический IP за консолью</span></label><label class="check-item"><input type="checkbox"><span>Правила добавлены в Port Forwarding</span></label><label class="check-item"><input type="checkbox"><span>Перезагружен роутер и консоль</span></label><label class="check-item"><input type="checkbox"><span>Выполнен тест соединения в меню консоли</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>Для Xbox One и Series X/S список портов шире: TCP 53, 80, 3074 и UDP 53, 88, 500, 3544, 4500, 3074. Особое внимание уделите порту <code>3074</code>, так как он является основным для игрового трафика. Если после настройки тип NAT остается "Строгий", попробуйте включить UPnP (об этом ниже) или проверить, не блокирует ли трафик антивирус на ПК, если он выступает шлюзом.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Не открывайте порты "на всякий случай". Каждый открытый порт — это потенциальная уязвимость. Открывайте только те порты, которые указаны в официальной документации к вашей игре, программе или устройству видеонаблюдения.</p>
+</blockquote>
+
+<h2 id="альтернативные-методы-upnp-и-dmz">Альтернативные методы: UPnP и DMZ</h2>
+
+<p>Если ручная настройка кажется слишком сложной или портов слишком много, можно воспользоваться протоколом <strong>UPnP</strong> (Universal Plug and Play). Он позволяет приложениям автоматически запрашивать у роутера открытие необходимых портов. В меню ASUS это находится в разделе <code>Дополнительные настройки</code> -> <code>Переадресация портов</code> -> вкладка <code>UPnP</code>.</p>
+
+<p>Включите переключатель <code>Включить UPnP</code> в положение <code>Да</code>. Это решение идеально подходит для игр, где порты меняются динамически, или для мессенджеров. Однако с точки зрения безопасности UPnP менее надежен, так как любое вредоносное ПО в локальной сети также сможет открыть порт без вашего ведома.</p>
+
+<details class="pb-accordion"><summary>В чем риск использования UPnP?</summary><div class="pb-accordion-body"><p>Протокол UPnP не требует аутентификации для запросов из локальной сети. Если ваш компьютер заражен вирусом, он может открыть доступ к вашим файлам для хакеров, создав правило проброса порта самостоятельно. Используйте UPnP только в доверенной сети.</p></div></details>
+
+<p>Крайней мерой является режим <strong>DMZ</strong> (Demilitarized Zone). В этом режиме вы указываете одно устройство, на которое роутер пересылает <em>весь</em> входящий трафик, не прошедший через другие правила. Это полностью снимает ограничения NAT, но оставляет устройство без защиты файрвола роутера.</p>
+
+<p>Никогда не используйте DMZ для обычного компьютера с Windows. Этот метод допустим только для игровых консолей или специализированных устройств, которые не хранят конфиденциальных данных и имеют собственную встроенную защиту. Настроить DMZ можно в том же разделе <code>Переадресация портов</code>, переключившись на соответствующую вкладку.</p>
+
+<h2 id="диагностика-и-проверка-открытых-портов">Диагностика и проверка открытых портов</h2>
+
+<p>После сохранения всех настроек роутер обычно применяет их мгновенно, но для надежности лучше выполнить перезагрузку через меню <code>Администрирование</code> -> <code>Перезагрузка</code>. Как проверить, сработало ли правило? Самый простой способ — использовать онлайн-сервисы для проверки портов, такие как 2ip.ru или portchecker.co.</p>
+
+<p>Однако есть важный нюанс: многие сервисы проверки не увидят открытый порт, если на вашем компьютере в этот момент не запущена программа, которая этот порт "слушает". Например, если вы открыли порт для Minecraft сервера, сам сервер должен быть запущен во время проверки. В противном случае порт будет отображаться как закрытый (Closed) или отфильтрованный (Filtered).</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Открытый порт виден сканеру только тогда, когда приложение, использующее этот порт, активно работает и ожидает входящее соединение. Запустите программу перед проверкой.</p></aside>
+
+<p>Также стоит проверить встроенный брандмауэр Windows или антивирус. Часто бывает, что роутер настроен верно, но фаервол на самом ПК блокирует входящее соединение. Попробуйте на время отключить брандмауэр для диагностики. Если порт откроется, значит, нужно добавить исключение в настройки безопасности Windows.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Интерфейсы прошивок ASUS периодически обновляются. Расположение меню или названия пунктов могут незначительно отличаться в новых версиях ASUSWRT. Если вы не нашли пункт "Переадресация портов", ищите "Virtual Server" или воспользуйтесь поиском по настройкам в верхней части экрана.</p>
+</blockquote>
+
+<h2 id="частые-проблемы-и-их-решение">Частые проблемы и их решение</h2>
+
+<p>Одна из самых распространенных проблем — конфликт IP-адресов. Если вы задали статический IP вручную на устройстве, а в DHCP-пуле роутера этот адрес не исключен, другой гаджет может получить тот же адрес автоматически. Это приведет к нестабильной работе сети и сбоям в пробросе портов. Всегда используйте привязку по MAC-адресу в самом роутере.</p>
+
+<p>Другая проблема — двойной NAT. Это случается, если у вас стоит роутер провайдера, а за ним ваш личный ASUS. В такой ситуации проброс портов нужно настраивать на обоих устройствах, что крайне неудобно. Лучшее решение — перевести роутер провайдера в режим "мост" (Bridge), чтобы ваш <em>ASUS RT-AX55</em> получал "белый" IP-адрес напрямую.</p>
+
+<p>Если ничего не помогает, проверьте журнал системы роутера. В разделе <code>Администрирование</code> -> <code>Системный журнал</code> могут быть записи о блокировке входящих пакетов. Это поможет понять, доходит ли запрос до роутера и почему он отбрасывается.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>При настройке сложных правил используйте блокнот, чтобы записывать: Имя службы | Внешний порт | Внутренний IP | Внутренний порт | Протокол. Это поможет быстро найти ошибку, если что-то перестанет работать.</p></aside>
+
+<h2 id="вопросы-и-ответы-faq">Вопросы и ответы (FAQ)</h2>
+
+<details>
+<summary>Безопасно ли открывать порты на роутере ASUS?</summary>
+<p>Открытие конкретных портов для конкретных приложений относительно безопасно, если вы соблюдаете правила гигиены: используете сложные пароли на устройствах, обновляете ПО и не открываете лишние порты. Риск возникает при использовании режима DMZ или протокола UPnP в незащищенной сети.</p>
+</details>
+
+<details>
+<summary>Почему порт показывает "Stealth" или "Filtered" вместо "Closed"?</summary>
+<p>Статус "Stealth" или "Filtered" обычно означает, что запрос блокируется фаерволом (на роутере или на ПК) и не получает ответа. Статус "Closed" означает, что порт доступен, но на нем нет слушающего приложения. Для игр чаще всего нужно добиться статуса "Open".</p>
+</details>
+
+<details>
+<summary>Нужно ли перезагружать роутер после каждого добавления правила?</summary>
+<p>В прошивках ASUSWRT изменения в таблице переадресации портов применяются мгновенно после нажатия кнопки "Применить". Перезагрузка требуется только в редких случаях, когда настройки "зависли", или если вы меняли настройки DHCP и привязки IP-адресов.</p>
+</details>
+
+<details>
+<summary>Можно ли пробросить один и тот же порт на два разных устройства?</summary>
+<p>Нет, один и тот же внешний порт (например, 80) может быть перенаправлен только на одно внутреннее IP-адрес. Если вам нужно запустить два веб-сервера, используйте разные внешние порты (например, 80 для первого и 8080 для второго), перенаправляя их на разные устройства.</p>
+</details>
+
+<details>
+<summary>Как сбросить настройки проброса портов к заводским?</summary>
+<p>Вы можете удалить правила вручную в разделе "Переадресация портов", нажав значок корзины напротив каждого правила. Для полного сброса всех настроек роутера, включая порты, зажмите кнопку Reset на корпусе устройства на 10 секунд, но это вернет роутер к состоянию "из коробки".</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/k/ka/kak-pereproshit-router-xiaomi.html" class="pb-related-card">
+                <span class="pb-related-title">Как перепрошить роутер Xiaomi: полная инструкция</span>
+                <span class="pb-related-desc">Пошаговое руководство по прошивке роутера Xiaomi. Способы обновления через веб-интерфейс и MiWiFi Re</span>
+            </a><a href="/set-i-internet/g/gd/gde-vzyat-login-i-parol-rostelekom-dlya-nastrojki-routera.html" class="pb-related-card">
+                <span class="pb-related-title">Где взять логин и пароль Ростелеком для роутера: все способы</span>
+                <span class="pb-related-desc">Узнайте, как найти логин и пароль для входа в роутер Ростелеком. Стандартные комбинации, наклейки на</span>
+            </a><a href="/set-i-internet/v/vy/vyshki-gsm-na-karte.html" class="pb-related-card">
+                <span class="pb-related-title">Как найти вышки GSM на карте: интерактивные сервисы и способы</span>
+                <span class="pb-related-desc">Узнайте, как locate вышки сотовой связи на карте. Обзор онлайн-сервисов, точность данных, особенност</span>
+            </a><a href="/set-i-internet/a/ak/aktivatsiya-novoj-sim-karty-megafon.html" class="pb-related-card">
+                <span class="pb-related-title">Активация сим-карты Мегафон: пошаговая инструкция и сроки</span>
+                <span class="pb-related-desc">Как активировать сим-карту Мегафон онлайн и в офисе. Сроки блокировки при неактивности, проверка бал</span>
+            </a><a href="/set-i-internet/w/wi/wi-fi-repeater-nastrojka.html" class="pb-related-card">
+                <span class="pb-related-title">Как настроить Wi-Fi репитер: пошаговая инструкция и советы</span>
+                <span class="pb-related-desc">Полное руководство по настройке Wi-Fi повторителя. Способы подключения, выбор места, устранение ошиб</span>
+            </a><a href="/set-i-internet/k/ka/kak-rabotaet-ozon-global.html" class="pb-related-card">
+                <span class="pb-related-title">Как работает Ozon Global в 2026: полная инструкция</span>
+                <span class="pb-related-desc">Подробный разбор работы Ozon Global: доставка, растаможка, гарантии. Узнайте, как покупать товары из</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

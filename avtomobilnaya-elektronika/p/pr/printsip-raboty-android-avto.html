@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Принцип работы Android Auto: как это устроено и почему это важно — Техно Гид</title>
+    <meta name="description" content="Полное объяснение принципа работы Android Auto. Разбор архитектуры, протоколов связи и этапов подключения смартфона к мультимедиа автомобиля.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/avtomobilnaya-elektronika/p/pr/printsip-raboty-android-avto.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Принцип работы Android Auto: как это устроено и почему это важно">
+    <meta property="og:description" content="Полное объяснение принципа работы Android Auto. Разбор архитектуры, протоколов связи и этапов подключения смартфона к мультимедиа автомобиля.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/avtomobilnaya-elektronika/">Автомобильная электроника</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Принцип работы Android Auto: как это устроено и почему это важно</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#архитектура-системы-и-роли-устройств">Архитектура системы и роли устройств</a></li><li><a href="#протоколы-связи-и-методы-подключения">Протоколы связи и методы подключения</a></li><li><a href="#этапы-инициализации-и-запуска-сессии">Этапы инициализации и запуска сессии</a></li><li><a href="#обработка-данных-и-навигация-в-реальном-времени">Обработка данных и навигация в реальном времени</a></li><li><a href="#проблемы-совместимости-и-ограничения">Проблемы совместимости и ограничения</a></li><li><a href="#безопасность-и-защита-данных">Безопасность и защита данных</a></li><li><a href="#эволюция-системы-и-будущее-развития">Эволюция системы и будущее развития</a></li><li><a href="#частые-вопросы-пользователей">Частые вопросы пользователей</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/avtomobilnaya-elektronika/o/op/opendiag-mobile-pro-polnaya.html">OpenDiag Mobile Pro: Полный обзор и настройки диагностики</a></li><li><a href="/avtomobilnaya-elektronika/k/ka/kak-polzovatsya-toplivnoj-kartoj-rosneft-na-zapravkakh.html">Как пользоваться топливной картой Роснефть: инструкция</a></li><li><a href="/avtomobilnaya-elektronika/r/ra/radar-detektor-ibox-pro-800-signature-se.html">Обзор радар-детектора iBox Pro 800 Signature SE: функции и тесты</a></li><li><a href="/avtomobilnaya-elektronika/2/2g/2gis-ne-otobrazhaetsya-v-android-auto.html">Почему 2GIS не отображается в Android Auto: причины и решение</a></li><li><a href="/avtomobilnaya-elektronika/i/im/imeyut-li-pravo-sotrudniki-dps-proveryat-telefon.html">Правомерна ли проверка телефона сотрудниками ДПС в 2026 году?</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Принцип работы Android Auto: архитектура и алгоритм взаимодействия</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#архитектура-системы-и-роли-устройств">Архитектура системы и роли устройств</a></li><li><a href="#протоколы-связи-и-методы-подключения">Протоколы связи и методы подключения</a></li><li><a href="#этапы-инициализации-и-запуска-сессии">Этапы инициализации и запуска сессии</a></li><li><a href="#обработка-данных-и-навигация-в-реальном-времени">Обработка данных и навигация в реальном времени</a></li><li><a href="#проблемы-совместимости-и-ограничения">Проблемы совместимости и ограничения</a></li><li><a href="#безопасность-и-защита-данных">Безопасность и защита данных</a></li><li><a href="#эволюция-системы-и-будущее-развития">Эволюция системы и будущее развития</a></li><li><a href="#частые-вопросы-пользователей">Частые вопросы пользователей</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Вы когда-нибудь задумывались, как ваш смартфон мгновенно превращается в навигатор и музыкальный центр на приборной панели? <strong>Android Auto</strong> — это не просто зеркальное отображение экрана телефона, а сложная система интеграции, которая перенаправляет вычислительные мощности вашего гаджета на дисплей автомобиля. Основная задача этой платформы — обеспечить безопасное управление цифровыми функциями во время движения, минимизируя отвлечение водителя от дороги.</p>
+
+<p>В основе технологии лежит концепция «тонкого клиента», где смартфон выступает в роли мощного сервера, обрабатывающего данные, а автомобильная магнитола служит лишь интерактивным терминалом ввода-вывода. <em>Google</em> разработал этот протокол так, чтобы интерфейс был интуитивно понятным, с крупными кнопками и голосовым управлением, что критически важно при езде. Понимание того, как именно происходит обмен данными, поможет вам устранить проблемы с подключением и оптимизировать работу системы.</p>
+
+<h2 id="архитектура-системы-и-роли-устройств">Архитектура системы и роли устройств</h2>
+
+<p>Чтобы понять, как работает <strong>Android Auto</strong>, необходимо рассмотреть распределение задач между устройствами. Смартфон выполняет роль «мозга»: он хранит приложения, получает маршруты от серверов навигации и декодирует аудиопоток. Без активного и функционального телефона система не сможет работать, так как именно на нем происходит основная обработка информации.</p>
+
+<p>Автомобильная головная единица (ГУ) или магнитола берет на себя функции дисплея и интерфейса. Она отправляет тач-сигналы от водителя обратно на телефон и отображает графический интерфейс, сгенерированный приложением на смартфоне. Взаимодействие происходит через защищенный канал связи, который гарантирует стабильность передачи видеосигнала и команд управления. Если ваш автомобиль поддерживает протокол, вы увидите специальный интерфейс, адаптированный под вождение.</p>
+
+<p>Интересно, что сама по себе магнитола не запускает приложения Android. Она лишь рендерит готовый поток. Это означает, что производительность системы напрямую зависит от мощности вашего смартфона, а не от характеристик автомобильного экрана. <strong>Вычислительная мощность</strong> остается в вашем кармане.</p>
+
+<h2 id="протоколы-связи-и-методы-подключения">Протоколы связи и методы подключения</h2>
+
+<p>Существует два основных способа физического и беспроводного взаимодействия, каждый из которых имеет свои особенности реализации. Классическое проводное подключение использует кабель <em>USB</em> для передачи данных и питания одновременно. Этот метод обеспечивает максимальную стабильность и беспрерывную работу, так как связь не зависит от помех в пространстве салона.</p>
+
+<p>Беспроводной режим <strong>Android Auto</strong> работает по двухэтапному алгоритму. Сначала устанавливается соединение Bluetooth для синхронизации устройств. Затем телефон автоматически предлагает создать прямое Wi-Fi Direct соединение для передачи высоконагруженного видеопотока и аудио. Это позволяет избежать проводов, но требует, чтобы ваша магнитола поддерживала соответствующий стандарт беспроводной связи.</p>
+
+<p>Важно отметить, что качество беспроводного соединения может страдать из-за помех от других устройств. Если вы замечаете задержки или разрывы связи, проблема часто кроется в перегруженности радиодиапазона или в некачественном модуле Wi-Fi в телефоне. <mark>Протокол передачи данных строго приоритизирует видеопоток</mark> над фоновыми процессами, чтобы интерфейс реагировал мгновенно.</p>
+
+<div class="pb-poll" id="poll-67d2d440"><div class="pb-poll-question">📊 Какой способ подключения вы используете чаще всего?</div><div class="pb-poll-option" data-poll="67d2d440" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Проводной USB</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="67d2d440" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Беспроводной (Wi-Fi)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="67d2d440" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Часто меняю</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="67d2d440" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Пока не подключал</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="этапы-инициализации-и-запуска-сессии">Этапы инициализации и запуска сессии</h2>
+
+<p>Процесс запуска не является мгновенным магическим действием, это строго регламентированная последовательность программных проверок. Когда вы подключаете кабель или приближаетесь к автомобилю, телефон начинает сканировать наличие поддерживаемого устройства. На этом этапе происходит «рукопожатие» (handshake), где оба устройства обмениваются идентификаторами и версиями протоколов.</p>
+
+<p>Следующий шаг — проверка прав доступа и верификация. Система запрашивает разрешение на использование микрофона, геолокации и других сервисов. Если приложение <em>Android Auto</em> на телефоне устарело, процесс запуска может прерваться на этом этапе. Вам необходимо убедиться, что ПО актуально, прежде чем пытаться подключиться снова.</p>
+
+<p>После успешной авторизации происходит передача графического интерфейса на экран автомобиля. В этот момент телефон начинает выводить изображение, которое выглядит как проекция на дисплей. Весь процесс обычно занимает от 10 до 30 секунд в зависимости от скорости процессора телефона и типа соединения.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Чек-лист перед первым запуском</h4><label class="check-item"><input type="checkbox"><span>Обновить приложение Android Auto</span></label><label class="check-item"><input type="checkbox"><span>Проверить версию Android</span></label><label class="check-item"><input type="checkbox"><span>Очистить кэш приложения</span></label><label class="check-item"><input type="checkbox"><span>Подготовить качественный USB-кабель</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="обработка-данных-и-навигация-в-реальном-времени">Обработка данных и навигация в реальном времени</h2>
+
+<p>Самая ресурсоемкая часть работы системы — это навигация. Смартфон получает данные о трафике с серверов в реальном времени, строит маршрут и постоянно пересчитывает его при отклонениях. <strong>Картографические данные</strong> и пробок передаются в виде координат и векторов, которые затем визуализируются на экране магнитолы.</p>
+
+<p>Аудиосистема также обрабатывается через смартфон. Музыкальные потоки декодируются на телефоне и передаются по цифровому каналу на усилитель автомобиля. Это дает преимущество в качестве звука, так как не происходит аналогового преобразования сигнала, которое могло бы снизить чистоту звучания. Система автоматически снижает громкость музыки при появлении голосовых подсказок навигатора.</p>
+
+<p>Голосовой помощник <em>Google Assistant</em> работает параллельно, обрабатывая команды на сервере Google. Ваш голос оцифровывается, отправляется в облако, где анализируется искусственным интеллектом, и возвращается обратно в виде ответа или выполненного действия. Это объясняет необходимость стабильного интернет-соединения для полноценной работы голосовых функций.</p>
+
+<details class="pb-accordion"><summary>Что происходит с данными в фоновом режиме?</summary><div class="pb-accordion-body"><p>Даже если вы не пользуетесь навигатором, система может собирать анонимные данные о трафике для улучшения карт, если это разрешено в настройках конфиденциальности.</p></div></details>
+
+<blockquote>⚠️ Внимание: Качество работы навигации напрямую зависит от стабильности мобильного интернета. В туннелях или зонах без покрытия маршруты могут не перестраиваться вовремя, поэтому всегда имейте под рукой офлайн-карты.</blockquote>
+
+<h2 id="проблемы-совместимости-и-ограничения">Проблемы совместимости и ограничения</h2>
+
+<p>Не все автомобили и смартфоны одинаково хорошо работают вместе. Существуют жесткие требования к версии операционной системы Android. Для проводного подключения достаточно Android 5.0 (Lollipop), но для полноценной работы и безопасности рекомендуется версия не ниже 6.0. Старые устройства могут не поддерживать современные протоколы шифрования.</p>
+
+<p>Автомобильные магнитолы также имеют свои ограничения. Некоторые бюджетные версии мультимедийных систем поддерживают только базовый функционал или требуют подключения через специфические адаптеры. <strong>Совместимость</strong> зависит от того, использует ли производитель автомобильного ПО сертифицированные библиотеки Google.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Проводное подключение</th>
+<th>Беспроводное подключение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Стабильность связи</td>
+<td>Высокая (прямой канал)</td>
+<td>Средняя (зависит от радиопомех)</td>
+</tr>
+<tr>
+<td>Зарядка телефона</td>
+<td>Автоматическая</td>
+<td>Требует внешнего источника</td>
+</tr>
+<tr>
+<td>Задержка (латентность)</td>
+<td>Минимальная</td>
+<td>Незначительно выше</td>
+</tr>
+<tr>
+<td>Требования к ПО</td>
+<td>Android 5.0+</td>
+<td>Android 11.0+ (рекомендуется)</td>
+</tr>
+</tbody>
+</table></div>
+
+<h2 id="безопасность-и-защита-данных">Безопасность и защита данных</h2>
+
+<p>Безопасность является приоритетом при разработке <strong>Android Auto</strong>. Все передаваемые данные, включая маршруты и голосовые команды, шифруются. Система не дает сторонним приложениям получать доступ к критическим функциям автомобиля, таким как управление дверьми или светом.</p>
+
+<p>Приложение работает в изолированном режиме, что предотвращает перехват данных другими программами на телефоне. Однако, если вы используете публичные Wi-Fi сети для сопряжения, всегда следите за тем, чтобы соединение было защищено паролем. <em>Голосовые ассистенты</em> также имеют настройки приватности, позволяющие управлять историей запросов.</p>
+
+<p> Вам придется заново подтверждать доступ к некоторым функциям при следующем запуске. Это мера предосторожности, чтобы никто не мог использовать ваш автомобильный экран в ваше отсутствие.</p>
+
+<blockquote>⚠️ Внимание: Никогда не оставляйте подключенный телефон в машине без присмотра, если он разблокирован. Злоумышленники могут получить доступ к вашим контактам и сообщениям через интерфейс Android Auto.</blockquote>
+
+<h2 id="эволюция-системы-и-будущее-развития">Эволюция системы и будущее развития</h2>
+
+<p>Разработчики постоянно улучшают алгоритмы работы платформы. В последних версиях интерфейса появились новые функции, такие как улучшенная интеграция с умным домом и расширенные возможности видеоплееров для пассажиров (с блокировкой во время движения). <strong>Интеграция</strong> с системами климат-контроля также становится более глубокой.</p>
+
+<p>Будущее технологии связано с бесшовной интеграцией в бортовые компьютеры новых поколений автомобилей. Ожидается, что граница между смартфоном и машиной будет стираться, и телефон станет скорее ключом доступа к экосистеме, чем отдельным устройством. Стандарты беспроводной связи будут развиваться для снижения задержек до нуля.</p>
+
+<p>Уже сейчас появляются решения, позволяющие использовать Android Auto даже в старых автомобилях через специальные адаптеры. Это продлевает жизнь мультимедийным системам и делает современные технологии доступными для широкого круга водителей. Рынок аксессуаров для интеграции постоянно растет и обновляется.</p>
+
+<h2 id="частые-вопросы-пользователей">Частые вопросы пользователей</h2>
+
+<details>
+<summary>Почему Android Auto отключается во время движения?</summary>
+<p>Это может происходить из-за перегрева кабеля, плохого контакта в порту USB или нестабильной работы модуля Wi-Fi в телефоне. Попробуйте использовать оригинальный кабель или перезагрузить оба устройства.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать Android Auto без интернета?</summary>
+<p>Базовые функции, такие как воспроизведение музыки из локальной памяти и запуск некоторых приложений, работают без сети. Однако навигация в реальном времени и голосовой помощник требуют активного подключения к интернету.</p>
+</details>
+
+<details>
+<summary>Как ускорить запуск системы?</summary>
+<p>Отключите ненужные фоновые приложения на телефоне перед подключением. Также убедитесь, что на телефоне включен режим «Не беспокоить» для вождения, чтобы система не отвлекалась на уведомления.</p>
+</details>
+
+<blockquote>⚠️ Внимание: Технические стандарты и версии протоколов могут меняться. Перед покупкой адаптеров или обновлением ПО обязательно проверьте актуальные требования на официальном сайте производителя вашего автомобиля или в документации Google.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Android Auto превращает смартфон в центральный компьютер автомобиля, используя мощные серверные технологии для навигации и связи, при этом экран машины становится лишь окном в эту экосистему.</p></aside></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/avtomobilnaya-elektronika/o/op/opendiag-mobile-pro-polnaya.html" class="pb-related-card">
+                <span class="pb-related-title">OpenDiag Mobile Pro: Полный обзор и настройки диагностики</span>
+                <span class="pb-related-desc">Полный гид по OpenDiag Mobile Pro: установка, настройка адаптеров, чтение кодов ошибок и адаптаций д</span>
+            </a><a href="/avtomobilnaya-elektronika/k/ka/kak-polzovatsya-toplivnoj-kartoj-rosneft-na-zapravkakh.html" class="pb-related-card">
+                <span class="pb-related-title">Как пользоваться топливной картой Роснефть: инструкция</span>
+                <span class="pb-related-desc">Полная инструкция по использованию топливных карт Роснефть. Как заправляться, лимиты, пароли и решен</span>
+            </a><a href="/avtomobilnaya-elektronika/r/ra/radar-detektor-ibox-pro-800-signature-se.html" class="pb-related-card">
+                <span class="pb-related-title">Обзор радар-детектора iBox Pro 800 Signature SE: функции и тесты</span>
+                <span class="pb-related-desc">Подробный анализ iBox Pro 800 Signature SE. GPS-модуль, защита от ложных сигналов и дальность обнару</span>
+            </a><a href="/avtomobilnaya-elektronika/2/2g/2gis-ne-otobrazhaetsya-v-android-auto.html" class="pb-related-card">
+                <span class="pb-related-title">Почему 2GIS не отображается в Android Auto: причины и решение</span>
+                <span class="pb-related-desc">2GIS не работает в Android Auto? Узнайте причины отсутствия карт, настройте мультимедию и найдите ал</span>
+            </a><a href="/avtomobilnaya-elektronika/i/im/imeyut-li-pravo-sotrudniki-dps-proveryat-telefon.html" class="pb-related-card">
+                <span class="pb-related-title">Правомерна ли проверка телефона сотрудниками ДПС в 2026 году?</span>
+                <span class="pb-related-desc">Разбираем закон: имеют ли сотрудники ГИБДД право требовать разблокировать телефон, просматривать пер</span>
+            </a><a href="/avtomobilnaya-elektronika/p/pr/prikolnyj-navigator-s-prikolnoj-ozvuchkoj-skachat.html" class="pb-related-card">
+                <span class="pb-related-title">Прикольный навигатор с озвучкой: скачать бесплатно и установить</span>
+                <span class="pb-related-desc">Ищете навигатор с юморной озвучкой? Рейтинг лучших программ, как скачать голосовые пакеты и настроит</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

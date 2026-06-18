@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>GRBL G Code mm: настройки, команды и калибровка — Техно Гид</title>
+    <meta name="description" content="Полный гид по G-кодам для GRBL в миллиметрах. Настройка $100-$102, калибровка шагов, таблица команд и решение проблем с размерами деталей.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/3d-pechat-i-modelirovanie/g/gr/grbl-g-code-mm.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="GRBL G Code mm: настройки, команды и калибровка">
+    <meta property="og:description" content="Полный гид по G-кодам для GRBL в миллиметрах. Настройка $100-$102, калибровка шагов, таблица команд и решение проблем с размерами деталей.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/3d-pechat-i-modelirovanie/">3D Печать и Моделирование</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">GRBL G Code mm: настройки, команды и калибровка</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#базовые-принципы-работы-grbl-в-метрической-системе">Базовые принципы работы GRBL в метрической системе</a></li><li><a href="#ключевые-параметры-шагов-на-миллиметр-100-102">Ключевые параметры шагов на миллиметр ($100-$102)</a></li><li><a href="#таблица-основных-g-кодов-для-работы-в-мм">Таблица основных G-кодов для работы в мм</a></li><li><a href="#практическая-калибровка-осей-станка">Практическая калибровка осей станка</a></li><li><a href="#настройка-скорости-и-ускорений-в-мм">Настройка скорости и ускорений в мм</a></li><li><a href="#решение-распространенных-проблем-с-размерами">Решение распространенных проблем с размерами</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/3d-pechat-i-modelirovanie/s/st/stanok-dlya-protyazhki-filamenta-iz-plastikovykh-butylok.html">Станок для протяжки филамента из бутылок: сборка и настройка</a></li><li><a href="/3d-pechat-i-modelirovanie/c/ca/cad-dlya-3d-printera.html">CAD для 3D-печати: выбор софта и особенности</a></li><li><a href="/3d-pechat-i-modelirovanie/k/ko/korpus-dlya-bloka-pitaniya-na-3d-printere.html">Корпус для блока питания на 3D принтере: выбор, печать и установка</a></li><li><a href="/3d-pechat-i-modelirovanie/b/ba/bambu-lab-p1p-i-p1s.html">Bambu Lab P1P и P1S: Сравнение, отличия и выбор идеального ЧПУ принтера</a></li><li><a href="/3d-pechat-i-modelirovanie/l/lu/luchshaya-programma-dlya-3d-modelirovaniya-dlya-3d-printera.html">Лучшая программа для 3D моделирования для 3D принтера: Топ-5 софта</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Настройка и использование G-кодов GRBL в миллиметрах</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#базовые-принципы-работы-grbl-в-метрической-системе">Базовые принципы работы GRBL в метрической системе</a></li><li><a href="#ключевые-параметры-шагов-на-миллиметр-100-102">Ключевые параметры шагов на миллиметр ($100-$102)</a></li><li><a href="#таблица-основных-g-кодов-для-работы-в-мм">Таблица основных G-кодов для работы в мм</a></li><li><a href="#практическая-калибровка-осей-станка">Практическая калибровка осей станка</a></li><li><a href="#настройка-скорости-и-ускорений-в-мм">Настройка скорости и ускорений в мм</a></li><li><a href="#решение-распространенных-проблем-с-размерами">Решение распространенных проблем с размерами</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Работа с ЧПУ станками на базе контроллера <strong>GRBL</strong> требует четкого понимания того, как интерпретатор обрабатывает координаты. Большинство современных фрезеров и лазерных граверов используют метрическую систему, где единицей измерения выступает миллиметр. Правильная конфигурация прошивки под режим <code>G21</code> является фундаментом для получения деталей с точными геометрическими размерами.</p>
+
+<p>Ошибки в настройке шагов на миллиметр приводят к тому, что станок проходит неверное расстояние, искажая пропорции изделия. В этом материале мы разберем ключевые параметры <em>$100, $101, $102</em>, научимся переключать режимы и калибровать оси для идеальной точности.</p>
+
+<h2 id="базовые-принципы-работы-grbl-в-метрической-системе">Базовые принципы работы GRBL в метрической системе</h2>
+
+<p>Прошивка <strong>GRBL</strong> по умолчанию может запускаться в дюймовом или метрическом режиме в зависимости от версии и настроек EEPROM. Для работы с большинством чертежей и CAD-моделей критически важно активировать режим миллиметров. Это делается отправкой команды <code>G21</code> через терминал любой программы управления, например <em>Universal G-code Sender</em> или <em>Candle</em>.</p>
+
+<p>Если станок находится в дюймовом режиме (<code>G20</code>), все подаваемые координаты будут интерпретироваться как дюймы. При попытке фрезеровать деталь размером 100 мм в этом режиме, инструмент пройдет всего 25.4 мм, что приведет к браку. Поэтому первым шагом после подключения всегда должна быть проверка текущего состояния системы командой <code>$$</code>.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Переключение между G20 и G21 не сбрасывает текущие координаты DRO (Digital Read Out). Если вы сменили режим во время работы, убедитесь, что положение инструмента соответствует новым единицам измерения, чтобы избежать столкновения со станиной.</p>
+</blockquote>
+
+<p> Это означает, что отправленная один раз команда <code>G21</code> остается активной до перезагрузки контроллера или явной смены на <code>G20</code>. Однако, чтобы сохранить настройки навсегда, необходимо записать их в энергонезависимую память, если ваша версия прошивки поддерживает сохранение состояния G-кодов при выключении питания.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Всегда добавляйте команду G21 в самый начало вашего G-кода (преамбулу). Это гарантирует, что даже при сбое настроек станок перейдет в правильный режим перед началом обработки.</p></aside>
+
+<h2 id="ключевые-параметры-шагов-на-миллиметр-100-102">Ключевые параметры шагов на миллиметр ($100-$102)</h2>
+
+<p>Самая важная часть настройки точности станка — это калькуляция параметров шагов. В прошивке GRBL за них отвечают переменные <strong>$100</strong> (ось X), <strong>$101</strong> (ось Y) и <strong>$102</strong> (ось Z). Эти значения определяют, сколько шагов двигателя должен сделать, чтобы пройти ровно один миллиметр.</p>
+
+<p>Расчет производится по формуле, учитывающей шаг двигателя, микрошагирование драйвера и механическую передачу. Например, для стандартного двигателя 1.8 градуса (200 шагов на оборот) с драйвером, настроенным на 1/16 микрошага, и ременной передачей с шагом ремня 2 мм и шкивом на 20 зубов, расчет будет выглядеть так:</p>
+
+<pre><code>Steps_per_mm = (Шаги_мотора <em> Микрошаг) / (Зубы_шкива </em> Шаг_ремня)</code></pre>
+
+<p>Подставив значения, получаем: (200 <em> 16) / (20 </em> 2) = 80 шагов на мм. Именно это число нужно прописать в параметр <code>$100</code> или <code>$101</code>. Для винтовой передачи (ШВП) формула меняется, так как учитывается шаг резьбы винта.</p>
+
+<ul>
+<li>📏 <strong>$100</strong> — количество шагов для перемещения оси X на 1 мм.</li>
+<li>📏 <strong>$101</strong> — количество шагов для перемещения оси Y на 1 мм.</li>
+<li>📏 <strong>$102</strong> — количество шагов для перемещения оси Z на 1 мм.</li>
+</ul>
+
+<p>Неправильный ввод этих значений приведет к систематической ошибке размеров. Если вы заказали материал 500 мм, а станок считает, что это 490 мм, проблема почти наверняка кроется в неверном расчете шагов или проскальзывании ремней.</p>
+
+<div class="pb-poll" id="poll-6ea048d5"><div class="pb-poll-question">📊 Какой тип передачи используется в вашем станке?</div><div class="pb-poll-option" data-poll="6ea048d5" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Зубчатый ремень (GT2/GT3)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6ea048d5" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Шарико-винтовая пара (ШВП)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6ea048d5" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Реечная передача</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6ea048d5" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Цепная передача</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="таблица-основных-g-кодов-для-работы-в-мм">Таблица основных G-кодов для работы в мм</h2>
+
+<p>Для эффективного управления станком оператору необходимо знать базовый набор команд. Хотя CAM-системы генерируют код автоматически, понимание ручных команд помогает при наладке и проверке траекторий. Ниже приведена таблица наиболее часто используемых команд в контексте метрической системы.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Команда</th>
+<th>Описание</th>
+<th>Пример использования</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>G21</code></td>
+<td>Установить единицы измерения в миллиметры</td>
+<td><code>G21 G90 G0 X0 Y0</code></td>
+</tr>
+<tr>
+<td><code>G90</code></td>
+<td>Абсолютное позиционирование (от нуля детали)</td>
+<td><code>G90 X50.0</code> (переход в точку 50 мм)</td>
+</tr>
+<tr>
+<td><code>G91</code></td>
+<td>Относительное позиционирование (приращение)</td>
+<td><code>G91 X10.0</code> (сдвиг на 10 мм от текущей точки)</td>
+</tr>
+<tr>
+<td><code>G0</code></td>
+<td>Быстрое перемещение (холостой ход)</td>
+<td><code>G0 Z5.0</code> (подъем инструмента)</td>
+</tr>
+<tr>
+<td><code>G1</code></td>
+<td>Рабочее перемещение с подачей</td>
+<td><code>G1 X100 F500</code> (резка со скоростью 500 мм/мин)</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Использование абсолютного режима <code>G90</code> является стандартом для большинства программ постпроцессора. Однако при ручной наладке иногда удобнее использовать относительный режим <code>G91</code>, чтобы сдвинуть инструмент на конкретное расстояние без привязки к нулю координат.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Комбинация G21 и G90 должна быть первой строкой в любом управляющем файле, чтобы исключить ошибки интерпретации координат контроллером.</p></aside>
+
+<h2 id="практическая-калибровка-осей-станка">Практическая калибровка осей станка</h2>
+
+<p>Теоретический расчет шагов часто дает погрешность из-за механических допусков. Реальный диаметр шкива может отличаться от номинального, а ремень может иметь растяжение. Поэтому после первичной настройки обязательна процедура практической калибровки.</p>
+
+<p>Суть метода заключается в перемещении оси на большое расстояние (например, 100 или 200 мм) и замере реального прохождения штангенциркулем. Разница между заданным и фактическим расстоянием используется для коррекции параметра <strong>$100-$102</strong>. Формула пересчета выглядит следующим образом:</p>
+
+<pre><code>Новый_параметр = Старый_параметр * (Заданное_расстояние / Измеренное_расстояние)</code></pre>
+
+<p>Если вы отправили ось X на 100 мм, а она прошла 98 мм, значит, станок "считает" миллиметр слишком длинным. Нужно увеличить количество шагов на мм, чтобы компенсировать недоход. В данном случае коэффициент коррекции составит 100/98 = 1.02.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При калибровке оси Z будьте предельно осторожны. Ошибка в расчетах может привести к тому, что при команде опуститься на 10 мм, шпиндель врежется в стол на 20 мм, сломав фрезу или повредив станину.</p>
+</blockquote>
+
+<p>Повторяйте процедуру замера и пересчета до тех пор, пока погрешность не станет менее 0.1 мм на длине 100 мм. Для осей X и Y также полезно проверять перпендикулярность, фрезеруя тестовый квадрат, так как механические перекосы не компенсируются настройкой шагов.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Алгоритм калибровки осей</h4><label class="check-item"><input type="checkbox"><span>Записать текущие значения $100-$102</span></label><label class="check-item"><input type="checkbox"><span>Переместить ось на 100 мм командой G1</span></label><label class="check-item"><input type="checkbox"><span>Замерить реальное расстояние штангенциркулем</span></label><label class="check-item"><input type="checkbox"><span>Пересчитать параметр по формуле и записать новое значение</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="настройка-скорости-и-ускорений-в-мм">Настройка скорости и ускорений в мм</h2>
+
+<p>Помимо геометрии перемещений, критически важны динамические характеристики. Параметры максимальной скорости (<strong>$110-$112</strong>) и ускорения (<strong>$120-$122</strong>) также задаются в миллиметрах в минуту и миллиметрах в секунду в квадрате соответственно.</p>
+
+<p>Слишком высокие значения ускорения могут приводить к пропуску шагов двигателями, особенно на малых скоростях или при резких изменениях направления (маленькие радиусы). Слишком низкие — к неоправданному увеличению времени обработки. Баланс подбирается экспериментально для каждой механики.</p>
+
+<ul>
+<li>🚀 <strong>$110</strong> — максимальная скорость оси X (мм/мин).</li>
+<li>🚀 <strong>$111</strong> — максимальная скорость оси Y (мм/мин).</li>
+<li>🚀 <strong>$112</strong> — максимальная скорость оси Z (мм/мин).</li>
+</ul>
+
+<p>Обратите внимание, что скорость в G-коде задается командой <code>F</code>. Если в программе стоит <code>F1000</code>, а в настройках GRBL для этой оси лимит <code>$110</code> равен 500, контроллер автоматически ограничит движение до 500 мм/мин. Это защита от механических разрушений.</p>
+
+<details class="pb-accordion"><summary>Почему станок вибрирует на малых скоростях?</summary><div class="pb-accordion-body"><p>Это может быть связано с резонансом шагового двигателя. Попробуйте изменить ток удержания на драйвере или немного изменить параметры ускорения $120-$122, чтобы выйти из резонансной зоны.</p></div></details>
+
+<h2 id="решение-распространенных-проблем-с-размерами">Решение распространенных проблем с размерами</h2>
+
+<p>Часто пользователи сталкиваются с ситуацией, когда настройки верны, но размеры деталей все равно "плывут". Одной из причин может быть люфт в механике (backlash). GRBL имеет встроенную компенсацию люфта через параметры <code>$130</code> и другие, но лучше устранить механическую проблему физически.</p>
+
+<p>Еще одна проблема — проскальзывание муфт на валах двигателей. Если винт или шкив проворачивается относительно вала мотора, никакая калибровка шагов не поможет. Необходимо надежно фиксировать все соединительные элементы винтами или клеем. Также стоит проверить натяжение ремней: они должны звенеть как басовая струна гитары.</p>
+
+<p>Влияет на точность и прогиб конструкции под нагрузкой. При фрезеровке твердых материалов сила резания может отклонять портал станка. В таких случаях помогает уменьшение глубины прохода за один проход (stepdown) или снижение подачи <code>F</code>.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Механические компоненты станка подвержены износу. Регулярно проверяйте натяжение ремней и отсутствие люфтов в гайках ШВП. Параметры, идеальные для нового станка, могут потребовать коррекции после 100 часов работы.</p>
+</blockquote>
+
+<p>Если вы используете лазерный модуль, помните, что ширина реза (керф) также влияет на итоговые размеры детали. При точной подгонке деталей необходимо вносить компенсацию ширины реза в CAM-программе или использовать команду смещения инструмента.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Точность станка — это сумма точности механики и правильности настроек GRBL. Настройка софта не исправит расшатанные подшипники или растянутые ремни.</p></aside>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Как сбросить настройки GRBL к заводским, если я запутался в параметрах мм?</summary>
+<p>Для сброса всех настроек к дефолтным значениям необходимо отправить команду <code>$RST=*</code> через терминал. После этого контроллер перезагрузится. Не забудьте снова установить режим миллиметров командой <code>G21</code> и прописать свои значения шагов.</p>
+</details>
+
+<details>
+<summary>Почему станок двигается в дюймах, хотя я отправил G21?</summary>
+<p>Возможно, в вашем управляющем коде (G-code) позже встречается команда <code>G20</code>, которая переключает режим обратно. Проверьте файл программы. Также убедитесь, что в вашей CAM-системе постпроцессор настроен на вывод метрических единиц, а не дюймовых.</p>
+</details>
+
+<details>
+<summary>Можно ли менять значения $100-$102 прямо во время работы?</summary>
+<p>Технически можно, но новые значения шагов применятся только к следующим движениям. Текущая позиция DRO может стать некорректной относительно реального положения инструмента. Рекомендуется останавливать программу, менять настройки, делать возврат в ноль (<code>G28</code> или <code>G0 X0 Y0 Z0</code>) и запускать обработку заново.</p>
+</details>
+
+<details>
+<summary>Как проверить, в каком режиме сейчас работает станок?</summary>
+<p>Отправьте команду <code>?</code> для получения статуса. В строке состояния будет указан текущий режим работы (MPos или WPos) и активные модальные группы. Также команда <code>$$</code> покажет сохраненные настройки, но не текущий активный G-код режима единиц измерения.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/3d-pechat-i-modelirovanie/s/st/stanok-dlya-protyazhki-filamenta-iz-plastikovykh-butylok.html" class="pb-related-card">
+                <span class="pb-related-title">Станок для протяжки филамента из бутылок: сборка и настройка</span>
+                <span class="pb-related-desc">Как сделать станок для нарезки филамента из ПЭТ бутылок своими руками. Схемы, чертежи, настройка тем</span>
+            </a><a href="/3d-pechat-i-modelirovanie/c/ca/cad-dlya-3d-printera.html" class="pb-related-card">
+                <span class="pb-related-title">CAD для 3D-печати: выбор софта и особенности</span>
+                <span class="pb-related-desc">Обзор лучших CAD-программ для 3D-принтеров. Сравнение параметрического и полигонального моделировани</span>
+            </a><a href="/3d-pechat-i-modelirovanie/k/ko/korpus-dlya-bloka-pitaniya-na-3d-printere.html" class="pb-related-card">
+                <span class="pb-related-title">Корпус для блока питания на 3D принтере: выбор, печать и установка</span>
+                <span class="pb-related-desc">Как напечатать надежный корпус для БП на 3D принтере. Обзор материалов, расчет вентиляционных зазоро</span>
+            </a><a href="/3d-pechat-i-modelirovanie/b/ba/bambu-lab-p1p-i-p1s.html" class="pb-related-card">
+                <span class="pb-related-title">Bambu Lab P1P и P1S: Сравнение, отличия и выбор идеального ЧПУ принтера</span>
+                <span class="pb-related-desc">Подробное сравнение 3D принтеров Bambu Lab P1P и P1S. Разбор ключевых различий, возможностей закрыто</span>
+            </a><a href="/3d-pechat-i-modelirovanie/l/lu/luchshaya-programma-dlya-3d-modelirovaniya-dlya-3d-printera.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшая программа для 3D моделирования для 3D принтера: Топ-5 софта</span>
+                <span class="pb-related-desc">Подборка лучших программ для 3D моделирования под FDM и SLA печать. Сравнение возможностей, цены и с</span>
+            </a><a href="/3d-pechat-i-modelirovanie/s/so/soedinitel-niti-dlya-3d-printera.html" class="pb-related-card">
+                <span class="pb-related-title">Соединитель нити для 3D принтера: виды, выбор и методы склейки</span>
+                <span class="pb-related-desc">Полный гид по соединителям филамента: как выбирать, использовать и склеивать нить без остановки печа</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

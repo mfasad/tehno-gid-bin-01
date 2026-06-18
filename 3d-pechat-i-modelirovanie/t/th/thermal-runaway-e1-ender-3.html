@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Thermal Runaway E1 на Ender 3: Полное руководство по устранению — Техно Гид</title>
+    <meta name="description" content="Подробный разбор ошибки Thermal Runaway на принтере Ender 3. Диагностика, ремонт нагревателя, термистора и настройка прошивки Marlin.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/3d-pechat-i-modelirovanie/t/th/thermal-runaway-e1-ender-3.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Thermal Runaway E1 на Ender 3: Полное руководство по устранению">
+    <meta property="og:description" content="Подробный разбор ошибки Thermal Runaway на принтере Ender 3. Диагностика, ремонт нагревателя, термистора и настройка прошивки Marlin.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/3d-pechat-i-modelirovanie/">3D Печать и Моделирование</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Thermal Runaway E1 на Ender 3: Полное руководство по устранению</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#механика-возникновения-ошибки-thermal-runaway">Механика возникновения ошибки Thermal Runaway</a></li><li><a href="#диагностика-нагревательного-элемента-картриджа">Диагностика нагревательного элемента (Картриджа)</a></li><li><a href="#проблемы-с-термистором-и-контактами">Проблемы с термистором и контактами</a></li><li><a href="#таблица-типовых-значений-сопротивления">Таблица типовых значений сопротивления</a></li><li><a href="#настройки-прошивки-marlin-и-pid-калибровка">Настройки прошивки Marlin и PID-калибровка</a></li><li><a href="#влияние-обдува-и-конструктивные-особенности">Влияние обдува и конструктивные особенности</a></li><li><a href="#частые-вопросы-faq">Частые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/3d-pechat-i-modelirovanie/t/te/temperatury-dlya-pechati-petg.html">Температуры печати PETG: настройки для идеального качества</a></li><li><a href="/3d-pechat-i-modelirovanie/p/po/poliamid-dlya-3d-pechati.html">Полиамид для 3D печати: виды, характеристики и технологии SLS/HPMJ</a></li><li><a href="/3d-pechat-i-modelirovanie/o/oc/ochistka-sopla-pered-pechatyu.html">Очистка сопла 3D-принтера: методы, инструменты и профилактика засоров</a></li><li><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-anycubic-kobra-3.html">Anycubic Kobra 3: Обзор, характеристики и настройка нового уровня</a></li><li><a href="/3d-pechat-i-modelirovanie/p/pr/proshivki-dlya-3d-printera.html">Выбор и установка прошивок для 3D принтера: Marlin, Klipper и другие</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как устранить ошибку Thermal Runaway E1 на Ender 3: Диагностика и Ремонт</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#механика-возникновения-ошибки-thermal-runaway">Механика возникновения ошибки Thermal Runaway</a></li><li><a href="#диагностика-нагревательного-элемента-картриджа">Диагностика нагревательного элемента (Картриджа)</a></li><li><a href="#проблемы-с-термистором-и-контактами">Проблемы с термистором и контактами</a></li><li><a href="#таблица-типовых-значений-сопротивления">Таблица типовых значений сопротивления</a></li><li><a href="#настройки-прошивки-marlin-и-pid-калибровка">Настройки прошивки Marlin и PID-калибровка</a></li><li><a href="#влияние-обдува-и-конструктивные-особенности">Влияние обдува и конструктивные особенности</a></li><li><a href="#частые-вопросы-faq">Частые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Появление надписи <strong>Thermal Runaway</strong> на дисплее вашего <em>Ender 3</em> — это всегда тревожный сигнал, который мгновенно останавливает процесс печати. Данная ошибка означает, что система безопасности принтера обнаружила критическое расхождение между заданной температурой и фактическими показаниями датчика. Вместо плавного нагрева или удержания тепла, температура либо не растет вовсе, либо падает слишком быстро, что заставляет контроллер аварийно отключить нагрев во избежание возгорания.</p>
+
+<p>Код ошибки <code>E1</code> (или <code>E0</code> в зависимости от версии платы) указывает непосредственно на проблему с экструдером, хотя аналогичные сбои могут происходить и со столом (Bed). Игнорировать это сообщение нельзя, так как оно блокирует дальнейшую работу устройства. В этой статье мы детально разберем механику возникновения сбоя, методы диагностики и конкретные шаги по восстановлению работоспособности вашего 3D-принтера.</p>
+
+<h2 id="механика-возникновения-ошибки-thermal-runaway">Механика возникновения ошибки Thermal Runaway</h2>
+
+<p>Алгоритм работы контроллера <em>Creality</em> построен на постоянном мониторинге термодинамических процессов. Когда вы задаете температуру, например, <code>200°C</code>, прошивка ожидает, что нагревательный элемент (картридж) повысит температуру сопла за определенное время. Если в течение заданного интервала датчик не фиксирует рост градусов, срабатывает защита <strong>Thermal Runaway</strong>.</p>
+
+<p>Суть проблемы заключается в том, что электроника не может гарантировать безопасность процесса. Если ТЭН греет, а датчик"молчит" или показывает снижение температуры, это может означать две вещи: либо датчик вышел из строя и показывает ложные данные, либо нагреватель не работает, либо тепло рассеивается слишком быстро из-за плохого контакта. <em>Marlin</em> (прошивка принтера) интерпретирует это как риск неконтролируемого нагрева, если бы датчик просто заклинило на низких значениях, и отключает питание.</p>
+
+<blockquote>⚠️ Внимание: Никогда не пытайтесь обойти эту ошибку путем отключения функции защиты в прошивке без устранения физической причины. Это может привести к реальному возгоранию пластиковых деталей принтера.</blockquote>
+
+<p>Часто пользователи путают эту ошибку с простым перегревом, но это разные понятия. Здесь система реагирует на отсутствие реакции системы на команду нагрева. Понимание этой логики необходимо для правильной диагностики: вы ищете не перегрев, а причину, по которой температура не достигает целевого значения или ведет себя нестабильно.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед началом глубокой диагностики проверьте, плотно ли вставлен разъем нагревателя в блок питания. Иногда проблема решается простым поджатием клемм отверткой.</p></aside>
+
+<h2 id="диагностика-нагревательного-элемента-картриджа">Диагностика нагревательного элемента (Картриджа)</h2>
+
+<p>Наиболее частой причиной появления кода <strong>E1</strong> является выход из строя самого нагревательного картриджа. Со временем спираль внутри керамического изолятора может перегореть, особенно если принтер часто работал на предельных температурах или скачки напряжения в сети. Проверить целостность нагревателя можно с помощью обычного мультиметра.</p>
+
+<p>Для проведения теста необходимо отключить принтер от сети и снять силиконовый чехол с нагревательного блока. Отсоедините провода от картриджа и переведите мультиметр в режим измерения сопротивления (Омы). Прикоснитесь щупами к контактам нагревателя. Исправный картридж на 24 вольта (стандарт для большинства <em>Ender 3</em>) должен показывать сопротивление в диапазоне от 10 до 14 Ом.</p>
+
+<ul>
+<li>🔥 Если мультиметр показывает бесконечность (единица на экране или OL), значит, спираль внутри перегорела и нагреватель требует замены.</li>
+<li>🔧 Если сопротивление близко к нулю, произошло короткое замыкание внутри элемента, что также требует его немедленной замены.</li>
+<li>⚡ Если показания находятся в допустимом диапазоне, проблема, скорее всего, кроется в проводке или термисторе.</li>
+</ul>
+
+<p>При замене нагревательного элемента убедитесь, что вы покупаете деталь с правильным напряжением. Установка картриджа на 12 вольт в систему с питанием 24 вольта приведет к его мгновенному сгоранию, а картридж на 24 вольта в системе 12 вольт будет греться слишком слабо, что снова вызовет ошибку <code>Thermal Runaway</code>.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка нагревателя</h4><label class="check-item"><input type="checkbox"><span>Отключить питание принтера:Снять силиконовый чехол:Замерить сопротивление мультиметром:Сравнить с номиналом (10-14 Ом для 24В)</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 1</div></div>
+
+<h2 id="проблемы-с-термистором-и-контактами">Проблемы с термистором и контактами</h2>
+
+<p>Термистор — это датчик температуры, который сообщает контроллеру текущее состояние сопла. Если он передает неверные данные, логика <strong>Marlin</strong> дает сбой. Частая ситуация: термистор исправен, но контакт в разъеме нарушен. Вибрации во время печати могут ослаблять соединение, вызывая кратковременные пропадания сигнала, которые система воспринимает как падение температуры.</p>
+
+<p>Осмотрите провода, идущие от термистора к плате управления. На <em>Ender 3</em> они часто проходят рядом с подвижными частями и могут перетираться или перегибаться. Особое внимание уделите месту входа проводов в нагревательный блок: если изоляция повреждена и виден металл, датчик может замыкать на корпус, выдавая ошибку.</p>
+
+<p>Еще один нюанс — качество самого термистора. В стоковых принтерах иногда устанавливаются датчики с нелинейной характеристикой или браком. Если вы заменили нагреватель, но ошибка <code>E1</code> осталась, попробуйте заменить и термистор. Это расходный материал, и его замена редко вызывает трудности.</p>
+
+<blockquote>⚠️ Внимание: При установке нового термистора обязательно используйте термостойкую смазку или убедитесь, что он плотно прилегает к стенке отверстия в нагревательном блоке. Воздушная прослойка исказит показания температуры.</blockquote>
+
+<p>Проверка сопротивления термистора при комнатной температуре должна показывать примерно 100 кОм. При нагреве (можно аккуратно подержать пальцами или феном) сопротивление должно плавно падать. Если скачков нет и сопротивление стабильно, датчик, вероятно, исправен, и нужно искать проблему в цепи до платы.</p>
+
+<details class="pb-accordion"><summary>Как проверить термистор без мультиметра?</summary><div class="pb-accordion-body"><p>Если у вас нет тестера, можно попробовать метод исключения. Замените термистор на заведомо исправный. Если ошибка исчезла — проблема была в датчике. Также можно временно подключить термистор от стола (если он такого же типа) к разъему экструдера на плате для проверки реакции дисплея.</p></div></details>
+
+<h2 id="таблица-типовых-значений-сопротивления">Таблица типовых значений сопротивления</h2>
+
+<p>Для корректной диагностики важно сверять полученные данные с эталонными значениями для компонентов <em>Creality Ender 3</em>. Ниже приведена таблица, помогающая быстро определить состояние элементов.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Компонент</th>
+<th>Номинальное напряжение</th>
+<th>Ожидаемое сопротивление (25°C)</th>
+<th>Статус при отклонении</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Нагреватель (Картридж)</td>
+<td>24 В</td>
+<td>10 – 14 Ом</td>
+<td>Обрыв или КЗ = Замена</td>
+</tr>
+<tr>
+<td>Нагреватель (Картридж)</td>
+<td>12 В</td>
+<td>3 – 5 Ом</td>
+<td>Обрыв или КЗ = Замена</td>
+</tr>
+<tr>
+<td>Термистор (NTC 100k)</td>
+<td>5 В (сигнал)</td>
+<td>~100 кОм</td>
+<td>Скачки = Плохой контакт</td>
+</tr>
+<tr>
+<td>Термистор (NTC 100k)</td>
+<td>5 В (сигнал)</td>
+<td>Падает при нагреве</td>
+<td>Рост при нагреве = Неисправен</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Используйте эти данные как ориентир. Небольшие отклонения в сопротивлении нагревателя допустимы из-за погрешности измерительного прибора, но выход за пределы указанных диапазонов почти гарантированно указывает на необходимость замены детали.</p>
+
+<div class="pb-poll" id="poll-a77383fe"><div class="pb-poll-question">📊 С чем вы столкнулись при ошибке E1?</div><div class="pb-poll-option" data-poll="a77383fe" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Перегорел нагреватель:Плохой контакт проводов:Неисправен термистор:Проблема с платой управления</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="настройки-прошивки-marlin-и-pid-калибровка">Настройки прошивки Marlin и PID-калибровка</h2>
+
+<p>Если все аппаратные компоненты исправны, провода целы, а контакты надежны, причина может крыться в программной части. Алгоритм <strong>PID</strong> (Proportional-Integral-Derivative) отвечает за плавное регулирование мощности нагревателя. Если коэффициенты PID сбиты, нагреватель может работать в импульсном режиме, который контроллер ошибочно принимает за неисправность.</p>
+
+<p>Для устранения этой проблемы необходимо выполнить автонастройку PID. Это можно сделать через меню принтера (если такая функция доступна в вашей версии прошивки) или через подключение к компьютеру. Команда для запуска калибровки выглядит следующим образом:</p>
+
+<pre><code>M303 E0 S200 C8</code></pre>
+
+<p>В этой команде <code>E0</code> указывает на первый экструдер, <code>S200</code> задает целевую температуру (200 градусов), а <code>C8</code> означает количество циклов нагрева и остывания для усреднения результатов. После завершения процесса принтер выдаст новые значения <code>Kp</code>, <code>Ki</code> и <code>Kd</code>.</p>
+
+<p>Эти значения необходимо сохранить в память принтера. Обычно для этого используются команды <code>M301</code> (для ввода новых значений) и <code>M500</code> (для сохранения в EEPROM). Без сохранения после перезагрузки принтер вернется к старым, возможно, некорректным настройкам, и ошибка <code>Thermal Runaway</code> может вернуться.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильно настроенный PID обеспечивает стабильную температуру с отклонением не более ±1-2 градусов, что критически важно для качества печати и предотвращения ложных срабатываний защиты.</p></aside>
+
+<p>Иногда проблема возникает после обновления прошивки на кастомную версию, где параметры защиты <strong>Thermal Runaway</strong> настроены слишком агрессивно. В таком случае стоит проверить исходный код прошивки (файл <code>Configuration.h</code>) и убедиться, что константы <code>TEMP_RUNAWAY_PERIOD</code> и <code>TEMP_RUNAWAY_RANGE</code> соответствуют вашим реалиям, хотя изменять их без понимания физики процесса не рекомендуется.</p>
+
+<h2 id="влияние-обдува-и-конструктивные-особенности">Влияние обдува и конструктивные особенности</h2>
+
+<p>На моделях <em>Ender 3</em> и <em>Ender 3 Pro</em> существует конструктивная особенность, связанная с охлаждением радиатора хотэнда. Если вентилятор обдува радиатора работает слишком интенсивно или направлен неправильно, он может охлаждать нагревательный блок быстрее, чем картридж успевает его нагреть, особенно на низких температурах печати (например, для PLA около 190°C).</p>
+
+<p>Проверьте работу вентилятора охлаждения хотэнда. Он должен включаться автоматически при достижении определенной температуры (обычно около 50-60°C) и работать постоянно во время печати. Если он крутится на полную мощность сразу после включения принтера, это может быть признаком неисправности цепи управления или настройки в прошивке.</p>
+
+<p>Также стоит осмотреть термоизоляцию. Использование силиконового чехла на нагревательном блоке не только предотвращает ожоги, но и стабилизирует температуру, снижая влияние сквозняков и работы вентилятора слоя. Отсутствие чехла может стать триггером для срабатывания защиты в холодном помещении.</p>
+
+<blockquote>⚠️ Внимание: Убедитесь, что вентилятор обдува детали (тот, что дует на модель) не направлен напрямую на нагревательный блок. Поток воздуха должен попадать только на зону контакта филамента и сопла.</blockquote>
+
+<h2 id="частые-вопросы-faq">Частые вопросы (FAQ)</h2>
+
+<details>
+<summary>Почему ошибка Thermal Runaway возникает только при высоких температурах?</summary>
+<p>Это может указывать на деградацию нагревательного элемента. При низких температурах его мощности еще хватает для нагрева, но при запросе 240-250°C сопротивление спирали меняется, и она не может выдать нужную мощность, либо срабатывает защита от перегрева самого картриджа.</p>
+</details>
+
+<details>
+<summary>Можно ли печатать, если временно игнорировать ошибку?</summary>
+<p>Нет. Принтер программно блокирует нагрев. Попытки закоротить датчики или модифицировать прошивку для отключения защиты крайне опасны и могут привести к пожару, если реальный перегрев все же произойдет.</p>
+</details>
+
+<details>
+<summary>Замена платы управления поможет решить проблему?</summary>
+<p>Только если неисправен MOSFET-транзистор на плате, который управляет питанием нагревателя. Если транзистор не открывает цепь полностью, нагреватель не получит нужного напряжения. Однако сначала исключите неисправность самого нагревателя и проводов.</p>
+</details>
+
+<details>
+<summary>Влияет ли качество блока питания на эту ошибку?</summary>
+<p>Да. Если блок питания просаживает напряжение под нагрузкой, нагреватель не сможет развить полную мощность. Проверьте выходное напряжение на клеммах БП во время попытки нагрева — оно не должно падать ниже 23 В для 24-вольтовой системы.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/3d-pechat-i-modelirovanie/t/te/temperatury-dlya-pechati-petg.html" class="pb-related-card">
+                <span class="pb-related-title">Температуры печати PETG: настройки для идеального качества</span>
+                <span class="pb-related-desc">Полный гид по температурам PETG: сопло, стол, обдув. Решаем проблемы адгезии, нитей и помутнения. Та</span>
+            </a><a href="/3d-pechat-i-modelirovanie/p/po/poliamid-dlya-3d-pechati.html" class="pb-related-card">
+                <span class="pb-related-title">Полиамид для 3D печати: виды, характеристики и технологии SLS/HPMJ</span>
+                <span class="pb-related-desc">Полный гид по nylon для 3D печати. Разбор PA11 и PA12, сравнение технологий SLS и MJP, параметры нас</span>
+            </a><a href="/3d-pechat-i-modelirovanie/o/oc/ochistka-sopla-pered-pechatyu.html" class="pb-related-card">
+                <span class="pb-related-title">Очистка сопла 3D-принтера: методы, инструменты и профилактика засоров</span>
+                <span class="pb-related-desc">Полное руководство по очистке сопла 3D-принтера. Разбор горячих и холодных методов, удаление засоров</span>
+            </a><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-anycubic-kobra-3.html" class="pb-related-card">
+                <span class="pb-related-title">Anycubic Kobra 3: Обзор, характеристики и настройка нового уровня</span>
+                <span class="pb-related-desc">Полный разбор 3D-принтера Anycubic Kobra 3. Тесты скорости печати, качество модели, система автомати</span>
+            </a><a href="/3d-pechat-i-modelirovanie/p/pr/proshivki-dlya-3d-printera.html" class="pb-related-card">
+                <span class="pb-related-title">Выбор и установка прошивок для 3D принтера: Marlin, Klipper и другие</span>
+                <span class="pb-related-desc">Полное руководство по выбору, настройке и обновлению прошивки для 3D принтера. Сравнение Marlin и Kl</span>
+            </a><a href="/3d-pechat-i-modelirovanie/s/sp/splajn-po-tochkam-kompas-3d.html" class="pb-related-card">
+                <span class="pb-related-title">Сплайн по точкам в КОМПАС-3D: полное руководство по построению</span>
+                <span class="pb-related-desc">Подробная инструкция по созданию сплайна по точкам в КОМПАС-3D. Разбор инструментов, настройки сглаж</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Home Assistant OS: установка и настройка с нуля — Техно Гид</title>
+    <meta name="description" content="Подробная инструкция по установке Home Assistant OS на Raspberry Pi, Intel NUC или виртуальную машину. Настройка умного дома своими руками.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/h/ho/home-assistant-os-ustanovka.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Home Assistant OS: установка и настройка с нуля">
+    <meta property="og:description" content="Подробная инструкция по установке Home Assistant OS на Raspberry Pi, Intel NUC или виртуальную машину. Настройка умного дома своими руками.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Home Assistant OS: установка и настройка с нуля</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-оборудования-и-подготовка-образа">Выбор оборудования и подготовка образа</a></li><li><a href="#запись-образа-на-накопитель">Запись образа на накопитель</a></li><li><a href="#первичный-запуск-и-настройка-сети">Первичный запуск и настройка сети</a></li><li><a href="#доступ-к-веб-интерфейсу-и-мастер-настройки">Доступ к веб-интерфейсу и мастер настройки</a></li><li><a href="#установка-на-виртуальные-машины-и-серверы">Установка на виртуальные машины и серверы</a></li><li><a href="#настройка-резервного-копирования-и-безопасности">Настройка резервного копирования и безопасности</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/p/po/poisk-cherez-umnuyu-kameru.html">Поиск через умную камеру: технологии, применение и настройка</a></li><li><a href="/umnyj-dom/a/al/alpen-kvest-kak-polzovatsya.html">Альпен Квест: Как пользоваться, настройка и прохождение квестов</a></li><li><a href="/umnyj-dom/u/um/umnyj-dom-s-alisoj-skhema-podklyucheniya.html">Схема подключения умного дома с Алисой: Полное руководство по настройке</a></li><li><a href="/umnyj-dom/p/po/pochemu-robot-pylesos-ezdit-zadom.html">Почему робот-пылесос едет задом: причины и решения</a></li><li><a href="/umnyj-dom/k/ka/kak-ustanovit-home-assistant-na-raspberry-pi-4.html">Установка Home Assistant на Raspberry Pi 4: пошаговая инструкция</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Установка Home Assistant OS: полное руководство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-оборудования-и-подготовка-образа">Выбор оборудования и подготовка образа</a></li><li><a href="#запись-образа-на-накопитель">Запись образа на накопитель</a></li><li><a href="#первичный-запуск-и-настройка-сети">Первичный запуск и настройка сети</a></li><li><a href="#доступ-к-веб-интерфейсу-и-мастер-настройки">Доступ к веб-интерфейсу и мастер настройки</a></li><li><a href="#установка-на-виртуальные-машины-и-серверы">Установка на виртуальные машины и серверы</a></li><li><a href="#настройка-резервного-копирования-и-безопасности">Настройка резервного копирования и безопасности</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Создание собственной экосистемы умного дома начинается с выбора надежной платформы, и <strong>Home Assistant</strong> сегодня является безусловным лидером в этой нише. В отличие от облачных решений, эта система обеспечивает полный контроль над данными и отсутствие зависимости от внешних серверов, что критически важно для приватности. Однако перед пользователями часто встает вопрос выбора метода развертывания, так как существует несколько вариантов программного обеспечения.</p>
+
+<p>Наиболее предпочтительным способом для новичков и энтузиастов является установка <em>Home Assistant OS</em> (ранее HassOS). Это специализированная операционная система, которая поставляется с уже предустановленным ядром Home Assistant, менеджером обновлений и встроенной поддержкой дополнений. Такой подход избавляет от необходимости вручную настраивать Docker-контейнеры или управлять зависимостями Python, превращая сложный процесс в последовательность понятных шагов.</p>
+
+<p>В данной статье мы рассмотрим детальный процесс инсталляции образа системы на различные носители, от популярных одноплатных компьютеров до полноценных серверов. Вы узнаете, как подготовить оборудование, записать образ на диск и выполнить первичную конфигурацию через веб-интерфейс. Особое внимание будет уделено нюансам работы с сетью и выбору правильного оборудования для стабильной работы вашего умного дома.</p>
+
+<h2 id="выбор-оборудования-и-подготовка-образа">Выбор оборудования и подготовка образа</h2>
+
+<p>Первым шагом является определение аппаратной платформы, на которой будет разворачиваться система. <strong>Home Assistant OS</strong> обладает отличной совместимостью с архитектурой ARM, что делает её идеальным кандидатом для установки на <em>Raspberry Pi</em> 3, 4 или 5. Для более требовательных сценариев с использованием тяжелых дополнений, таких как распознавание лиц или локальное видеонаблюдение, рекомендуется использовать устройства на базе x86-64, например, мини-ПК серии <em>Intel NUC</em> или старые ноутбуки.</p>
+
+<p>Процесс начинается с загрузки актуального образа системы с официального репозитория. Важно выбрать именно файл с расширением <code>.img.xz</code> или <code>.raw.xz</code>, предназначенный для вашего типа устройства. Архитектура процессора играет ключевую роль: использование образа для Generic x86-64 на плате Raspberry Pi приведет к ошибке загрузки, поэтому внимательность при скачивании экономит время.</p>
+
+<p>Для записи образа на накопитель вам потребуется специализированный софт, так как простое копирование файлов не сработает. Наиболее удобным и надежным инструментом является <em>BalenaEtcher</em>, который доступен для Windows, macOS и Linux. Альтернативой может служить утилита <code>Win32 Disk Imager</code> или встроенные средства терминала, но они требуют более глубоких знаний командной строки.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте карты памяти класса A1 или A2 для Raspberry Pi — они обеспечивают значительно более высокую скорость произвольного чтения и записи, что критично для работы базы данных Home Assistant.</p></aside>
+
+<p>После выбора устройства и загрузки файла необходимо подготовить карту памяти или SSD-накопитель. Все данные на целевом диске будут безвозвратно удалены в процессе записи, поэтому убедитесь, что вы выбрали правильный диск в программе прошивки. Ошибка в выборе диска может привести к потере важных данных на вашем основном компьютере.</p>
+
+<h2 id="запись-образа-на-накопитель">Запись образа на накопитель</h2>
+
+<p>Процесс прошивки накопителя является технически простым, но требует соблюдения определенной последовательности действий для гарантии целостности данных. Запустите программу <em>BalenaEtcher</em> и выполните три основных шага, которые предлагает интерфейс приложения. Сначала выберите скачанный архив с образом системы, затем укажите целевой диск.</p>
+
+<p>На этапе выбора диска программа отобразит все подключенные съемные носители. Внимательно проверьте объем и название устройства, чтобы случайно не отформатировать системный раздел вашего компьютера. После подтверждения выбора нажмите кнопку <code>Flash!</code> и дождитесь завершения процесса, который может занять от 5 до 20 минут в зависимости от скорости карты памяти и интерфейса подключения.</p>
+
+<ul>
+<li>📥 Выберите файл образа <em>Home Assistant OS</em> в формате <code>.img.xz</code>.</li>
+<li>💾 Укажите правильную карту памяти или USB-накопитель в списке устройств.</li>
+<li>⚡ Нажмите кнопку записи и дождитесь сообщения об успешном завершении.</li>
+</ul>
+
+<blockquote>
+<p>⚠️ Внимание: Если процесс записи прервался или программа выдала ошибку валидации, не пытайтесь использовать этот накопитель. Повторите процедуру с новой картой памяти или другим портом USB, так как поврежденный сектор может вызвать нестабильную работу системы в будущем.</p>
+</blockquote>
+
+<p>По завершении записи система может сообщить, что диск не отформатирован или его нужно отформатировать при подключении к компьютеру. Игнорируйте это сообщение операционной системы, так как файловая система Linux (обычно ext4) не распознается стандартными средствами Windows или macOS без дополнительного ПО. Это нормальное поведение для загрузочного образа.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед первым запуском</h4><label class="check-item"><input type="checkbox"><span>Образ записан без ошибок</span></label><label class="check-item"><input type="checkbox"><span>Накопитель извлечен безопасно</span></label><label class="check-item"><input type="checkbox"><span>Питание подключено к одноплатнику</span></label><label class="check-item"><input type="checkbox"><span>Сетевой кабель подключен</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="первичный-запуск-и-настройка-сети">Первичный запуск и настройка сети</h2>
+
+<p>После успешной записи образа извлеките накопитель из компьютера и установите его в ваш целевой девайс. Если вы используете <em>Raspberry Pi</em>, вставьте карту в соответствующий слот. Для мини-ПК подключите SSD через SATA или M.2 разъем. Критически важно обеспечить стабильное питание: для Raspberry Pi 4 и 5 рекомендуется использовать официальный блок питания мощностью не менее 3А и 5.25В.</p>
+
+<p>Подключите устройство к локальной сети с помощью Ethernet-кабеля. Хотя <strong>Home Assistant OS</strong> поддерживает Wi-Fi, первичная настройка и обновление системы требуют максимально стабильного соединения, которое может обеспечить только проводной интерфейс. После подключения кабеля и подачи питания устройству потребуется от 2 до 5 минут на первый запуск и инициализацию служб.</p>
+
+<p>В это время на плате могут мигать светодиоды, сигнализируя об активности диска и сети. Не выключайте питание в этот период, даже если кажется, что ничего не происходит. Система выполняет важные фоновые задачи по расширению файловой системы и настройке сетевых интерфейсов.</p>
+
+<div class="pb-poll" id="poll-0748f737"><div class="pb-poll-question">📊 На каком оборудовании вы планируете запустить Home Assistant?</div><div class="pb-poll-option" data-poll="0748f737" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Raspberry Pi 4/5</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0748f737" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Intel NUC / Мини-ПК</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0748f737" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Виртуальная машина (Proxmox)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0748f737" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Старый ноутбук</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0748f737" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другое</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<p>Определить IP-адрес вашего нового сервера можно несколькими способами. Самый простой метод — зайти в настройки вашего роутера и найти в списке подключенных клиентов устройство с именем <code>homeassistant</code>. Альтернативно, можно использовать сканеры сети, такие как <em>Advanced IP Scanner</em> или мобильные приложения, которые покажут активные хосты в вашей подсети.</p>
+
+<h2 id="доступ-к-веб-интерфейсу-и-мастер-настройки">Доступ к веб-интерфейсу и мастер настройки</h2>
+
+<p>Как только вы узнали IP-адрес устройства, откройте любой современный браузер на компьютере или смартфоне, подключенном к той же сети. В адресной строке введите <code>http://адрес_вашего_устройства:8123</code>. Порт <code>8123</code> является стандартным для веб-интерфейса Home Assistant и не требует изменения на начальном этапе.</p>
+
+<p>При первом входе вы увидите экран приветствия с предложением создать учетную запись. Вам потребуется придумать имя пользователя, надежный пароль и указать свое местоположение. Геолокация необходима системе для корректного расчета времени восхода и заката солнца, что используется во многих автоматизациях освещения.</p>
+
+<pre><code>http://192.168.1.XX:8123</code></pre>
+
+<p>После ввода данных система предложит настроить обнаружение устройств. <strong>Home Assistant</strong> обладает мощным механизмом автоматического поиска совместимого оборудования в локальной сети. Если у вас есть умные лампочки, розетки или термостаты, они могут появиться в списке обнаруженных устройств сразу после завершения настройки пользователя.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Пароль администратора Home Assistant не восстанавливается стандартными средствами. Запишите его в надежное место или используйте менеджер паролей сразу после создания.</p></aside>
+
+<p>Не торопитесь добавлять все устройства сразу. Сначала дайте системе полностью обновиться. В разделе <code>Настройки → Система → Обновления</code> может появиться новая версия ядра или программного обеспечения. Установка обновлений на чистую систему проходит быстрее и снижает риск конфликтов конфигураций.</p>
+
+<h2 id="установка-на-виртуальные-машины-и-серверы">Установка на виртуальные машины и серверы</h2>
+
+<p>Для пользователей, имеющих домашний сервер, установка <em>Home Assistant OS</em> в виде виртуальной машины является отличным вариантом. Это позволяет изолировать систему умного дома от других сервисов и легко создавать резервные копии всей машины целиком. Популярными гипервизорами для этих целей являются <em>Proxmox VE</em>, <em>ESXi</em> или <em>Hyper-V</em>.</p>
+
+<p>Процесс установки в виртуальной среде отличается от записи на физический диск. Вам не нужно использовать BalenaEtcher. Вместо этого образ <code>.qcow2</code> (для Proxmox) или <code>.vmdk</code> (для ESXi) загружается непосредственно в хранилище гипервизора. Затем создается новая виртуальная машина с минимальными требованиями: 2 ядра CPU, 4 ГБ оперативной памяти и 32 ГБ дискового пространства.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Минимальные требования</th>
+<th>Рекомендуемые значения</th>
+<th>Примечание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Процессор</td>
+<td>1 ядро</td>
+<td>2-4 ядра</td>
+<td>Требуется поддержка виртуализации</td>
+</tr>
+<tr>
+<td>Оперативная память</td>
+<td>1 ГБ</td>
+<td>4 ГБ</td>
+<td>Для работы дополнений нужно больше</td>
+</tr>
+<tr>
+<td>Диск</td>
+<td>16 ГБ</td>
+<td>64 ГБ SSD</td>
+<td>SSD критичен для скорости БД</td>
+</tr>
+<tr>
+<td>Сеть</td>
+<td>NAT</td>
+<td>Bridged (Мост)</td>
+<td>Для доступа из локальной сети</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Важным аспектом при виртуализации является проброс USB-портов. Если вы планируете использовать Zigbee-стик или Z-Wave контроллер, вам необходимо настроить передачу USB-устройства из хоста в гостевую ОС. В Proxmox это делается через меню оборудования виртуальной машины, где выбирается конкретный порт USB.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При использовании виртуальных машин избегайте выделения слишком большого количества ресурсов "с запасом". Home Assistant OS эффективно использует ресурсы, но избыточное выделение может замедлить работу других контейнеров на том же хосте.</p>
+</blockquote>
+
+<details class="pb-accordion"><summary>Проблема со временем в виртуальной машине</summary><div class="pb-accordion-body"><p>Если время в Home Assistant сбивается после перезагрузки, убедитесь, что в настройках виртуальной машины включена синхронизация времени с хостом (QEMU Guest Agent) и выбран правильный часовой пояс.</p></div></details>
+
+<h2 id="настройка-резервного-копирования-и-безопасности">Настройка резервного копирования и безопасности</h2>
+
+<p>После того как система заработала и вы добавили первые устройства, необходимо позаботиться о сохранности конфигурации. <strong>Home Assistant</strong> позволяет создавать полные резервные копии, включающие настройки, историю и установленные дополнения. Эти копии можно хранить локально или автоматически отправлять в облачное хранилище, например, Google Drive или Dropbox, с использованием аддона <em>Samba share</em> или <em>File editor</em>.</p>
+
+<p>Для доступа к файлам резервных копий с компьютера удобно настроить сетевую папку. Установите дополнение <code>Samba share</code> через магазин дополнений. После настройки вы сможете подключаться к папке <code>backup</code> по сети, используя стандартный проводник Windows или Finder на macOS, и скачивать файлы вручную.</p>
+
+<ul>
+<li>🛡️ Включите двухфакторную аутентификацию для учетной записи администратора.</li>
+<li>💾 Настройте автоматическое создание резервных копий раз в неделю.</li>
+<li>☁️ Configure отправление копий во внешнее хранилище (Google Drive).</li>
+</ul>
+
+<p>Безопасность также подразумевает ограничение доступа из внешней сети. Не открывайте порт <code>8123</code> напрямую на роутере. Для удаленного доступа используйте сервис <em>Home Assistant Cloud</em> (платный, но простой) или настройте безопасный туннель через <em>WireGuard</em> или <code>ZeroTier</code>. Это защитит ваш умный дом от сканирования портов и потенциальных атак ботнетов.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Храните хотя бы одну последнюю резервную копию на физическом носителе, отключенном от сети. Это защитит вас в случае шифровальщиков или полного выхода из строя основного сервера.</p></aside>
+
+<p>Регулярное обновление системы — еще один элемент безопасности. Разработчики постоянно закрывают уязвимости и улучшают стабильность. Включите уведомления об обновлениях, но перед установкой новой версии всегда делайте ручную резервную копию. Это позволит откатиться назад в случае несовместимости критических дополнений.</p>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли установить Home Assistant OS на обычный жесткий диск (HDD)?</summary>
+<p>Технически это возможно, но крайне не рекомендуется. База данных Home Assistant (Recorder) выполняет множество операций записи. Механические жесткие диски имеют низкую скорость произвольного доступа, что приведет к задержкам в интерфейсе и быстрому износу диска. Используйте SSD или карту памяти высокого класса.</p>
+</details>
+
+<details>
+<summary>В чем разница между Home Assistant OS и Home Assistant Container?</summary>
+<p><strong>Home Assistant OS</strong> — это полноценная операционная система, которая включает в себя менеджер дополнений (Add-ons), простой интерфейс обновлений и максимальную изоляцию. <em>Home Assistant Container</em> — это только ядро системы, работающее в Docker. Оно не имеет встроенного магазина дополнений, и вам придется вручную разворачивать все сервисы (например, Mosquitto или Node-RED) в отдельных контейнерах.</p>
+</details>
+
+<details>
+<summary>Я потерял пароль администратора, как его сбросить?</summary>
+<p>В Home Assistant OS нет простой кнопки сброса пароля через веб-интерфейс. Вам потребуется физический доступ к устройству и подключение монитора с клавиатурой. В консоли используется команда <code>ha auth reset</code>, которая позволяет задать новый пароль для существующего пользователя. Для доступа к консоли виртуальной машины используйте терминал гипервизора.</p>
+</details>
+
+<details>
+<summary>Поддерживает ли система работу без подключения к интернету?</summary>
+<p>Базовая функциональность работает локально. Однако для первоначальной установки, загрузки обновлений и установки дополнений из магазина требуется доступ к интернету. Некоторые интеграции (например, погода или карты) также не будут работать без сети. Полностью автономная работа возможна, но ограничивает функционал системы.</p>
+</details>
+
+<details>
+<summary>Какой Zigbee-стик лучше выбрать для новичка?</summary>
+<p>Наиболее популярным и хорошо поддерживаемым вариантом является стик от Texas Instruments на базе чипа CC2652, например, <em>Sonoff Zigbee 3.0 USB Dongle Plus</em> (версия P или E). Он обеспечивает стабильную связь с большим количеством устройств и поддерживается интеграцией <code>Zigbee Home Automation (ZHA)</code> из коробки.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/p/po/poisk-cherez-umnuyu-kameru.html" class="pb-related-card">
+                <span class="pb-related-title">Поиск через умную камеру: технологии, применение и настройка</span>
+                <span class="pb-related-desc">Разбираем, как работает поиск через умную камеру. Обзор алгоритмов, сценарии использования в безопас</span>
+            </a><a href="/umnyj-dom/a/al/alpen-kvest-kak-polzovatsya.html" class="pb-related-card">
+                <span class="pb-related-title">Альпен Квест: Как пользоваться, настройка и прохождение квестов</span>
+                <span class="pb-related-desc">Полная инструкция по использованию сервиса Альпен Квест. Регистрация, активация кодов, прохождение л</span>
+            </a><a href="/umnyj-dom/u/um/umnyj-dom-s-alisoj-skhema-podklyucheniya.html" class="pb-related-card">
+                <span class="pb-related-title">Схема подключения умного дома с Алисой: Полное руководство по настройке</span>
+                <span class="pb-related-desc">Пошаговая инструкция по сборке умного дома с Алисой. Обзор схем подключения, выбор протоколов Zigbee</span>
+            </a><a href="/umnyj-dom/p/po/pochemu-robot-pylesos-ezdit-zadom.html" class="pb-related-card">
+                <span class="pb-related-title">Почему робот-пылесос едет задом: причины и решения</span>
+                <span class="pb-related-desc">Узнайте, почему робот-пылесос часто двигается назад. Разбор ошибок датчиков, навигации и загрязнений</span>
+            </a><a href="/umnyj-dom/k/ka/kak-ustanovit-home-assistant-na-raspberry-pi-4.html" class="pb-related-card">
+                <span class="pb-related-title">Установка Home Assistant на Raspberry Pi 4: пошаговая инструкция</span>
+                <span class="pb-related-desc">Подробное руководство по развертыванию Home Assistant OS на Raspberry Pi 4. Настройка SD-карты, сети</span>
+            </a><a href="/umnyj-dom/p/pr/proshivka-dlya-kamery-xiaomi-360.html" class="pb-related-card">
+                <span class="pb-related-title">Прошивка для камеры Xiaomi 360: инструкции, версии и Regional Fix</span>
+                <span class="pb-related-desc">Полный гайд по обновлению ПО камер Xiaomi 360. Как установить глобальную прошивку, исправить регион,</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

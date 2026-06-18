@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Яндекс Музыка в Home Assistant: настройка и управление — Техно Гид</title>
+    <meta name="description" content="Интеграция Яндекс Музыки в Home Assistant через Yandex Station. Настройка, команды, управление громкостью и решение типовых проблем.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/y/ya/yandex-music-home-assistant.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Яндекс Музыка в Home Assistant: настройка и управление">
+    <meta property="og:description" content="Интеграция Яндекс Музыки в Home Assistant через Yandex Station. Настройка, команды, управление громкостью и решение типовых проблем.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Яндекс Музыка в Home Assistant: настройка и управление</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-оборудования-и-выбор-метода-интеграции">Подготовка оборудования и выбор метода интеграции</a></li><li><a href="#установка-и-настройка-компонента-yandex-station">Установка и настройка компонента Yandex Station</a></li><li><a href="#управление-воспроизведением-и-базовые-команды">Управление воспроизведением и базовые команды</a></li><li><a href="#создание-автоматизаций-и-сценариев">Создание автоматизаций и сценариев</a></li><li><a href="#продвинутые-настройки-и-отладка">Продвинутые настройки и отладка</a></li><li><a href="#решение-типовых-проблем-и-ограничений">Решение типовых проблем и ограничений</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/r/ro/robot-pylesos-edet-nazad-i-vyklyuchaetsya.html">Робот-пылесос едет назад и выключается: причины и ремонт</a></li><li><a href="/umnyj-dom/i/in/interesnye-komandy-dlya-alisy.html">Топ лучших команд для Алисы: Умный дом, игры и полезные навыки</a></li><li><a href="/umnyj-dom/p/po/pochemu-moyushchij-robot-pylesos-ne-podaet-vodu.html">Почему моющий робот-пылесос не подает воду: причины и решения</a></li><li><a href="/umnyj-dom/k/ka/kamera-xiaomi-360-ne-podklyuchaetsya-k-wifi.html">Xiaomi 360 не подключается к Wi-Fi: полный разбор причин</a></li><li><a href="/umnyj-dom/p/pr/prilozhenie-dlya-gps-tracker.html">Приложение для GPS-трекера: выбор, настройка и управление</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Интеграция Яндекс Музыки в экосистему Home Assistant</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-оборудования-и-выбор-метода-интеграции">Подготовка оборудования и выбор метода интеграции</a></li><li><a href="#установка-и-настройка-компонента-yandex-station">Установка и настройка компонента Yandex Station</a></li><li><a href="#управление-воспроизведением-и-базовые-команды">Управление воспроизведением и базовые команды</a></li><li><a href="#создание-автоматизаций-и-сценариев">Создание автоматизаций и сценариев</a></li><li><a href="#продвинутые-настройки-и-отладка">Продвинутые настройки и отладка</a></li><li><a href="#решение-типовых-проблем-и-ограничений">Решение типовых проблем и ограничений</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Управление музыкой в умном доме давно перестало быть простой функцией включения колонки по таймеру. Пользователи хотят создавать сложные сценарии: автоматическое включение утреннего подкаста при срабатывании будильника, изменение громкости при звонке в дверь или синхронизацию света с ритмом трека. Для владельцев экосистемы Яндекса связка <strong>Яндекс Музыка</strong> и <em>Home Assistant</em> открывает именно такие возможности, превращая обычную станцию в мощный инструмент автоматизации.</p>
+
+<p>Однако процесс настройки не всегда интуитивно понятен из-за специфики работы протокола обмена данными между локальным сервером умного дома и облачными сервисами Яндекса. В отличие от локальных плееров, здесь требуется авторизация через токен, который имеет свойство устаревать, и правильная конфигурация медиасервера. Неправильная настройка приводит к тому, что колонка видна в системе, но не исполняет команды или выдает ошибки воспроизведения.</p>
+
+<p>В этой статье мы подробно разберем, как подключить вашу станцию к Home Assistant, какие интеграции использовать для стабильной работы и как писать скрипты для управления плейлистами. Мы не будем рассматривать теоретические основы работы HA, а сосредоточимся на практических шагах, которые позволят вам управлять <em>Yandex Music</em> голосом, через интерфейс панели или в составе сложных автоматизаций.</p>
+
+<h2 id="подготовка-оборудования-и-выбор-метода-интеграции">Подготовка оборудования и выбор метода интеграции</h2>
+
+<p>Прежде чем приступать к настройке, необходимо убедиться, что ваша инфраструктура готова к работе с внешними медиа-сервисами. Основным требованием является наличие установленной и настроенной станции <em>Yandex Station</em> (Mini, Max, Lite или модуль в телевизоре), которая уже привязана к вашему аккаунту Яндекса. Без активной подписки Яндекс Плюс функционал может быть ограничен, хотя базовое управление часто доступно и в бесплатном режиме.</p>
+
+<p>Существует два основных способа интегрировать станцию в Home Assistant. Первый — это использование официальной или сторонней интеграции <code>Yandex Station</code>, которая позволяет управлять устройством как медиаплеером. Второй вариант — использование компонента <code>media_player</code> с прямой настройкой через YAML, что дает больше контроля, но требует глубоких знаний структуры конфигов. Для большинства пользователей оптимальным выбором станет установка готового компонента через HACS.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Интерфейс приложения «Дом с Алисой» и методы получения токенов могут изменяться разработчиками Яндекса без предупреждения. Если стандартный способ авторизации перестал работать, проверьте официальную документацию репозитория интеграции на GitHub для получения актуальных инструкций по извлечению ключей доступа.</p>
+</blockquote>
+
+<p>Для установки интеграции вам потребуется доступ к файловой системе вашего сервера Home Assistant или возможность установки дополнений, если вы используете HA OS. Рекомендуется использовать метод установки через HACS (Home Assistant Community Store), так как он упрощает процесс обновления компонентов при выходе новых версий прошивок станций.</p>
+
+<div class="pb-poll" id="poll-d7a03e78"><div class="pb-poll-question">📊 Какая у вас Яндекс Станция?</div><div class="pb-poll-option" data-poll="d7a03e78" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Yandex Station Mini</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d7a03e78" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Yandex Station Max</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d7a03e78" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Yandex Station Lite</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d7a03e78" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Модуль в ТВ</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="d7a03e78" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другое устройство</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="установка-и-настройка-компонента-yandex-station">Установка и настройка компонента Yandex Station</h2>
+
+<p>Процесс установки начинается с добавления репозитория в ваш менеджер плагинов. Вам необходимо найти компонент, разработанный сообществом (наиболее популярен репозиторий от <em>AlexxIT</em>), и нажать кнопку установки. После перезагрузки сервера в списке доступных интеграций появится новый пункт, требующий ввода учетных данных.</p>
+
+<p>Ключевым этапом является получение токена доступа. Система не запрашивает ваш пароль напрямую в интерфейсе Home Assistant из соображений безопасности. Вместо этого вам нужно сгенерировать специальный ключ через отладочное меню устройства или сторонний скрипт, который эмулирует запрос к API Яндекса. Этот токен затем вставляется в поле настройки интеграции.</p>
+
+<ul>
+<li>🔑 Скачайте утилиту для генерации токена на компьютер с доступом в сеть.</li>
+<li>📱 Выполните вход в свой аккаунт Яндекс через утилиту, следуя инструкциям в терминале.</li>
+<li>📋 Скопируйте полученную длинную строку символов (токен) в буфер обмена.</li>
+<li>⚙️ Вставьте токен в поле конфигурации интеграции в интерфейсе Home Assistant.</li>
+</ul>
+
+<p>После успешной аутентификации в системе появятся новые сущности. Обычно это медиаплеер для каждой найденной колонки и, опционально, сущности для управления светодиодами или датчиками температуры, если они есть в модели устройства. Проверьте статус сущностей: они должны отображаться как <code>available</code> (доступны).</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если после ввода токена интеграция выдает ошибку, попробуйте сгенерировать новый токен. Старые ключи могут быть отозваны сервером Яндекса при смене пароля или подозрительной активности.</p></aside>
+
+<h2 id="управление-воспроизведением-и-базовые-команды">Управление воспроизведением и базовые команды</h2>
+
+<p>Когда устройство добавлено, оно становится доступным для управления через стандартные карточки медиаплеера в Lovelace. Вы можете запускать паузу, переключать треки и менять громкость. Однако настоящая мощь Home Assistant раскрывается при использовании сервисов вызова действий (Call Action) для отправки специфических команд.</p>
+
+<p>Для управления воспроизведением используется сервис <code>media_player.play_media</code>. В качестве медиа-контента можно передавать не только ссылки на файлы, но и команды для поиска треков, артистов или плейлистов непосредственно в базе <strong>Яндекс Музыки</strong>. Это позволяет создавать кнопки на дашборде с надписью «Включить джаз» или «Новости», которые будут исполняться мгновенно.</p>
+
+<pre><code>service: media_player.play_media
+<p>target:</p>
+<p>entity_id: media_player.yandex_station_livingroom</p>
+<p>data:</p>
+<p>media_content_id: 'playlist:my_daily_playlist'</p>
+<p>media_content_type: 'playlist'</p>
+</code></pre>
+
+<p>Важно понимать разницу между типами контента. Вы можете управлять очередью воспроизведения, добавлять треки в конец списка или очищать её полностью. Команда <code>media_content_type</code> определяет, как станция интерпретирует запрос: как поиск по названию, как переход к конкретному альбому или как запуск радио-станции.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Тип контента (media_content_type)</th>
+<th>Описание команды</th>
+<th>Пример использования</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>music</code></td>
+<td>Поиск и воспроизведение трека по названию</td>
+<td>«Ночной дозор»</td>
+</tr>
+<tr>
+<td><code>artist</code></td>
+<td>Запуск радио конкретного исполнителя</td>
+<td>«Queen»</td>
+</tr>
+<tr>
+<td><code>playlist</code></td>
+<td>Воспроизведение плейлиста по ID</td>
+<td>«1234567»</td>
+</tr>
+<tr>
+<td><code>radio</code></td>
+<td>Запуск потокового радио</td>
+<td>«Европа Плюс»</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Не забывайте, что громкость можно регулировать не только в процентах, но и относительными значениями. Это полезно для сценариев, когда нужно лишь немного убавить звук во время телефонного разговора, не выключая музыку полностью.</p>
+
+<h2 id="создание-автоматизаций-и-сценариев">Создание автоматизаций и сценариев</h2>
+
+<p>Интеграция позволяет встраивать музыку в логику умного дома. Представьте сценарий, где при срабатывании датчика движения на кухне в вечернее время включается тихий фоновый джаз, а утром, когда вы отключаете будильник, начинается бодрящий плейлист новостей.</p>
+
+<p>Для реализации таких задач используются триггеры и условия в редакторе автоматизаций. Вы можете привязать запуск музыки к состоянию других устройств: например, если телевизор включен, музыка на колонке автоматически ставится на паузу. Это реализуется через проверку состояния сущности <code>media_player</code> телевизора.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> При создании автоматизаций с громким звуком обязательно добавляйте условие времени (Time Condition). Иначе колонка может начать играть тяжелый рок в 3 часа ночи, если датчик движения сработает ложно, разбудив весь дом.</p>
+</blockquote>
+
+<p>Еще один интересный сценарий — использование музыки как уведомления. Можно настроить скрипт, который прерывает текущее воспроизведение, проигрывает короткий звуковой файл (например, сигнал двери) через ту же колонку, а затем возобновляет музыку с той же секунды. Для этого используется последовательность действий (Sequence) в скриптах.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка сценария</h4><label class="check-item"><input type="checkbox"><span>Настроен триггер времени</span></label><label class="check-item"><input type="checkbox"><span>Добавлено условие состояния</span></label><label class="check-item"><input type="checkbox"><span>Выбрана целевая колонка</span></label><label class="check-item"><input type="checkbox"><span>Установлен уровень громкости</span></label><label class="check-item"><input type="checkbox"><span>Добавлено действие восстановления</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<p>Сложные сценарии лучше тестировать вручную через инструмент «Разработчик» -> «Действия», прежде чем сохранять их как постоянные автоматизации. Это поможет избежать ошибок в синтаксисе YAML и убедиться, что колонка корректно реагирует на команду.</p>
+
+<h2 id="продвинутые-настройки-и-отладка">Продвинутые настройки и отладка</h2>
+
+<p>Для опытных пользователей доступна тонкая настройка параметров интеграции через YAML-конфигурацию. Здесь можно задать имена устройств, отключить ненужные сущности (например, датчик температуры, если он врет) или настроить кэширование обложек альбомов для ускорения отображения в интерфейсе.</p>
+
+<p>Если колонка периодически отваливается или команды выполняются с задержкой, проблема может крыться в сетевых настройках. Убедитесь, что сервер Home Assistant и Яндекс Станция находятся в одной подсети и имеют доступ к интернету. Брандмауэры или настройки VLAN не должны блокировать локальный трафик между устройствами.</p>
+
+<p>В логах сервера (<code>home-assistant.log</code>) можно отследить ошибки авторизации. Частая проблема — истечение срока действия токена. В этом случае в логах появятся сообщения об ошибке 401 или 403. Решение простое: сгенерировать новый токен и обновить его в настройках интеграции без переустановки самого компонента.</p>
+
+<details class="pb-accordion"><summary>Скрытые возможности TTS</summary><div class="pb-accordion-body"><p>Через интеграцию можно отправлять текстовые сообщения на колонку, которые будут озвучены голосом Алисы. Используйте сервис notify.yandex_station для отправки сообщений типа "Осторожно, дверь открыта".</p></div></details>
+
+<h2 id="решение-типовых-проблем-и-ограничений">Решение типовых проблем и ограничений</h2>
+
+<p>Несмотря на мощь интеграции, существуют технические ограничения, накладываемые самим сервисом Яндекс. Например, нельзя программно изменить эквалайзер или получить доступ к сырым аудиоданным для визуализации спектра в реальном времени. Также управление очередью воспроизведения иногда работает некорректно, если одновременно пытаются управлять колонкой голосом и через Home Assistant.</p>
+
+<p>Частая жалоба пользователей — рассинхронизация состояния. В интерфейсе HA может быть написано, что музыка играет, хотя на самом деле колонка молчит. Это лечится перезагрузкой интеграции или принудительным обновлением состояния сущности через сервис <code>homeassistant.update_entity</code>.</p>
+
+<p>Если вы используете несколько колонок в разных комнатах, важно правильно их именовать. Дублирование имен может привести к тому, что команда «включи музыку» сработает не там, где нужно. Используйте префиксы комнат в названиях сущностей, например, <code>media_player.station_kitchen</code> и <code>media_player.station_bedroom</code>.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Стабильность работы интеграции напрямую зависит от качества интернет-соединения и актуальности токена авторизации. Регулярно проверяйте логи сервера при возникновении сбоев.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли управлять Яндекс Музыкой без интернета?</summary>
+<p>Нет, интеграция работает через облачные API Яндекса. Для передачи команд и потоковой передачи музыки требуется активное подключение к глобальной сети. Локальное воспроизведение файлов возможно только при использовании дополнительных настроек DLNA, но это уже не будет нативной Яндекс Музыкой.</p>
+</details>
+
+<details>
+<summary>Почему интеграция перестала работать после обновления Home Assistant?</summary>
+<p>Иногда при глобальных обновлениях ядра HA меняются зависимости Python-библиотек, которые использует компонент Yandex Station. Попробуйте переустановить интеграцию через HACS или проверить, не появилась ли новая версия компонента, совместимая с вашей версией системы.</p>
+</details>
+
+<details>
+<summary>Как добавить свою музыку в плейлисты для управления?</summary>
+<p>Вам нужно загрузить треки в личную коллекцию Яндекс Музыки через веб-интерфейс или приложение на смартфоне. После этого они станут доступны для поиска и воспроизведения через команды Home Assistant по названию трека или артиста.</p>
+</details>
+
+<details>
+<summary>Поддерживается ли групповое воспроизведение на нескольких колонках?</summary>
+<p>Нативная поддержка синхронного группового воспроизведения (Multiroom) через интеграцию ограничена. Лучше использовать функцию группировки в приложении «Дом с Алисой», создав там группу устройств, а затем управлять этой группой как единым медиаплеером в Home Assistant.</p>
+</details>
+
+<details>
+<summary>Безопасно ли хранить токен в конфигурационном файле?</summary>
+<p>Токен дает доступ к управлению вашими устройствами и истории прослушивания. Не публикуйте конфигурационные файлы с токенами в открытом доступе (GitHub и т.д.). Используйте секретные переменные (secrets.yaml) для хранения чувствительных данных.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/r/ro/robot-pylesos-edet-nazad-i-vyklyuchaetsya.html" class="pb-related-card">
+                <span class="pb-related-title">Робот-пылесос едет назад и выключается: причины и ремонт</span>
+                <span class="pb-related-desc">Робот-пылесос резко разворачивается и отключается? Узнайте основные причины: от датчиков колес до сб</span>
+            </a><a href="/umnyj-dom/i/in/interesnye-komandy-dlya-alisy.html" class="pb-related-card">
+                <span class="pb-related-title">Топ лучших команд для Алисы: Умный дом, игры и полезные навыки</span>
+                <span class="pb-related-desc">Откройте для себя самые интересные команды для Алисы. Полный список навыков для управления умным дом</span>
+            </a><a href="/umnyj-dom/p/po/pochemu-moyushchij-robot-pylesos-ne-podaet-vodu.html" class="pb-related-card">
+                <span class="pb-related-title">Почему моющий робот-пылесос не подает воду: причины и решения</span>
+                <span class="pb-related-desc">Разбираем причины, почему робот-пылесос не моет пол. Проверка бака, помпы, фильтров и программных сб</span>
+            </a><a href="/umnyj-dom/k/ka/kamera-xiaomi-360-ne-podklyuchaetsya-k-wifi.html" class="pb-related-card">
+                <span class="pb-related-title">Xiaomi 360 не подключается к Wi-Fi: полный разбор причин</span>
+                <span class="pb-related-desc">Не удается подключить камеру Xiaomi 360 к Wi-Fi? Разбираем ошибки, сброс настроек, частоты 2.4 ГГц и</span>
+            </a><a href="/umnyj-dom/p/pr/prilozhenie-dlya-gps-tracker.html" class="pb-related-card">
+                <span class="pb-related-title">Приложение для GPS-трекера: выбор, настройка и управление</span>
+                <span class="pb-related-desc">Как выбрать лучшее приложение для GPS-трекера? Обзор популярных платформ, функционал, настройка геоз</span>
+            </a><a href="/umnyj-dom/r/re/rele-dlya-vklyucheniya-kompyutera.html" class="pb-related-card">
+                <span class="pb-related-title">Реле для включения ПК: схемы и умный дом</span>
+                <span class="pb-related-desc">Как настроить автоматическое включение компьютера через реле. Схемы подключения к умному дому, Ardui</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

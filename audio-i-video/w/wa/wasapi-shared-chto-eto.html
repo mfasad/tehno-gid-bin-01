@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>WASAPI Shared: что это за режим и как его настроить — Техно Гид</title>
+    <meta name="description" content="Подробный разбор режима WASAPI Shared в Windows. Сравнение с Exclusive, настройка звука, устранение задержек и советы для аудиофилов.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/audio-i-video/w/wa/wasapi-shared-chto-eto.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="WASAPI Shared: что это за режим и как его настроить">
+    <meta property="og:description" content="Подробный разбор режима WASAPI Shared в Windows. Сравнение с Exclusive, настройка звука, устранение задержек и советы для аудиофилов.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/audio-i-video/">Аудио и Видео</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">WASAPI Shared: что это за режим и как его настроить</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#архитектура-аудио-в-windows-и-роль-wasapi">Архитектура аудио в Windows и роль WASAPI</a></li><li><a href="#принцип-работы-режима-shared-общий-доступ">Принцип работы режима Shared (Общий доступ)</a></li><li><a href="#сравнение-shared-и-exclusive-в-чем-разница">Сравнение Shared и Exclusive: в чем разница</a></li><li><a href="#влияние-на-задержку-и-производительность-системы">Влияние на задержку и производительность системы</a></li><li><a href="#как-проверить-и-изменить-настройки-wasapi">Как проверить и изменить настройки WASAPI</a></li><li><a href="#проблемы-совместимости-и-типичные-ошибки">Проблемы совместимости и типичные ошибки</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/audio-i-video/m/mu/muzyka-vysokogo-kachestva-v-formate-flac.html">FLAC: музыка высокого качества без потерь</a></li><li><a href="/audio-i-video/s/sl/slova-pesni-nepokorennyj-kipelov.html">Слова песни «Непокоренный» Кипелова: полный текст и анализ</a></li><li><a href="/audio-i-video/p/pr/prilozheniya-dlya-nastrojki-naushnikov-na-pk.html">Лучшие приложения для настройки наушников на ПК: эквалайзеры и прошивки</a></li><li><a href="/audio-i-video/s/si/sinead-oconnor-tears-from-the-moon.html">Tears From the Moon: история сингла Sinéad O&#x27;Connor и The Chieftains</a></li><li><a href="/audio-i-video/p/pe/perekhody-dlya-premiere-pro.html">Лучшие переходы для Premiere Pro: Топ плагинов и бесплатные пресеты 2026</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>WASAPI Shared: что это такое и зачем он нужен</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#архитектура-аудио-в-windows-и-роль-wasapi">Архитектура аудио в Windows и роль WASAPI</a></li><li><a href="#принцип-работы-режима-shared-общий-доступ">Принцип работы режима Shared (Общий доступ)</a></li><li><a href="#сравнение-shared-и-exclusive-в-чем-разница">Сравнение Shared и Exclusive: в чем разница</a></li><li><a href="#влияние-на-задержку-и-производительность-системы">Влияние на задержку и производительность системы</a></li><li><a href="#как-проверить-и-изменить-настройки-wasapi">Как проверить и изменить настройки WASAPI</a></li><li><a href="#проблемы-совместимости-и-типичные-ошибки">Проблемы совместимости и типичные ошибки</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>При настройке качественного звука на компьютере под управлением Windows пользователи часто сталкиваются с загадочными настройками в панели управления аудиодрайверами. Одним из таких параметров является <strong>WASAPI Shared</strong>, который часто противопоставляют режиму Exclusive. Понимание разницы между этими режимами критически важно как для обычных пользователей, желающих стабильной работы системы, так и для аудиофилов, стремящихся к максимальной чистоте звучания.</p>
+
+<p>Аббревиатура WASAPI расшифровывается как Windows Audio Session API. Это программный интерфейс, разработанный Microsoft для управления потоками аудио в операционных системах, начиная с Windows Vista. Именно этот механизм отвечает за передачу цифрового звука от приложений к звуковой карте. Режим <em>Shared</em> (Общий) является стандартным по умолчанию, но его работа имеет свои особенности, о которых стоит знать.</p>
+
+<p>В этом материале мы детально разберем, как работает общий режим, почему он вызывает микширование потоков и в каких случаях имеет смысл переключаться на эксклюзивный доступ. Вы узнаете, как проверить текущие настройки и оптимизировать звук для ваших задач.</p>
+
+<h2 id="архитектура-аудио-в-windows-и-роль-wasapi">Архитектура аудио в Windows и роль WASAPI</h2>
+
+<p>Современная операционная система Windows использует сложный аудиодвижок, ядром которого является <strong>Windows Audio Session API</strong>. Главная задача этого компонента — обеспечить одновременную работу множества приложений, воспроизводящих звук. Представьте ситуацию: вы слушаете музыку в браузере, одновременно получаете уведомление из мессенджера и смотрите видео в фоновом режиме. Без специального механизма эти потоки конфликтовали бы друг с другом.</p>
+
+<p>Режим <strong>Shared Mode</strong> (Общий режим) решает эту проблему путем микширования. Все аудиопотоки от разных программ направляются в системный микшер, где они сводятся в единый цифровой поток. Этот поток затем передается на устройство воспроизведения (звуковую карту или ЦАП). При этом система автоматически приводит все сигналы к единому формату, который установлен в настройках устройства по умолчанию.</p>
+
+<p>Если ваше устройство настроено на работу с частотой дискретизации 48 кГц и разрядностью 24 бита, то любой звук, поступающий от приложения с параметрами 44.1 кГц, будет пересчитан (ресемплирован) системным микшером. Этот процесс неизбежен в общем режиме и обеспечивает стабильность работы всей экосистемы Windows, позволяя звуку из системы и приложений звучать одновременно.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Процесс ресемплирования в режиме Shared может вносить теоретические искажения в исходный сигнал. Для критического прослушивания музыки это может быть заметным фактором, тогда как для игр и фильмов разница часто неразличима на слух.</p>
+</blockquote>
+
+<h2 id="принцип-работы-режима-shared-общий-доступ">Принцип работы режима Shared (Общий доступ)</h2>
+
+<p>Ключевая особенность режима <strong>WASAPI Shared</strong> заключается в том, что ни одно приложение не получает полного контроля над аудиоустройством. Доступ к "железу" имеет только операционная система. Это гарантирует, что системные звуки (предупреждения, ошибки, щелчки интерфейса) будут воспроизведены всегда, независимо от того, что делает основная программа.</p>
+
+<p>Когда вы запускаете музыкальный плеер в общем режиме, он отправляет свои данные в буфер Windows. Далее аудиодвижок смешивает эти данные с другими активными потоками. Только после этого итоговый микс отправляется на <em>DAC</em> (цифро-аналоговый преобразователь). Такая архитектура удобна для многозадачности, но накладывает ограничения на битрейт и частоту дискретизации.</p>
+
+<p>Важно понимать, что в этом режиме качество звука ограничено настройками формата по умолчанию, выбранными в панели управления звуком. Даже если вы воспроизводите файл высокого разрешения (Hi-Res), система может понизить его качество до стандартных 16 бит / 44.1 кГц или 48 кГц, если именно эти параметры заданы как основные для вашего устройства вывода.</p>
+
+<div class="pb-poll" id="poll-c6c5ff28"><div class="pb-poll-question">📊 Какой режим использования звука для вас приоритетнее?</div><div class="pb-poll-option" data-poll="c6c5ff28" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Игры и фильмы (нужны системные звуки)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c6c5ff28" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Прослушивание музыки в фоне</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c6c5ff28" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Критическое прослушивание (аудиофилия)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c6c5ff28" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Запись звука с микрофона</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="сравнение-shared-и-exclusive-в-чем-разница">Сравнение Shared и Exclusive: в чем разница</h2>
+
+<p>Противоположностью общему режиму является <strong>Exclusive Mode</strong> (Эксклюзивный режим). В этом сценарии приложение получает прямой доступ к аудиоустройству, минуя системный микшер Windows. Это позволяет передавать "бит-перфектный" сигнал без какого-либо вмешательства операционной системы.</p>
+
+<p>В эксклюзивном режиме все остальные звуки в системе отключаются. Если вы запустите видеоролик в браузере во время воспроизведения музыки в эксклюзивном режиме через <em>Foobar2000</em> или <em>Audirvana</em>, звук из браузера не появится. Система просто не сможет отправить свой аудиопоток на устройство, так как оно занято одним приложением.</p>
+
+<p>Ниже приведена таблица, наглядно демонстрирующая ключевые различия между двумя режимами работы WASAPI:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Характеристика</th>
+<th>WASAPI Shared</th>
+<th>WASAPI Exclusive</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Доступ к устройству</td>
+<td>Совместный (через микшер Windows)</td>
+<td>Прямой (монопольный)</td>
+</tr>
+<tr>
+<td>Системные звуки</td>
+<td>Воспроизводятся параллельно</td>
+<td>Отключаются или прерываются</td>
+</tr>
+<tr>
+<td>Ресемплирование</td>
+<td>Происходит автоматически системой</td>
+<td>Отсутствует (бит-перфект)</td>
+</tr>
+<tr>
+<td>Задержка (Latency)</td>
+<td>Выше (из-за буферизации)</td>
+<td>Минимальная</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Выбор между этими режимами зависит от ваших целей. Для повседневного использования, просмотра YouTube и игр режим <strong>Shared</strong> является безальтернативным и наиболее комфортным решением. Для профессиональной работы со звуком или наслаждения музыкой в тишине предпочтительнее <em>Exclusive</em>.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если вы используете внешнюю звуковую карту с собственным драйвером (ASIO), она часто обходит ограничения WASAPI Shared, предоставляя низкую задержку даже при многозадачности, но требует специализированного программного обеспечения.</p></aside>
+
+<h2 id="влияние-на-задержку-и-производительность-системы">Влияние на задержку и производительность системы</h2>
+
+<p>Одним из существенных недостатков режима <strong>WASAPI Shared</strong> является повышенная задержка (latency). Поскольку аудиопоток проходит через несколько уровней буферизации и обработку в системном микшере, время между отправкой сигнала приложением и его физическим воспроизведением увеличивается. Для обычного пользователя это незаметно, но для музыкантов, играющих на виртуальных инструментах в реальном времени, такая задержка может быть критичной.</p>
+
+<p>В играх высокая задержка звука может приводить к рассинхронизации визуального ряда и аудиоэффектов. Например, выстрел в шутере может быть услышан с заметным опозданием после нажатия кнопки мыши. Именно поэтому многие геймеры и профессионалы стремятся минимизировать буферы или переключаться на протоколы с низкой латентностью.</p>
+
+<p>Однако стоит отметить, что современные версии Windows 10 и 11 значительно оптимизировали работу аудиостека. Задержка в режиме Shared стала намного меньше, чем во времена Windows 7 или Vista. Тем не менее, она все еще выше, чем при использовании <em>ASIO</em> или WASAPI Exclusive.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При попытке записи звука с микрофона в режиме Exclusive другое приложение не сможет использовать микрофон одновременно. Это может вызвать ошибки в программах для видеоконференций, таких как Zoom или Skype.</p>
+</blockquote>
+
+<h2 id="как-проверить-и-изменить-настройки-wasapi">Как проверить и изменить настройки WASAPI</h2>
+
+<p>Чтобы управлять режимами работы звука, необходимо зайти в классическую панель управления Windows. Современные меню "Параметры" часто скрывают эти глубокие настройки, поэтому самый надежный путь — использование диалогового окна "Звук".</p>
+
+<p>Следуйте этой инструкции, чтобы найти нужные параметры:</p>
+<ul>
+<li>🖱️ Нажмите правой кнопкой мыши на значок динамика в трее (возле часов) и выберите "Звуки" или "Открыть параметры звука", а затем перейдите в "Панель управления звуком".</li>
+<li>🔊 В открывшемся окне на вкладке "Воспроизведение" найдите ваше активное устройство (наушники или колонки), выделите его и нажмите кнопку "Свойства".</li>
+<li>⚙️ Перейдите на вкладку "Дополнительно". Именно здесь находится раздел "Монопольный режим", где можно разрешить или запретить приложениям брать контроль над устройством.</li>
+<li>💾 В списке "Формат по умолчанию" вы можете выбрать разрядность и частоту дискретизации для режима Shared. Это будет потолком качества для всех приложений, работающих в общем режиме.</li>
+</ul>
+
+<p>Если вы снимете галочки с пунктов "Разрешить приложениям использовать устройство в монопольном режиме", вы принудительно переведете всю систему в режим <strong>WASAPI Shared</strong>. Ни одна программа не сможет переключить частоту дискретизации под свой файл, что избавит от щелчков и пауз при смене треков с разным битрейтом, но зафиксирует качество звука на одном уровне.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка настроек звука</h4><label class="check-item"><input type="checkbox"><span>Открыть панель управления звуком:Найти устройство воспроизведения:Проверить вкладку Дополнительно:Выбрать формат 24 бит / 48000 Гц:Сохранить изменения</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 1</div></div>
+
+<h2 id="проблемы-совместимости-и-типичные-ошибки">Проблемы совместимости и типичные ошибки</h2>
+
+<p>Несмотря на универсальность, режим <strong>Shared</strong> может становиться причиной различных конфликтов. Чаще всего пользователи сталкиваются с ситуацией, когда звук пропадает при запуске определенной игры или приложения. Это происходит, когда программа пытается принудительно захватить устройство в эксклюзивном режиме, но не может сделать это из-за настроек системы или занятости устройства другим процессом.</p>
+
+<p>Еще одна распространенная проблема — изменение частоты дискретизации. Некоторые старые программы или игры могут сбрасывать настройки звука на 44.1 кГц при запуске, что приводит к глухим щелчкам при переключении обратно на 48 кГц для системных звуков. В режиме Shared с запретом монопольного доступа эта проблема решается автоматически, так как система удерживает заданный формат.</p>
+
+<p>Также стоит упомянуть о драйверах. Производители звуковых карт, такие как <em>Realtek</em>, <em>Creative</em> или <em>Asus</em>, часто устанавливают собственные панели управления. Они могут перехватывать управление WASAPI, добавляя свои эффекты (эквалайзеры, виртуальное окружение). В таких случаях реальный путь сигнала становится еще сложнее, и понятие "чистого" Shared режима размывается.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Интерфейсы драйверов и меню настроек Windows могут отличаться в зависимости от версии операционной системы и производителя оборудования. Если вы не нашли описанных пунктов, сверьтесь с документацией к вашей звуковой карте.</p>
+</blockquote>
+
+<details>
+<summary>Почему в режиме Shared звук может казаться тише?</summary>
+<p>В общем режиме Windows применяет нормализацию громкости и системные ограничения для предотвращения перегрузки цифрового потока при микшировании нескольких источников. Это может приводить к небольшому снижению динамического диапазона по сравнению с прямым выводом.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать ASIO и WASAPI Shared одновременно?</summary>
+<p>Как правило, нет. Драйвер ASIO захватывает устройство на низком уровне, блокируя доступ для стандартного стека Windows Audio. Однако существуют программные обвязки (например, ASIO4ALL в режиме эмуляции), которые позволяют транслировать ASIO поток в систему, но это увеличивает задержку.</p>
+</details>
+
+<details>
+<summary>Влияет ли режим Shared на качество записи с микрофона?</summary>
+<p>Да. При записи в общем режиме ваш голос будет смешиваться с другими звуками, если не настроено правильное разделение потоков. Кроме того, к записанному сигналу могут применяться системные эффекты улучшения звука, которые нельзя отключить без перехода в эксклюзивный режим записи.</p>
+</details>
+
+<details>
+<summary>Нужно ли отключать Shared режим для игр?</summary>
+<p>Для большинства игр отключать Shared режим не нужно. Современные игровые движки отлично работают со стандартным аудиостеком Windows. Отключение монопольного режима даже предпочтительнее, чтобы вы могли слышать уведомления Discord или команды тиммейтов поверх звуков игры.</p>
+</details>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Режим WASAPI Shared — это баланс между качеством и удобством, обеспечивающий стабильную работу звука в многозадачной среде ценой минимальных теоретических потерь в точности сигнала.</p></aside></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/audio-i-video/m/mu/muzyka-vysokogo-kachestva-v-formate-flac.html" class="pb-related-card">
+                <span class="pb-related-title">FLAC: музыка высокого качества без потерь</span>
+                <span class="pb-related-desc">Полный гид по формату FLAC. Как слушать Hi-Res аудио, отличия от MP3, выбор плеера и оборудования дл</span>
+            </a><a href="/audio-i-video/s/sl/slova-pesni-nepokorennyj-kipelov.html" class="pb-related-card">
+                <span class="pb-related-title">Слова песни «Непокоренный» Кипелова: полный текст и анализ</span>
+                <span class="pb-related-desc">Полный текст песни «Непокоренный» Валерия Кипелова. Анализ смысла, история создания и разбор ключевы</span>
+            </a><a href="/audio-i-video/p/pr/prilozheniya-dlya-nastrojki-naushnikov-na-pk.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшие приложения для настройки наушников на ПК: эквалайзеры и прошивки</span>
+                <span class="pb-related-desc">Полный обзор софта для настройки звука: от фирменных утилит до системных эквалайзеров. Как улучшить </span>
+            </a><a href="/audio-i-video/s/si/sinead-oconnor-tears-from-the-moon.html" class="pb-related-card">
+                <span class="pb-related-title">Tears From the Moon: история сингла Sinéad O&#x27;Connor и The Chieftains</span>
+                <span class="pb-related-desc">Разбор песни Tears From the Moon Sinéad O&#x27;Connor. История создания, дуэт с The Chieftains, анализ те</span>
+            </a><a href="/audio-i-video/p/pe/perekhody-dlya-premiere-pro.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшие переходы для Premiere Pro: Топ плагинов и бесплатные пресеты 2026</span>
+                <span class="pb-related-desc">Полный гид по переходам для Premiere Pro. Обзор бесплатных и платных плагинов, установка эффектов, с</span>
+            </a><a href="/audio-i-video/p/pr/proverka-airpods-na-podlinnost.html" class="pb-related-card">
+                <span class="pb-related-title">Как проверить AirPods на подлинность: Полная инструкция и чек-лист</span>
+                <span class="pb-related-desc">Узнайте, как отличить оригинальные AirPods от копии. Пошаговая проверка серийного номера, анализ упа</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как написать программу для ЧПУ станка с нуля — Техно Гид</title>
+    <meta name="description" content="Полное руководство по программированию ЧПУ: G-коды, выбор CAD/CAM систем, написание управляющих программ и отладка кода на станке.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/3d-pechat-i-modelirovanie/n/na/napisat-programmu-dlya-chpu.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как написать программу для ЧПУ станка с нуля">
+    <meta property="og:description" content="Полное руководство по программированию ЧПУ: G-коды, выбор CAD/CAM систем, написание управляющих программ и отладка кода на станке.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/3d-pechat-i-modelirovanie/">3D Печать и Моделирование</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как написать программу для ЧПУ станка с нуля</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#основы-g-кода-и-структуры-управляющей-программы">Основы G-кода и структуры управляющей программы</a></li><li><a href="#выбор-стратегии-ручное-программирование-или-cam-системы">Выбор стратегии: ручное программирование или CAM-системы</a></li><li><a href="#подготовка-к-написанию-анализ-чертежа-и-выбор-инструмента">Подготовка к написанию: анализ чертежа и выбор инструмента</a></li><li><a href="#написание-кода-основные-команды-и-циклы">Написание кода: основные команды и циклы</a></li><li><a href="#отладка-и-проверка-программы-на-станке">Отладка и проверка программы на станке</a></li><li><a href="#типичные-ошибки-и-способы-их-устранения">Типичные ошибки и способы их устранения</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/3d-pechat-i-modelirovanie/b/bi/biznes-idei-s-3-d-printerom.html">Бизнес идеи с 3D принтером: 10 способов заработка на печати</a></li><li><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-flashforge-adventurer-5m-pro-otzyvy.html">Flashforge Adventurer 5M Pro: реальные отзывы, плюсы и минусы</a></li><li><a href="/3d-pechat-i-modelirovanie/g/gr/grinder-na-3d-printere.html">Гриндер на 3D принтере: Самодельный экструдер своими руками</a></li><li><a href="/3d-pechat-i-modelirovanie/v/vo/volosy-pri-3d-pechati.html">Волосы на 3D печати: устранение дефектов (струнинг)</a></li><li><a href="/3d-pechat-i-modelirovanie/l/lu/luchshij-zakrytyj-3d-printer.html">Лучший закрытый 3D принтер: обзор моделей для ABS и PETG</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как написать программу для ЧПУ станка: полное руководство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#основы-g-кода-и-структуры-управляющей-программы">Основы G-кода и структуры управляющей программы</a></li><li><a href="#выбор-стратегии-ручное-программирование-или-cam-системы">Выбор стратегии: ручное программирование или CAM-системы</a></li><li><a href="#подготовка-к-написанию-анализ-чертежа-и-выбор-инструмента">Подготовка к написанию: анализ чертежа и выбор инструмента</a></li><li><a href="#написание-кода-основные-команды-и-циклы">Написание кода: основные команды и циклы</a></li><li><a href="#отладка-и-проверка-программы-на-станке">Отладка и проверка программы на станке</a></li><li><a href="#типичные-ошибки-и-способы-их-устранения">Типичные ошибки и способы их устранения</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Создание управляющей программы для станков с числовым программным управлением (ЧПУ) — это фундаментальный навык для любого оператора или технолога в современном производстве. Процесс превращения чертежа в готовую деталь начинается не с вращения шпинделя, а с написания корректного кода, который станок будет интерпретировать как последовательность действий. Ошибки на этом этапе могут стоить дорого: от поломки дорогостоящего инструмента до повреждения самой машины или заготовки.</p>
+<p>В этой статье мы разберем все этапы написания программы, начиная от выбора стратегии обработки и заканчивая проверкой кода непосредственно на стойке управления. Вы узнаете, чем отличается ручное написание G-кода от использования CAM-систем, и поймете, как избежать распространенных ошибок при подготовке управляющих программ (УП).</p>
+<p>Современные технологии позволяют автоматизировать рутинные задачи, но понимание логики работы станка остается критически важным. Даже при использовании продвинутых систем автоматизации, оператор должен уметь читать код, находить в нем логические нестыковки и вносить правки вручную при необходимости.</p>
+
+<h2 id="основы-g-кода-и-структуры-управляющей-программы">Основы G-кода и структуры управляющей программы</h2>
+<p>Управляющая программа для ЧПУ — это текстовый файл, состоящий из команд, которые интерпретируются контроллером станка. Основу этого языка составляют <strong>G-коды</strong> (подготовительные функции) и <strong>M-коды</strong> (вспомогательные функции). G-коды отвечают за геометрию движения: линейную интерполяцию, круговую интерполяцию, выбор плоскости обработки. M-коды управляют периферией: включением шпинделя, подачей охлаждающей жидкости (СОЖ), сменой инструмента.</p>
+<p>Стандартная структура кадра (строки программы) включает номер кадра (N), подготовительную функцию (G), координаты осей (X, Y, Z), параметры подачи (F) и скорости вращения шпинделя (S). Например, команда <code>G01 X100 Y50 F200</code> предписывает инструменту переместиться линейно в точку с координатами X=100, Y=50 со скоростью подачи 200 мм/мин. Понимание синтаксиса необходимо для отладки.</p>
+<p>Важно различать абсолютное и относительное программирование. В абсолютной системе (<code>G90</code>) все координаты задаются относительно нуля детали. В относительной (<code>G91</code>) координаты указывают смещение от текущей позиции инструмента. Путаница между этими режимами — одна из самых частых причин аварийных ситуаций на производстве.</p>
+<blockquote>⚠️ <strong>Внимание:</strong> Перед запуском любой новой программы обязательно проверьте режим работы координат (<code>G90</code> или <code>G91</code>). Неожиданный переход в относительный режим может привести к тому, что инструмент уйдет в"негативные" координаты и врежется в ограничители станка.</blockquote>
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте функцию симуляции в вашем редакторе кода перед загрузкой УП на станок. Визуализация траектории помогает увидеть пересечения и столкновения, которые трудно заметить при чтении текста.</p></aside>
+
+<h2 id="выбор-стратегии-ручное-программирование-или-cam-системы">Выбор стратегии: ручное программирование или CAM-системы</h2>
+<p>Существует два основных подхода к созданию управляющих программ: ручное написание кода и использование систем автоматизированного программирования (<strong>CAM</strong>). Ручной метод подходит для простых деталей с ограниченной геометрией, таких как сверление отверстий, фрезерование пазов или токарная обработка цилиндрических поверхностей. Он дает полный контроль над каждым движением инструмента.</p>
+<p>Для сложных 3D-поверхностей, таких как пресс-формы, турбинные лопатки или художественная резьба, ручное написание кода практически невозможно из-за огромного объема вычислений. Здесь на помощь приходят CAM-системы, такие как <em>Fusion 360</em>, <em>Mastercam</em> или <em>SolidCAM</em>. Эти программы автоматически рассчитывают траектории инструмента на основе 3D-модели, минимизируя время холостых ходов и оптимизируя нагрузку на инструмент.</p>
+<ul>
+<li>🛠️ <strong>Ручное программирование:</strong> Идеально для быстрых правок, простых операций и понимания физики процесса резания.</li>
+<li>💻 <strong>CAM-системы:</strong> Необходимы для сложной геометрии, 5-осевой обработки и массового производства с высокой повторяемостью.</li>
+<li>⚙️ <strong>Постпроцессоры:</strong> Критический элемент CAM-системы, который переводит универсальный путь инструмента в конкретный код для вашей стойки ЧПУ (например, Fanuc, Siemens, Heidenhain).</li>
+</ul>
+<p>Выбор метода зависит от сложности детали и квалификации оператора. Часто используется гибридный подход: основную черновую и чистовую обработку генерирует CAM-система, а оператор вручную дописывает кадры для смены инструмента, установки нулей или специфических циклов, которые не поддерживаются постпроцессором автоматически.</p>
+<div class="pb-poll" id="poll-450b53e9"><div class="pb-poll-question">📊 Какой метод программирования вы используете чаще?</div><div class="pb-poll-option" data-poll="450b53e9" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Только ручной код (G-код)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="450b53e9" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Только CAM-системы</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="450b53e9" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Комбинированный подход</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="450b53e9" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Я только оператор, программы пишет технолог</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="подготовка-к-написанию-анализ-чертежа-и-выбор-инструмента">Подготовка к написанию: анализ чертежа и выбор инструмента</h2>
+<p>Прежде чем открыть редактор кода или CAM-систему, необходимо провести тщательный технологический анализ детали. На этом этапе определяется последовательность операций, выбор режущего инструмента и режимы резания. Ошибки, допущенные на стадии планирования, невозможно исправить простым редактированием кода — они требуют пересмотра всей технологии.</p>
+<p>Ключевым моментом является выбор системы координат и точки нуля детали. Обычно ноль детали совмещают с левым верхним углом заготовки для фрезерных работ или с торцом и осью вращения для токарных. Это упрощает чтение кода и привязку инструмента. Также необходимо учесть габариты инструмента, чтобы избежать столкновения патрона или оправки с заготовкой или элементами оснастки.</p>
+<p>Режимы резания (скорость вращения шпинделя <strong>S</strong> и подача <strong>F</strong>) подбираются исходя из материала заготовки, типа инструмента и требуемого качества поверхности. Использование неверных режимов может привести к быстрому износу фрезы, вибрациям (биению) или даже поломке инструмента прямо в процессе обработки.</p>
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Материал заготовки</th>
+<th>Тип инструмента</th>
+<th>Рекомендуемая скорость (м/мин)</th>
+<th>Подача на зуб (мм/зуб)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Алюминий (Al)</td>
+<td>Твердосплавная фреза</td>
+<td>300 - 600</td>
+<td>0.05 - 0.15</td>
+</tr>
+<tr>
+<td>Сталь конструкционная</td>
+<td>Твердосплавная фреза</td>
+<td>80 - 150</td>
+<td>0.02 - 0.08</td>
+</tr>
+<tr>
+<td>Нержавеющая сталь</td>
+<td>Твердосплавная фреза</td>
+<td>40 - 90</td>
+<td>0.01 - 0.04</td>
+</tr>
+<tr>
+<td>Титан</td>
+<td>Твердосплавная фреза</td>
+<td>20 - 50</td>
+<td>0.01 - 0.03</td>
+</tr>
+</tbody>
+</table></div>
+<details class="pb-accordion"><summary>Нюансы работы с титаном</summary><div class="pb-accordion-body"><p>При обработке титана критически важно не допускать остановки инструмента в зоне резания даже на долю секунды. Это приводит к наклепу материала и мгновенному выкрашиванию кромки инструмента.</p></div></details>
+
+<h2 id="написание-кода-основные-команды-и-циклы">Написание кода: основные команды и циклы</h2>
+<p>Процесс написания программы начинается с кадра безопасности и установки начальных условий. Обычно это отмена компенсаций, выбор плоскости, включение коррекции длины инструмента. Затем следует подход к заготовке и начало черновой обработки. Для упрощения кода используются стандартные циклы, такие как сверление (<code>G81</code>), растачивание (<code>G86</code>) или фрезерование карманов.</p>
+<p>Рассмотрим пример простейшей программы для фрезерования прямоугольного контура. Сначала инструмент быстро перемещается в безопасную точку над заготовком (<code>G00</code>), затем опускается на глубину резания (<code>G01 Z-5 F100</code>). Далее следует контурная обработка с использованием компенсации радиуса инструмента (<code>G41</code> или <code>G42</code>), что позволяет станку автоматически смещать траекторию на радиус фрезы.</p>
+<pre><code>N10 G90 G54 G00 X0 Y0 S2000 M03
+<p>N20 G43 Z50 H01</p>
+<p>N30 G01 Z-5 F100</p>
+<p>N40 G41 D01 X20 Y0</p>
+<p>N50 Y50</p>
+<p>N60 X50</p>
+<p>N70 Y0</p>
+<p>N80 X0</p>
+<p>N90 G40 X-10 Y-10</p>
+<p>N100 G00 Z100 M30</code></pre></p>
+<p>Использование подпрограмм (<code>M98</code>) позволяет избежать дублирования кода при обработке одинаковых элементов, расположенных в разных местах детали. Это делает программу компактнее и легче для редактирования. Если нужно изменить глубину отверстия в десяти местах, достаточно поправить ее только в тексте подпрограммы.</p>
+<blockquote>⚠️ <strong>Внимание:</strong> При использовании компенсации радиуса инструмента (<code>G41/G42</code>) убедитесь, что подход и уход от контура выполняются по прямой линии длиной больше радиуса инструмента. Заход по дуге или слишком короткий отрезок могут вызвать ошибку интерполяции на стойке ЧПУ.</blockquote>
+
+<h2 id="отладка-и-проверка-программы-на-станке">Отладка и проверка программы на станке</h2>
+<p>Написание кода — это только половина дела. Самая ответственная часть — это проверка программы. Никогда не запускайте новую УП сразу в автоматическом режиме на полной скорости. Сначала используйте режим"Однокадровое выполнение" (Single Block), чтобы контролировать каждое движение инструмента.</p>
+<p>В современных стойках управления есть функция графической симуляции, которая отображает траекторию движения инструмента на экране. Это мощный инструмент для визуальной проверки отсутствия столкновений. Однако графика не всегда учитывает реальную оснастку, поэтому визуальный контроль остается обязательным.</p>
+<p>При первой пробной обработке рекомендуется использовать функцию"Перекрытие подачи" (Feed Override). Установите потенциометр на 0% или минимальное значение и медленно увеличивайте подачу, наблюдая за процессом резания. Это даст вам время нажать аварийную кнопку (<strong>E-Stop</strong>), если что-то пойдет не так.</p>
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Чек-лист перед первым запуском</h4><label class="check-item"><input type="checkbox"><span>Проверить правильность привязки нуля детали</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в корректности номера инструмента и вылета</span></label><label class="check-item"><input type="checkbox"><span>Проверить направление вращения шпинделя</span></label><label class="check-item"><input type="checkbox"><span>Установить подачу на 0%</span></label><label class="check-item"><input type="checkbox"><span>Включить режим Single Block</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="типичные-ошибки-и-способы-их-устранения">Типичные ошибки и способы их устранения</h2>
+<p>Даже опытные программисты допускают ошибки. Самая распространенная из них — неверный выбор точки нуля или ошибочный ввод координат. Это приводит к тому, что станок начинает обработку не там, где нужно, часто с катастрофическими последствиями. Вторая частая ошибка — отменить компенсацию инструмента в конце программы, что может сбить настройки для следующей детали.</p>
+<p>Проблемы могут возникать и из-за несовместимости кода с конкретной стойкой ЧПУ. Команды, работающие на <em>Fanuc</em>, могут быть некорректно восприняты стойкой <em>Siemens Sinumerik</em> или <em>Heidenhain</em>. Например, синтаксис циклов сверления или способы задания дуг окружности (через радиус R или через центр I, J, K) могут отличаться.</p>
+<p>Для устранения ошибок ведите журнал изменений в программе. Комментируйте сложные участки кода прямо в тексте УП, используя символы комментария (обычно это точка с запятой <code>;</code> или скобки). Это поможет вам или другому оператору быстро понять логику программы при повторном запуске через месяц.</p>
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Главное правило отладки: Если вы не уверены в каком-либо кадре программы, остановите станок, перепроверьте координаты вручную и только потом продолжайте. Лучше потерять 5 минут на проверку, чем час на ремонт шпинделя.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+<details>
+<summary>Можно ли написать программу для ЧПУ в обычном Блокноте?</summary>
+<p>Да, технически можно. Управляющая программа — это обычный текстовый файл. Однако Блокнот не подсвечивает синтаксис и не проверяет ошибки. Для профессиональной работы лучше использовать специализированные редакторы G-кода, такие как NCPlot или встроенные редакторы CAM-систем.</p>
+</details>
+<details>
+<summary>В чем разница между G00 и G01?</summary>
+<p><code>G00</code> — это быстрое перемещение (холостой ход) на максимальной скорости станка, используется для подхода к детали. <code>G01</code> — это рабочее перемещение с заданной скоростью подачи (<strong>F</strong>), используется непосредственно для резания материала.</p>
+</details>
+<details>
+<summary>Что такое постпроцессор и зачем он нужен?</summary>
+<p>Постпроцессор — это модуль в CAM-системе, который переводит универсальный путь инструмента (CL Data) в конкретный код, понятный вашей стойке ЧПУ. Без правильного постпроцессора программа, созданная в CAM, может не запуститься на станке или вызвать аварию.</p>
+</details>
+<details>
+<summary>Как часто нужно обновлять библиотеку инструментов в программе?</summary>
+<p>Библиотеку инструментов нужно актуализировать каждый раз при физической замене инструмента или изменении его геометрии (заточке). Неверные данные о диаметре или длине инструмента в таблице коррекций приведут к браку детали.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/3d-pechat-i-modelirovanie/b/bi/biznes-idei-s-3-d-printerom.html" class="pb-related-card">
+                <span class="pb-related-title">Бизнес идеи с 3D принтером: 10 способов заработка на печати</span>
+                <span class="pb-related-desc">Откройте для себя прибыльные бизнес-ниши с 3D-принтером. Обзор идей, расчет окупаемости, выбор модел</span>
+            </a><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-flashforge-adventurer-5m-pro-otzyvy.html" class="pb-related-card">
+                <span class="pb-related-title">Flashforge Adventurer 5M Pro: реальные отзывы, плюсы и минусы</span>
+                <span class="pb-related-desc">Подробный обзор 3D принтера Flashforge Adventurer 5M Pro. Анализ отзывов владельцев, тестирование ск</span>
+            </a><a href="/3d-pechat-i-modelirovanie/g/gr/grinder-na-3d-printere.html" class="pb-related-card">
+                <span class="pb-related-title">Гриндер на 3D принтере: Самодельный экструдер своими руками</span>
+                <span class="pb-related-desc">Как создать надежный гриндер для 3D принтера из доступных компонентов. Разбор конструкции, выбор мот</span>
+            </a><a href="/3d-pechat-i-modelirovanie/v/vo/volosy-pri-3d-pechati.html" class="pb-related-card">
+                <span class="pb-related-title">Волосы на 3D печати: устранение дефектов (струнинг)</span>
+                <span class="pb-related-desc">Полный гид по устранению эффекта нитей (струнинга) на 3D принтерах. Настройка ретракта, температур и</span>
+            </a><a href="/3d-pechat-i-modelirovanie/l/lu/luchshij-zakrytyj-3d-printer.html" class="pb-related-card">
+                <span class="pb-related-title">Лучший закрытый 3D принтер: обзор моделей для ABS и PETG</span>
+                <span class="pb-related-desc">Выбираем лучший закрытый 3D принтер 2026 года. Рейтинг моделей с подогреваемой камерой для печати AB</span>
+            </a><a href="/3d-pechat-i-modelirovanie/s/sa/samye-prostye-programmy-dlya-3d-modelirovaniya.html" class="pb-related-card">
+                <span class="pb-related-title">Топ-7 самых простых программ для 3д моделирования для новичков</span>
+                <span class="pb-related-desc">Выбираете софт для старта? Обзор самых простых программ для 3д моделирования: от бесплатных инструме</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

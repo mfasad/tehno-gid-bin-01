@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Установка Home Assistant на Debian 12: Полное руководство — Техно Гид</title>
+    <meta name="description" content="Подробная инструкция по установке Home Assistant Core на Debian 12. Настройка Python, Docker, виртуального окружения и автоматический запуск сервиса.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/u/us/ustanovka-home-assistant-na-debian-12.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Установка Home Assistant на Debian 12: Полное руководство">
+    <meta property="og:description" content="Подробная инструкция по установке Home Assistant Core на Debian 12. Настройка Python, Docker, виртуального окружения и автоматический запуск сервиса.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Установка Home Assistant на Debian 12: Полное руководство</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-автоматизацию-на-базе-linux">Введение в автоматизацию на базе Linux</a></li><li><a href="#подготовка-системы-и-обновление-пакетов">Подготовка системы и обновление пакетов</a></li><li><a href="#установка-зависимостей-и-создание-окружения">Установка зависимостей и создание окружения</a></li><li><a href="#создание-виртуального-окружения-и-установка-ядра">Создание виртуального окружения и установка ядра</a></li><li><a href="#конфигурация-и-запуск-сервиса-через-systemd">Конфигурация и запуск сервиса через systemd</a></li><li><a href="#проверка-работы-и-доступ-к-интерфейсу">Проверка работы и доступ к интерфейсу</a></li><li><a href="#оптимизация-и-дополнительные-рекомендации">Оптимизация и дополнительные рекомендации</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/h/ho/home-assistant-primery-avtomatizatsii.html">Home Assistant примеры автоматизации: Гид по сценариям умного дома</a></li><li><a href="/umnyj-dom/c/ch/chto-takoe-sukhoj-kontakt-na-termostate.html">Сухой контакт на термостате: принцип работы и схемы подключения</a></li><li><a href="/umnyj-dom/s/si/simka-dlya-umnoj-rozetki.html">Симка для умной розетки: какую выбрать, тарифы и настройка</a></li><li><a href="/umnyj-dom/p/pr/programma-dlya-umnogo-doma.html">Лучшая программа для умного дома: выбор, настройка и интеграция</a></li><li><a href="/umnyj-dom/k/ka/kak-robotu-pylesosu-oboznachit-komnaty.html">Как настроить и обозначить комнаты в приложении робота-пылесоса: Пошаговая инструкция</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Установка Home Assistant на Debian 12: Пошаговое руководство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-автоматизацию-на-базе-linux">Введение в автоматизацию на базе Linux</a></li><li><a href="#подготовка-системы-и-обновление-пакетов">Подготовка системы и обновление пакетов</a></li><li><a href="#установка-зависимостей-и-создание-окружения">Установка зависимостей и создание окружения</a></li><li><a href="#создание-виртуального-окружения-и-установка-ядра">Создание виртуального окружения и установка ядра</a></li><li><a href="#конфигурация-и-запуск-сервиса-через-systemd">Конфигурация и запуск сервиса через systemd</a></li><li><a href="#проверка-работы-и-доступ-к-интерфейсу">Проверка работы и доступ к интерфейсу</a></li><li><a href="#оптимизация-и-дополнительные-рекомендации">Оптимизация и дополнительные рекомендации</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-автоматизацию-на-базе-linux">Введение в автоматизацию на базе Linux</h2>
+<p>Создание собственной системы умного дома требует выбора надежной платформы, способной работать круглосуточно без сбоев. <em>Home Assistant</em> является лидером в этой сфере благодаря открытому исходному коду и огромному сообществу разработчиков, обеспечивающих постоянную поддержку нового оборудования.</p>
+<p>Хотя официальные образы для Raspberry Pi популярны, установка на полноценный сервер под управлением <strong>Debian 12</strong> (Bookworm) дает вам полный контроль над ресурсами и возможность масштабирования. Вы сможете запускать десятки интеграций, сложных сценариев и локальных серверов распознавания речи без зависимости от облачных сервисов.</p>
+
+<h2 id="подготовка-системы-и-обновление-пакетов">Подготовка системы и обновление пакетов</h2>
+<p>Перед началом установки необходимо убедиться, что ваша операционная система обновлена до последней стабильной версии. Это критически важно для безопасности и совместимости с современными библиотеками <em>Python</em>, которые использует <strong>Home Assistant</strong>. Выполните обновление списков пакетов и самих программ, чтобы избежать конфликтов версий при установке зависимостей.</p>
+<p>Вам потребуется доступ к терминалу с правами суперпользователя. Если вы используете удаленное подключение, убедитесь, что ваш <code>ssh</code> сервер настроен корректно и имеет статический IP-адрес в локальной сети. Это упростит дальнейшее управление системой и доступ к интерфейсу.</p>
+<p>Выполните следующие команды в терминале для обновления системы:</p>
+<pre><code>sudo apt update && sudo apt upgrade -y</code></pre>
+<p>После завершения обновления обязательно перезагрузите сервер, чтобы применить все изменения ядра и драйверов. Это стандартная процедура, которую не стоит пропускать перед установкой сложного программного обеспечения.</p>
+<blockquote>⚠️ Внимание: Если вы настраиваете сервер на виртуальной машине, убедитесь, что выделенные ресурсы (ОЗУ и процессор) соответствуют минимальным требованиям для комфортной работы системы автоматизации.</p>
+<p>Не забывайте проверять официальную документацию перед обновлением, так как крупные релизы могут вносить изменения в логику работы некоторых служб.</p>
+
+<div class="pb-poll" id="poll-0f8d4813"><div class="pb-poll-question">📊 Какой тип сервера вы используете?</div><div class="pb-poll-option" data-poll="0f8d4813" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Виртуальная машина</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0f8d4813" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Физический сервер</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0f8d4813" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Одноплатный компьютер</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0f8d4813" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Сетевое хранилище (NAS)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="установка-зависимостей-и-создание-окружения">Установка зависимостей и создание окружения</h2>
+<p>Для корректной работы <strong>Home Assistant Core</strong> необходим специфический набор системных библиотек и интерфейсов. Вам нужно установить <em>Python</em> определенной версии, а также инструменты для работы с сетью и файловой системой. Debian 12 поставляется с Python 3.11, который идеально подходит для текущих версий платформы.</p>
+<p>Создайте отдельного пользователя для запуска сервиса, чтобы изолировать процессы и повысить безопасность системы. Запуск от имени <code>root</code> категорически не рекомендуется, так как это создает риски при обнаружении уязвимостей в коде интеграций.</p>
+<p>Выполните установку необходимых пакетов:</p>
+<pre><code>sudo apt install -y python3 python3-pip python3-venv python3-dev python3-libevdev git curl udev libffi-dev libssl-dev libudev-dev pkg-config libffi-dev libjpeg-dev libopenjp2-7-dev zlib1g-dev</code></pre>
+<p>После установки библиотек создайте системного пользователя <em>homeassistant</em> и привяжите его к домашней директории. Это позволит системе корректно управлять правами доступа к конфигурационным файлам и логам.</p>
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка окружения</h4><label class="check-item"><input type="checkbox"><span>Установить Python 3.11+</span></label><label class="check-item"><input type="checkbox"><span>Создать пользователя homeassistant</span></label><label class="check-item"><input type="checkbox"><span>Настроить права доступа</span></label><label class="check-item"><input type="checkbox"><span>Установить системные библиотеки</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+<blockquote>⚠️ Внимание: Убедитесь, что вы устанавливаете именно <code>libudev-dev</code>, так как без него многие интеграции с USB-устройствами (например, Zigbee-адаптеры) могут не работать или работать нестабильно.</p>
+
+<details class="pb-accordion"><summary>Что делать, если ошибки при установке библиотек?</summary><div class="pb-accordion-body"><p>Если компиляция библиотек прерывается с ошибкой, проверьте, установлены ли пакеты <code>build-essential</code> и <code>libffi-dev</code>. Часто проблема решается очисткой кэша пакетов и повторным запуском команды установки.</p></div></details>
+
+<h2 id="создание-виртуального-окружения-и-установка-ядра">Создание виртуального окружения и установка ядра</h2>
+<p>Изоляция зависимостей — ключевой принцип работы Python-приложений в Linux. Вам необходимо создать виртуальное окружение (<strong>venv</strong>) в директории <code>/srv/homeassistant</code>, где будет размещен сам <em>Home Assistant</em>. Это предотвратит конфликты с системными пакетами Python и позволит легко обновлять или откатывать версию платформы.</p>
+<p>Активируйте созданное окружение и приступайте к установке самого ядра. Процесс загрузки и распаковки пакетов может занять от 10 до 30 минут в зависимости от скорости вашего интернет-соединения и производительности процессора. Не прерывайте процесс, так как это может повредить структуру файлов.</p>
+<p>Команды для создания и активации окружения:</p>
+<pre><code>sudo -u homeassistant -H -s
+<p>cd /srv/homeassistant</p>
+<p>python3 -m venv .</p>
+<p>source bin/activate</p>
+<p>pip install wheel</code></pre></p>
+<p>После подготовки окружения выполните установку основного пакета. Это скачает все необходимые интеграции и зависимости.</p>
+<pre><code>pip install homeassistant</code></pre>
+<blockquote>⚠️ Внимание: Убедитесь, что вы находитесь внутри активного виртуального окружения (строка терминала должна начинаться с <code>(homeassistant)</code>), прежде чем запускать команду <code>pip install</code>.</p>
+<p>Если вы видите предупреждения о зависимости, игнорируйте их, если они не касаются критических ошибок компиляции. Система часто предупреждает о версиях библиотек, которые не используются в текущей конфигурации.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для ускорения установки проверьте скорость вашего интернета. Если соединение медленное, используйте локальный зеркальный репозиторий PyPI, настроенный в пинте (pip.conf), чтобы избежать таймаутов.</p></aside>
+
+<h2 id="конфигурация-и-запуск-сервиса-через-systemd">Конфигурация и запуск сервиса через systemd</h2>
+<p>Чтобы система загружалась автоматически при включении компьютера, необходимо создать сервисный файл для <strong>systemd</strong>. Это стандартный менеджер инициализации в <em>Debian 12</em>, который позволяет управлять запуском, остановкой и перезагрузкой фоновых процессов.</p>
+<p>Создайте файл <code>/etc/systemd/system/home-assistant@homeassistant.service</code> и вставьте в него конфигурацию, указывающую путь к исполняемому файлу и переменные окружения. Правильная настройка этого файла гарантирует, что <em>Home Assistant</em> будет работать стабильно и переподключаться при сбоях.</p>
+<p>Пример конфигурации сервиса:</p>
+<pre><code>[Unit]
+<p>Description=Home Assistant</p>
+<p>After=network-online.target</p>
+
+<p>[Service]</p>
+<p>Type=simple</p>
+<p>User=homeassistant</p>
+<p>ExecStart=/srv/homeassistant/bin/hass -c "/home/homeassistant/.homeassistant"</p>
+<p>Restart=always</p>
+
+<p>[Install]</p>
+<p>WantedBy=multi-user.target</code></pre></p>
+<p>После создания файла необходимо перезагрузить менеджер системных служб, чтобы он распознал новый сервис, и включить его на автоматический запуск. Это фундаментальный этап настройки, без которого система не будет работать после перезагрузки.</p>
+<pre><code>sudo systemctl daemon-reload
+<p>sudo systemctl enable home-assistant@homeassistant</p>
+<p>sudo systemctl start home-assistant@homeassistant</code></pre></p>
+<blockquote>⚠️ Внимание: Если сервис не запускается, проверьте лог ошибок с помощью команды <code>journalctl -u home-assistant@homeassistant -f</code>. Часто проблемы возникают из-за неверного пути к конфигурации или прав доступа к файлам.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильная настройка systemd-сервиса обеспечивает автоматический запуск Home Assistant при старте системы и перезапуск при аварийном завершении.</p></aside>
+
+<h2 id="проверка-работы-и-доступ-к-интерфейсу">Проверка работы и доступ к интерфейсу</h2>
+<p>После успешного запуска сервиса система начнет инициализацию и создание начальных файлов конфигурации. Этот процесс может занять несколько минут, в течение которых веб-интерфейс еще не будет доступен. Обратите внимание на вывод логов, где вы увидите статус загрузки различных компонентов.</p>
+<p>Для проверки статуса сервиса используйте команду <code>systemctl status home-assistant@homeassistant</code>. Если вы видите зеленую надпись «active (running)», значит, все настроено верно. Теперь вы можете открыть браузер на любом устройстве в локальной сети и перейти по адресу <code>http://IP-ВАШЕГО-СЕРВЕРА:8123</code>.</p>
+<p>При первом входе вас встретит мастер настройки, где нужно создать учетную запись администратора и выбрать ваше местоположение. Это важно для корректного отображения погоды и времени заката. Дальнейшая настройка включает добавление устройств через интерфейс или ручное редактирование файла <code>configuration.yaml</code>.</p>
+<p>Важно отметить, что по умолчанию Home Assistant не имеет доступа к устройствам без явного подтверждения. Вы должны вручную добавить каждую интеграцию, что обеспечивает высокий уровень безопасности.</p>
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Компонент</th>
+<th>Статус</th>
+<th>Порт</th>
+<th>Примечание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Web Interface</td>
+<td>Active</td>
+<td>8123</td>
+<td>Основной доступ для пользователя</td>
+</tr>
+<tr>
+<td>MQTT Broker</td>
+<td>Disabled</td>
+<td>1883</td>
+<td>Требует установки Mosquitto</td>
+</tr>
+<tr>
+<td>SSH Access</td>
+<td>Active</td>
+<td>22</td>
+<td>Для системного администрирования</td>
+</tr>
+<tr>
+<td>zigbee2mqtt</td>
+<td>Disabled</td>
+<td>8080</td>
+<td>Требует отдельной настройки</td>
+</tr>
+</tbody>
+</table></div>
+
+<details class="pb-accordion"><summary>Как проверить логи в реальном времени?</summary><div class="pb-accordion-body"><p>Используйте команду <code>journalctl -u home-assistant@homeassistant -f</code> в новом окне терминала, чтобы видеть все события и ошибки в режиме реального времени во время настройки.</p></div></details>
+
+<h2 id="оптимизация-и-дополнительные-рекомендации">Оптимизация и дополнительные рекомендации</h2>
+<p>Для повышения стабильности работы системы рекомендуется настроить автоматическое резервное копирование конфигурации. Это можно сделать с помощью скриптов или встроенных аддонов, если вы используете Docker-версию. В случае сбоя вы сможете быстро восстановить работоспособность умного дома.</p>
+<p>Также стоит настроить мониторинг ресурсов сервера. Инструменты вроде <em>htop</em> или <em>glances</em> помогут отследить потребление памяти и процессора, что критично при запуске тяжелых интеграций, таких как распознавание лиц или локальные голосовые помощники.</p>
+<p>Не забывайте регулярно обновлять систему через команду <code>hass core update</code> внутри виртуального окружения. Это обеспечит получение новых функций и исправлений уязвимостей безопасности.</p>
+<p>Если вы планируете расширять функционал, рассмотрите возможность установки <em>Docker</em> для отдельных сервисов, чтобы не захламлять основное окружение. Это позволит гибко управлять зависимостями разных компонентов.</p>
+<blockquote>⚠️ Внимание: Перед обновлением ядра всегда создавайте резервную копию папки <code>~/.homeassistant</code>. Сбой при обновлении может привести к потере всех настроек и сценариев автоматизации.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Регулярное резервное копирование и мониторинг ресурсов — залог стабильной работы системы умного дома на базе Debian 12.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы">Часто задаваемые вопросы</h2>
+<details>
+<summary>Как обновить Home Assistant на Debian 12?</summary>
+<p>Для обновления войдите в консоль под пользователем <code>homeassistant</code>, активируйте виртуальное окружение и выполните команду <code>pip install --upgrade homeassistant</code>. После этого перезапустите сервис через <code>systemctl</code>.</p>
+</details>
+<details>
+<summary>Почему не видятся Zigbee-устройства?</summary>
+<p>Скорее всего, у пользователя <code>homeassistant</code> нет прав доступа к USB-порту. Добавьте пользователя в группу <code>dialout</code> с помощью команды <code>sudo usermod -aG dialout homeassistant</code> и перезагрузите систему.</p>
+</details>
+<details>
+<summary>Можно ли установить Home Assistant без прав root?</summary>
+<p>Технически возможно, но не рекомендуется, так как для настройки сетевых интерфейсов, работы с устройствами и создания системных сервисов (systemd) требуются права администратора. Самый безопасный путь — использовать права root только для установки и настройки, а затем запускать сервис от имени обычного пользователя.</p>
+</details>
+<details>
+<summary>Как отключить автоматический запуск?</summary>
+<p>Для отключения автоматического запуска выполните команду <code>sudo systemctl disable home-assistant@homeassistant</code>. Сервис останется установленным, но не будет запускаться при включении компьютера.</p>
+</details>
+<details>
+<summary>Где хранятся логи ошибок?</summary>
+<p>Логи можно посмотреть в реальном времени через <code>journalctl -u home-assistant@homeassistant</code>. Файлы логов также находятся в директории конфигурации по пути <code>~/.homeassistant/home-assistant.log</code>.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/h/ho/home-assistant-primery-avtomatizatsii.html" class="pb-related-card">
+                <span class="pb-related-title">Home Assistant примеры автоматизации: Гид по сценариям умного дома</span>
+                <span class="pb-related-desc">Изучите лучшие примеры автоматизации в Home Assistant. Как настроить сценарии освещения, климата и б</span>
+            </a><a href="/umnyj-dom/c/ch/chto-takoe-sukhoj-kontakt-na-termostate.html" class="pb-related-card">
+                <span class="pb-related-title">Сухой контакт на термостате: принцип работы и схемы подключения</span>
+                <span class="pb-related-desc">Что такое сухой контакт в термостате? Подробный разбор схемы подключения, отличие от фазы, управлени</span>
+            </a><a href="/umnyj-dom/s/si/simka-dlya-umnoj-rozetki.html" class="pb-related-card">
+                <span class="pb-related-title">Симка для умной розетки: какую выбрать, тарифы и настройка</span>
+                <span class="pb-related-desc">Какую SIM-карту выбрать для умной розетки 4G? Обзор тарифов, настройка APN, проверка баланса и решен</span>
+            </a><a href="/umnyj-dom/p/pr/programma-dlya-umnogo-doma.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшая программа для умного дома: выбор, настройка и интеграция</span>
+                <span class="pb-related-desc">Обзор центральных программ для умного дома. Сравнение платформ, настройка автоматизаций и выбор обор</span>
+            </a><a href="/umnyj-dom/k/ka/kak-robotu-pylesosu-oboznachit-komnaty.html" class="pb-related-card">
+                <span class="pb-related-title">Как настроить и обозначить комнаты в приложении робота-пылесоса: Пошаговая инструкция</span>
+                <span class="pb-related-desc">Узнайте, как правильно разделить карту на зоны, создать виртуальные стены и обозначить комнаты в сма</span>
+            </a><a href="/umnyj-dom/r/ro/robot-pylesos-perestal-zaryazhatsya-ot-bazy-chto-delat.html" class="pb-related-card">
+                <span class="pb-related-title">Робот-пылесос не заряжается: 7 шагов для самостоятельного ремонта базы</span>
+                <span class="pb-related-desc">Робот-пылесос перестал заряжаться от базы? Узнайте, как диагностировать проблему, почистить контакты</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

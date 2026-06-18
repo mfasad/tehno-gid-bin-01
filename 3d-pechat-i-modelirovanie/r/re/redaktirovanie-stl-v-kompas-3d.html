@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Редактирование STL в КОМПАС-3D: Полное руководство по конвертации и правке — Техно Гид</title>
+    <meta name="description" content="Узнайте, как импортировать STL модели в КОМПАС-3D и конвертировать их в твердотельные тела. Пошаговая инструкция, нюансы и методы восстановления геометрии.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/3d-pechat-i-modelirovanie/r/re/redaktirovanie-stl-v-kompas-3d.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Редактирование STL в КОМПАС-3D: Полное руководство по конвертации и правке">
+    <meta property="og:description" content="Узнайте, как импортировать STL модели в КОМПАС-3D и конвертировать их в твердотельные тела. Пошаговая инструкция, нюансы и методы восстановления геометрии.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/3d-pechat-i-modelirovanie/">3D Печать и Моделирование</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Редактирование STL в КОМПАС-3D: Полное руководство по конвертации и правке</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#особенности-импорта-и-типы-геометрии">Особенности импорта и типы геометрии</a></li><li><a href="#конвертация-сетки-в-твердое-тело-stl-to-brep">Конвертация сетки в твердое тело (STL to BREP)</a></li><li><a href="#ручное-восстановление-геометрии-и-поверхностей">Ручное восстановление геометрии и поверхностей</a></li><li><a href="#сравнение-методов-обработки-полигональных-моделей">Сравнение методов обработки полигональных моделей</a></li><li><a href="#исправление-дефектов-и-подготовка-к-печати">Исправление дефектов и подготовка к печати</a></li><li><a href="#работа-со-сложными-сборками-и-оптимизация">Работа со сложными сборками и оптимизация</a></li><li><a href="#частые-вопросы-и-ответы">Частые вопросы и ответы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/3d-pechat-i-modelirovanie/m/me/mekhanizm-podachi-plastika-v-3d-printere.html">Механизм подачи пластика в 3D принтере: устройство и настройка</a></li><li><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-svoimi-rukami-poshagovaya-instruktsiya.html">3D принтер своими руками: пошаговая инструкция сборки</a></li><li><a href="/3d-pechat-i-modelirovanie/f/fl/flying-bear-ghost-5-oblast-pechati.html">Flying Bear Ghost 5: область печати и технические характеристики</a></li><li><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-razmery-pechati.html">Размеры печати 3D принтера: как выбрать и увеличить</a></li><li><a href="/3d-pechat-i-modelirovanie/p/pr/proshivka-creality-ender-3-v2.html">Прошивка Creality Ender 3 V2: Полное руководство по обновлению</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Редактирование STL моделей в среде КОМПАС-3D: от импорта до параметризации</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#особенности-импорта-и-типы-геометрии">Особенности импорта и типы геометрии</a></li><li><a href="#конвертация-сетки-в-твердое-тело-stl-to-brep">Конвертация сетки в твердое тело (STL to BREP)</a></li><li><a href="#ручное-восстановление-геометрии-и-поверхностей">Ручное восстановление геометрии и поверхностей</a></li><li><a href="#сравнение-методов-обработки-полигональных-моделей">Сравнение методов обработки полигональных моделей</a></li><li><a href="#исправление-дефектов-и-подготовка-к-печати">Исправление дефектов и подготовка к печати</a></li><li><a href="#работа-со-сложными-сборками-и-оптимизация">Работа со сложными сборками и оптимизация</a></li><li><a href="#частые-вопросы-и-ответы">Частые вопросы и ответы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Работа с полигональными моделями формата STL в редакторе твердотельного моделирования <em>КОМПАС-3D</em> часто вызывает затруднения у пользователей, привыкших к работе с чистым параметрическим проектированием. Формат <strong>STL</strong> представляет собой сетку треугольников, которая не содержит информации о гранях, кривизне или истории построения, что делает его несовместимым с натурикой <strong>CSK</strong> (Компас-Система Конструктивного) без предварительной обработки.</p>
+
+<p>Многие инженеры ошибочно полагают, что <em>КОМПАС-3D</em> позволяет мгновенно редактировать такие файлы как обычные детали, но на практике требуется выполнение специфических операций конвертации. Правильная работа с импортированными данными критически важна для создания управляющих программ на станках с ЧПУ или для подготовки к 3D-печати.</p>
+
+<p>В этой статье мы разберем ключевые методы преобразования полигональной сетки в твердое тело, способы исправления дефектов геометрии и инструменты для восстановления исходных параметров модели для дальнейшего проектирования.</p>
+
+<h2 id="особенности-импорта-и-типы-геометрии">Особенности импорта и типы геометрии</h2>
+<p>Процесс вложения внешней модели начинается с выбора правильного формата при открытии файла. Система автоматически определяет сетку как полигональную геометрию, которая не имеет свойств твердого тела, таких как объем или плотность. Для корректной работы необходимо использовать специализированный инструмент <code>Импорт → STL</code>, который активирует режим работы с полигонными объектами.</p>
+
+<p>После загрузки файла вы увидите модель, состоящую из множества плоских треугольников, что часто приводит к визуальным артефактам на закругленных поверхностях. Важно понимать, что в этом состоянии модель нельзя подвергнуть стандартным операциям выдавливания или вращения, так как алгоритмы <strong>параметрического моделирования</strong> не могут интерпретировать треугольники как математически точные поверхности.</p>
+
+<p>Необходимо учитывать, что точность импорта напрямую зависит от настроек разрешения исходного файла. Если сетка слишком грубая, восстановление точной геометрии станет практически невозможным без ручного перестроения деталей.</p>
+
+<blockquote>⚠️ Внимание: При импорте файлов с очень высоким разрешением (более 1 миллиона треугольников) может наблюдаться значительное снижение производительности системы и зависание интерфейса <em>КОМПАС-3D</em> на слабых рабочих станциях.</blockquote>
+
+<p>Для упрощения работы с крупными сборками рекомендуется предварительно проводить ретопологию или упрощение сетки в специализированных CAD-редакторах до открытия в <strong>АСКОН</strong>.</p>
+
+<div class="pb-poll" id="poll-c7843fc5"><div class="pb-poll-question">📊 Какой тип STL файлов вы чаще всего используете?</div><div class="pb-poll-option" data-poll="c7843fc5" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Текстурные модели для 3D печати</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c7843fc5" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Технические детали для ЧПУ</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c7843fc5" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Архивные сканы</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c7843fc5" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Скульптуры и художественные модели</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="конвертация-сетки-в-твердое-тело-stl-to-brep">Конвертация сетки в твердое тело (STL to BREP)</h2>
+<p>Главный этап редактирования — это трансформация полигональной сетки в твердое тело (BREP), которое поддерживает <strong>параметрические свойства</strong>. В текущей версии <em>КОМПАС-3D</em> эта функция реализована через плагин конвертера, который пытается аппроксимировать треугольники криволинейными поверхностями.</p>
+
+<p>Процесс запускается через меню <code>Создать → Конвертировать STL в твердое тело</code>. Система анализирует замкнутость сетки и пытается восстановить грани. Если модель имеет дыры или пересечения, конвертация может завершиться ошибкой, и объект останется полигоном.</p>
+
+<p>Успешная конвертация позволяет применять к модели классические инструменты <strong>модификации</strong>: удаление, скругление, создание посадочных мест под крепеж. Однако результат часто зависит от качества исходной сетки: чем меньше треугольников и ровнее они распределены, тем чище будет полученная твердая модель.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к конвертации STL</h4><label class="check-item"><input type="checkbox"><span>Проверить замкнутость сетки в просмотрщике</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в отсутствии пересечений граней</span></label><label class="check-item"><input type="checkbox"><span>Включить плагин конвертера STL</span></label><label class="check-item"><input type="checkbox"><span>Сохранить резервную копию оригинального файла</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>Не всегда автоматическая конвертация дает идеальный результат. В сложных случаях, где есть сложные кривые поверхности, система может создать набор плоских граней вместо истинного цилиндра или сферы.</p>
+
+<details class="pb-accordion"><summary>Что делать, если конвертация не удалась?</summary><div class="pb-accordion-body"><p>Если автоматический конвертер не справляется, попробуйте уменьшить плотность сетки в исходном файле или использовать сторонний софт (например, MeshLab) для исправления топологии перед импортом в КОМПАС-3D. Иногда помогает ручное удаление некорректных треугольников через инструменты редактирования полигонов.</p></div></details>
+
+<p>Важно не путать этот процесс с простым отображением модели. Только после успешной операции вы получите объект, к которому применимы операции <strong>вычитания</strong> и <strong>объединения</strong> в дереве построения.</p>
+
+<h2 id="ручное-восстановление-геометрии-и-поверхностей">Ручное восстановление геометрии и поверхностей</h2>
+<p>Если автоматическая конвертация невозможна или результат неудовлетворителен, инженерам приходится прибегать к ручному воссозданию геометрии. Это трудоемкий процесс, требующий использования инструментов <code>поверхностного моделирования</code>.</p>
+
+<p>Суть метода заключается в построении новых <strong>поверхностей</strong> по ключевым точкам и ребрам исходной сетки. Вы используете сетку как подложку, создавая поверх нее точные математические поверхности (NURBS), которые затем сшиваются в замкнутое тело.</p>
+
+<p>Для этого удобно использовать инструмент <code>Генератор поверхностей</code> или <code>Сшивание поверхностей</code>. Процесс требует высокой квалификации, так как необходимо обеспечить касательную непрерывность между гранями, чтобы избежать зазоров при последующей <strong>генерации ЧПУ</strong>.</p>
+
+<p>Часто приходится использовать <strong>сечение</strong> модели для создания профилей, по которым затем строится <code>Листовое тело</code> или <code>Экструзия</code>. Это позволяет восстановить геометрию даже при наличии значительных искажений в исходном файле.</p>
+
+<blockquote>⚠️ Внимание: Ручное восстановление криволинейных поверхностей может занимать часы работы, так как система не запоминает историю операций для полигональных объектов, и каждое действие требует повторного построения.</blockquote>
+
+<p>Используйте инструмент <code>Точечная сетка</code> для выделения вершин и создания направляющих линий, которые помогут точно скопировать форму оригинала.</p>
+
+<h2 id="сравнение-методов-обработки-полигональных-моделей">Сравнение методов обработки полигональных моделей</h2>
+<p>Выбор метода работы зависит от конечной цели: нужно ли вам просто измерить габариты или полностью переработать деталь для производства. Ниже приведена таблица, сравнивающая основные подходы к работе с STL.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Метод обработки</th>
+<th>Сложность</th>
+<th>Результат</th>
+<th>Применимость</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Прямой импорт и просмотр</td>
+<td>Низкая</td>
+<td>Полигональная сетка</td>
+<td>Визуализация, проверка габаритов</td>
+</tr>
+<tr>
+<td>Автоматическая конвертация</td>
+<td>Средняя</td>
+<td>Твердое тело (аппроксимация)</td>
+<td>Доработка простых деталей, ЧПУ</td>
+</tr>
+<tr>
+<td>Ручное восстановление</td>
+<td>Высокая</td>
+<td>Идеальное NURBS тело</td>
+<td>Реверс-инжиниринг, сложные формы</td>
+</tr>
+<tr>
+<td>Использование плагина «Полигональное моделирование»</td>
+<td>Средняя</td>
+<td>Редактируемая сетка</td>
+<td>Художественное моделирование, 3D печать</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Каждый метод имеет свои плюсы и минусы. Автоматическая конвертация быстрая, но часто дает «ломаные» поверхности. Ручное восстановление требует времени, но дает эталонную точность.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед началом конвертации проведите анализ плотности сетки. Если треугольники слишком мелкие, увеличьте шаг дискретизации, чтобы уменьшить время обработки и количество ошибок в геометрии.</p></aside>
+
+<h2 id="исправление-дефектов-и-подготовка-к-печати">Исправление дефектов и подготовка к печати</h2>
+<p>Часто STL файлы содержат ошибки, такие как дыры, перевернутые нормали или самопересечения, которые мешают корректной обработке. В <em>КОМПАС-3D</em> существуют инструменты для диагностики и исправления этих проблем.</p>
+
+<p>Инструмент <code>Анализ геометрии</code> позволяет подсветить проблемные области, где сетка не является водонепроницаемой (manifold). Для исправления используются функции <strong>затягивания дыр</strong> и <strong>инверсии нормалей</strong>, чтобы все грани были направлены наружу.</p>
+
+<p>Если модель предназначена для 3D печати, критически важно проверить её на наличие некорректных граней, которые могут вызвать ошибки при слайсинге. Используйте функцию <code>Проверка на водонепроницаемость</code> перед экспортом.</p>
+
+<p>Важно отметить, что <strong>КОМПАС-3D</strong> имеет встроенные инструменты для экспорта исправленной модели обратно в STL с заданными параметрами точности, что позволяет закрыть цикл реверс-инжиниринга.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Качество исходной сетки определяет успех всей операции. Чем чище и проще геометрия STL файла, тем выше вероятность успешной автоматической конвертации в твердое тело без ручного вмешательства.</p></aside>
+
+<h2 id="работа-со-сложными-сборками-и-оптимизация">Работа со сложными сборками и оптимизация</h2>
+<p>При работе с большими сборками, состоящими из множества импортированных STL файлов, производительность системы может критически снизиться. Для оптимизации используйте режим упрощенного отображения или создавайте конфигурации с уменьшенной детализацией.</p>
+
+<p>Рекомендуется объединять мелкие детали в один файл перед импортом, чтобы уменьшить количество объектов в дереве построения. Это также упрощает процесс сборки и последующего <strong>анализа коллизий</strong>.</p>
+
+<p>Используйте инструмент <code>Упрощение геометрии</code> для удаления лишних треугольников на плоских участках, где высокая точность не требуется. Это значительно ускорит работу с моделью.</p>
+
+<p>В случае необходимости проведения кинематического анализа, импортированную сетку следует конвертировать в твердое тело или использовать специальные плагинные компоненты, поддерживающие движение полигональных объектов.</p>
+
+<h2 id="частые-вопросы-и-ответы">Частые вопросы и ответы</h2>
+
+<details>
+<summary>Можно ли редактировать STL файл как обычную деталь в КОМПАС-3D?</summary>
+<p>Нет, напрямую редактировать STL нельзя. Его необходимо сначала конвертировать в твердое тело или поверхность, что может быть выполнено автоматически или вручную. Без конвертации модель остается набором треугольников.</p>
+</details>
+
+<details>
+<summary>Какая версия КОМПАС-3D лучше всего справляется с импортом STL?</summary>
+<p>Новые версии (начиная с 19-й и выше) имеют улучшенные алгоритмы конвертации и поддержки полигональной геометрии, но для сложных задач всё равно может потребоваться использование стороннего софта для подготовки сетки.</p>
+</details>
+
+<details>
+<summary>Что делать, если конвертация завершается ошибкой?</summary>
+<p>Ошибка чаще всего возникает из-за дыр в сетке или самопересечений. Попробуйте исправить геометрию в специализированных редакторах (MeshLab, Netfabb) или упростите сетку перед импортом в КОМПАС.</p>
+</details>
+
+<details>
+<summary>Можно ли восстановить историческую последовательность построения из STL?</summary>
+<p>Автоматически восстановить историю построения (дерево операций) невозможно, так как информация о ней не хранится в формате STL. Можно только воссоздать геометрию заново, используя сетку как подложку.</p>
+</details>
+
+<details>
+<summary>Нужен ли плагин для работы с STL в КОМПАС-3D?</summary>
+<p>Базовый импорт и просмотр поддерживаются стандартно. Для конвертации в твердое тело и расширенной работы с полигональными сетками может потребоваться установка соответствующих модулей или плагинов, предоставляемых вендором или сторонними разработчиками.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/3d-pechat-i-modelirovanie/m/me/mekhanizm-podachi-plastika-v-3d-printere.html" class="pb-related-card">
+                <span class="pb-related-title">Механизм подачи пластика в 3D принтере: устройство и настройка</span>
+                <span class="pb-related-desc">Подробный разбор механизма подачи филамента в 3D принтере. Экструдеры, горячие концы и устранение пр</span>
+            </a><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-svoimi-rukami-poshagovaya-instruktsiya.html" class="pb-related-card">
+                <span class="pb-related-title">3D принтер своими руками: пошаговая инструкция сборки</span>
+                <span class="pb-related-desc">Соберите 3D принтер своими руками: выбор комплектующих, чертежи, сборка рамы и экструдера, настройка</span>
+            </a><a href="/3d-pechat-i-modelirovanie/f/fl/flying-bear-ghost-5-oblast-pechati.html" class="pb-related-card">
+                <span class="pb-related-title">Flying Bear Ghost 5: область печати и технические характеристики</span>
+                <span class="pb-related-desc">Подробный обзор 3D-принтера Flying Bear Ghost 5: рабочая область печати, точность, особенности конст</span>
+            </a><a href="/3d-pechat-i-modelirovanie/3/3d/3d-printer-razmery-pechati.html" class="pb-related-card">
+                <span class="pb-related-title">Размеры печати 3D принтера: как выбрать и увеличить</span>
+                <span class="pb-related-desc">Полный гид по размерам печати 3D принтеров. Как выбрать рабочий объем, увеличить габариты модели и и</span>
+            </a><a href="/3d-pechat-i-modelirovanie/p/pr/proshivka-creality-ender-3-v2.html" class="pb-related-card">
+                <span class="pb-related-title">Прошивка Creality Ender 3 V2: Полное руководство по обновлению</span>
+                <span class="pb-related-desc">Инструкция по обновлению прошивки Creality Ender 3 V2. Улучшение печати, калибровка BLTouch, решение</span>
+            </a><a href="/3d-pechat-i-modelirovanie/p/pr/proekt-karkasnogo-doma-v-sketchap-skachat.html" class="pb-related-card">
+                <span class="pb-related-title">Проект каркасного дома в Скетчап: где скачать и как править</span>
+                <span class="pb-related-desc">Ищете проект каркасного дома в SketchUp? Узнайте, где бесплатно скачать модели, как установить плаги</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Установка Node-RED в Home Assistant: Полная инструкция 2026 — Техно Гид</title>
+    <meta name="description" content="Пошаговое руководство по установке и настройке Node-RED в системе Home Assistant. Разбор методов через Docker, Add-on и нюансы интеграции автоматизаций.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/n/no/node-red-home-assistant-ustanovka.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Установка Node-RED в Home Assistant: Полная инструкция 2026">
+    <meta property="og:description" content="Пошаговое руководство по установке и настройке Node-RED в системе Home Assistant. Разбор методов через Docker, Add-on и нюансы интеграции автоматизаций.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Установка Node-RED в Home Assistant: Полная инструкция 2026</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-расширение-функционала-автоматизации">Введение в расширение функционала автоматизации</a></li><li><a href="#выбор-метода-развертывания-аддон-или-docker">Выбор метода развертывания: Аддон или Docker</a></li><li><a href="#пошаговая-установка-через-интерфейс-аддонов">Пошаговая установка через интерфейс Аддонов</a></li><li><a href="#настройка-конфигурации-и-прав-доступа">Настройка конфигурации и прав доступа</a></li><li><a href="#первый-запуск-и-вход-в-интерфейс">Первый запуск и вход в интерфейс</a></li><li><a href="#интеграция-с-home-assistant-нюансы-и-узлы">Интеграция с Home Assistant: Нюансы и узлы</a></li><li><a href="#решение-типовых-проблем-и-отладка">Решение типовых проблем и отладка</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/s/sm/smartmi-evaporative-humidifier-3-lite-otzyvy.html">Smartmi Evaporative Humidifier 3 Lite: честные отзывы, обзоры и недостатки</a></li><li><a href="/umnyj-dom/d/de/delenie-sutok-na-utro-den-vecher-noch.html">Деление суток на утро, день, вечер и ночь: научные и бытовые границы</a></li><li><a href="/umnyj-dom/o/or/organizatsiya-umnogo-doma-s-alisoj-primernaya-skhema.html">Умный дом с Алисой: схема подключения и настройки</a></li><li><a href="/umnyj-dom/k/ka/kakoe-ustrojstvo-nuzhno-dlya-umnogo-doma-yandeksa.html">Какое устройство нужно для Яндекса Умного дома: выбор колонки</a></li><li><a href="/umnyj-dom/d/de/debian-orange-pi-3-lts.html">Debian на Orange Pi 3 LTS: Установка, настройка и оптимизация</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Установка Node-RED в Home Assistant: Полное руководство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-расширение-функционала-автоматизации">Введение в расширение функционала автоматизации</a></li><li><a href="#выбор-метода-развертывания-аддон-или-docker">Выбор метода развертывания: Аддон или Docker</a></li><li><a href="#пошаговая-установка-через-интерфейс-аддонов">Пошаговая установка через интерфейс Аддонов</a></li><li><a href="#настройка-конфигурации-и-прав-доступа">Настройка конфигурации и прав доступа</a></li><li><a href="#первый-запуск-и-вход-в-интерфейс">Первый запуск и вход в интерфейс</a></li><li><a href="#интеграция-с-home-assistant-нюансы-и-узлы">Интеграция с Home Assistant: Нюансы и узлы</a></li><li><a href="#решение-типовых-проблем-и-отладка">Решение типовых проблем и отладка</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-расширение-функционала-автоматизации">Введение в расширение функционала автоматизации</h2>
+
+<p>Стандартные возможности <em>Home Assistant</em> по созданию автоматизаций могут показаться ограниченными для продвинутых пользователей, желающих реализовать сложную логику управления устройствами. Именно здесь на помощь приходит <strong>Node-RED</strong> — визуальный инструмент программирования, который позволяет соединять устройства, API и онлайн-сервисы в виде потока данных.</p>
+
+<p>Интеграция этого инструмента с вашей домашней системой открывает двери к созданию интеллектуальных сценариев, которые невозможно реализовать через стандартный редактор автоматизаций. Вы сможете обрабатывать массивы данных, работать с внешними базами данных и управлять тысячами переменных без написания сотен строк кода вручную.</p>
+
+<p>Процесс установки <strong>Node-RED</strong> в экосистему <em>Home Assistant</em> не требует глубоких знаний программирования, но требует внимательности при выборе метода развертывания. В зависимости от вашей операционной системы и предпочтений, вы можете выбрать встроенный аддон или более гибкий Docker-контейнер.</p>
+
+<h2 id="выбор-метода-развертывания-аддон-или-docker">Выбор метода развертывания: Аддон или Docker</h2>
+
+<p>Перед началом установки необходимо определиться с методом интеграции, так как от этого зависит стабильность работы и удобство управления. Наиболее популярным и простым способом для большинства пользователей является использование официального <strong>Аддона</strong> в интерфейсе <em>Home Assistant</em>.</p>
+
+<p>Этот метод идеален для тех, кто использует версию <em>Home Assistant OS</em> или <em>Supervised</em>. Аддон автоматически настраивает зависимости, управляет обновлениями и обеспечивает простую интеграцию с файловой системой вашей системы умного дома. Вам не нужно вручную конфигурировать порты или управлять сетевыми настройками контейнера.</p>
+
+<p>Второй вариант — это установка через <strong>Docker</strong>. Этот подход выбирают опытные администраторы, которые хотят иметь полный контроль над версией <em>Node-RED</em>, конфигурацией контейнера или используют дистрибутивы <em>Home Assistant Core</em>. Docker-версия требует ручной настройки переменных окружения и монтирования томов для сохранения данных.</p>
+
+<p>Сравнительные характеристики обоих методов представлены в таблице ниже, чтобы помочь вам принять взвешенное решение:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Критерий сравнения</th>
+<th>Аддон (Add-on)</th>
+<th>Docker-контейнер</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Сложность установки</td>
+<td>Низкая (автоматически)</td>
+<td>Высокая (ручная настройка)</td>
+</tr>
+<tr>
+<td>Совместимость</td>
+<td>Только HA OS / Supervised</td>
+<td>Любой Linux с Docker</td>
+</tr>
+<tr>
+<td>Обновления</td>
+<td>Через интерфейс HA</td>
+<td>Ручные или через Watchtower</td>
+</tr>
+<tr>
+<td>Доступ к файлам</td>
+<td>Через стандартный доступ</td>
+<td>Нужно монтировать тома</td>
+</tr>
+<tr>
+<td>Изоляция</td>
+<td>Частичная</td>
+<td>Полная</td>
+</tr>
+</tbody>
+</table></div>
+
+<blockquote>⚠️ Внимание: Если вы используете версию <em>Home Assistant Core</em> (установленную через pip), вы не сможете использовать встроенные аддоны. В этом случае установка Docker-контейнера является единственным рабочим вариантом для интеграции.</blockquote>
+
+<div class="pb-poll" id="poll-b7e66548"><div class="pb-poll-question">📊 Какой метод установки вы предпочитаете?</div><div class="pb-poll-option" data-poll="b7e66548" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Аддон (Простота)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="b7e66548" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Docker (Гибкость)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="b7e66548" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Пока не знаю</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="b7e66548" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Не использую Node-RED</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="пошаговая-установка-через-интерфейс-аддонов">Пошаговая установка через интерфейс Аддонов</h2>
+
+<p>Процесс установки через аддон — это самый быстрый путь к запуску <strong>Node-RED</strong>. Откройте панель управления <em>Home Assistant</em> и перейдите в раздел <code>Настройки → Диспетчер устройств и служб → Аддоны</code>. Если вы не видите вкладки с аддонами, убедитесь, что у вас установлен Supervisor.</p>
+
+<p>В правом нижнем углу экрана нажмите на кнопку «Магазин аддонов». В открывшемся окне поиска введите запрос <code>node red</code>. Вы увидите официальный репозиторий <strong>Node-RED</strong> от разработчиков <em>Home Assistant</em>, который регулярно обновляется и поддерживается сообществом.</p>
+
+<p>Нажмите на название аддона, чтобы открыть страницу с описанием. Здесь вы можете ознакомиться с деталями версий и требованиями к системе. Нажмите кнопку «Установить» и дождитесь завершения процесса загрузки и распа файлов. Это займет от одной до пяти минут в зависимости от скорости вашего интернет-соединения.</p>
+
+<p>После установки перейдите на вкладку <code>Информация</code> или <code>Конфигурация</code>. Здесь важно проверить настройки перед запуском. Убедитесь, что опция «Показать в боковом меню» активна, чтобы вы могли быстро получить доступ к интерфейсу через главное меню системы.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед запуском</h4><label class="check-item"><input type="checkbox"><span>Установить аддон</span></label><label class="check-item"><input type="checkbox"><span>Настроить конфигурацию</span></label><label class="check-item"><input type="checkbox"><span>Проверить права доступа</span></label><label class="check-item"><input type="checkbox"><span>Запустить службу</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="настройка-конфигурации-и-прав-доступа">Настройка конфигурации и прав доступа</h2>
+
+<p>Запуск <strong>Node-RED</strong> без предварительной настройки может привести к проблемам с безопасностью или отсутствию связи с <em>Home Assistant</em>. В файле конфигурации аддона (доступен в разделе <code>Конфигурация</code>) необходимо прописать параметры, определяющие, как сервис будет взаимодействовать с вашей системой.</p>
+
+<p>Ключевым параметром является токен доступа. Вы можете сгенерировать его в интерфейсе <em>Home Assistant</em> в разделе <code>Ваши профили → Долгосрочные токены доступа</code>. Этот токен необходимо вставить в поле <code>long_lived_access_token</code> в конфигурационном файле аддона. Это обеспечит безопасную аутентификацию без необходимости вводить пароль каждый раз.</p>
+
+<p>Также стоит обратить внимание на параметр <code>ssl</code>. Если вы используете внешний доступ к своему умному дому через интернет, настоятельно рекомендуется включить шифрование. Хотя для локальной сети это не обязательно, наличие SSL-сертификата защитит передаваемые данные от перехвата в случае компрометации сети.</p>
+
+<p>Не забудьте проверить поле <code>arguments</code>, если вам нужно передать специфические флаги при запуске. Однако для стандартной установки достаточно оставить этот параметр пустым, чтобы аддон использовал конфигурацию по умолчанию, которая подходит для 95% сценариев использования.</p>
+
+<blockquote>⚠️ Внимание: Никогда не сохраняйте токен доступа в открытом виде в публичных репозиториях или форуме. Если токен был скомпрометирован, немедленно удалите его в разделе токенов и создайте новый.</blockquote>
+
+<details class="pb-accordion"><summary>Что такое токен доступа?</summary><div class="pb-accordion-body"><p>Токен доступа (Long Lived Access Token) — это специальный ключ, который позволяет внешним приложениям (в данном случае Node-RED) взаимодействовать с вашим сервером Home Assistant без необходимости использовать ваш основной пароль. Он имеет ограниченный срок действия и может быть отозван в любой момент через настройки профиля пользователя.</p></div></details>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Сохраните скопированный токен в надежном менеджере паролей немедленно после создания. Если вы закроете окно с токеном без копирования, вы не сможете его восстановить и придется генерировать новый.</p></aside>
+
+<h2 id="первый-запуск-и-вход-в-интерфейс">Первый запуск и вход в интерфейс</h2>
+
+<p>После того как вы настроили конфигурацию и нажали кнопку <strong>Запуск</strong> в нижней части экрана аддона, сервис начнет инициализацию. Подождите несколько секунд, пока статус изменится с «Запущено» на «Активно». Ошибки при запуске обычно отображаются в логах, доступных во вкладке <code>Журнал</code>.</p>
+
+<p>Если всё прошло успешно, в боковом меню <em>Home Assistant</em> появится новый пункт <strong>Node-RED</strong>. Нажмите на него, чтобы открыть визуальный редактор потоков. При первом входе система может запросить подтверждение или предложить создать базовую конфигурацию, если она еще не была создана ранее.</p>
+
+<p>Интерфейс <strong>Node-RED</strong> представляет собой холст с сеткой, где вы будете размещать узлы. Слева находится палитра доступных компонентов, разделенная на категории. В верхней части экрана расположены кнопки для управления потоками: деплой (применение), очистка и импорт.</p>
+
+<p>Для проверки работоспособности создайте простой поток. Добавьте узел <code>inject</code> (инжектор), который будет отправлять сигнал, и узел <code>debug</code> (отладка), который выведет сообщение в консоль. Подключите их проводом и нажмите кнопку <code>Deploy</code> в правом верхнем углу.</p>
+
+<h2 id="интеграция-с-home-assistant-нюансы-и-узлы">Интеграция с Home Assistant: Нюансы и узлы</h2>
+
+<p>Главная сила <strong>Node-RED</strong> в контексте умного дома — это возможность управления устройствами <em>Home Assistant</em>. Для этого используются специальные узлы, которые устанавливаются автоматически вместе с аддоном, но для расширения функционала часто требуются дополнительные пакеты.</p>
+
+<p>Самым важным является узел <code>homeassistant</code>, который позволяет отправлять и получать события от вашей системы. Через этот узел вы можете считывать состояние датчиков, включать свет, управлять климатом и получать уведомления. Конфигурация этого узла обычно подтягивается автоматически из токена доступа, указанного ранее.</p>
+
+<p>Для работы с базами данных, Telegram-ботами или сложными логическими операциями рекомендуется установить дополнительные наборы узлов. Это делается через вкладку <code>Manage palette</code> в самом интерфейсе <strong>Node-RED</code>. Введите название пакета (например, <code>node-red-contrib-telegrambot</code>) и нажмите Install.</p>
+
+<p>Обратите внимание, что некоторые узлы могут требовать настройки, такой как указание пути к сертификатам или IP-адреса шлюза. Всегда читайте документацию к конкретному узлу перед его использованием, так как некорректная настройка может привести к зависанию всего потока.</p>
+
+<p>Важно также помнить о <strong>переменных окружения</strong>. Если вы используете переменные <em>Home Assistant</em> внутри <strong>Node-RED</strong>, убедитесь, что они имеют правильный тип данных. Строки, целые числа и булевы значения должны обрабатываться соответствующими узлами преобразования.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Успешная интеграция Node-RED с Home Assistant достигается через правильное использование токенов доступа и настройку узла homeassistant для обмена данными в реальном времени.</p></aside>
+
+<h2 id="решение-типовых-проблем-и-отладка">Решение типовых проблем и отладка</h2>
+
+<p>При работе с <strong>Node-RED</strong> пользователи часто сталкиваются с проблемой потери связи с <em>Home Assistant</em>. Если узел <code>homeassistant</code> горит красным или не получает данные, первым делом проверьте актуальность токена доступа. Токены могут быть отозваны при смене пароля или изменении настроек безопасности.</p>
+
+<p>Другой распространенной проблемой является нехватка ресурсов на сервере. Если ваш сервер умного дома работает на слабом одноплатном компьютере (например, Raspberry Pi), запуск тяжелых потоков <strong>Node-RED</strong> может привести к замедлению работы всей системы. В этом случае рекомендуется оптимизировать потоки или перенести вычисления на более мощный узел.</p>
+
+<p>Если изменения в потоках не применяются, проверьте, что вы нажали кнопку <code>Deploy</code> после внесения правок. Также убедитесь, что нет синтаксических ошибок в узлах, которые могут блокировать выполнение всего потока. Ошибки отображаются в правом нижнем углу интерфейса.</p>
+
+<p>В случае критических сбоев, когда интерфейс не открывается, проверьте логи аддона. Там часто можно найти информацию о том, почему сервис не смог запуститься — это может быть конфликт портов, ошибка монтирования тома или нехватка места на диске.</p>
+
+<blockquote>⚠️ Внимание: Если вы производите массовое изменение конфигурации или обновление большого количества узлов, создайте резервную копию вашего файла <code>flows.json</code>. Это позволит быстро восстановить работу системы в случае неудачного обновления.</blockquote>
+
+<details class="pb-accordion"><summary>Где найти резервную копию?</summary><div class="pb-accordion-body"><p>Файл flows.json обычно находится в папке /config/node-red на вашем сервере. Вы также можете использовать аддон File Editor или Samba для доступа к этой папке и создания копий вручную.</p></div></details>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Можно ли использовать Node-RED без установки Home Assistant?</summary>
+<p>Да, <strong>Node-RED</strong> является независимым приложением и может работать на любом сервере с поддержкой Node.js. Однако для управления устройствами умного дома потребуется настройка интеграции через API или MQTT.</p>
+</details>
+
+<details>
+<summary>Как обновить Node-RED до последней версии?</summary>
+<p>Если вы используете аддон, обновите его через интерфейс <em>Home Assistant</em> в разделе Аддоны. Для Docker-версии необходимо остановить контейнер, удалить его образ и запустить новый контейнер с актуальным тегом версии.</p>
+</details>
+
+<details>
+<summary>Потребляет ли Node-RED много ресурсов?</summary>
+<p>Фоновый процесс потребляет минимум ресурсов, пока нет активных потоков. Нагрузка возрастает при выполнении сложных вычислений или при высокой частоте обновления данных от датчиков. Оптимизация потоков помогает снизить нагрузку.</p>
+</details>
+
+<details>
+<summary>Где найти готовые примеры потоков для старта?</summary>
+<p>Официальный сайт <strong>Node-RED</strong> и репозиторий <em>Home Assistant</em> содержат множество примеров. Также существуют сообщества в Discord и Telegram, где пользователи делятся своими конфигурациями для различных сценариев автоматизации.</p>
+</details>
+
+<details>
+<summary>Безопасно ли открывать Node-RED в интернете?</summary>
+<p>Прямое открытие без защиты небезопасно. Обязательно используйте обратный прокси (Nginx Proxy Manager) с SSL-сертификатами и включите двухфакторную аутентификацию или строгие правила доступа по IP-адресу.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/s/sm/smartmi-evaporative-humidifier-3-lite-otzyvy.html" class="pb-related-card">
+                <span class="pb-related-title">Smartmi Evaporative Humidifier 3 Lite: честные отзывы, обзоры и недостатки</span>
+                <span class="pb-related-desc">Реальные отзывы владельцев увлажнителя Smartmi 3 Lite. Плюсы и минусы, сравнение с аналогами, анализ</span>
+            </a><a href="/umnyj-dom/d/de/delenie-sutok-na-utro-den-vecher-noch.html" class="pb-related-card">
+                <span class="pb-related-title">Деление суток на утро, день, вечер и ночь: научные и бытовые границы</span>
+                <span class="pb-related-desc">Подробный разбор временных отрезков суток. Узнайте астрономические, социальные и биологические грани</span>
+            </a><a href="/umnyj-dom/o/or/organizatsiya-umnogo-doma-s-alisoj-primernaya-skhema.html" class="pb-related-card">
+                <span class="pb-related-title">Умный дом с Алисой: схема подключения и настройки</span>
+                <span class="pb-related-desc">Полная инструкция по организации умного дома с Яндекс Станцией. Схемы, сценарии, выбор устройств и н</span>
+            </a><a href="/umnyj-dom/k/ka/kakoe-ustrojstvo-nuzhno-dlya-umnogo-doma-yandeksa.html" class="pb-related-card">
+                <span class="pb-related-title">Какое устройство нужно для Яндекса Умного дома: выбор колонки</span>
+                <span class="pb-related-desc">Какую колонку выбрать для умного дома Яндекса. Сравнение моделей Станции, датчиков и лампочек. Полна</span>
+            </a><a href="/umnyj-dom/d/de/debian-orange-pi-3-lts.html" class="pb-related-card">
+                <span class="pb-related-title">Debian на Orange Pi 3 LTS: Установка, настройка и оптимизация</span>
+                <span class="pb-related-desc">Полный гайд по установке Debian на Orange Pi 3 LTS. Настройка ядра, драйверов, сети и создание стаби</span>
+            </a><a href="/umnyj-dom/e/es/esp32-primery-i-gotovye-proekty.html" class="pb-related-card">
+                <span class="pb-related-title">ESP32 примеры и готовые проекты: старт для новичков</span>
+                <span class="pb-related-desc">Лучшие примеры кода и готовые проекты на ESP32: умный дом, датчики, веб-сервер. Пошаговый старт, схе</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

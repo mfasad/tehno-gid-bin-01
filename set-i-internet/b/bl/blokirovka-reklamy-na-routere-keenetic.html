@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Блокировка рекламы на роутере Keenetic: настройка DNS — Техно Гид</title>
+    <meta name="description" content="Подробная инструкция по отключению рекламы на всех устройствах через роутер Keenetic. Настройка DNS, AdGuard, Pi-hole и защита сети.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/b/bl/blokirovka-reklamy-na-routere-keenetic.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Блокировка рекламы на роутере Keenetic: настройка DNS">
+    <meta property="og:description" content="Подробная инструкция по отключению рекламы на всех устройствах через роутер Keenetic. Настройка DNS, AdGuard, Pi-hole и защита сети.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Блокировка рекламы на роутере Keenetic: настройка DNS</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#принцип-работы-блокировки-через-dns">Принцип работы блокировки через DNS</a></li><li><a href="#настройка-dns-серверов-в-веб-интерфейсе">Настройка DNS-серверов в веб-интерфейсе</a></li><li><a href="#использование-компонента-adguard-home">Использование компонента AdGuard Home</a></li><li><a href="#организация-профилей-безопасности-для-устройств">Организация профилей безопасности для устройств</a></li><li><a href="#диагностика-и-устранение-проблем">Диагностика и устранение проблем</a></li><li><a href="#сравнение-методов-фильтрации-трафика">Сравнение методов фильтрации трафика</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/i/in/internet-dlya-kompyutera-cherez-sim-kartu.html">Интернет для компьютера через сим-карту: выбор модема и тарифа</a></li><li><a href="/set-i-internet/s/so/soedinit-router-s-routerom-po-kabelyu.html">Как соединить два роутера по кабелю: пошаговая настройка</a></li><li><a href="/set-i-internet/k/ka/kak-ostavit-svoj-nomer-telefona-pri-smene-operatora.html">Как сохранить номер при смене оператора: пошаговая инструкция MNP</a></li><li><a href="/set-i-internet/4/4g/4g-wi-fi-router-b715s-23c.html">Huawei B715s-23c: обзор 4G роутера, настройки и разблокировка</a></li><li><a href="/set-i-internet/r/re/repiter-sotovoj-svyazi-dlya-doma.html">Репитер сотовой связи для дома: выбор, установка и настройка</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как заблокировать рекламу на роутере Keenetic</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#принцип-работы-блокировки-через-dns">Принцип работы блокировки через DNS</a></li><li><a href="#настройка-dns-серверов-в-веб-интерфейсе">Настройка DNS-серверов в веб-интерфейсе</a></li><li><a href="#использование-компонента-adguard-home">Использование компонента AdGuard Home</a></li><li><a href="#организация-профилей-безопасности-для-устройств">Организация профилей безопасности для устройств</a></li><li><a href="#диагностика-и-устранение-проблем">Диагностика и устранение проблем</a></li><li><a href="#сравнение-методов-фильтрации-трафика">Сравнение методов фильтрации трафика</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Реклама в интернете стала настолько навязчивой, что пользователи готовы тратить часы на поиск способов её устранения. Если вы устали от баннеров, всплывающих окон и трекинга, оптимальным решением станет настройка защиты на уровне домашнего маршрутизатора. Это позволит отфильтровать нежелательный контент сразу для всех подключенных девайсов, включая смартфоны, Smart TV и планшеты.</p>
+
+<p>Маршрутизаторы <em>Keenetic</em> обладают продвинутой операционной системой <em>KeeneticOS</em>, которая предоставляет гибкие инструменты для управления трафиком. Встроенные механизмы позволяют перенаправлять DNS-запросы на специализированные серверы, блокирующие рекламные домены еще до того, как они загрузятся в браузере. Такой подход экономит интернет-трафик и ускоряет загрузку веб-страниц.</p>
+
+<p>В этой статье мы рассмотрим несколько методов реализации блокировки: от простого изменения DNS-серверов в веб-интерфейсе до развертывания собственного сервера <em>Pi-hole</em> или использования облачных решений. Вы узнаете, как настроить профили безопасности для разных устройств и создать надежный барьер против цифрового шума в вашей домашней сети.</p>
+
+<h2 id="принцип-работы-блокировки-через-dns">Принцип работы блокировки через DNS</h2>
+
+<p>Технология блокировки рекламы на уровне маршрутизатора базируется на перехвате DNS-запросов. Когда ваше устройство пытается загрузить страницу, оно сначала отправляет запрос на преобразование доменного имени в IP-адрес. Если этот запрос попадает на сервер с фильтром, домен, содержащий рекламу, получает ответ с несуществующим адресом.</p>
+
+<p>В результате браузер или приложение просто не может установить соединение с рекламным сервером, и контент не отображается. Это фундаментальное отличие от браузерных расширений, которые часто загружают рекламу, а затем скрывают её визуально. DNS-фильтрация предотвращает саму загрузку данных, экономя ресурсы процессора и батареи мобильных устройств.</p>
+
+<p>Для реализации этой схемы <strong>роутер Keenetic</strong> выступает в роли посредника. Он принимает запросы от всех клиентов сети и перенаправляет их на выбранные вами DNS-серверы. Важно понимать, что этот метод не блокирует рекламу внутри видеопотоков на YouTube или в социальных сетях, так как она часто подается с тех же доменов, что и основной контент.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Использование сторонних DNS-серверов может незначительно повлиять на скорость отклика сети в зависимости от географического расположения серверов фильтрации.</p>
+</blockquote>
+
+<p>Современные модели <em>Keenetic</em> поддерживают протоколы <strong>DoH</strong> (DNS over HTTPS) и <strong>DoT</strong> (DNS over TLS). Эти технологии шифруют ваши DNS-запросы, защищая их от подмены провайдером и обеспечивая конфиденциальность browsing history. Настройка encrypted DNS является обязательным шагом для повышения общей безопасности домашней сети.</p>
+
+<div class="pb-poll" id="poll-4808b988"><div class="pb-poll-question">📊 Какой метод блокировки вы планируете использовать?</div><div class="pb-poll-option" data-poll="4808b988" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Встроенные DNS Keenetic</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="4808b988" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Свой сервер Pi-hole</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="4808b988" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Стороннее ПО на ПК</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="4808b988" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Пока не решил</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="настройка-dns-серверов-в-веб-интерфейсе">Настройка DNS-серверов в веб-интерфейсе</h2>
+
+<p>Самый быстрый способ избавиться от рекламы — прописать адреса фильтрующих серверов непосредственно в настройках маршрутизатора. Система <em>KeeneticOS</em> позволяет сделать это в несколько кликов через удобный графический интерфейс. Вам не потребуется устанавливать дополнительное программное обеспечение.</p>
+
+<p>Для начала необходимо авторизоваться в панели управления. Откройте браузер и введите адрес <code>my.keenetic.net</code> или <code>192.168.1.1</code>. После ввода логина и пароля перейдите в раздел <code>Интернет → DNS</code>. Здесь вы увидите текущие настройки, полученные автоматически от провайдера.</p>
+
+<p>Отключите опцию автоматического получения адресов и выберите режим «Использовать следующие DNS-серверы». В поля для ввода необходимо внести адреса выбранных сервисов. Популярным решением является использование серверов <em>AdGuard DNS</em>, которые специализируются на блокировке трекеров и рекламы.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка настроек DNS</h4><label class="check-item"><input type="checkbox"><span>Авторизация в веб-интерфейсе</span></label><label class="check-item"><input type="checkbox"><span>Переход в раздел Интернет → DNS</span></label><label class="check-item"><input type="checkbox"><span>Отключение автоматических настроек</span></label><label class="check-item"><input type="checkbox"><span>Ввод адресов серверов</span></label><label class="check-item"><input type="checkbox"><span>Применение изменений</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<p>После ввода данных нажмите кнопку «Применить». Роутер перезапустит сетевые службы, и новые правила вступят в силу. Рекомендуется перезагрузить клиентские устройства, чтобы они получили актуальные сетевые параметры через протокол <strong>DHCP</strong>.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Сервис</th>
+<th>Тип фильтрации</th>
+<th>IPv4 Адрес 1</th>
+<th>IPv4 Адрес 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AdGuard Default</td>
+<td>Реклама + Трекеры</td>
+<td>94.140.14.14</td>
+<td>94.140.15.15</td>
+</tr>
+<tr>
+<td>AdGuard Family</td>
+<td>Реклама + Adult</td>
+<td>94.140.14.15</td>
+<td>94.140.15.16</td>
+</tr>
+<tr>
+<td>Quad9</td>
+<td>Безопасность (Malware)</td>
+<td>9.9.9.9</td>
+<td>149.112.112.112</td>
+</tr>
+<tr>
+<td>Cloudflare</td>
+<td>Базовый (Без фильтра)</td>
+<td>1.1.1.1</td>
+<td>1.0.0.1</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Если вы хотите обеспечить максимальную защиту для детей, используйте профиль <em>AdGuard Family</em>. Он блокирует не только рекламные сети, но и доступ к ресурсам для взрослых, а также домены, распространяющие вредоносное ПО. Это комплексное решение для родительского контроля без установки дополнительного софта на телефоны.</p>
+
+<h2 id="использование-компонента-adguard-home">Использование компонента AdGuard Home</h2>
+
+<p>Для продвинутых пользователей компания <em>Keenetic</em> предлагает установку полноценного компонента <strong>AdGuard Home</strong> прямо на роутер. Это решение превращает ваш маршрутизатор в мощный DNS-сервер с гибкой системой фильтрации и подробной статистикой запросов.</p>
+
+<p>Установка возможна на модели с достаточным объемом памяти и поддержкой компонентов. Зайдите в раздел <code>Управление → Параметры системы</code> и убедитесь, что у вас установлена последняя версия <em>KeeneticOS</em>. Затем перейдите в <code>Управление → Компоненты системы</code> и найдите в списке <em>AdGuard Home</em>.</p>
+
+<p>После установки компонента в меню появится новый пункт <code>Приложения → AdGuard Home</code>. При первом запуске мастер настройки предложит выбрать сетевой интерфейс и порт для веб-интерфейса управления. По умолчанию используется порт <code>3000</code>, но его можно изменить при наличии конфликтов.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Установка AdGuard Home требует наличия USB-накопителя на некоторых моделях роутеров для хранения логов и конфигурационных файлов.</p>
+</blockquote>
+
+<p>Внутри интерфейса <em>AdGuard Home</em> вы сможете добавлять собственные списки блокировки, создавать белые списки доменов и настраивать расписание работы фильтра. Статистика покажет, какие домены запрашиваются чаще всего и сколько рекламы было заблокировано за определенный период.</p>
+
+<details class="pb-accordion"><summary>Требования к оборудованию</summary><div class="pb-accordion-body"><p>Для стабильной работы AdGuard Home рекомендуется использовать роутеры серии KN-1810, KN-1811 или старше, имеющие порт USB 3.0 и объем оперативной памяти от 256 МБ. На старых моделях функция может работать нестабильно или быть недоступна.</p></div></details>
+
+<p>Главное преимущество этого метода — полная независимость от сторонних DNS-провайдеров. Вы сами контролируете списки блокировки и можете тонко настраивать правила под свои нужды. Кроме того, локальный сервер обрабатывает запросы быстрее, чем удаленные узлы в интернете.</p>
+
+<h2 id="организация-профилей-безопасности-для-устройств">Организация профилей безопасности для устройств</h2>
+
+<p>В домашней сети могут находиться устройства с разными требованиями к безопасности. Например, игровой консоли может мешать строгая фильтрация, а детскому планшету она необходима. <strong>KeeneticOS</strong> позволяет назначать разные DNS-серверы для разных клиентов или групп устройств.</p>
+
+<p>Для реализации этой функции перейдите в раздел <code>Домашняя сеть → Сегменты сети</code> или используйте настройки приоритетов в профиле подключения. Вы можете создать отдельный сегмент сети для гостевых устройств или IoT-гаджетов и назначить им специфические параметры DNS.</p>
+
+<p>Альтернативный способ — использование статических DHCP-привязок. Зайдите в <code>Домашняя сеть → Список устройств</code>, выберите нужное устройство и задайте для него постоянный IP-адрес. В расширенных настройках этого устройства можно прописать индивидуальные DNS-серверы, которые будут применяться только к нему.</p>
+
+<p>Такой подход дает гибкость управления. Вы можете оставить основной сегмент сети на быстрых серверах провайдера для игр, а сегмент для смартфонов направить через фильтрующие DNS. Это баланс между производительностью и комфортом использования интернета.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Назовите устройства в списке клиентов понятными именами (например, "TV Samsung", "iPhone Mom"), чтобы легко применять к ним разные профили безопасности без поиска по MAC-адресам.</p></aside>
+
+<p>Не забывайте проверять актуальность настроек после обновления прошивки роутера. Иногда сброс конфигурации может вернуть глобальные настройки DNS к значениям по умолчанию, что отключит вашу персональную конфигурацию фильтрации.</p>
+
+<h2 id="диагностика-и-устранение-проблем">Диагностика и устранение проблем</h2>
+
+<p>После настройки блокировки рекламы вы можете столкнуться с ситуацией, когда некоторые сайты перестают открываться корректно. Это часто случается, если фильтрующий сервер ошибочно внес полезный домен в черный список. Диагностика начинается с проверки доступности DNS.</p>
+
+<p>Используйте встроенные инструменты диагностики в веб-интерфейсе <em>Keenetic</em>. В разделе <code>Диагностика → Ping и Traceroute</code> попробуйте пропинговать известные домены, например <code>google.com</code>. Если пинг проходит, но сайт не грузится в браузере, проблема скорее всего в кэше DNS на клиентском устройстве.</p>
+
+<p>Очистка кэша DNS на компьютере выполняется командой в терминале. Для Windows используйте команду <code>ipconfig /flushdns</code>, для macOS — <code>sudo dscacheutil -flushcache</code>. На мобильных устройствах достаточно включить и выключить режим полета или перезагрузить гаджет.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Если после смены DNS перестали работать онлайн-банки или государственные сервисы, временно отключите фильтрацию, так как они могут блокировать запросы от публичных DNS-серверов.</p>
+</blockquote>
+
+<p>Также стоит проверить логи роутера в разделе <code>Диагностика → Журнал системы</code>. Там могут быть сообщения о невозможности соединения с выбранными DNS-серверами. В таком случае попробуйте заменить адреса на альтернативные из таблицы выше или включить использование резервных серверов.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>90% проблем с доступом к сайтам после настройки DNS решаются очисткой кэша на клиентском устройстве или перезагрузкой роутера.</p></aside>
+
+<p>Если вы используете компонент <em>AdGuard Home</em>, загляните в его журнал запросов. Там будет четко видно, какой именно домен был заблокирован и по какому правилу. Вы сможете добавить этот домен в белый список одним кликом, восстановив работоспособность ресурса.</p>
+
+<h2 id="сравнение-методов-фильтрации-трафика">Сравнение методов фильтрации трафика</h2>
+
+<p>Выбор метода блокировки зависит от ваших технических навыков и задач. Простая смена DNS-адресов в настройках роутера подходит большинству пользователей, желающих быстро убрать баннеры. Установка <em>AdGuard Home</em> требует больше времени, но дает полный контроль.</p>
+
+<p>Существует также метод установки стороннего ПО на подключенный к роутеру компьютер или NAS, который будет выступать в роли DNS-сервера. Однако это менее надежно, так как требует постоянного включения дополнительного оборудования. Роутер <em>Keenetic</em> работает автономно 24/7.</p>
+
+<p>Важно отметить, что ни один метод DNS-фильтрации не заменит качественный антивирус. Блокировка рекламы защищает от визуального шума и части трекеров, но не гарантирует защиту от сложных фишинговых атак или вирусов, скачиваемых напрямую.</p>
+
+<p>Комбинируйте методы для достижения лучшего результата. Используйте DNS-фильтрацию на роутере для всей сети, а на персональных компьютерах установите браузерные расширения для блокировки элементов, которые невозможно отсеять на уровне доменных имен.</p>
+
+<details>
+<summary>Можно ли заблокировать рекламу в приложениях на Android через роутер?</summary>
+<p>Да, DNS-фильтрация блокирует запросы к рекламным серверам, которые используют многие бесплатные приложения. Однако реклама, встроенная непосредственно в код приложения или загружаемая с тех же доменов, что и контент, может остаться.</p>
+</details>
+
+<details>
+<summary>Влияет ли блокировка рекламы на скорость интернета?</summary>
+<p>В большинстве случаев скорость даже немного возрастает, так как не загружаются тяжелые рекламные скрипты и изображения. Задержка (ping) может незначительно увеличиться, если выбранный DNS-сервер находится далеко географически.</p>
+</details>
+
+<details>
+<summary>Что делать, если после настройки перестал работать Smart TV?</summary>
+<p>Некоторые сервисы на Smart TV чувствительны к смене DNS. Попробуйте создать отдельный профиль сети для телевизора без фильтрации или добавьте домены стримингового сервиса в белый список вашего фильтрующего решения.</p>
+</details>
+
+<details>
+<summary>Нужно ли перезагружать роутер после смены DNS?</summary>
+<p>Обычно достаточно нажать кнопку «Применить» в интерфейсе. Однако для гарантированного обновления кэша на всех подключенных устройствах рекомендуется кратковременно перезагрузить маршрутизатор.</p>
+</details>
+
+<details>
+<summary>Работает ли этот метод для HTTPS сайтов?</summary>
+<p>Да, блокировка работает на уровне разрешения имен до того, как устанавливается защищенное HTTPS-соединение. Если домен заблокирован, соединение просто не будет инициировано, независимо от использования шифрования.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/i/in/internet-dlya-kompyutera-cherez-sim-kartu.html" class="pb-related-card">
+                <span class="pb-related-title">Интернет для компьютера через сим-карту: выбор модема и тарифа</span>
+                <span class="pb-related-desc">Полное руководство по подключению интернета к ПК через USB-модем или смартфон. Обзор технологий 4G/5</span>
+            </a><a href="/set-i-internet/s/so/soedinit-router-s-routerom-po-kabelyu.html" class="pb-related-card">
+                <span class="pb-related-title">Как соединить два роутера по кабелю: пошаговая настройка</span>
+                <span class="pb-related-desc">Полное руководство по подключению второго роутера к основному через кабель LAN. Описаны режимы моста</span>
+            </a><a href="/set-i-internet/k/ka/kak-ostavit-svoj-nomer-telefona-pri-smene-operatora.html" class="pb-related-card">
+                <span class="pb-related-title">Как сохранить номер при смене оператора: пошаговая инструкция MNP</span>
+                <span class="pb-related-desc">Полный гайд по переносу номера телефона между операторами. Узнайте требования, сроки, стоимость и ка</span>
+            </a><a href="/set-i-internet/4/4g/4g-wi-fi-router-b715s-23c.html" class="pb-related-card">
+                <span class="pb-related-title">Huawei B715s-23c: обзор 4G роутера, настройки и разблокировка</span>
+                <span class="pb-related-desc">Полный разбор 4G Wi-Fi роутера Huawei B715s-23c. Характеристики, инструкция по разблокировке, настро</span>
+            </a><a href="/set-i-internet/r/re/repiter-sotovoj-svyazi-dlya-doma.html" class="pb-related-card">
+                <span class="pb-related-title">Репитер сотовой связи для дома: выбор, установка и настройка</span>
+                <span class="pb-related-desc">Как выбрать усилитель сигнала сотовой связи для частного дома. Обзор репитеров, схемы установки анте</span>
+            </a><a href="/set-i-internet/k/ka/kak-perejti-s-megafona-na-bilajn-so-svoim-nomerom-bez-poseshcheniya-ofisa.html" class="pb-related-card">
+                <span class="pb-related-title">Как перейти с Мегафона на Билайн со своим номером без офиса</span>
+                <span class="pb-related-desc">Полная инструкция: как сохранить номер при переходе с Мегафона на Билайн дистанционно. Онлайн-заявка</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

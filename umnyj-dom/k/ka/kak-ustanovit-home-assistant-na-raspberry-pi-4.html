@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Установка Home Assistant на Raspberry Pi 4: пошаговая инструкция — Техно Гид</title>
+    <meta name="description" content="Подробное руководство по развертыванию Home Assistant OS на Raspberry Pi 4. Настройка SD-карты, сети и первый вход. Создайте свой умный дом.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/k/ka/kak-ustanovit-home-assistant-na-raspberry-pi-4.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Установка Home Assistant на Raspberry Pi 4: пошаговая инструкция">
+    <meta property="og:description" content="Подробное руководство по развертыванию Home Assistant OS на Raspberry Pi 4. Настройка SD-карты, сети и первый вход. Создайте свой умный дом.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Установка Home Assistant на Raspberry Pi 4: пошаговая инструкция</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-оборудования-и-выбор-комплектующих">Подготовка оборудования и выбор комплектующих</a></li><li><a href="#запись-образа-home-assistant-os-на-накопитель">Запись образа Home Assistant OS на накопитель</a></li><li><a href="#первичная-настройка-и-конфигурация-сети">Первичная настройка и конфигурация сети</a></li><li><a href="#первый-запуск-и-вход-в-интерфейс">Первый запуск и вход в интерфейс</a></li><li><a href="#настройка-резервного-копирования-и-обновлений">Настройка резервного копирования и обновлений</a></li><li><a href="#расширение-функционала-через-дополнения">Расширение функционала через дополнения</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/u/um/umnye-vesy-ot-xiaomi.html">Умные весы Xiaomi: обзор, функции, сравнение моделей и выбор</a></li><li><a href="/umnyj-dom/n/na/nabor-dlya-sakhara-i-soli-iz-keramiki.html">Набор для сахара и соли из керамики: как выбрать и ухаживать</a></li><li><a href="/umnyj-dom/p/po/pochemu-den-menyaet-noch.html">Почему день сменяет ночь: мифы, факты и влияние на гаджеты</a></li><li><a href="/umnyj-dom/u/um/umnyj-dom-so-sberom.html">Умный дом со Сбером: обзор экосистемы, устройство и настройка</a></li><li><a href="/umnyj-dom/u/um/umnaya-kolonka-s-sim-kartoj-est-li.html">Умная колонка с сим-картой: есть ли такие модели и как работают</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как установить Home Assistant на Raspberry Pi 4</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-оборудования-и-выбор-комплектующих">Подготовка оборудования и выбор комплектующих</a></li><li><a href="#запись-образа-home-assistant-os-на-накопитель">Запись образа Home Assistant OS на накопитель</a></li><li><a href="#первичная-настройка-и-конфигурация-сети">Первичная настройка и конфигурация сети</a></li><li><a href="#первый-запуск-и-вход-в-интерфейс">Первый запуск и вход в интерфейс</a></li><li><a href="#настройка-резервного-копирования-и-обновлений">Настройка резервного копирования и обновлений</a></li><li><a href="#расширение-функционала-через-дополнения">Расширение функционала через дополнения</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Создание локального центра управления умным домом — это шаг к полной независимости от облачных сервисов китайских и американских корпораций. <strong>Home Assistant</strong> на сегодняшний день является самым мощным и гибким решением в этой нише, объединяя тысячи различных устройств в единую экосистему. Платформа работает на множестве устройств, но связка с одноплатным компьютером <em>Raspberry Pi 4</em> считается «золотым стандартом» для домашнего использования благодаря оптимальному балансу цены, энергопотребления и производительности.</p>
+
+<p>В отличие от установки программного обеспечения на обычный ПК, развертывание операционной системы <em>Home Assistant OS</em> на микрокомпьютере требует специфического подхода к подготовке носителя и настройке периферии. Процесс может показаться сложным новичку, но при четком следовании алгоритму он занимает не более 30 минут. В этой статье мы разберем каждый этап: от выбора карты памяти до первого входа в веб-интерфейс, уделив внимание подводным камням, о которых часто молчат официальные мануалы.</p>
+
+<h2 id="подготовка-оборудования-и-выбор-комплектующих">Подготовка оборудования и выбор комплектующих</h2>
+
+<p>Перед началом установки необходимо убедиться, что у вас есть все необходимые компоненты. Хотя <em>Raspberry Pi 4</em> обладает внушительной для своих размеров мощностью, он крайне требователен к качеству питания и скорости накопителя. Использование некачественного блока питания или медленной карты памяти — самая частая причина нестабильной работы системы в будущем, проявляющаяся в зависаниях базы данных или сбоях при записи логов.</p>
+
+<p>Особое внимание следует уделить системе охлаждения. Процессор <em>Broadcom BCM2711</em> под нагрузкой может нагреваться до критических температур, что приведет к троттлингу (снижению частоты) и замедлению отклика интерфейса. Пассивный радиатор обязателен, а активный вентилятор желателен, если вы планируете размещать устройство в закрытом корпусе или шкафу.</p>
+
+<ul>
+<li>🍓 Одноплатный компьютер <em>Raspberry Pi 4 Model B</em> (рекомендуется версия с 4 ГБ или 8 ГБ оперативной памяти).</li>
+<li>💾 Карта памяти <em>MicroSD</em> объемом от 32 ГБ (класс скорости U3, A1 или A2).</li>
+<li>⚡ Официальный блок питания <em>USB-C</em> мощностью 3А (5.1В/3А).</li>
+<li>❄️ Комплект активного или пассивного охлаждения (радиаторы + вентилятор).</li>
+</ul>
+
+<p>Важно понимать разницу между обычной записью файлов и созданием загрузочного образа. Вы не можете просто скопировать архив системы на флешку. Для корректной работы требуется побитовая запись образа на диск, что создает файловую систему, понятную загрузчику <em>Bootloader</em> платы. Игнорирование этого правила приведет к тому, что плата просто не увидит загрузочный сектор.</p>
+
+<h2 id="запись-образа-home-assistant-os-на-накопитель">Запись образа Home Assistant OS на накопитель</h2>
+
+<p>Процесс прошивки карты памяти является фундаментом всей установки. Ошибка на этом этапе сделает систему неспособной к загрузке, поэтому необходимо использовать специализированный софт. Наиболее надежным и простым инструментом на сегодняшний день является утилита <em>Raspberry Pi Imager</em>, которая автоматически скачивает актуальные версии образов и корректно записывает их на носитель.</p>
+
+<p>Запустите программу на вашем основном компьютере и выберите устройство. В списке операционных систем найдите раздел <code>Other specific-purpose OS</code>, затем <code>Home assistants & home automation</code> и выберите <code>Home Assistant</code>. Обратите внимание, что для <em>Raspberry Pi 4</em> доступна версия именно <strong>Home Assistant OS</strong>, которая является полноценной операционной системой, а не просто приложением.</p>
+
+<blockquote>
+<p>⚠️ Внимание: В процессе записи все данные на карте памяти будут безвозвратно удалены. Убедитесь, что на носителе нет важных фотографий или документов, или используйте новую карту.</p>
+</blockquote>
+
+<p>После выбора образа и целевого диска нажмите кнопку «Записать» (Write). Программа предупредит вас о стирании данных — подтвердите действие. Процесс может занять от 5 до 15 минут в зависимости от скорости вашего кард-ридера и класса карты памяти. По завершении записи не спешите извлекать карту; дайте утилите завершить все операции верификации.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Готовность к прошивке</h4><label class="check-item"><input type="checkbox"><span>Скачан Raspberry Pi Imager</span></label><label class="check-item"><input type="checkbox"><span>Подготовлена карта microSD от 32 ГБ</span></label><label class="check-item"><input type="checkbox"><span>Есть адаптер для карт памяти</span></label><label class="check-item"><input type="checkbox"><span>Проверено свободное место на ПК</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="первичная-настройка-и-конфигурация-сети">Первичная настройка и конфигурация сети</h2>
+
+<p>Современные версии <em>Home Assistant</em> спроектированы так, чтобы быть максимально автономными («headless»), то есть работать без подключения монитора, клавиатуры и мыши. Однако для первоначальной настройки сети может потребоваться создание специального файла конфигурации, если ваш роутер не поддерживает автоматическое определение устройства по протоколу mDNS или если вы хотите задать статический IP-адрес сразу.</p>
+
+<p>Для этого вставьте записанную карту памяти обратно в компьютер. На появившемся диске <code>boot</code> (или <code>bootfs</code>) создайте файл с именем <code>network.txt</code> (в некоторых версиях <code>my-network.txt</code>). В этот файл необходимо прописать параметры вашей локальной сети. Это позволит системе сразу после включения получить доступ к интернету для загрузки последних обновлений.</p>
+
+<pre><code>version: 1
+<p>wifi:</p>
+<p>ssid: "Ваш_SSID"</p>
+<p>psk: "Ваш_Пароль"</p>
+<p>ethernet:</p>
+<p>interface: eth0</p>
+<p>address: 192.168.1.50/24</p>
+<p>gateway: 192.168.1.1</p>
+<p>nameservers:</p>
+<p>- 8.8.8.8</p>
+<p>- 1.1.1.1</code></pre></p>
+
+<p>Если вы используете проводное соединение, достаточно просто подключить кабель <em>Ethernet</em> к порту Gigabit LAN на плате перед включением питания. Система по умолчанию настроена на получение адреса по DHCP. После сохранения файла конфигурации безопасно извлеките карту памяти и вставьте её в слот <em>Raspberry Pi 4</em>.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте кабель Ethernet для первичной настройки вместо Wi-Fi — это обеспечит стабильное соединение при загрузке тяжелых обновлений системы и исключит проблемы с драйверами беспроводной сети на начальном этапе.</p></aside>
+
+<h2 id="первый-запуск-и-вход-в-интерфейс">Первый запуск и вход в интерфейс</h2>
+
+<p>Подключите все необходимые кабели к плате: HDMI (опционально, для отладки), Ethernet, и только в последнюю очередь — питание USB-C. Индикаторы на плате начнут мигать: зеленый светодиод указывает на активность карты памяти, а красный горит постоянно, сигнализируя о наличии питания. Процесс первой загрузки может занять до 5-10 минут, так как система расширяет файловую систему и инициализирует службы.</p>
+
+<p>Откройте браузер на компьютере или смартфоне, подключенном к той же сети. Введите в адресной строке <code>http://homeassistant.local:8123</code>. Если ваш компьютер не видит доменное имя <code>.local</code>, используйте IP-адрес, который вы задали в файле конфигурации, или найдите его в интерфейсе вашего роутера в списке подключенных клиентов.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Значение по умолчанию</th>
+<th>Примечание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Порт доступа</td>
+<td>8123</td>
+<td>Обязательно указывать в URL</td>
+</tr>
+<tr>
+<td>Протокол</td>
+<td>HTTP</td>
+<td>Позже настраивается HTTPS</td>
+</tr>
+<tr>
+<td>Имя хоста</td>
+<td>homeassistant</td>
+<td>Работает через mDNS</td>
+</tr>
+<tr>
+<td>Пользователь</td>
+<td>Создается вручную</td>
+<td>При первом входе</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>В окне браузера вы увидите приветственный экран с предложением создать учетную запись. Придумайте надежный логин и пароль — это будет главный ключ доступа к вашему умному дому. Также система попросит указать местоположение (координаты или название города) для корректной работы автоматизаций, связанных с восходом и заходом солнца.</p>
+
+<div class="pb-poll" id="poll-e6344012"><div class="pb-poll-question">📊 Как вы планируете подключать устройства к Home Assistant?</div><div class="pb-poll-option" data-poll="e6344012" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Через Zigbee шлюз</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e6344012" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">По Wi-Fi напрямую</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e6344012" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Через MQTT брокер</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="e6344012" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Только проводные датчики</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="настройка-резервного-копирования-и-обновлений">Настройка резервного копирования и обновлений</h2>
+
+<p>После успешного входа в панель управления <strong>Supervisor</strong> (надстройка над ядром системы) сразу предложит настроить резервное копирование. Это критически важный этап. База данных умного дома постоянно растет, и потеря конфигурации может означать необходимость перенастраивать сотни устройств и сценариев вручную.</p>
+
+<p>Перейдите в раздел <code>Настройки → Система → Резервное копирование</code>. Рекомендуется настроить автоматическое создание полных снепшотов (полных копий системы) раз в неделю и частичных копий конфигурации ежедневно. Хранить эти резервные копии лучше не на самой SD-карте, а в облачном хранилище или на подключенном по USB внешнем диске.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Интерфейс Home Assistant регулярно обновляется. Расположение меню и названия пунктов могут незначительно меняться в новых версиях. Всегда сверяйтесь с официальной документацией, если не можете найти нужный раздел.</p>
+</blockquote>
+
+<p>Система обновлений в <em>Home Assistant OS</em> работает автоматически, но вы можете инициировать проверку вручную. Обновление ядра, супервизора и самих дополнений (Add-ons) следует проводить последовательно. Сначала обновляется операционная система, затем супервизор, и только потом — отдельные компоненты.</p>
+
+<details class="pb-accordion"><summary>Что делать, если обновление зависло?</summary><div class="pb-accordion-body"><p>Если процесс обновления завис на этапе 90-99%, не паникуйте и не выключайте питание сразу. Подождите 15-20 минут. В это время система может пересоздавать контейнеры Docker или мигрировать базу данных. Если индикатор активности диска не мигает более 30 минут, возможно, потребуется принудительная перезагрузка, но это крайняя мера.</p></div></details>
+
+<h2 id="расширение-функционала-через-дополнения">Расширение функционала через дополнения</h2>
+
+<p>Главная сила платформы заключается в магазине дополнений (Add-on Store). Здесь вы можете установить необходимые сервисы, не используя командную строку. Для полноценной работы умного дома часто требуется установка стороннего программного обеспечения, такого как брокер сообщений или файловый менеджер.</p>
+
+<p>В первую очередь рекомендуется установить <em>Mosquitto broker</em> для работы с устройствами по протоколу <strong>MQTT</strong>. Это позволит подключать дешевые датчики и самодельные устройства. Также полезным будет дополнение <em>File editor</em> или <em>Visual Studio Code</em> для прямого редактирования файлов конфигурации <code>configuration.yaml</code> из браузера.</p>
+
+<ul>
+<li>📡 <em>Mosquitto broker</em> — центральный хаб для обмена сообщениями между устройствами IoT.</li>
+<li>📂 <em>Samba share</em> — открытие доступа к файлам конфигурации по сети Windows для удобного редактирования.</li>
+<li>🌐 <em>NGINX Home Assistant SSL proxy</em> — настройка безопасного доступа к системе из интернета через HTTPS.</li>
+</ul>
+
+<p>Установка дополнений происходит в несколько кликов: выберите нужный аддон в магазине, нажмите «Установить», затем «Запустить» и включите опцию «Запуск при загрузке». Некоторые дополнения требуют дополнительной настройки вкладки «Конфигурация» перед первым запуском, например, указания паролей или путей к папкам.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Не устанавливайте все дополнения подряд. Каждый запущенный сервис потребляет оперативную память и ресурсы процессора, что может замедлить работу всей системы на Raspberry Pi 4.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли установить Home Assistant на старую Raspberry Pi 3?</summary>
+<p>Технически это возможно, но не рекомендуется для продуктивного использования. <em>Raspberry Pi 3</em> имеет более медленный процессор и ограничена портом USB 2.0, что создает узкое место при работе с базой данных и SD-картой. Система будет работать заметно медленнее, а интерфейс может подтормаживать при большом количестве устройств.</p>
+</details>
+
+<details>
+<summary>Какой объем SD-карты оптимален для Home Assistant?</summary>
+<p>Минимально необходимый объем — 16 ГБ, но лучше использовать карту на 32 ГБ или 64 ГБ. Сама система занимает около 4-5 ГБ, но со временем размер базы данных истории и логи могут значительно вырасти. Карты объемом более 128 ГБ на некоторых моделях плат могут работать менее стабильно без специальной настройки.</p>
+</details>
+
+<details>
+<summary>Нужен ли статический IP-адрес для работы системы?</summary>
+<p>Желательно, но не строго обязательно. Если IP-адрес изменится после перезагрузки роутера, вам придется искать новый адрес устройства в сети, чтобы зайти в панель управления. Настройка статического IP в роутере (резервирование по MAC-адресу) или в самом файле <code>network.txt</code> избавит от этой головной боли.</p>
+</details>
+
+<details>
+<summary>Как сбросить пароль, если я его забыл?</summary>
+<p>Если у вас есть физический доступ к плате и подключен монитор с клавиатурой, можно воспользоваться консолью. Однако проще восстановить систему из резервной копии, если вы настроили бэкапы заранее. В крайнем случае, существует процедура сброса через загрузочные параметры, но она требует редактирования файла <code>cmdline.txt</code> на загрузочном разделе.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/u/um/umnye-vesy-ot-xiaomi.html" class="pb-related-card">
+                <span class="pb-related-title">Умные весы Xiaomi: обзор, функции, сравнение моделей и выбор</span>
+                <span class="pb-related-desc">Подробный разбор умных весов от Xiaomi. Сравнение моделей Mi Smart Scale 2, Body Composition Scale P</span>
+            </a><a href="/umnyj-dom/n/na/nabor-dlya-sakhara-i-soli-iz-keramiki.html" class="pb-related-card">
+                <span class="pb-related-title">Набор для сахара и соли из керамики: как выбрать и ухаживать</span>
+                <span class="pb-related-desc">Полный гид по выбору керамических наборов для специй. Виды глазури, формы крышек, особенности ухода </span>
+            </a><a href="/umnyj-dom/p/po/pochemu-den-menyaet-noch.html" class="pb-related-card">
+                <span class="pb-related-title">Почему день сменяет ночь: мифы, факты и влияние на гаджеты</span>
+                <span class="pb-related-desc">Разбираем, почему происходит смена дня и ночи, как это связано с вращением Земли и почему на старых </span>
+            </a><a href="/umnyj-dom/u/um/umnyj-dom-so-sberom.html" class="pb-related-card">
+                <span class="pb-related-title">Умный дом со Сбером: обзор экосистемы, устройство и настройка</span>
+                <span class="pb-related-desc">Как создать умный дом с Сбере: обзор устройств, голосовой помощник Салют, тарифы и возможности интег</span>
+            </a><a href="/umnyj-dom/u/um/umnaya-kolonka-s-sim-kartoj-est-li.html" class="pb-related-card">
+                <span class="pb-related-title">Умная колонка с сим-картой: есть ли такие модели и как работают</span>
+                <span class="pb-related-desc">Разбираем, существуют ли умные колонки со слотом для сим-карты. Обзор автономных решений, тарифов и </span>
+            </a><a href="/umnyj-dom/k/ka/kak-podklyuchit-zigbee-k-alise.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить Zigbee-устройства к Алисе: полное руководство</span>
+                <span class="pb-related-desc">Пошаговая инструкция по настройке Zigbee шлюза, сопряжению датчиков и ламп с Яндекс Алисой. Обзор со</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

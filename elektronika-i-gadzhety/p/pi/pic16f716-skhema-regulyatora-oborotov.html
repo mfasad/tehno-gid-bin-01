@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>pic16f716 схема регулятора оборотов: разработка и настройка — Техно Гид</title>
+    <meta name="description" content="Подробная схема и инструкция по созданию регулятора оборотов двигателя на микроконтроллере pic16f716. ШИМ управление, выбор деталей и отладка кода.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/elektronika-i-gadzhety/p/pi/pic16f716-skhema-regulyatora-oborotov.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="pic16f716 схема регулятора оборотов: разработка и настройка">
+    <meta property="og:description" content="Подробная схема и инструкция по созданию регулятора оборотов двигателя на микроконтроллере pic16f716. ШИМ управление, выбор деталей и отладка кода.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/elektronika-i-gadzhety/">Электроника и Гаджеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">pic16f716 схема регулятора оборотов: разработка и настройка</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#архитектура-и-особенности-микроконтроллера-pic16f716">Архитектура и особенности микроконтроллера PIC16F716</a></li><li><a href="#принципиальная-электрическая-схема-и-силовая-часть">Принципиальная электрическая схема и силовая часть</a></li><li><a href="#алгоритм-работы-и-настройка-шим-сигнала">Алгоритм работы и настройка ШИМ-сигнала</a></li><li><a href="#защита-системы-и-аварийные-режимы">Защита системы и аварийные режимы</a></li><li><a href="#сборка-устройства-и-отладка-прошивки">Сборка устройства и отладка прошивки</a></li><li><a href="#расширение-функционала-и-модернизация">Расширение функционала и модернизация</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/elektronika-i-gadzhety/k/ka/kak-zapustit-programmu-na-arduino.html">Как запустить программу на Ардуино: Полное руководство с нуля</a></li><li><a href="/elektronika-i-gadzhety/k/ka/kakie-smart-chasy-luchshe-xiaomi-ili-huawei.html">Сравнение смарт-часов Xiaomi и Huawei: какой бренд выбрать в 2026</a></li><li><a href="/elektronika-i-gadzhety/k/kh/khoroshie-byudzhetnye-ekshn-kamery.html">Лучшие бюджетные экшн-камеры 2026: выбор, обзор, тест</a></li><li><a href="/elektronika-i-gadzhety/v/v-/v-kakikh-elektrichkakh-est-zaryadki.html">В каких электричках есть розетки и зарядки: полный гид</a></li><li><a href="/elektronika-i-gadzhety/k/ka/kartinki-dlya-zreniya-stereogrammy.html">Картинки для зрения: как работают стереограммы</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Схема регулятора оборотов на базе pic16f716</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#архитектура-и-особенности-микроконтроллера-pic16f716">Архитектура и особенности микроконтроллера PIC16F716</a></li><li><a href="#принципиальная-электрическая-схема-и-силовая-часть">Принципиальная электрическая схема и силовая часть</a></li><li><a href="#алгоритм-работы-и-настройка-шим-сигнала">Алгоритм работы и настройка ШИМ-сигнала</a></li><li><a href="#защита-системы-и-аварийные-режимы">Защита системы и аварийные режимы</a></li><li><a href="#сборка-устройства-и-отладка-прошивки">Сборка устройства и отладка прошивки</a></li><li><a href="#расширение-функционала-и-модернизация">Расширение функционала и модернизация</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>В современном любительском и полупрофессиональном производстве часто возникает необходимость в точном управлении скоростью вращения электродвигателей. Использование устаревших аналоговых схем на тиристорах или транзисторах часто приводит к потере мощности на низких оборотах и сложностям с управлением моментом. Именно здесь на сцену выходят микроконтроллеры, позволяющие реализовать сложные алгоритмы управления с минимальным количеством внешних компонентов.</p>
+
+<p>Микроконтроллер <em>PIC16F716</em> от компании Microchip является отличным выбором для таких задач благодаря своей надежности и простоте программирования. Этот чип обладает встроенным модулем <strong>ШИМ (PWM)</strong>, который идеально подходит для генерации управляющих импульсов для силовых ключей. В отличие от более сложных AVR или ARM решений, <strong>pic16f716 схема</strong> требует минимальной обвязки, что делает её привлекательной для начинающих разработчиков электроники.</p>
+
+<p>Реализация регулятора подразумевает не просто подачу напряжения, а управление скважностью импульсов, что позволяет сохранять высокий крутящий момент даже при минимальной скорости. В этой статье мы разберем полный цикл создания устройства: от выбора элементной базы до написания прошивки и настройки <strong>оборотов</strong> двигателя в реальных условиях эксплуатации.</p>
+
+<h2 id="архитектура-и-особенности-микроконтроллера-pic16f716">Архитектура и особенности микроконтроллера PIC16F716</h2>
+
+<p>Сердцем нашего устройства является 8-битный микроконтроллер семейства <em>PIC</em>. Его архитектура RISC обеспечивает высокую скорость выполнения команд, что критически важно для генерации стабильного ШИМ-сигнала без мерцания. Чип оснащен 2 КБ флэш-памяти для программы и 128 байт оперативной памяти, что с запасом хватает для алгоритма управления двигателем.</p>
+
+<p>Ключевой особенностью данной модели является наличие аппаратного модуля <strong>Capture/Compare/PWM</strong>. Это означает, что формирование импульсов происходит на уровне "железа", не отвлекая центральный процессор. Вы можете свободно использовать оставшееся время процессора для опроса потенциометра, обработки аварийных ситуаций или управления индикацией.</p>
+
+<p>Однако стоит учитывать ограничения корпуса. Чаще всего используется корпус <em>DIP-18</em> или <em>SOIC-18</em>, что ограничивает количество доступных портов ввода-вывода. Для простого регулятора этого вполне достаточно: один вход для потенциометра (ADC), один выход для ШИМ и несколько линий для кнопок или светодиодов. Важно правильно распределить <strong>пины</strong> на этапе проектирования печатной платы.</p>
+
+<p>Внутренний тактовый генератор позволяет работать без внешнего кварца, упрощая схему. Но для задач, где требуется высокая точность частоты ШИМ (чтобы избежать акустического шума двигателя), лучше использовать внешний <strong>резонатор</strong> или керамический резонатор на 4-20 МГц.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для снижения уровня акустического шума двигателя выбирайте частоту ШИМ выше 20 кГц, чтобы она выходила за пределы слышимости человеческого уха.</p></aside>
+
+<h2 id="принципиальная-электрическая-схема-и-силовая-часть">Принципиальная электрическая схема и силовая часть</h2>
+
+<p>Построение регулятора начинается с разработки принципиальной схемы. Основа системы — связка микроконтроллера и силового ключа. В качестве силового элемента чаще всего используются MOSFET-транзисторы, такие как <em>IRFZ44N</em> или <em>IRL3705</em>. Они обладают низким сопротивлением открытого канала, что минимизирует нагрев при больших токах.</p>
+
+<p>Управление затвором транзистора напрямую с ножки микроконтроллера возможно только при малых токах и низких частотах. Для надежной работы на высоких частотах рекомендуется использовать драйвер затвора, например, <em>TC4420</em> или простую сборку на комплементарных транзисторах. Это обеспечит быстрое открытие и закрытие силового ключа, снижая потери на переключение.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Никогда не подключайте двигатель напрямую к выводам микроконтроллера. Ток, потребляемый двигателем, в десятки раз превышает максимально допустимый ток порта <em>PIC16F716</em>, что мгновенно выведет чип из строя.</p>
+</blockquote>
+
+<p>Входная цепь управления обычно строится на базе потенциометра. Переменный резистор подключается к аналоговому входу <code>RA0/AN0</code>. Для защиты входа от помех и скачков напряжения рекомендуется установить RC-фильтр с частотой среза около 100 Гц. Это сгладит дрожание значения при считывании <strong>АЦП</strong>.</p>
+
+<p>Ниже приведена таблица основных узлов схемы и их назначения:</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Узел схемы</th>
+<th>Компоненты</th>
+<th>Назначение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Контроллер</td>
+<td><em>PIC16F716</em></td>
+<td>Обработка данных, генерация ШИМ</td>
+</tr>
+<tr>
+<td>Силовой ключ</td>
+<td>MOSFET (N-канальный)</td>
+<td>Коммутация тока двигателя</td>
+</tr>
+<tr>
+<td>Задатчик скорости</td>
+<td>Потенциометр 10 кОм</td>
+<td>Формирование опорного напряжения</td>
+</tr>
+<tr>
+<td>Питание</td>
+<td>Стабилизатор 7805</td>
+<td>Питание логики 5В от шины двигателя</td>
+</tr>
+</tbody>
+</table></div>
+
+<div class="pb-poll" id="poll-bd162843"><div class="pb-poll-question">📊 Какой тип двигателя вы планируете регулировать?</div><div class="pb-poll-option" data-poll="bd162843" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Коллекторный DC</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="bd162843" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Бесколлекторный (через драйвер)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="bd162843" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Шаговый</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="bd162843" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Универсальный AC</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="алгоритм-работы-и-настройка-шим-сигнала">Алгоритм работы и настройка ШИМ-сигнала</h2>
+
+<p>Программная часть регулятора строится вокруг настройки таймера и модуля CCP. В микроконтроллере <em>pic16f716</em> за это отвечает регистр <code>CCPR1L</code> и биты конфигурации <code>CCP1CON</code>. Частота ШИМ определяется значением регистра <code>PR2</code> и предделителем таймера TMR2.</p>
+
+<p>Формула расчета периода выглядит следующим образом: <code>Period = (PR2 + 1) <em> 4 </em> Tosc * (TMR2 Prescale Value)</code>. Подбирая значение <strong>PR2</strong>, вы можете точно установить частоту переключения. Для двигателей постоянного тока оптимальным диапазоном считается 10-20 кГц. Слишком низкая частота вызовет гул, а слишком высокая увеличит нагрев транзистора.</p>
+
+<p>В основном цикле программы происходит опрос аналогового входа. Значение с АЦП (от 0 до 1023) масштабируется и записывается в регистр duty-cycle. Это позволяет плавно изменять скорость вращения от полной остановки до максимума. Важно реализовать программный фильтр, чтобы исключить рывки при плохом контакте потенциометра.</p>
+
+<pre><code>void SetPWM(unsigned int duty) {
+<p>CCPR1L = duty >> 2;</p>
+<p>CCP1CON &= 0xCF;</p>
+<p>CCP1CON |= (duty & 0x03) << 4;</p>
+<p>}</code></pre></p>
+
+<p>Использование прерываний по переполнению таймера позволяет вынести обновление ШИМ в отдельный обработчик, разгружая основной цикл. В основном цикле в это время можно заниматься проверкой температуры или реализацией функции плавного старта (Soft Start), что продлевает жизнь механике.</p>
+
+<details class="pb-accordion"><summary>Что такое "мертвое время" в ШИМ?</summary><div class="pb-accordion-body"><p>В полумостовых схемах DEAD TIME — это пауза между закрытием верхнего и открытием нижнего ключа, необходимая для исключения сквозного тока. В данной схеме с одним ключом это не требуется.</p></div></details>
+
+<h2 id="защита-системы-и-аварийные-режимы">Защита системы и аварийные режимы</h2>
+
+<p>Надежный регулятор должен уметь защищать сам себя и подключенное оборудование. Самая распространенная проблема — перегрев силового транзистора. Для мониторинга температуры можно использовать терморезистор, подключенный к свободному входу АЦП. При превышении порога программа должна автоматически снижать скважность или отключать двигатель.</p>
+
+<p>Также критически важна защита от короткого замыкания в цепи нагрузки. Хотя <em>pic16f716</em> не имеет встроенного компаратора тока, можно использовать шунт и операционный усилитель для подачи сигнала на вход <code>C1IN+</code> встроенного компаратора. Это позволит аппаратно отключить ШИМ за микросекунды при аварии.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> При работе с индуктивной нагрузкой (двигателем) обязательно используйте быстродействующий диод (например, <em>FR107</em> или <em>UF4007</em>), включенный параллельно двигателю в обратном направлении. Без него импульсы самоиндукции могут пробить силовой транзистор.</p>
+</blockquote>
+
+<p>Функция "анти-искра" полезна для коллекторных двигателей. Она заключается в небольшом снижении мощности при обнаружении резкого скачка тока, характерного для искрения щеток. Реализовать это можно программно, анализируя скорость изменения значения АЦП токового шунта.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Аппаратная защита через встроенный компаратор срабатывает быстрее любой программной проверки в главном цикле, что спасает транзистор при КЗ.</p></aside>
+
+<h2 id="сборка-устройства-и-отладка-прошивки">Сборка устройства и отладка прошивки</h2>
+
+<p>После разработки схемы и написания кода наступает этап физической реализации. Для отладки удобно использовать макетную плату, но для финального устройства лучше развести печатную плату с учетом токовых нагрузок. Силовые дорожки должны быть максимально широкими, а земляная шина — общей и мощной.</p>
+
+<p>Прошивка записывается через интерфейс <strong>ICSP</strong> (In-Circuit Serial Programming). Для этого нужны всего 5 контактов: VPP, VDD, VSS, PGD, PGC. Убедитесь, что на время программирования силовая часть отключена, чтобы высокое напряжение на затворе не повредило программатор.</p>
+
+<p>В процессе отладки используйте осциллограф для проверки формы сигнала на затворе транзистора. Идеальная форма — прямоугольная с крутыми фронтами. Если вы видите "завалы" фронтов или звон (колебания), проверьте длину проводов к затвору и наличие подтягивающих резисторов.</p>
+
+<ul>
+<li>🔍 Проверьте напряжение питания контроллера — оно должно быть стабильным 5.0В ±0.1В.</li>
+<li>⚡ Убедитесь в отсутствии короткого замыкания между стоком и истоком транзистора перед первым включением.</li>
+<li>🎛 Проверьте плавность изменения скважности при вращении потенциометра от края до края.</li>
+<li>🌡 Запустите двигатель под нагрузкой и проконтролируйте температуру радиатора в течение 10 минут.</li>
+</ul>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Диагностика перед запуском</h4><label class="check-item"><input type="checkbox"><span>Проверить полярность питания</span></label><label class="check-item"><input type="checkbox"><span>Замерить сопротивление затвора</span></label><label class="check-item"><input type="checkbox"><span>Проверить изоляцию радиатора</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в наличии диода</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="расширение-функционала-и-модернизация">Расширение функционала и модернизация</h2>
+
+<p>Базовая схема регулятора может быть легко модернизирована. Добавление дисплея <em>LCD 1602</em> или OLED позволит выводить текущие обороты и ток потребления. Для общения с дисплеем можно использовать оставшиеся порты в режиме GPIO, эмулируя протокол передачи данных.</p>
+
+<p>Еще одним шагом вперед является внедрение цифровой обработки сигнала. Например, можно реализовать ПИД-регулятор, который будет поддерживать заданные обороты постоянными независимо от нагрузки на валу двигателя. Это требует более точного датчика скорости, например, оптопары или датчика Холла.</p>
+
+<p>Если ресурсов <em>PIC16F716</em> станет недостаточно для сложных алгоритмов, можно рассмотреть переход на более старшие модели семейства, такие как <em>PIC16F887</em> или <em>PIC18F</em>. Они совместимы по выводам в некоторых корпусах и предлагают больше памяти и периферии.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> При добавлении новых функций не забывайте о быстродействии. Слишком сложный код в главном цикле может привести к тому, что прерывания ШИМ будут обрабатываться с задержкой, вызывая нестабильную работу двигателя.</p>
+</blockquote>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли использовать эту схему для регулировки яркости ламп накаливания?</summary>
+<p>Да, принцип ШИМ одинаков для двигателей и ламп. Однако для ламп частоту ШИМ можно снизить до 100-200 Гц, так как инерция нити накала сглаживает мерцание, а требования к быстродействию транзистора ниже.</p>
+</details>
+
+<details>
+<summary>Какой максимальный ток выдерживает схема на PIC16F716?</summary>
+<p>Сам микроконтроллер не коммутирует ток нагрузки. Максимальный ток зависит исключительно от выбранного вами MOSFET-транзистора и качества охлаждения. Теоретически можно регулировать токи до 50-100А при использовании соответствующих ключей и радиаторов.</p>
+</details>
+
+<details>
+<summary>Почему двигатель гудит на низких оборотах?</summary>
+<p>Гудение вызвано низкой частотой ШИМ, попадающей в слышимый диапазон. Попробуйте увеличить частоту генерации импульсов, изменив значение регистра <code>PR2</code> или предделитель таймера, чтобы поднять частоту выше 15-20 кГц.</p>
+</details>
+
+<details>
+<summary>Нужен ли внешний кварцевый резонатор?</summary>
+<p>Для простых задач регулятора оборотов достаточно внутреннего генератора <em>PIC16F716</em>. Внешний кварц необходим только если вы планируете реализовать точный таймер, интерфейс UART для связи с ПК или если требуется синхронизация с другими устройствами.</p>
+</details>
+
+<details>
+<summary>Как реализовать реверс (вращение в обратную сторону)?</summary>
+<p>Один транзистор обеспечивает только управление скоростью в одну сторону. Для реверса потребуется H-мост из 4 транзисторов или готовая микросхема драйвера двигателя, управляемая двумя сигналами с микроконтроллера (направление и ШИМ).</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/elektronika-i-gadzhety/k/ka/kak-zapustit-programmu-na-arduino.html" class="pb-related-card">
+                <span class="pb-related-title">Как запустить программу на Ардуино: Полное руководство с нуля</span>
+                <span class="pb-related-desc">Пошаговая инструкция по написанию, компиляции и загрузке скетча в Arduino. Разбор среды IDE, загрузк</span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kakie-smart-chasy-luchshe-xiaomi-ili-huawei.html" class="pb-related-card">
+                <span class="pb-related-title">Сравнение смарт-часов Xiaomi и Huawei: какой бренд выбрать в 2026</span>
+                <span class="pb-related-desc">Подробный разбор экосистем, здоровья и автономности. Узнайте, какие умные часы лучше: Xiaomi или Hua</span>
+            </a><a href="/elektronika-i-gadzhety/k/kh/khoroshie-byudzhetnye-ekshn-kamery.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшие бюджетные экшн-камеры 2026: выбор, обзор, тест</span>
+                <span class="pb-related-desc">Ищете хорошие бюджетные экшн камеры? Полный гид по выбору недорогих моделей до 15000 ₽. Сравнение ха</span>
+            </a><a href="/elektronika-i-gadzhety/v/v-/v-kakikh-elektrichkakh-est-zaryadki.html" class="pb-related-card">
+                <span class="pb-related-title">В каких электричках есть розетки и зарядки: полный гид</span>
+                <span class="pb-related-desc">Узнайте, в каких моделях электричек (Ласточка, Иволга) доступны розетки для зарядки. Обновляемые мат</span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kartinki-dlya-zreniya-stereogrammy.html" class="pb-related-card">
+                <span class="pb-related-title">Картинки для зрения: как работают стереограммы</span>
+                <span class="pb-related-desc">Полный разбор стереограмм для зрения: виды, принцип работы, польза и вред. Как научиться видеть скры</span>
+            </a><a href="/elektronika-i-gadzhety/g/ge/gera-shine-shades-kupit.html" class="pb-related-card">
+                <span class="pb-related-title">Gera Shine Shades купить: обзор и отзывы, цена 2026</span>
+                <span class="pb-related-desc">Где купить Gera Shine Shades, реальные отзывы, состав и цена. Эффективны ли светящиеся тени? Читайте</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

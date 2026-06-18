@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Архитектура фон Неймана: принципы работы и устройство ЭВМ — Техно Гид</title>
+    <meta name="description" content="Разбор классической фон неймановской архитектуры ЭВМ. Устройство, принцип хранимой программы, узлы процессора, отличия от гарвардской модели и современные проблемы.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/f/fo/fon-nejmanovskaya-arkhitektura-evm.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Архитектура фон Неймана: принципы работы и устройство ЭВМ">
+    <meta property="og:description" content="Разбор классической фон неймановской архитектуры ЭВМ. Устройство, принцип хранимой программы, узлы процессора, отличия от гарвардской модели и современные проблемы.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Архитектура фон Неймана: принципы работы и устройство ЭВМ</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#основы-классического-построения-вычислительных-машин">Основы классического построения вычислительных машин</a></li><li><a href="#ключевые-компоненты-и-их-взаимодействие">Ключевые компоненты и их взаимодействие</a></li><li><a href="#принцип-хранимой-программы">Принцип хранимой программы</a></li><li><a href="#цикл-выполнения-команд-и-системная-шина">Цикл выполнения команд и системная шина</a></li><li><a href="#проблемы-производительности-и-современные-решения">Проблемы производительности и современные решения</a></li><li><a href="#сравнение-с-гарвардской-архитектурой">Сравнение с Гарвардской архитектурой</a></li><li><a href="#влияние-на-современную-разработку-и-безопасность">Влияние на современную разработку и безопасность</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/s/so/sozdat-zagruzochnuyu-fleshku-windows-10-uefi.html">Создать загрузочную флешку Windows 10 UEFI: Полная инструкция 2026</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-v-bezopasnom-rezhime-udalit-programmu.html">Как удалить программу в безопасном режиме Windows</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-izmenit-nomer-kom-porta.html">Как изменить номер COM порта в Windows: полная инструкция</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-nazyvaetsya-knopka-probel-na-klaviature.html">Как называется кнопка пробел на клавиатуре: полное описание</a></li><li><a href="/kompyutery-i-noutbuki/g/gd/gde-lezhit-fajl-hosts-windows-7.html">Где лежит файл hosts Windows 7: полный путь и редакция</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Фон Неймановская архитектура ЭВМ: фундамент современных компьютеров</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#основы-классического-построения-вычислительных-машин">Основы классического построения вычислительных машин</a></li><li><a href="#ключевые-компоненты-и-их-взаимодействие">Ключевые компоненты и их взаимодействие</a></li><li><a href="#принцип-хранимой-программы">Принцип хранимой программы</a></li><li><a href="#цикл-выполнения-команд-и-системная-шина">Цикл выполнения команд и системная шина</a></li><li><a href="#проблемы-производительности-и-современные-решения">Проблемы производительности и современные решения</a></li><li><a href="#сравнение-с-гарвардской-архитектурой">Сравнение с Гарвардской архитектурой</a></li><li><a href="#влияние-на-современную-разработку-и-безопасность">Влияние на современную разработку и безопасность</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="основы-классического-построения-вычислительных-машин">Основы классического построения вычислительных машин</h2>
+<p>В основе подавляющего большинства современных компьютеров, от мощных серверов до карманных смартфонов, лежит принцип, заложенный более семидесяти лет назад. Эта фундаментальная концепция определяет то, как именно данные хранятся, обрабатываются и перемещаются внутри системы. Понимание <strong>фон неймановской архитектуры</strong> необходимо любому специалисту, занимающемуся ремонтом, настройкой или разработкой программного обеспечения.</p>
+<p>В 1945 году Джон фон Нейман опубликовал доклад, описывающий структуру машины EDVAC, который стал своего рода «библией» для инженеров компьютерной индустрии. Ключевым нововведением стало объединение памяти для данных и команд в единый адресный блок. Это позволило программе быть такой же изменяемой величиной, как и входные данные, что совершило революцию в вычислительной технике.</p>
+<p>Если вы рассматриваете внутреннее устройство любого персонального компьютера, вы неизбежно столкнетесь с этой моделью. Весь процесс работы сводится к циклическому выполнению команд, которые хранятся в том же месте, что и переменные. Без этого подхода невозможно представить развитие современных операционных систем и сложного программного кода.</p>
+
+<h2 id="ключевые-компоненты-и-их-взаимодействие">Ключевые компоненты и их взаимодействие</h2>
+<p>Любая система, построенная по данной схеме, состоит из четырех обязательных функциональных модулей, которые связаны между собой системой шин. Центральным элементом является <strong>центральный процессор</strong> (CPU), который отвечает за исполнение всех инструкций. Внутри него расположены арифметико-логическое устройство (АЛУ) и блок управления, координирующий потоки данных.</p>
+<p>Вторым важнейшим узлом является <strong>оперативная память</strong> (RAM), где размещаются и команды программы, и сами обрабатываемые данные. Третий блок — <strong>устройства ввода</strong>, позволяющие пользователю передавать информацию в машину, например, клавиатура или мышь. Четвертый блок — <strong>устройства вывода</strong>, такие как монитор или принтер, отображающие результат вычислений.</p>
+<p>Связь между этими компонентами осуществляется через <strong>системную шину</strong>, которая является «артерией» для электрических сигналов. Шина состоит из трех подсистем: шины данных, шины адреса и шины управления. Именно через эти каналы происходит обмен информацией между процессором и периферией. Любая ошибка в работе шины может привести к сбоям во всей системе.</p>
+
+<h2 id="принцип-хранимой-программы">Принцип хранимой программы</h2>
+<p>Самым гениальным решением фон Неймана стал <strong>принцип хранимой программы</strong>. До его появления компьютеры перепрограммировались физически — путем пересоединения проводов или смены плат. Теперь же, благодаря этому принципу, программа записывается в память в виде последовательности байтов, точно так же, как и текст или изображение.</p>
+<p>Это означает, что компьютер не различает по своему виду команду и данные. Для процессора и то, и другое — просто набор нулей и единиц в ячейках памяти. <em>Современные языки программирования</em>, компиляторы и операционные системы построены именно на этой логике. Вы можете запустить браузер, а затем сразу текстовый редактор, просто загрузив соответствующую программу в ту же самую память.</p>
+<p>Важно отметить, что адресация ячеек памяти является последовательной. Процессор считывает инструкции одну за другой, если не происходит перехода потока управления. Это обеспечивает упорядоченное выполнение задач, но создает определенные ограничения, которые мы рассмотрим ниже. <mark>Именно единая память для кода и данных является главной причиной возникновения «бутылочного горлышка» в современных высокопроизводительных системах.</mark></p>
+
+<div class="pb-poll" id="poll-40cf0b6c"><div class="pb-poll-question">📊 Какой компонент процессора вы считаете наиболее важным?</div><div class="pb-poll-option" data-poll="40cf0b6c" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Алгоритмическое устройство (АЛУ)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="40cf0b6c" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Блок управления</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="40cf0b6c" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Кэш-память</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="40cf0b6c" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Регистры</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="цикл-выполнения-команд-и-системная-шина">Цикл выполнения команд и системная шина</h2>
+<p>Работа процессора в этой архитектуре строится на строгом цикле, известном как цикл выборки-декодирования-исполнения. На первом этапе <strong>счетчик команд</strong> указывает адрес следующей инструкции в памяти. Процессор считывает эту команду по системной шине и помещает её в регистр инструкций.</p>
+<p>Затем блок управления декодирует полученную команду, определяя, какое действие необходимо выполнить: сложение, перемещение данных или условный переход. Если операция требует доступа к данным, процессор обращается к памяти по указанному адресу. Затем АЛУ выполняет вычисление, а результат записывается обратно в регистр или память.</p>
+<p>Этот цикл повторяется миллионы раз в секунду, обеспечивая работу всех приложений. Скорость выполнения этого цикла напрямую зависит от тактовой частоты и пропускной способности шины. Если шина не успевает передавать данные, процессор простаивает, ожидая поступления информации из памяти. Это явление часто называют <strong>проблемой фон Неймана</strong>.</p>
+
+<details class="pb-accordion"><summary>Как работает конвейеризация</summary><div class="pb-accordion-body"><p>Для ускорения работы современные процессоры используют конвейер (pipeline). Пока одно устройство выполняет текущую команду, другое уже декодирует следующую, а третье загружает данные для третьей. Это позволяет повысить эффективность использования тактов процессора.</p></div></details>
+
+<h2 id="проблемы-производительности-и-современные-решения">Проблемы производительности и современные решения</h2>
+<p>Несмотря на универсальность, классическая модель имеет существенный недостаток. Поскольку данные и команды проходят через одну и ту же шину, процессор не может одновременно читать инструкцию и загружать данные. Это создает «бутылочное горлышко», ограничивающее общую производительность системы при высокой нагрузке.</p>
+<p>Инженеры борются с этой проблемой несколькими способами. Один из них — использование <strong>кэш-памяти</strong> (Cache), которая расположена максимально близко к ядрам процессора. Кэш хранит часто используемые данные и команды, позволяя избежать медленного обращения к основной оперативной памяти.</p>
+<p>Другим решением стало введение <strong>многоядерных процессоров</strong>. В таких системах каждое ядро может выполнять свой поток команд независимо, хотя они всё равно делят общую память. Также активно используются технологии предварительной выборки данных и спекулятивного исполнения инструкций. Эти методы позволяют скрыть задержки доступа к памяти.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Оптимизация работы ПК</h4><label class="check-item"><input type="checkbox"><span>Проверить температуру процессора</span></label><label class="check-item"><input type="checkbox"><span>Очистить оперативную память от мусора</span></label><label class="check-item"><input type="checkbox"><span>Обновить драйверы чипсета</span></label><label class="check-item"><input type="checkbox"><span>Установить SSD вместо HDD</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="сравнение-с-гарвардской-архитектурой">Сравнение с Гарвардской архитектурой</h2>
+<p>Существует альтернативная модель, известная как <strong>гарвардская архитектура</strong>. В ней память для данных и память для команд физически разделены, как и шины для их передачи. Это позволяет процессору одновременно считывать инструкцию и данные, что значительно повышает скорость работы в специфических задачах.</p>
+<p>Гарвардская архитектура широко используется в микроконтроллерах и цифровых сигнальных процессорах (DSP), где требуется высокая скорость обработки потоков данных в реальном времени. Например, в устройствах управления двигателями или аудиосистемах. Однако для универсальных компьютеров она менее гибка из-за сложности управления раздельной памятью.</p>
+<p>Современные процессоры часто представляют собой <strong>гибридную модель</strong>. Внутри ядра процессора используется гарвардский принцип (раздельные кэши инструкций и данных), но на уровне работы с оперативной памятью сохраняется принцип фон Неймана (единое адресное пространство). Это позволяет объединить преимущества обеих подходов.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Характеристика</th>
+<th>Архитектура фон Неймана</th>
+<th>Гарвардская архитектура</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Организация памяти</strong></td>
+<td>Единое пространство для кода и данных</td>
+<td>Раздельные пространства для кода и данных</td>
+</tr>
+<tr>
+<td><strong>Количество шин</strong></td>
+<td>Одна общая система шин</td>
+<td>Две независимые шины</td>
+</tr>
+<tr>
+<td><strong>Скорость доступа</strong></td>
+<td>Ограничена пропускной способностью одной шины</td>
+<td>Выше, возможна одновременная выборка</td>
+</tr>
+<tr>
+<td><strong>Гибкость</strong></td>
+<td>Высокая, легкая модификация программ</td>
+<td>Ниже, сложнее изменение кода</td>
+</tr>
+<tr>
+<td><strong>Применение</strong></td>
+<td>Персональные компьютеры, серверы</td>
+<td>Микроконтроллеры, DSP</td>
+</tr>
+</tbody>
+</table></div>
+
+<blockquote>
+<p>⚠️ <strong>Внимание!</strong> При диагностике сбоев в старых компьютерах часто можно встретить ошибку, связанную с переполнением буфера. Это происходит именно из-за того, что в <strong>фон неймановской архитектуре</strong> данные могут случайно перезаписать код программы, если не соблюдаются границы ячеек памяти.</p>
+</blockquote>
+
+<h2 id="влияние-на-современную-разработку-и-безопасность">Влияние на современную разработку и безопасность</h2>
+<p>Понимание архитектуры критически важно для программистов, пишущих низкоуровневый код или работающих с безопасностью. Уязвимости, такие как переполнение буфера, эксплуатируют особенность единой памяти, позволяя злоумышленнику внедрить вредоносный код в область данных.</p>
+<p>Механизмы защиты, такие как <strong>NX-бит</strong> (No-eXecute) или DEP (Data Execution Prevention), были разработаны специально для ограничения возможности выполнения кода из областей памяти, зарезервированных для данных. Это попытка программно исправить ограничения классической модели.</p>
+<p>С развитием технологий виртуализации и облачных вычислений принцип фон Неймана остается актуальным. Однако появляются новые парадигмы, такие как нейрокомпьютеры и квантовые вычисления, которые могут в корне изменить подход к обработке информации в будущем.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>При сборке ПК обратите внимание на каналы памяти: двухканальный режим работы RAM удваивает пропускную способность шины, что частично компенсирует узкое место в архитектуре фон Неймана.</p></aside>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+<details>
+<summary>Почему архитектура фон Неймана до сих пор используется, если у неё есть ограничения?</summary>
+<p>Несмотря на проблему «бутылочного горлышка», эта архитектура обеспечивает невероятную гибкость и универсальность. Возможность легко менять программы, не перестраивая аппаратную часть, является ключевым фактором успеха. Кроме того, современные технологии (кэш, конвейеризация, многопоточность) минимизируют недостатки модели.</p>
+</details>
+<details>
+<summary>В чем главная разница между архитектурой фон Неймана и Гарварда?</summary>
+<p>Главное отличие заключается в организации памяти. В архитектуре фон Неймана код и данные хранятся в одной памяти и используют одну шину. В Гарвардской архитектуре они физически разделены и используют отдельные шины, что позволяет работать с ними параллельно.</p>
+</details>
+<details>
+<summary>Что такое «бутылочное горлышко» фон Неймана?</summary>
+<p>Это ограничение производительности, возникающее из-за того, что процессор не может одновременно читать инструкцию и данные через единую шину. Скорость работы процессора ограничивается пропускной способностью памяти и шины, а не быстродействием самого вычислительного ядра.</p>
+</details>
+<details>
+<summary>Используют ли смартфоны архитектуру фон Неймана?</summary>
+<p>Да, процессоры в смартфонах (например, серии Apple A или Qualcomm Snapdragon) базируются на принципах фон Неймана на уровне системной памяти, хотя внутри ядер часто используется гибридный подход с разделенными кэшами для повышения производительности.</p>
+</details>
+<details>
+<summary>Можно ли полностью исключить проблему переполнения буфера в этой архитектуре?</summary>
+<p>Полностью исключить её сложно, так как это фундаментальное свойство единой адресной памяти. Однако использование современных компиляторов, защитных механизмов ОС (ASLR, DEP) и безопасных языков программирования позволяет свести риск к минимуму.</p>
+</details>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Фон неймановская архитектура — это золотой стандарт вычислительной техники, обеспечивающий баланс между универсальностью и стоимостью, который доминирует в мире уже более 70 лет.</p></aside></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/s/so/sozdat-zagruzochnuyu-fleshku-windows-10-uefi.html" class="pb-related-card">
+                <span class="pb-related-title">Создать загрузочную флешку Windows 10 UEFI: Полная инструкция 2026</span>
+                <span class="pb-related-desc">Пошаговое руководство по созданию установочной флешки Windows 10 для систем UEFI. Ошибки, настройки </span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-v-bezopasnom-rezhime-udalit-programmu.html" class="pb-related-card">
+                <span class="pb-related-title">Как удалить программу в безопасном режиме Windows</span>
+                <span class="pb-related-desc">Пошаговая инструкция удаления неудаляемых программ. Включение безопасного режима, удаление вирусов и</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-izmenit-nomer-kom-porta.html" class="pb-related-card">
+                <span class="pb-related-title">Как изменить номер COM порта в Windows: полная инструкция</span>
+                <span class="pb-related-desc">Пошаговое руководство по смене номера COM порта в Диспетчере устройств. Решение конфликтов адресации</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-nazyvaetsya-knopka-probel-na-klaviature.html" class="pb-related-card">
+                <span class="pb-related-title">Как называется кнопка пробел на клавиатуре: полное описание</span>
+                <span class="pb-related-desc">Узнайте, как правильно называется кнопка пробел, её функции, историю появления и особенности в разны</span>
+            </a><a href="/kompyutery-i-noutbuki/g/gd/gde-lezhit-fajl-hosts-windows-7.html" class="pb-related-card">
+                <span class="pb-related-title">Где лежит файл hosts Windows 7: полный путь и редакция</span>
+                <span class="pb-related-desc">Узнайте точный путь к файлу hosts в Windows 7. Инструкция по открытию через Блокнот, редактор реестр</span>
+            </a><a href="/kompyutery-i-noutbuki/p/po/pochemu-na-kompyutere-otstayut-chasy.html" class="pb-related-card">
+                <span class="pb-related-title">Почему на компьютере отстают часы: 6 причин и способы решения</span>
+                <span class="pb-related-desc">Компьютерные часы отстают? Узнайте основные причины сбоя времени, как заменить батарейку CR2032 и на</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

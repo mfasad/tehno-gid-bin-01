@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как установить Windows через Linux: полная инструкция — Техно Гид</title>
+    <meta name="description" content="Подробное руководство по установке Windows из-под Linux. Использование WoeUSB, dd, QEMU и переход на UEFI. Советы и FAQ.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/k/ka/kak-ustanovit-vindovs-cherez-linuks.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как установить Windows через Linux: полная инструкция">
+    <meta property="og:description" content="Подробное руководство по установке Windows из-под Linux. Использование WoeUSB, dd, QEMU и переход на UEFI. Советы и FAQ.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как установить Windows через Linux: полная инструкция</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-образа-и-выбор-метода-записи">Подготовка образа и выбор метода записи</a></li><li><a href="#использование-утилиты-woeusb-для-создания-загрузочной-флешки">Использование утилиты WoeUSB для создания загрузочной флешки</a></li><li><a href="#прямая-запись-образа-через-терминал-команда-dd">Прямая запись образа через терминал (команда dd)</a></li><li><a href="#установка-windows-в-виртуальную-машину-из-под-linux">Установка Windows в виртуальную машину из-под Linux</a></li><li><a href="#особенности-установки-на-системы-с-uefi-и-secure-boot">Особенности установки на системы с UEFI и Secure Boot</a></li><li><a href="#решение-распространенных-проблем-и-ошибок">Решение распространенных проблем и ошибок</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/s/sa/samye-luchshie-komplektuyushchie-dlya-pk.html">Топ комплектующих для ПК: лучшие видеокарты, процессоры и сборка 2026</a></li><li><a href="/kompyutery-i-noutbuki/v/vn/vneshnij-zhestkij-disk-2-tb-rejting.html">Внешний жесткий диск 2 ТБ: рейтинг лучших моделей 2026-2026</a></li><li><a href="/kompyutery-i-noutbuki/k/ka/kak-podklyuchit-internet-k-kompyuteru-cherez-vaj-faj-adapter.html">Как подключить интернет к ПК через Wi-Fi адаптер: Полное руководство</a></li><li><a href="/kompyutery-i-noutbuki/z/za/zapusk-etogo-ustrojstva-nevozmozhen-kod-10-bluetooth.html">Код ошибки 10 Bluetooth: Полное руководство по исправлению</a></li><li><a href="/kompyutery-i-noutbuki/s/sa/sapphire-rx-570-8gb-bios.html">Sapphire RX 570 8GB BIOS: Обновление, даунгрейд и Dual BIOS</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Установка Windows через Linux: пошаговое руководство</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-образа-и-выбор-метода-записи">Подготовка образа и выбор метода записи</a></li><li><a href="#использование-утилиты-woeusb-для-создания-загрузочной-флешки">Использование утилиты WoeUSB для создания загрузочной флешки</a></li><li><a href="#прямая-запись-образа-через-терминал-команда-dd">Прямая запись образа через терминал (команда dd)</a></li><li><a href="#установка-windows-в-виртуальную-машину-из-под-linux">Установка Windows в виртуальную машину из-под Linux</a></li><li><a href="#особенности-установки-на-системы-с-uefi-и-secure-boot">Особенности установки на системы с UEFI и Secure Boot</a></li><li><a href="#решение-распространенных-проблем-и-ошибок">Решение распространенных проблем и ошибок</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Попытка записать загрузочную флешку из-под Linux часто завершается ошибкой при создании носителя стандартными утилитами или невозможностью запустить установщик без доступа к другой машине с Windows. Эта проблема возникает при срочной необходимости переустановить систему на сломанном диске, когда под рукой есть только рабочий компьютер на базе Linux, а использование платного софта или поиск второго ПК попросту невозможны.</p>
+
+<p>Современные дистрибутивы Linux предоставляют все необходимые инструменты для записи образа <code>.iso</code> на USB-накопитель или создания виртуальной машины. Процесс может варьироваться от простого копирования файлов до использования специализированного софта вроде <em>WoeUSB</em>. Главное — понимать различия в методах загрузки <strong>BIOS</strong> и <strong>UEFI</strong>, так как от этого напрямую зависит успех операции.</p>
+
+<p>В данной статье мы разберем несколько проверенных способов, как подготовить загрузочную флешку или настроить окружение для инсталляции. Мы рассмотрим как графические интерфейсы для новичков, так и методы командной строки для продвинутых пользователей. Важно следовать инструкциям внимательно, чтобы избежать потери данных на целевом носителе.</p>
+
+<h2 id="подготовка-образа-и-выбор-метода-записи">Подготовка образа и выбор метода записи</h2>
+
+<p>Первым шагом является загрузка официального образа <em>Windows 10</em> или <em>Windows 11</em> с сайта Microsoft. Файл должен иметь расширение <code>.iso</code>. Не рекомендуется использовать сборку сторонних авторов, так как они могут содержать ошибки или вредоносное ПО, которое затруднит процесс установки. После загрузки необходимо проверить контрольную сумму файла, чтобы убедиться в его целостности.</p>
+
+<p>Далее следует выбрать подходящий метод записи. Существует три основных подхода: использование утилиты <strong>WoeUSB</strong>, прямая запись через команду <code>dd</code> (работает не для всех версий Windows) и создание виртуальной машины через <em>QEMU</em> или <em>VirtualBox</em>. Выбор зависит от того, устанавливаете ли вы систему на физическое железо или в виртуальное окружение.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Процесс записи образа полностью уничтожит все данные на выбранной USB-флешке. Обязательно сохраните важные файлы на другой носитель перед началом работы.</p>
+</blockquote>
+
+<p>Для физической установки на новый компьютер критически важно учесть тип прошивки материнской платы. Если ваш компьютер современный (выпущен после 2012 года), он, скорее всего, использует <strong>UEFI</strong>. В этом случае структура файловой системы на флешке должна быть <code>FAT32</code>, что накладывает ограничения на размер файлов внутри образа.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если образ Windows весит более 4 ГБ, файл install.wim необходимо разбить на части, так как файловая система FAT32 не поддерживает файлы такого размера.</p></aside>
+
+<h2 id="использование-утилиты-woeusb-для-создания-загрузочной-флешки">Использование утилиты WoeUSB для создания загрузочной флешки</h2>
+
+<p>Наиболее надежным способом создания загрузочного носителя для Windows в среде Linux является использование программы <em>WoeUSB</em>. Это специализированный инструмент, который корректно обрабатывает структуру файлов Windows, в отличие от стандартных утилит для записи Linux-образов. Утилита доступна в репозиториях многих дистрибутивов или может быть собрана из исходного кода.</p>
+
+<p>После установки приложения запустите его с правами суперпользователя. В интерфейсе вам потребуется указать путь к скачанному <code>.iso</code> образу в поле "Windows image file". Во втором поле "Target device" выберите вашу USB-флешку. Будьте предельно внимательны при выборе устройства, чтобы не затереть данные на жестком диске.</p>
+
+<p>В настройках выберите файловую систему. Для современных компьютеров с <strong>UEFI</strong> рекомендуется выбирать <code>FAT32</code>. Если вы планируете установку на старое оборудование с <strong>Legacy BIOS</strong>, можно использовать <code>NTFS</code>, но это встречается все реже. Нажмите кнопку "Install" и дождитесь завершения процесса прогресс-бара.</p>
+
+<ul>
+<li>✅ Скачайте последнюю версию WoeUSB с официальной страницы проекта на GitHub.</li>
+<li>✅ Убедитесь, что флешка отмонтирована перед запуском записи.</li>
+<li>✅ Выберите правильную схему разделов (MBR для BIOS, GPT для UEFI).</li>
+</ul>
+
+<p>По завершении записи утилита автоматически отмонтирует накопитель. Теперь флешка готова к использованию. Вы можете извлечь её и вставить в компьютер, на который планируется установка системы.</p>
+
+<div class="pb-poll" id="poll-6230349d"><div class="pb-poll-question">📊 Какой дистрибутив Linux вы используете чаще всего?</div><div class="pb-poll-option" data-poll="6230349d" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Ubuntu</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6230349d" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Fedora</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6230349d" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Arch Linux</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6230349d" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Linux Mint</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6230349d" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Debian</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="прямая-запись-образа-через-терминал-команда-dd">Прямая запись образа через терминал (команда dd)</h2>
+
+<p>Для опытных пользователей существует метод записи образа напрямую побитово с помощью утилиты <code>dd</code>. Этот способ чрезвычайно быстр и не требует установки дополнительного ПО, но он имеет серьезный недостаток: не все образы Windows корректно загружаются после такой записи, особенно на системах с UEFI.</p>
+
+<p>Чтобы выполнить запись, откройте терминал и введите команду, указав путь к образу и устройство флешки. Команда выглядит следующим образом:</p>
+
+<pre><code>sudo dd if=/path/to/windows.iso of=/dev/sdX bs=4M status=progress</code></pre>
+
+<p>Здесь <code>if</code> обозначает входной файл (образ), а <code>of</code> — выходное устройство (ваша флешка, например, <code>/dev/sdb</code>). Параметр <code>bs=4M</code> задает размер блока для ускорения процесса, а <code>status=progress</code> показывает ход выполнения. После завершения обязательно выполните команду <code>sync</code>, чтобы сбросить кэш на диск.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Ошибка в одной букве при указании устройства (например, /dev/sda вместо /dev/sdb) приведет к полному уничтожению данных на вашем основном жестком диске. Перепроверьте имя устройства трижды!</p>
+</blockquote>
+
+<p>Если после записи флешка не загружается, попробуйте переключить режим в BIOS с UEFI на Legacy (CSM) или используйте метод с WoeUSB. Команда <code>dd</code> создает точную копию образа, поэтому если сам ISO не содержит загрузочных записей для конкретного режима, загрузка не произойдет.</p>
+
+<h2 id="установка-windows-в-виртуальную-машину-из-под-linux">Установка Windows в виртуальную машину из-под Linux</h2>
+
+<p>Часто пользователям нужна Windows не для замены основной системы, а для запуска специфических программ или игр. В таком случае идеальным решением является установка системы в виртуальную машину. В Linux наиболее производительным решением является связка <em>QEMU</em> и <em>KVM</em>, хотя <em>VirtualBox</em> и <em>VMware Workstation</em> также остаются популярными вариантами.</p>
+
+<p>Для начала установки в <em>VirtualBox</em> создайте новую виртуальную машину, выделите ей оперативную память (минимум 4 ГБ для Windows 10/11) и создайте виртуальный жесткий диск. В настройках носителей укажите скачанный <code>.iso</code> образ Windows как оптический диск. Запустите машину и следуйте стандартному мастеру установки.</p>
+
+<p>При использовании <strong>QEMU/KVM</strong> производительность будет близка к нативной благодаря аппаратной виртуализации. Однако настройка требует больше шагов в терминале или через графическую оболочку <em>Virt-Manager</em>. Важно включить поддержку виртуализации в BIOS вашего хост-компьютера перед началом работы.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>VirtualBox</th>
+<th>QEMU / KVM</th>
+<th>VMware Workstation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Лицензия</td>
+<td>GPL (Open Source)</td>
+<td>GPL (Open Source)</td>
+<td>Проприетарная</td>
+</tr>
+<tr>
+<td>Производительность</td>
+<td>Средняя</td>
+<td>Высокая (Native)</td>
+<td>Высокая</td>
+</tr>
+<tr>
+<td>Сложность настройки</td>
+<td>Низкая</td>
+<td>Высокая</td>
+<td>Средняя</td>
+</tr>
+<tr>
+<td>Поддержка 3D</td>
+<td>Ограниченная</td>
+<td>Требует настройки</td>
+<td>Отличная</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Выбор конкретного решения зависит от ваших задач. Для офисной работы и тестирования ПО подойдет <em>VirtualBox</em>. Для игр или тяжелых приложений лучше настроить <em>KVM</em> с пробросом видеокарты (GPU Passthrough), хотя это требует глубоких знаний системы.</p>
+
+<details class="pb-accordion"><summary>Что такое GPU Passthrough?</summary><div class="pb-accordion-body"><p>Это технология, позволяющая передать физическую видеокарту напрямую в виртуальную машину. Это дает производительность в играх почти равную нативной, но требует двух видеокарт или сложной настройки IOMMU.</p></div></details>
+
+<h2 id="особенности-установки-на-системы-с-uefi-и-secure-boot">Особенности установки на системы с UEFI и Secure Boot</h2>
+
+<p>Современные компьютеры используют интерфейс <strong>UEFI</strong> вместо устаревшего BIOS. Одной из функций UEFI является <em>Secure Boot</em> — механизм проверки цифровой подписи загрузчика. Стандартный загрузчик Windows имеетvalid подпись, но при записи образа через некоторые инструменты в Linux подпись может быть нарушена или потеряна.</p>
+
+<p>Если при попытке загрузки с флешки вы видите сообщение об ошибке безопасности или черный экран, зайдите в настройки BIOS/UEFI. Найдите раздел <code>Security</code> или <code>Boot</code> и временно отключите опцию <strong>Secure Boot</strong>. После успешной установки Windows вы сможете включить её обратно, так как установщик зарегистрирует свои ключи.</p>
+
+<p>Также важно проверить порядок загрузки (Boot Order). Убедитесь, что ваша USB-флешка стоит на первом месте в списке приоритета. На некоторых ноутбуках для вызова меню быстрой загрузки нужно нажимать клавишу <code>F12</code>, <code>F9</code> или <code>Esc</code> сразу после включения питания.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Интерфейс BIOS/UEFI отличается у разных производителей (ASUS, MSI, Gigabyte, Dell). Расположение настроек может меняться. Если вы не уверены в действиях, сфотографируйте экран настроек перед изменением параметров.</p>
+</blockquote>
+
+<p>Для дисков с разметкой <strong>GPT</strong>, которая обязательна для UEFI, установщик Windows создаст скрытый раздел EFI. Не удаляйте его вручную в процессе установки, иначе система не загрузится. Linux-установщики часто предлагают автоматическую разметку, но при установке Windows лучше доверить этот процесс её родному установщику.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Отключение Secure Boot — временная мера, необходимая только для запуска сторонних загрузчиков или установки ОС. После установки Windows его можно и нужно включить обратно для безопасности.</p></aside>
+
+<h2 id="решение-распространенных-проблем-и-ошибок">Решение распространенных проблем и ошибок</h2>
+
+<p>В процессе установки могут возникнуть ошибки, связанные с драйверами или файловой системой. Одна из самых частых проблем — сообщение "Не найдены необходимые драйверы для носителя" при выборе диска для установки. Это часто случается на новых ноутбуках с контроллерами Intel VMD/RST.</p>
+
+<p>Для решения этой проблемы необходимо зайти в BIOS и переключить режим работы SATA контроллера из <code>RAID</code> или <code>RST</code> в режим <code>AHCI</code>. Это позволит стандартному установщику Windows увидеть жесткий диск без необходимости подгружать дополнительные драйверы с флешки.</p>
+
+<p>Еще одной проблемой может быть невозможность создать разделы на диске. Если диск ранее использовался в Linux или имел нестандартную разметку, установщик может ругаться на стиль разделов. В этом случае можно запустить командную строку прямо в окне установщика (Shift+F10) и очистить диск утилитой <code>diskpart</code>.</p>
+
+<ul>
+<li>⚙️ Ошибка "Windows cannot be installed to this disk": Конвертируйте диск в GPT через diskpart или переключите BIOS в режим Legacy.</li>
+<li>⚙️ Отсутствует сеть после установки: Заранее скачайте драйверы для сетевой карты на другом устройстве.</li>
+<li>⚙️ Синий экран смерти (BSOD) при загрузке: Проверьте целостность RAM и отключите разгон процессора.</li>
+</ul>
+
+<p>Если вы устанавливаете Windows рядом с Linux (Dual Boot), помните, что установщик Windows может перезаписать загрузчик <em>GRUB</em>. Вам придется восстановить его с помощью LiveUSB с Linux после завершения установки Windows.</p>
+
+<details>
+<summary>Как восстановить GRUB после установки Windows?</summary>
+<p>Загрузитесь с LiveUSB вашего дистрибутива Linux. Откройте терминал и смонтируйте корневой раздел вашей системы. Затем выполните команду <code>grub-install</code> и <code>update-grub</code>, указав правильное устройство. Это вернет меню выбора ОС при загрузке.</p>
+</details>
+
+<details>
+<summary>Можно ли установить Windows 11 без TPM 2.0 через Linux?</summary>
+<p>Да, это возможно. При использовании WoeUSB или создании виртуальной машины можно модифицировать реестр или образ ISO, чтобы обойти проверку TPM и Secure Boot. Однако это не рекомендуется для основной системы из-за потенциальных проблем с обновлениями.</p>
+</details>
+
+<details>
+<summary>Какой размер флешки нужен для Windows 10/11?</summary>
+<p>Минимальный рекомендуемый объем — 8 ГБ. Однако, учитывая рост размеров обновлений и файлов подкачки, лучше использовать накопитель на 16 ГБ или 32 ГБ, чтобы избежать проблем с местом при копировании временных файлов.</p>
+</details>
+
+<details>
+<summary>Работает ли WoeUSB на ARM-процессорах (Raspberry Pi)?</summary>
+<p>Классическая версия WoeUSB предназначена для архитектуры x86_64. На ARM-устройствах (например, Raspberry Pi) прямая установка Windows для ПК невозможна из-за различий в архитектуре процессора. Можно лишь запустить эмуляцию, которая будет работать крайне медленно.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/s/sa/samye-luchshie-komplektuyushchie-dlya-pk.html" class="pb-related-card">
+                <span class="pb-related-title">Топ комплектующих для ПК: лучшие видеокарты, процессоры и сборка 2026</span>
+                <span class="pb-related-desc">Экспертный обзор лучших комплектующих для сборки мощного ПК. Рейтинг видеокарт, процессоров, материн</span>
+            </a><a href="/kompyutery-i-noutbuki/v/vn/vneshnij-zhestkij-disk-2-tb-rejting.html" class="pb-related-card">
+                <span class="pb-related-title">Внешний жесткий диск 2 ТБ: рейтинг лучших моделей 2026-2026</span>
+                <span class="pb-related-desc">Честный рейтинг внешних HDD на 2 ТБ. Сравнение скоростей, надежности и цен. Выберите лучший накопите</span>
+            </a><a href="/kompyutery-i-noutbuki/k/ka/kak-podklyuchit-internet-k-kompyuteru-cherez-vaj-faj-adapter.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить интернет к ПК через Wi-Fi адаптер: Полное руководство</span>
+                <span class="pb-related-desc">Пошаговая инструкция по выбору и установке USB или PCIe Wi-Fi адаптера. Настройка драйверов, устране</span>
+            </a><a href="/kompyutery-i-noutbuki/z/za/zapusk-etogo-ustrojstva-nevozmozhen-kod-10-bluetooth.html" class="pb-related-card">
+                <span class="pb-related-title">Код ошибки 10 Bluetooth: Полное руководство по исправлению</span>
+                <span class="pb-related-desc">Узнайте, как устранить ошибку «Запуск этого устройства невозможен (код 10)». Пошаговые инструкции, д</span>
+            </a><a href="/kompyutery-i-noutbuki/s/sa/sapphire-rx-570-8gb-bios.html" class="pb-related-card">
+                <span class="pb-related-title">Sapphire RX 570 8GB BIOS: Обновление, даунгрейд и Dual BIOS</span>
+                <span class="pb-related-desc">Полное руководство по прошивке Sapphire RX 570 8GB. Исправление черного экрана, настройка таймингов </span>
+            </a><a href="/kompyutery-i-noutbuki/v/vn/vneshnij-zhestkij-disk-dlya-filmov.html" class="pb-related-card">
+                <span class="pb-related-title">Внешний жесткий диск для фильмов: выбор объема, скорости и типа</span>
+                <span class="pb-related-desc">Как выбрать внешний HDD для коллекций 4K и Full HD. Сравнение скоростей, объемов и надежности. Совет</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Настройка торрента в LAMP: установка и конфигурация Transmission — Техно Гид</title>
+    <meta name="description" content="Пошаговая инструкция по настройке торрент-клиента Transmission на сервере LAMP. Установка пакетов, настройка доступа, прав и безопасности. Руководство для Linux-администраторов.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/n/na/nastrojka-torrenta-v-lampe.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Настройка торрента в LAMP: установка и конфигурация Transmission">
+    <meta property="og:description" content="Пошаговая инструкция по настройке торрент-клиента Transmission на сервере LAMP. Установка пакетов, настройка доступа, прав и безопасности. Руководство для Linux-администраторов.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Настройка торрента в LAMP: установка и конфигурация Transmission</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-задачи-организации-загрузки-на-сервере">Введение в задачи организации загрузки на сервере</a></li><li><a href="#выбор-программного-обеспечения-и-подготовка-окружения">Выбор программного обеспечения и подготовка окружения</a></li><li><a href="#процесс-установки-и-базовая-конфигурация">Процесс установки и базовая конфигурация</a></li><li><a href="#интеграция-с-веб-сервером-и-настройка-доступа">Интеграция с веб-сервером и настройка доступа</a></li><li><a href="#управление-правами-доступа-и-безопасностью-файлов">Управление правами доступа и безопасностью файлов</a></li><li><a href="#оптимизация-производительности-и-сетевых-настроек">Оптимизация производительности и сетевых настроек</a></li><li><a href="#устранение-распространенных-ошибок">Устранение распространенных ошибок</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/u/ud/udlinitel-dlya-antenny-gsm.html">Удлинитель для антенны GSM: выбор кабеля, монтаж и усиление сигнала</a></li><li><a href="/set-i-internet/u/us/usilitel-signala-sotovoj-svyazi-dlya-routera.html">Усилитель сигнала сотовой связи для роутера: выбор, установка и настройка</a></li><li><a href="/set-i-internet/s/so/soedinenie-routerov-mezhdu-soboj-kabelem.html">Как соединить два роутера кабелем: схемы, настройка и плюсы метода</a></li><li><a href="/set-i-internet/p/po/pochemu-ne-razdaetsya-internet-mts.html">Почему не раздается интернет от МТС: причины и способы решения</a></li><li><a href="/set-i-internet/k/ka/kak-ispolzovat-vtoroj-router-dlya-usileniya-signala-wifi-bez-kabelya.html">Как усилить сигнал WiFi вторым роутером без кабеля</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Полное руководство по настройке торрент-клиента в стеке LAMP</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-задачи-организации-загрузки-на-сервере">Введение в задачи организации загрузки на сервере</a></li><li><a href="#выбор-программного-обеспечения-и-подготовка-окружения">Выбор программного обеспечения и подготовка окружения</a></li><li><a href="#процесс-установки-и-базовая-конфигурация">Процесс установки и базовая конфигурация</a></li><li><a href="#интеграция-с-веб-сервером-и-настройка-доступа">Интеграция с веб-сервером и настройка доступа</a></li><li><a href="#управление-правами-доступа-и-безопасностью-файлов">Управление правами доступа и безопасностью файлов</a></li><li><a href="#оптимизация-производительности-и-сетевых-настроек">Оптимизация производительности и сетевых настроек</a></li><li><a href="#устранение-распространенных-ошибок">Устранение распространенных ошибок</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-задачи-организации-загрузки-на-сервере">Введение в задачи организации загрузки на сервере</h2>
+
+<p>Создание собственного файлового хранилища или медиасервера часто требует автоматизации загрузки контента. В стеке <strong>LAMP</strong> (Linux, Apache, MySQL, PHP) для этих целей идеально подходит установка специализированного программного обеспечения, позволяющего управлять загрузками через веб-интерфейс. Это решение особенно актуально для владельцев <em>RAID-массивов</em> или NAS-устройств, где важна централизация управления.</p>
+
+<p>Многие администраторы ошибочно полагают, что <em>торрент-клиент</em> должен быть установлен только на десктопный компьютер. Однако перенос этой функции на сервер позволяет разгрузить локальные машины и организовать круглосуточный процесс скачивания. Главное требование здесь — правильный выбор программного обеспечения, способного интегрироваться с <strong>веб-сервером</strong>.</p>
+
+<p>В данной статье мы рассмотрим процесс установки и тонкой настройки <strong>Transmission</strong>, который является стандартом де-факто для подобных задач в среде Linux. Мы затронем вопросы прав доступа, безопасности и оптимизации скорости загрузки, чтобы ваш сервер работал стабильно и эффективно.</p>
+
+<h2 id="выбор-программного-обеспечения-и-подготовка-окружения">Выбор программного обеспечения и подготовка окружения</h2>
+
+<p>Для работы в среде LAMP наиболее подходящим решением является <em>Transmission-daemon</em>. Это легковесный клиент, который не требует графической оболочки и управляется исключительно через веб-интерфейс или RPC. В отличие от других решений, он потребляет минимальное количество ресурсов процессора и оперативной памяти, что критично для <strong>виртуальных машин</strong> с ограниченными мощностями.</p>
+
+<p>Прежде чем приступать к установке, необходимо убедиться, что у вас есть доступ к терминалу с правами суперпользователя и установлены базовые инструменты для работы с <strong>пакетным менеджером</strong>. Важно проверить версию операционной системы, так как команды установки могут отличаться в зависимости от дистрибутива (Debian, Ubuntu, CentOS).</p>
+
+<p>Если вы планируете использовать сервер также как веб-сервер для других задач, убедитесь, что порты, необходимые для работы Torрент-клиента, не конфликтуют с портами <strong>Apache</strong> или <em>Nginx</em>. Обычно Transmission использует порт 9091 для веб-интерфейса и диапазон портов для входящих соединений, которые нужно будет открыть в <strong>брандмауэре</strong>.</p>
+
+<blockquote>⚠️ Внимание: Перед началом установки убедитесь, что вы не конфликтуете с существующими сервисами на порту 9091. Если этот порт уже занят другим приложением, вам потребуется изменить конфигурацию до начала запуска службы.</blockquote>
+
+<div class="pb-poll" id="poll-840b709b"><div class="pb-poll-question">📊 Какой дистрибутив Linux вы используете?</div><div class="pb-poll-option" data-poll="840b709b" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Ubuntu/Debian</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="840b709b" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">CentOS/RHEL</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="840b709b" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Arch Linux</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="840b709b" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Другой</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="процесс-установки-и-базовая-конфигурация">Процесс установки и базовая конфигурация</h2>
+
+<p>Установка пакета на дистрибутивы семейства Debian/Ubuntu выполняется одной командой в терминале. После ввода команды система предложит подтвердить загрузку зависимостей. Не прерывайте процесс, иначе пакет будет установлен некорректно.</p>
+
+<pre><code>sudo apt-get update && sudo apt-get install transmission-daemon</code></pre>
+
+<p>После установки служба запустится автоматически. Однако, чтобы изменить настройки, необходимо остановить службу перед редактированием файла конфигурации. Иначе при перезапуске изменения будут перезаписаны по умолчанию. Это стандартное поведение многих системных демонов в Linux.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к настройке</h4><label class="check-item"><input type="checkbox"><span>Остановить службу</span></label><label class="check-item"><input type="checkbox"><span>Открыть файл конфигурации</span></label><label class="check-item"><input type="checkbox"><span>Изменить настройки</span></label><label class="check-item"><input type="checkbox"><span>Запустить службу заново</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>Основной файл настроек находится по пути <code>/etc/transmission-daemon/settings.json</code>. В этом файле хранятся параметры портов, пути к загрузкам и данные для авторизации. Вам нужно найти секцию, отвечающую за <strong>аутентификацию</strong>, и изменить логин и пароль на свои собственные. Используйте достаточно сложные пароли, чтобы избежать несанкционированного доступа к вашему серверу.</p>
+
+<p>Также необходимо указать путь к папке, куда будут сохраняться скачанные файлы. Если вы используете <em>разделенный диск</em> для хранения данных, укажите путь именно к этому разделу. Убедитесь, что пользователь, под которым работает демонт, имеет права на запись в эту директорию. Иначе процесс загрузки будет постоянно прерываться с ошибкой доступа.</p>
+
+<p>Важным аспектом является настройка <strong>скорости загрузки</strong> и раздачи. По умолчанию Transmission может использовать весь доступный канал, что негативно скажется на работе веб-сервера и других сервисов. Установите лимиты скорости именно под вашу пропускную способность интернет-канала.</p>
+
+<details class="pb-accordion"><summary>Как проверить права доступа к папке?</summary><div class="pb-accordion-body"><p>Используйте команду ls -ld /путь/к/папке. Вывод покажет владельца и права. Если пользователь не совпадает с www-data или transmission, используйте chown для смены владельца или chmod для изменения прав.</p></div></details>
+
+<blockquote>⚠️ Внимание: Если вы используете <code>systemd</code> для управления службами, изменение файла конфигурации требует перезапуска сервиса командой <code>sudo systemctl restart transmission-daemon</code>. Без перезапуска изменения не вступят в силу.</blockquote>
+
+<h2 id="интеграция-с-веб-сервером-и-настройка-доступа">Интеграция с веб-сервером и настройка доступа</h2>
+
+<p>После настройки базовых параметров Transmission, доступ к интерфейсу происходит напрямую на порт 9091. Однако, более правильным решением в стеке LAMP является интеграция через <strong>Apache</strong> или <em>Lighttpd</em> с использованием прокси. Это позволяет использовать единый домен и SSL-сертификат для доступа к сервису.</p>
+
+<p>Для настройки прокси в Apache необходимо включить модули <code>proxy</code> и <code>proxy_http</code>. Затем в конфигурационном файле виртуального хоста создайте правило перенаправления запросов с корня сайта или подпапки на локальный порт клиента. Это скроет реальный порт и добавит слой защиты от сканеров портов.</p>
+
+<p>Если вы решите открыть доступ извне, обязательно используйте <strong>VPN</strong> или настройте <em>Firewall</em> для ограничения доступа по IP-адресам. Прямое открытие портов торрент-клиента в интернет без защиты может привлечь внимание правообладателей и привести к блокировке вашего IP провайдером.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+    <tr>
+        <th>Параметр</th>
+        <th>Рекомендуемое значение</th>
+        <th>Описание</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>rpc-bind-address</td>
+        <td>0.0.0.0</td>
+        <td>Доступ из локальной сети</td>
+    </tr>
+    <tr>
+        <td>rpc-username</td>
+        <td>admin</td>
+        <td>Имя пользователя для входа</td>
+    </tr>
+    <tr>
+        <td>rpc-password</td>
+        <td>Сложный пароль</td>
+        <td>Пароль для авторизации</td>
+    </tr>
+    <tr>
+        <td>download-dir</td>
+        <td>/var/transmission/downloads</td>
+        <td>Папка для готовых файлов</td>
+    </tr>
+    <tr>
+        <td>incomplete-dir</td>
+        <td>/var/transmission/incomplete</td>
+        <td>Папка для незавершенных загрузок</td>
+    </tr>
+</tbody>
+</table></div>
+
+<blockquote>⚠️ Внимание: Обратите внимание на настройки <code>rpc-whitelist-enabled</code>. Если вы подключаетесь через прокси Apache, этот параметр может блокировать подключение. Рекомендуется установить его в значение <code>false</code> при использовании прокси, либо добавить IP-адрес прокси в whitelist.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для упрощения доступа к логам используйте команду journalctl -u transmission-daemon -f в отдельном терминале. Это позволит отслеживать ошибки в реальном времени при настройке подключения.</p></aside>
+
+<h2 id="управление-правами-доступа-и-безопасностью-файлов">Управление правами доступа и безопасностью файлов</h2>
+
+<p>Одна из самых частых проблем при настройке <strong>торрент-клиента</strong> — невозможность управлять файлами после их скачивания. Это происходит из-за того, что файлы создаются пользователем <em>transmission</em>, а веб-сервер или другая программа работают от имени <code>www-data</code> или <code>apache</code>. Решением является настройка <strong>прав доступа</strong> к директориям.</p>
+
+<p>Рекомендуется создать отдельную группу, в которую будут входить и пользователь демона, и пользователь веб-сервера. Затем назначьте эту группу владельцем папок для загрузок. Используйте команду <code>chown</code> для изменения владельца и <code>chmod</code> для настройки прав на чтение и запись. Это обеспечит корректную работу <em>скриптов обработки</em> файлов после завершения загрузки.</p>
+
+<p>Не забывайте о настройке <strong>umask</strong> в конфигурационном файле. Параметр <code>umask</code> определяет, какие права будут у создаваемых файлов по умолчанию. Значение <code>002</code> или <code>0002</code> обычно подходит для группового доступа, позволяя другим пользователям группы изменять файлы, но запрещая доступ посторонним.</p>
+
+<p>Если вы используете <em>автоматизацию</em> для сортировки файлов (например, перемещение фильмов в папку медиатеки), убедитесь, что скрипты выполняются с достаточными привилегиями. Часто для этих целей используют <strong>PostTorrentScripts</strong>, которые запускаются после завершения загрузки. Скрипт должен иметь права на перемещение файлов между папками.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильная настройка прав доступа и umask предотвращает конфликты между процессом загрузки и последующей обработкой файлов другими сервисами системы.</p></aside>
+
+<h2 id="оптимизация-производительности-и-сетевых-настроек">Оптимизация производительности и сетевых настроек</h2>
+
+<p>Для стабильной работы на сервере с ограниченной пропускной способностью необходимо настроить лимиты соединений. По умолчанию Transmission стремится к максимальному количеству пинов, что может привести к переполнению таблицы соединений в ядре Linux. Уменьшите параметр <strong>global-speed-limit</strong> и лимиты на количество соединений в настройках.</p>
+
+<p>Также важно настроить <em>буферизацию</em> записи на диск. Если вы используете <strong>быстрые SSD</strong> накопители, можно увеличить размер буфера, чтобы снизить количество операций записи. На медленных HDD, наоборот, стоит ограничить скорость, чтобы диск не перегружался и не тормозил другие процессы.</p>
+
+<p>Проверьте настройки <strong>DHT</strong>, <em>PEX</em> и <strong>LSD</strong>. В некоторых корпоративных сетях или при использовании определенных провайдеров эти функции могут конфликтовать с фаерволом или снижать производительность. Попробуйте отключить их, если наблюдаете нестабильность в работе клиента.</p>
+
+<p>Для продвинутых пользователей доступна настройка <strong>привязки к интерфейсу</strong>. Если у вас несколько сетевых карт (например, одна для LAN, другая для WAN), можно принудительно указать клиенту использовать только конкретный интерфейс. Это повышает безопасность и исключает утечку трафика через неверный шлюз.</p>
+
+<h2 id="устранение-распространенных-ошибок">Устранение распространенных ошибок</h2>
+
+<p>Частой проблемой является невозможность добавления торрента через веб-интерфейс, несмотря на правильные настройки. В этом случае проверьте <strong>логи</strong> демона. Ошибки часто связаны с неверным форматом файла или отсутствием прав на запись в временную папку.</p>
+
+<p>Если веб-интерфейс не открывается, проверьте, запущен ли процесс демона. Используйте команду <code>systemctl status transmission-daemon</code>. Если служба не активна, посмотрите логи ошибок. Часто проблема кроется в неправильном <strong>пароле</strong> или конфликте портов.</p>
+
+<p>При работе с большими файлами может возникать ошибка "No space left on device", даже если место на диске есть. Это может быть связано с лимитами <strong>inode</strong> или правами доступа к файловой системе. Проверьте, не исчерпаны ли дескрипторы файлов в системе.</p>
+
+<p>Иногда после обновления системы настройки сбрасываются. Рекомендуется делать резервные копии файла <code>settings.json</code> перед обновлением пакетов. Это позволит быстро восстановить работоспособность сервиса, просто загрузив сохраненную конфигурацию.</p>
+
+<blockquote>⚠️ Внимание: Если вы не можете подключиться к RPC-интерфейсу, проверьте, не блокирует ли локальный фаервол порт 9091. Команда <code>sudo ufw allow 9091/tcp</code> может решить проблему, если фаервол активен.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Регулярно очищайте папку "Incomplete", если загрузка прервалась. Зависшие семпл-файлы могут занимать место и мешать новой загрузке того же файла.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы">Часто задаваемые вопросы</h2>
+
+<details>
+    <summary>Можно ли использовать Transmission без веб-интерфейса?</summary>
+    <p>Да, Transmission имеет консольный интерфейс <code>transmission-remote</code>, который позволяет управлять загрузками через командную строку. Это удобно для написания скриптов и автоматизации процессов без необходимости запуска веб-сервера.</p>
+</details>
+
+<details>
+    <summary>Как изменить порт веб-интерфейса?</summary>
+    <p>Это делается в файле <code>/etc/transmission-daemon/settings.json</code>. Найдите параметр <code>rpc-port</code> и измените его значение. После изменения не забудьте перезапустить службу.</p>
+</details>
+
+<details>
+    <summary>Почему торренты не раздают файлы?</summary>
+    <p>Возможные причины: закрытые порты на маршрутизаторе, отсутствие <strong>проброса портов</strong> (Port Forwarding), или блокировка со стороны провайдера. Также проверьте, не установлен ли лимит скорости отдачи в настройках клиента.</p>
+</details>
+
+<details>
+    <summary>Как настроить автоскачивание с RSS-каналов?</summary>
+    <p>В настройках Transmission включите функцию RSS-фильтров. Укажите ссылки на RSS-каналы и задайте правила (маски) для автоматического добавления и начала скачивания файлов, соответствующих этим правилам.</p>
+</details>
+
+<details>
+    <summary>Можно ли использовать Transmission на Windows через LAMP?</summary>
+    <p>Технически LAMP на Windows работает не так стабильно, как на Linux. Для Windows лучше использовать нативный клиент или WSL (Windows Subsystem for Linux), где можно запустить полноценный Linux-окружение с Transmission.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/u/ud/udlinitel-dlya-antenny-gsm.html" class="pb-related-card">
+                <span class="pb-related-title">Удлинитель для антенны GSM: выбор кабеля, монтаж и усиление сигнала</span>
+                <span class="pb-related-desc">Как правильно выбрать и подключить удлинитель для GSM-антенны. Обзор типов кабелей, расчет потерь си</span>
+            </a><a href="/set-i-internet/u/us/usilitel-signala-sotovoj-svyazi-dlya-routera.html" class="pb-related-card">
+                <span class="pb-related-title">Усилитель сигнала сотовой связи для роутера: выбор, установка и настройка</span>
+                <span class="pb-related-desc">Как подключить репитер к роутеру для усиления интернета. Обзор технологий, частотные диапазоны, схем</span>
+            </a><a href="/set-i-internet/s/so/soedinenie-routerov-mezhdu-soboj-kabelem.html" class="pb-related-card">
+                <span class="pb-related-title">Как соединить два роутера кабелем: схемы, настройка и плюсы метода</span>
+                <span class="pb-related-desc">Полное руководство по соединению роутеров между собой через Ethernet. Узнайте про режим репитера, WD</span>
+            </a><a href="/set-i-internet/p/po/pochemu-ne-razdaetsya-internet-mts.html" class="pb-related-card">
+                <span class="pb-related-title">Почему не раздается интернет от МТС: причины и способы решения</span>
+                <span class="pb-related-desc">Интернет от МТС не раздает? Узнайте основные причины: от настроек APN до блокировки модема. Пошагова</span>
+            </a><a href="/set-i-internet/k/ka/kak-ispolzovat-vtoroj-router-dlya-usileniya-signala-wifi-bez-kabelya.html" class="pb-related-card">
+                <span class="pb-related-title">Как усилить сигнал WiFi вторым роутером без кабеля</span>
+                <span class="pb-related-desc">Инструкция по настройке второго роутера как репитера. Усиление сигнала WiFi без проводов, выбор режи</span>
+            </a><a href="/set-i-internet/v/vi/vitaya-para-ftp-i-utp-raznitsa.html" class="pb-related-card">
+                <span class="pb-related-title">Витая пара FTP и UTP: в чем разница, сравнение и выбор</span>
+                <span class="pb-related-desc">Подробное сравнение кабелей FTP и UTP. Узнайте про экранирование, скорость передачи данных и правила</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>System Bin Sh ADB Inaccessible: Решение Ошибки Android — Техно Гид</title>
+    <meta name="description" content="Почему shell недоступен в ADB? Полный разбор ошибок system/bin/sh, пути $PATH и прав root на Android. Проверка окружения и исправление.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/smartfony-i-planshety/s/sy/system-bin-sh-adb-inaccessible-or-not-found.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="System Bin Sh ADB Inaccessible: Решение Ошибки Android">
+    <meta property="og:description" content="Почему shell недоступен в ADB? Полный разбор ошибок system/bin/sh, пути $PATH и прав root на Android. Проверка окружения и исправление.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-nav-active">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/smartfony-i-planshety/">Смартфоны и Планшеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">System Bin Sh ADB Inaccessible: Решение Ошибки Android</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#природа-ошибки-и-структура-путей-в-android">Природа ошибки и структура путей в Android</a></li><li><a href="#диагностика-окружения-и-проверка-переменных">Диагностика окружения и проверка переменных</a></li><li><a href="#проблемы-с-правами-доступа-и-root-права">Проблемы с правами доступа и Root-права</a></li><li><a href="#специфика-работы-в-эмуляторах-и-виртуальных-машинах">Специфика работы в эмуляторах и виртуальных машинах</a></li><li><a href="#решение-проблем-с-отсутствующими-бинарниками">Решение проблем с отсутствующими бинарниками</a></li><li><a href="#использование-альтернативных-оболочек-и-termux">Использование альтернативных оболочек и Termux</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/smartfony-i-planshety/b/by/bystro-saditsya-telefon-ajfon.html">Почему быстро садится батарея iPhone: причины и способы решения</a></li><li><a href="/smartfony-i-planshety/k/ko/kontroller-zaryada-akkumulyatora-ajfon.html">Контроллер заряда iPhone: что это и как проверить</a></li><li><a href="/smartfony-i-planshety/n/ne/ne-mogu-skachat-s-gugl-plej-prilozheniya-na-android.html">Не скачиваются приложения с Google Play: Полное руководство по исправлению</a></li><li><a href="/smartfony-i-planshety/v/vi/viper4android-fx-chto-eto.html">Viper4Android FX: что это, установка и настройка звука</a></li><li><a href="/smartfony-i-planshety/a/aj/ajfon-7-kakie-byvayut.html">iPhone 7: какие бывают версии, цвета и отличия моделей</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Ошибка system/bin/sh: почему ADB не видит оболочку</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#природа-ошибки-и-структура-путей-в-android">Природа ошибки и структура путей в Android</a></li><li><a href="#диагностика-окружения-и-проверка-переменных">Диагностика окружения и проверка переменных</a></li><li><a href="#проблемы-с-правами-доступа-и-root-права">Проблемы с правами доступа и Root-права</a></li><li><a href="#специфика-работы-в-эмуляторах-и-виртуальных-машинах">Специфика работы в эмуляторах и виртуальных машинах</a></li><li><a href="#решение-проблем-с-отсутствующими-бинарниками">Решение проблем с отсутствующими бинарниками</a></li><li><a href="#использование-альтернативных-оболочек-и-termux">Использование альтернативных оболочек и Termux</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Пользователи, работающие с отладкой Android-устройств через консоль, часто сталкиваются с пугающим сообщением об ошибке: <em>system/bin/sh: adb: inaccessible or not found</em>. Эта проблема возникает не на пустом месте и свидетельствует о фундаментальном непонимании того, как функционирует окружение внутри эмулятора или реального девайса при подключении через <strong>Android Debug Bridge</strong>. Когда терминал выдает такой ответ, он буквально говорит вам, что не может найти исполняемый файл в указанном пути или у текущего пользователя нет прав на его запуск.</p>
+
+<p>Ситуация усугубляется тем, что многие инструкции в сети устарели или написаны для специфических версий прошивок, где пути к системным бинарникам отличались от современных стандартов <em>Android 10-14</em>. Ошибка может скрывать за собой как банальную опечатку в команде, так и серьезные проблемы с правами доступа <strong>SELinux</strong> или отсутствием <em>root-прав</em>. Понимание архитектуры файловой системы Android является ключом к успешному решению этой задачи без полного сброса устройства.</p>
+
+<p>В этой статье мы детально разберем механику возникновения ошибки, проверим переменные окружения и предложим рабочие методы восстановления доступа к командной строке. Вы научитесь различать ситуации, когда оболочка действительно отсутствует, и случаи, когда она просто скрыта от текущего пользователя. Глубокое погружение в структуру каталогов поможет вам избежать подобных проблем в будущем при разработке или модификации системы.</p>
+
+<h2 id="природа-ошибки-и-структура-путей-в-android">Природа ошибки и структура путей в Android</h2>
+
+<p>Сообщение <code>system/bin/sh: adb: inaccessible or not found</code> часто вводит в заблуждение новичков, так как они пытаются запустить команду <code>adb</code> уже находясь внутри оболочки устройства. Это логическая ошибка: утилита <strong>ADB</strong> является клиент-серверным инструментом, который запускается на компьютере, а не внутри самого телефона. Внутри устройства вы работаете с оболочкой <em>sh</em> или <em>mksh</em>, и команда <code>adb</code> там попросту не существует в привычном виде.</p>
+
+<p>Однако, если вы видите ошибку при попытке вызвать другие системные утилиты, проблема может крыться в переменной окружения <strong>PATH</strong>. В Unix-подобных системах, к которым относится Android, операционная система ищет исполняемые файлы только в директориях, прописанных в этой переменной. Если путь к нужной утилите, например <code>/system/bin/tool</code>, не добавлен в <code>PATH</code>, система не сможет найти её, даже если файл физически присутствует на диске.</p>
+
+<p>Современные версии Android используют разделение системного раздела на <code>system</code> и <code>vendor</code>, что усложняет навигацию. Некоторые бинарные файлы перемещены в <code>/vendor/bin</code>, в то время как старые скрипты могут искать их в старых локациях. Это приводит к конфликтам, когда скрипт пытается вызвать программу по старому адресу, получает отказ и выдает ошибку недоступности.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Никогда не пытайтесь вручную редактировать файл <code>/system/etc/paths</code> или системные скрипы инициализации без наличия полной резервной копии образа <em>boot.img</em>. Ошибка в синтаксисе может привести к бесконечной перезагрузке устройства (bootloop).</p>
+</blockquote>
+
+<p>Также стоит учитывать роль <strong>SELinux</strong> (Security-Enhanced Linux). Даже если файл существует и путь указан верно, политика безопасности может запрещать процессу-оболочке доступ к этому файлу. В режиме <em>Enforcing</em> система молча блокирует выполнение, что иногда интерпретируется пользователем как отсутствие файла, хотя на самом деле доступ запрещен на уровне ядра.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте команду `ls -Z /путь/к/файлу`, чтобы проверить контекст безопасности SELinux для конкретного исполняемого файла и понять, почему доступ может быть заблокирован.</p></aside>
+
+<h2 id="диагностика-окружения-и-проверка-переменных">Диагностика окружения и проверка переменных</h2>
+
+<p>Первым шагом при устранении неполадок должна стать тщательная диагностика текущего состояния оболочки. Вам необходимо убедиться, что вы вообще находитесь в рабочей сессии и видите правильные пути. Введите команду <code>echo $PATH</code>, чтобы вывести список директорий, где система ищет программы. Результат обычно выглядит как набор путей, разделенных двоеточием.</p>
+
+<p>Если в выводе отсутствует стандартный системный путь <code>/system/bin</code> или <code>/system/xbin</code>, это явный признак нарушенной конфигурации окружения. В таком случае вы можете попробовать временно добавить нужный путь вручную, выполнив команду <code>export PATH=$PATH:/system/bin</code>. Это действие добавит стандартную директорию в список поиска для текущей сессии без внесения постоянных изменений в систему.</p>
+
+<p>Для более глубокого анализа используйте утилиту <strong>which</strong> или <em>type</em>. Команда <code>which ls</code> покажет полный путь к утилите списка файлов. Если команда возвращает пустую строку, значит, оболочка действительно не видит этот инструмент. Это часто случается в минималистичных сборках Android или в специальных режимах восстановления <em>Recovery Mode</em>, где набор утилит сильно урезан.</p>
+
+<div class="pb-poll" id="poll-6c6ef640"><div class="pb-poll-question">📊 Где вы чаще всего встречаете эту ошибку?</div><div class="pb-poll-option" data-poll="6c6ef640" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">При работе с эмулятором</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6c6ef640" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">На реальном устройстве без root</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6c6ef640" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">На устройстве с разблокированным загрузчиком</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="6c6ef640" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">В режиме Recovery</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<p>Проверьте также права доступа к самому файлу оболочки. Команда <code>ls -l /system/bin/sh</code> должна показать, что файл имеет биты исполнения. Если вместо <code>-rwxr-xr-x</code> вы видите права только на чтение, система не сможет запустить интерпретатор команд. Исправление прав требует доступа суперпользователя, о котором пойдет речь в следующих разделах.</p>
+
+<h2 id="проблемы-с-правами-доступа-и-root-права">Проблемы с правами доступа и Root-права</h2>
+
+<p>Наиболее частой причиной недоступности системных команд является отсутствие привилегий суперпользователя. Стандартный пользователь Android (<em>shell</em> или <em>app_*</em>) имеет крайне ограниченный доступ к файловой системе. Попытка выполнить команду, требующую системных прав, без предварительного повышения привилегий, приведет к ошибке <strong>Permission denied</strong> или сообщению о том, что файл недоступен.</p>
+
+<p>Для получения полного доступа необходимо активировать режим <em>root</em>. Если на устройстве установлен менеджер прав, например <em>Magisk</em> или <em>SuperSU</em>, команда <code>su</code> должна запросить подтверждение на экране телефона. После успешного ввода префикс командной строки изменится с <code>$</code> на <code>#</code>, что сигнализирует о получении прав суперпользователя.</p>
+
+<p>Однако, даже после получения root, некоторые разделы могут оставаться доступными только для чтения из-за механизмов защиты. В таких случаях требуется перемонтирование файловой системы в режим чтения-записи. Это делается командой <code>mount -o rw,remount /system</code>. Без этой операции вы не сможете не только запускать некоторые скрипты, но и вносить изменения в конфигурационные файлы.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка прав доступа</h4><label class="check-item"><input type="checkbox"><span>Ввести команду `su`</span></label><label class="check-item"><input type="checkbox"><span>Подтвердить запрос на экране</span></label><label class="check-item"><input type="checkbox"><span>Проверить смену префикса на `#`</span></label><label class="check-item"><input type="checkbox"><span>Попробовать выполнить команду снова</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>Стоит отметить, что на некоторых устройствах с заблокированным загрузчиком получение root невозможно без разблокировки, которая стирает все данные. Кроме того, приложения банков и некоторые игры могут отказываться работать на рутированных устройствах, требуя скрытия прав доступа через специальные модули.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Предоставление прав root сторонним приложениям несет риски безопасности. Злоумышленники могут получить полный контроль над устройством, похитить данные или установить вредоносное ПО на системный уровень.</p>
+</blockquote>
+
+<h2 id="специфика-работы-в-эмуляторах-и-виртуальных-машинах">Специфика работы в эмуляторах и виртуальных машинах</h2>
+
+<p>Разработчики часто сталкиваются с ошибкой <code>inaccessible or not found</code> при работе с эмуляторами <em>Android Studio</em> или сторонними решениями вроде <em>Genymotion</em>. Виртуальные машины имеют свою специфику: образ системы может быть урезан, а некоторые сервисы отключены для экономии ресурсов хоста. Ошибка может возникать из-за того, что эмулятор не эмулирует полный набор аппаратных функций, необходимых для работы определенных драйверов или утилит.</p>
+
+<p>В эмуляторах путь к ADB может отличаться, или сама утилита может быть недоступна внутри гостевой ОС, так как предполагается, что управление идет с хоста. Попытка вызвать <code>adb</code> внутри терминала эмулятора бессмысленна, так как эмулятор сам является клиентом. Правильный подход — выполнять команды ADB с компьютера, указывая адрес эмулятора, например <code>adb -s emulator-5554 shell</code>.</p>
+
+<p>Также в виртуальных средах часто возникают проблемы с монтированием общих папок. Если скрипт пытается обратиться к файлу на общей папке, а права доступа между хостом и гостем настроены неверно, система выдаст ошибку недоступности. Проверьте настройки shared folders в интерфейсе эмулятора и убедитесь, что пользователь внутри Android имеет права на чтение этих каталогов.</p>
+
+<p>Еще один нюанс — версия Android в эмуляторе. Образы <em>Google APIs</em> и обычные образы <em>Android TV</em> или <em>Wear OS</em> имеют разные наборы предустановленных утилит. То, что работает на стандартном смартфоне, может отсутствовать в образе для телевизора, что и вызывает ошибку "not found".</p>
+
+<details class="pb-accordion"><summary>Как включить отладку по USB в эмуляторе?</summary><div class="pb-accordion-body"><p>В настройках эмулятора зайдите в раздел "Extended Controls" (три точки), выберите "Settings" и убедитесь, что галочка "Enable ADB" активна. Перезапустите эмулятор для применения изменений.</p></div></details>
+
+<h2 id="решение-проблем-с-отсутствующими-бинарниками">Решение проблем с отсутствующими бинарниками</h2>
+
+<p>Если диагностика показала, что файл действительно отсутствует в системе (ошибка "not found"), вам придется восстановить его вручную. Это актуально для кастомных прошивок, где разработчики могли удалить некоторые утилиты для облегчения образа. Вам потребуется найти соответствующий бинарный файл для вашей версии Android и архитектуры процессора (arm64-v8a, armeabi-v7a, x86).</p>
+
+<p>Процесс восстановления выглядит следующим образом: скачайте нужный файл на компьютер, затем отправьте его на устройство через ADB командой <code>adb push file_name /data/local/tmp/</code>. После этого подключитесь к оболочке, получите root-права и переместите файл в системную директорию, например <code>/system/bin/</code>. Не забудьте выставить правильные права исполнения командой <code>chmod 755 /system/bin/file_name</code>.</p>
+
+<p>Важно соблюдать совпадение версий библиотек. Бинарный файл, скомпилированный для Android 8, может не запуститься на Android 12 из-за изменений в системных библиотеках <strong>libc</strong> или <em>linker</em>. В таком случае вы получите ошибку сегментации или динамического линковщика вместо простого "not found". Всегда используйте файлы из стоковых прошивок той же версии Android, что установлена на вашем устройстве.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Директория</th>
+<th>Назначение</th>
+<th>Требуются Root</th>
+<th>Доступность</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/system/bin</code></td>
+<td>Основные системные утилиты</td>
+<td>Да (для записи)</td>
+<td>Всегда</td>
+</tr>
+<tr>
+<td><code>/system/xbin</code></td>
+<td>Дополнительные утилиты (часто BusyBox)</td>
+<td>Да</td>
+<td>Опционально</td>
+</tr>
+<tr>
+<td><code>/vendor/bin</code></td>
+<td>Утилиты от производителя</td>
+<td>Да</td>
+<td>Зависит от вендора</td>
+</tr>
+<tr>
+<td><code>/data/local/tmp</code></td>
+<td>Временное хранилище</td>
+<td>Нет</td>
+<td>Всегда</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Альтернативой ручному копированию является установка пакетов через менеджеры пакетов, если они доступны в вашей среде, например <em>pkg</em> в Termux. Однако в стандартной оболочке Android таких менеджеров нет, поэтому метод с <code>adb push</code> остается наиболее универсальным и надежным способом восстановления утраченных компонентов.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Восстановление системных файлов вручную требует точного совпадения архитектуры процессора и версии Android, иначе устройство может стать нестабильным.</p></aside>
+
+<h2 id="использование-альтернативных-оболочек-и-termux">Использование альтернативных оболочек и Termux</h2>
+
+<p>Если стандартная оболочка <code>/system/bin/sh</code> вызывает постоянные ошибки или ограничена в функционале, разумным решением станет использование продвинутых эмуляторов терминала, таких как <em>Termux</em>. Это приложение предоставляет полноценное окружение Linux без необходимости получения root-прав, устанавливая собственные версии утилит в изолированный каталог пользователя.</p>
+
+<p>В среде Termux вы не зависите от системных путей Android. Утилиты устанавливаются через встроенный менеджер пакетов <code>pkg</code> или <code>apt</code>. Команды вроде <code>ls</code>, <code>grep</code>, <code>ssh</code> и даже компиляторы доступны сразу после установки. Это полностью устраняет проблему "inaccessible or not found", так как вы работаете в независимом пространстве имен.</p>
+
+<p>Для взаимодействия с системой из Termux можно использовать плагин <code>termux-api</code>, который позволяет управлять железом устройства (камера, GPS, буфер обмена) через командную строку. Это мощный инструмент для автоматизации, который обходит ограничения стандартной ADB-оболочки, предоставляя более гибкий синтаксис и современные версии утилит.</p>
+
+<p>Однако стоит помнить, что Termux не заменяет системную оболочку для задач, требующих прямого доступа к ядру или системным разделам без дополнительных настроек. Для глубокой модификации системы все равно потребуется классический ADB shell с root-правами, но для повседневных задач скриптинга Termux является идеальным решением, исключающим множество ошибок окружения.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Интерфейсы и команды в Termux могут отличаться от стандартных Android-утилит. Скрипты, написанные для системной оболочки, могут требовать правки путей и параметров для работы в среде Termux.</p>
+</blockquote>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Почему команда `adb` не работает внутри терминала телефона?</summary>
+<p>Команда <code>adb</code> предназначена для запуска на компьютере для управления телефоном. Внутри телефона вы уже находитесь в сессии, которую создал ADB. Если вам нужно выполнить действия, используйте стандартные Linux-утилиты или утилиты Android, такие как <code>pm</code>, <code>am</code>, <code>input</code>.</p>
+</details>
+
+<details>
+<summary>Что делать, если `su` не найден, хотя права root есть?</summary>
+<p>Возможно, бинарный файл <code>su</code> не добавлен в переменную PATH. Попробуйте вызвать его полным путем, например <code>/sbin/su</code> или <code>/system/xbin/su</code>. Также проверьте, правильно ли настроен менеджер прав (Magisk/SuperSU) в настройках приложения.</p>
+</details>
+
+<details>
+<summary>Можно ли исправить ошибку без потери данных?</summary>
+<p>Да, в большинстве случаев. Ошибки PATH или отсутствующие утилиты исправляются через ADB без сброса настроек. Однако, если проблема вызвана повреждением системного раздела, может потребоваться перепрошивка, что повлечет удаление данных, если не сделан бэкап.</p>
+</details>
+
+<details>
+<summary>Почему в эмуляторе не работает `mount`?</summary>
+<p>В эмуляторах образ системы часто монтируется только для чтения из соображений безопасности и стабильности. Используйте команду <code>adb root</code> на компьютере перед подключением к оболочке, чтобы перезапустить демон с правами суперпользователя, что может снять ограничения на монтирование.</p>
+</details>
+
+<details>
+<summary>Как узнать точную архитектуру процессора для скачивания бинарников?</summary>
+<p>Выполните команду <code>getprop ro.product.cpu.abi</code> в оболочке ADB. Она вернет значение вроде <code>arm64-v8a</code> или <code>x86_64</code>. Скачивайте файлы, строго соответствующие этому значению, чтобы избежать ошибок совместимости.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/smartfony-i-planshety/b/by/bystro-saditsya-telefon-ajfon.html" class="pb-related-card">
+                <span class="pb-related-title">Почему быстро садится батарея iPhone: причины и способы решения</span>
+                <span class="pb-related-desc">Ваш iPhone разряжается слишком быстро? Узнайте основные причины быстрой разрядки аккумулятора и пров</span>
+            </a><a href="/smartfony-i-planshety/k/ko/kontroller-zaryada-akkumulyatora-ajfon.html" class="pb-related-card">
+                <span class="pb-related-title">Контроллер заряда iPhone: что это и как проверить</span>
+                <span class="pb-related-desc">Полный разбор контроллера заряда аккумулятора iPhone. Симптомы поломки, методы диагностики и ремонта</span>
+            </a><a href="/smartfony-i-planshety/n/ne/ne-mogu-skachat-s-gugl-plej-prilozheniya-na-android.html" class="pb-related-card">
+                <span class="pb-related-title">Не скачиваются приложения с Google Play: Полное руководство по исправлению</span>
+                <span class="pb-related-desc">Проблема с загрузкой из Google Play? Узнайте, как исправить ошибки, очистить кэш, сбросить настройки</span>
+            </a><a href="/smartfony-i-planshety/v/vi/viper4android-fx-chto-eto.html" class="pb-related-card">
+                <span class="pb-related-title">Viper4Android FX: что это, установка и настройка звука</span>
+                <span class="pb-related-desc">Полный обзор аудио-модуля Viper4Android FX для Android. Установка через Magisk, настройка эквалайзер</span>
+            </a><a href="/smartfony-i-planshety/a/aj/ajfon-7-kakie-byvayut.html" class="pb-related-card">
+                <span class="pb-related-title">iPhone 7: какие бывают версии, цвета и отличия моделей</span>
+                <span class="pb-related-desc">Полный гид по моделям iPhone 7. Узнайте, какие бывают версии (Plus, Global, R), чем они отличаются, </span>
+            </a><a href="/smartfony-i-planshety/n/ne/ne-zaryazhaetsya-telefon-samsung-a54.html" class="pb-related-card">
+                <span class="pb-related-title">Samsung A54 не заряжается: причины и быстрое решение</span>
+                <span class="pb-related-desc">Телефон Samsung Galaxy A54 не заряжается? Полный гайд по диагностике: от чистки порта до сброса наст</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

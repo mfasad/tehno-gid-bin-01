@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Эмуляция COM порта сканера штрих кодов: настройка и решение проблем — Техно Гид</title>
+    <meta name="description" content="Полное руководство по виртуализации RS232 для сканеров. Настройка USB-COM эмуляторов, драйверов и работа с терминальным ПО.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/printery-i-periferiya/e/em/emulyatsiya-com-porta-skanera-shtrikh-kodov.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Эмуляция COM порта сканера штрих кодов: настройка и решение проблем">
+    <meta property="og:description" content="Полное руководство по виртуализации RS232 для сканеров. Настройка USB-COM эмуляторов, драйверов и работа с терминальным ПО.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-nav-active">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/printery-i-periferiya/">Принтеры и Периферия</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Эмуляция COM порта сканера штрих кодов: настройка и решение проблем</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#принцип-работы-виртуального-com-интерфейса">Принцип работы виртуального COM интерфейса</a></li><li><a href="#установка-и-выбор-драйверов-для-эмулятора">Установка и выбор драйверов для эмулятора</a></li><li><a href="#настройка-параметров-порта-и-скорости-передачи">Настройка параметров порта и скорости передачи</a></li><li><a href="#конфликты-портов-и-их-решение-в-windows">Конфликты портов и их решение в Windows</a></li><li><a href="#диагностика-и-тестирование-соединения">Диагностика и тестирование соединения</a></li><li><a href="#особенности-работы-в-сетевой-среде-и-на-терминальных-серверах">Особенности работы в сетевой среде и на терминальных серверах</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/printery-i-periferiya/n/ne/ne-rabotayut-neskolko-klavish-na-klaviature-kompyutera.html">Не работают клавиши на клавиатуре: причины и ремонт</a></li><li><a href="/printery-i-periferiya/z/za/zaedaet-pravaya-knopka-myshi-chto-delat.html">Заедает правая кнопка мыши: что делать — полный гайд</a></li><li><a href="/printery-i-periferiya/k/ka/kak-pereproshit-printer-hp.html">Как перепрошить принтер HP: полная инструкция и методы</a></li><li><a href="/printery-i-periferiya/p/po/podklyuchenie-printera-k-routeru-cherez-usb.html">Как подключить принтер к роутеру через USB: пошаговая инструкция</a></li><li><a href="/printery-i-periferiya/k/ka/kak-ustanovit-na-rabochij-stol-yarlyk-printera-i-skanera.html">Как создать ярлык принтера и сканера на рабочем столе Windows</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как настроить эмуляцию COM порта для сканера штрих кодов</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#принцип-работы-виртуального-com-интерфейса">Принцип работы виртуального COM интерфейса</a></li><li><a href="#установка-и-выбор-драйверов-для-эмулятора">Установка и выбор драйверов для эмулятора</a></li><li><a href="#настройка-параметров-порта-и-скорости-передачи">Настройка параметров порта и скорости передачи</a></li><li><a href="#конфликты-портов-и-их-решение-в-windows">Конфликты портов и их решение в Windows</a></li><li><a href="#диагностика-и-тестирование-соединения">Диагностика и тестирование соединения</a></li><li><a href="#особенности-работы-в-сетевой-среде-и-на-терминальных-серверах">Особенности работы в сетевой среде и на терминальных серверах</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Современные системы автоматизации торговли и складского учета часто требуют интеграции периферийного оборудования с устаревшим или специфическим программным обеспечением. Многие <strong>терминальные программы</strong> и базы данных 1С legacy-версий по-прежнему ожидают получения данных через последовательный интерфейс RS-232. Однако современные сканеры штрих кодов почти повсеместно оснащаются интерфейсом USB, что создает конфликт на уровне физической связи.</p>
+
+<p>Решением этой проблемы становится технология <em>эмуляции COM порта</em>. Этот программный механизм позволяет операционной системе считать USB-соединение последовательным портом, обманывая прикладное ПО и заставляя его работать со сканером так, будто он подключен через классический DB9 разъем. Правильная настройка этого процесса критически важна для бесперебойной работы касс и складских комплексов.</p>
+
+<p>В этой статье мы детально разберем, как функционирует виртуальный COM порт, какие драйверы необходимы для различных чипсетов и как избежать распространенных ошибок при конфигурации оборудования. Мы рассмотрим нюансы работы с разными операционными системами и предоставим конкретные инструкции по диагностике.</p>
+
+<h2 id="принцип-работы-виртуального-com-интерфейса">Принцип работы виртуального COM интерфейса</h2>
+
+<p>Технология эмуляции базируется на создании виртуального устройства в реестре операционной системы Windows или Linux. Когда вы подключаете сканер, поддерживающий режим <code>Virtual COM</code>, контроллер устройства сообщает ОС свои идентификационные данные. Драйвер перехватывает эти данные и создает логический порт, например, <code>COM3</code> или <code>COM5</code>.</p>
+
+<p>Далее все данные, считанные лазерным или имиджевым модулем сканера, передаются не как эмуляция нажатий клавиш (режим HID), а как поток байтов через этот созданный порт. <strong>Прикладная программа</strong>, настроенная на опрос конкретного COM-порта, получает штрих-код без каких-либо изменений в своем коде. Это обеспечивает полную совместимость со старым софтом.</p>
+
+<p>Однако стоит понимать разницу между физическим преобразователем USB-RS232 и программной эмуляцией внутри самого сканера. В первом случае используется внешний кабель-переходник с чипом-конвертером. Во втором случае функция встроена в прошивку самого устройства считывания, что снижает количество точек отказа в системе.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Не все сканеры поддерживают режим эмуляции "из коробки". Бюджетные модели часто работают только в режиме эмуляции клавиатуры (HID). Перед покупкой обязательно уточните наличие поддержки протокола <em>USB-COM</em> или <em>Virtual COM</em> в спецификации устройства.</p>
+</blockquote>
+
+<div class="pb-poll" id="poll-fa248e8a"><div class="pb-poll-question">📊 Какой интерфейс у вашего текущего сканера?</div><div class="pb-poll-option" data-poll="fa248e8a" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">USB (стандартный)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="fa248e8a" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">USB с эмуляцией COM</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="fa248e8a" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Настоящий RS232 (DB9)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="fa248e8a" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Беспроводной Bluetooth</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="установка-и-выбор-драйверов-для-эмулятора">Установка и выбор драйверов для эмулятора</h2>
+
+<p>Ключевым элементом корректной работы является программное обеспечение, управляющее виртуальным портом. Чаще всего внутри сканеров используются чипы от компаний FTDI, Prolific или Silicon Labs. Для каждого производителя требуется свой уникальный <strong>драйвер устройства</strong>. Если Windows не находит драйвер автоматически, устройство отобразится в Диспетчере устройств как "Неизвестное устройство" с восклицательным знаком.</p>
+
+<p>Процесс установки обычно начинается с загрузки инсталлятора с официального сайта производителя чипа или сканера. После установки необходимо перезагрузить компьютер и подключить сканер. В Диспетчере устройств в разделе "Порты (COM и LPT)" должен появиться новый пункт, например, <code>USB Serial Port (COM4)</code>.</p>
+
+<p>Иногда возникает ситуация, когда система устанавливает стандартный драйвер Microsoft, который работает некорректно с конкретным оборудованием. В таком случае необходимо вручную обновить драйвер через свойства устройства, указав путь к скачанным файлам <code>.inf</code>. Важно следить за разрядностью системы (x86 или x64), так как драйверы не являются универсальными.</p>
+
+<ul>
+<li>🔹 Скачайте драйвер строго под вашу версию Windows (7, 10, 11) с сайта вендора.</li>
+<li>🔹 Отключите сканер перед началом установки программного обеспечения.</li>
+<li>🔹 После установки запустите установку драйвера от имени администратора.</li>
+<li>🔹 Проверьте отсутствие конфликтов в Диспетчере устройств после подключения.</li>
+</ul>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если у вас сканер Zebra или Honeywell, ищите драйверы не по названию сканера, а по модели внутреннего конвертера, часто это FTDI CDM Driver или Silicon Labs CP210x.</p></aside>
+
+<h2 id="настройка-параметров-порта-и-скорости-передачи">Настройка параметров порта и скорости передачи</h2>
+
+<p>После успешной установки драйвера критически важно настроить параметры связи. Сканер и принимающее ПО должны работать на одинаковых скоростях и использовать идентичные протоколы контроля четности. По умолчанию многие сканеры работают на скорости <code>9600 бод</code>, но современные модели могут использовать <code>115200 бод</code> и выше.</p>
+
+<p>Настройка осуществляется через сканирование специальных сервисных штрих-кодов из руководства пользователя (User Manual). Эти коды меняют параметры внутренней прошивки. Вам необходимо найти раздел, посвященный интерфейсу USB-COM, и отсканировать коды для установки нужной скорости (Baud Rate), количества бит данных (Data Bits) и битов остановки (Stop Bits).</p>
+
+<p>Затем аналогичные параметры выставляются в свойствах порта в Windows. Для этого зайдите в Диспетчер устройств, откройте свойства вашего COM-порта, перейдите на вкладку "Параметры порта". Здесь вы увидите выпадающие списки для настройки скорости и контроля потока. Несовпадение хотя бы одного параметра приведет к тому, что вместо штрих-кода вы получите набор нечитаемых символов или "кракозябр".</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Стандартное значение</th>
+<th>Высокоскоростной режим</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Скорость (Baud Rate)</td>
+<td>9600</td>
+<td>115200</td>
+<td>Количество бит в секунду</td>
+</tr>
+<tr>
+<td>Биты данных</td>
+<td>8</td>
+<td>8</td>
+<td>Размер пакета данных</td>
+</tr>
+<tr>
+<td>Четность (Parity)</td>
+<td>None</td>
+<td>None</td>
+<td>Контроль ошибок</td>
+</tr>
+<tr>
+<td>Стоповые биты</td>
+<td>1</td>
+<td>1</td>
+<td>Маркер конца пакета</td>
+</tr>
+</tbody>
+</table></div>
+
+<details class="pb-accordion"><summary>Что делать, если скорость не меняется?</summary><div class="pb-accordion-body"><p>Иногда сканер "забывает" настройки после перезагрузки. Найдите в мануале штрих-код "Save Parameters" или "Set Defaults" и отсканируйте его после настройки скорости, чтобы сохранить конфигурацию в энергонезависимую память.</p></div></details>
+
+<h2 id="конфликты-портов-и-их-решение-в-windows">Конфликты портов и их решение в Windows</h2>
+
+<p>Одной из самых частых проблем при работе с эмуляцией является конфликт номеров портов. Операционная система может присвоить новому устройству номер, который уже занят другим оборудованием или зарезервирован системой. В результате сканер либо не определяется программой, либо работает с перебоями.</p>
+
+<p>Для решения этой проблемы необходимо вручную изменить номер порта. В свойствах устройства в Диспетчере устройств перейдите на вкладку "Параметры порта" и нажмите кнопку "Дополнительно". В нижней части окна находится выпадающий список "Номер COM-порта". Выберите свободный номер из списка, желательно с небольшим индексом (например, COM3 или COM4), так как некоторые старые программы не видят порты с номерами выше COM10.</p>
+
+<p>Также стоит обратить внимание на настройки буфера обмена. В том же меню "Дополнительно" можно найти ползунки регулировки размера приемного и передающего буферов. Для сканеров штрих кодов, передающих небольшие пакеты данных, рекомендуется установить минимальные значения буферов, чтобы снизить задержку передачи данных (латентность).</p>
+
+<blockquote>
+<p>⚠️ Внимание: Если вы меняете номер порта, убедитесь, что ваша кассовая программа или терминал в этот момент закрыты. Изменение номера активного порта может привести к зависанию приложения, использующего этот ресурс.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Низкие номера портов (COM1-COM9) имеют наибольшую совместимость со старым ПО на базе DOS и ранних версий Windows.</p></aside>
+
+<h2 id="диагностика-и-тестирование-соединения">Диагностика и тестирование соединения</h2>
+
+<p>Прежде чем настраивать сложное учетное ПО, необходимо убедиться, что физическое соединение и эмуляция работают корректно. Самый простой способ проверки — использование стандартной утилиты Windows "HyperTerminal" (в старых версиях) или сторонних терминальных программ, таких как <em>Putty</em>, <em>Tera Term</em> или бесплатного "Terminal" из Microsoft Store.</p>
+
+<p>Запустите терминальную программу, выберите ваш COM-порт и установите скорость, соответствующую настройкам сканера. При наведении сканера на штрих-код вы должны увидеть на экране строку с данными. Если вместо цифр отображаются непонятные символы, это верный признак рассинхронизации скорости (Baud Rate mismatch).</p>
+
+<p>Для более глубокой диагностики можно использовать утилиты мониторинга портов, которые показывают HEX-дамп передаваемых данных. Это полезно, если сканер передает не только сам код, но и служебные символы (префиксы, суффиксы, CR/LF), которые мешают основной программе. Визуализация потока байтов поможет точно настроить формат вывода данных в прошивке сканера.</p>
+
+<ul>
+<li>🔸 Откройте терминал и подключитесь к порту сканера.</li>
+<li>🔸 Отсканируйте тестовый штрих-код (например, EAN-13).</li>
+<li>🔸 Сверьте полученные символы с номером под штрих-кодом.</li>
+<li>🔸 Проверьте наличие символа "Enter" в конце строки данных.</li>
+</ul>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Диагностика связи</h4><label class="check-item"><input type="checkbox"><span>Установлен драйвер устройства</span></label><label class="check-item"><input type="checkbox"><span>Порт виден в Диспетчере</span></label><label class="check-item"><input type="checkbox"><span>Скорость в терминале совпадает со сканером</span></label><label class="check-item"><input type="checkbox"><span>Данные отображаются читаемо</span></label><label class="check-item"><input type="checkbox"><span>Конфликтов номеров нет</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="особенности-работы-в-сетевой-среде-и-на-терминальных-серверах">Особенности работы в сетевой среде и на терминальных серверах</h2>
+
+<p>В крупных торговых сетях сканеры часто подключаются не к локальному ПК, а к тонким клиентам или терминальным серверам (RDP). В такой конфигурации задача эмуляции усложняется, так как порт должен быть проброшен через сеть. Стандартная эмуляция USB-COM работает локально, и сервер "не видит" порт клиента по умолчанию.</p>
+
+<p>Для решения этой задачи используются технологии редиректа портов. В среде Windows Terminal Services можно использовать встроенные средства перенаправления, но они часто работают нестабильно с устройствами ввода. Более надежным вариантом является использование специализированного ПО для шаринга USB, которое создает виртуальный порт на сервере, транслирующий данные с локального сканера клиента.</p>
+
+<p>Альтернативный подход — использование сетевых сканеров с интерфейсом Ethernet или Wi-Fi, которые имеют собственный IP-адрес и встроенный сервер виртуального COM-порта. В этом случае на сервере устанавливается драйвер, который подключается к IP-адресу сканера, создавая локальный COM-порт, доступный для любых приложений.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При работе через RDP сессию убедитесь, что у пользователя есть права на открытие COM-портов на сервере. Часто политики безопасности блокируют доступ к последовательным портам для обычных пользователей.</p>
+</blockquote>
+
+<details class="pb-accordion"><summary>Почему сканер не работает в 1С через RDP?</summary><div class="pb-accordion-body"><p>Чаще всего проблема в том, что 1С на сервере видит порт, но не имеет прав доступа, либо порт занят другим процессом на сервере. Попробуйте переподключить сессию RDP с галочкой "Принтеры и порты" в настройках подключения.</p></div></details>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли использовать обычный сканер в режиме HID как COM порт?</summary>
+<p>Нет, это невозможно программно. Режим HID (Human Interface Device) эмулирует клавиатуру и передает данные как нажатия клавиш. Режим COM передает поток байтов. Это разные протоколы обмена данными на уровне железа. Для работы с COM-портом сканер должен аппаратно поддерживать эту функцию и иметь соответствующую прошивку.</p>
+</details>
+
+<details>
+<summary>Какой драйвер лучше: от производителя сканера или от производителя чипа (FTDI)?</summary>
+<p>Всегда приоритетнее использовать драйвер от производителя чипа (например, FTDI, Prolific), так как он является наиболее универсальным и регулярно обновляется. Драйверы от бренда сканера часто являются просто переупакованными драйверами чипа, но могут быть устаревшей версии.</p>
+</details>
+
+<details>
+<summary>Почему сканер перестал работать после обновления Windows?</summary>
+<p>Обновления Windows 10 и 11 часто заменяют сторонние драйверы на свои стандартные, которые могут некорректно работать с конкретными моделями конвертеров. Зайдите в Диспетчер устройств и принудительно обновите драйвер, выбрав ранее установленную версию или скачав свежую с сайта производителя чипа.</p>
+</details>
+
+<details>
+<summary>Как узнать, какой COM порт занят сканером, если их много?</summary>
+<p>Откройте Диспетчер устройств, отключите сканер физически и посмотрите, какой порт исчез из списка "Порты (COM и LPT)". Затем подключите сканер снова — появившийся порт и есть ваш. Также можно использовать утилиты типа "USBDeview", которые показывают историю подключенных устройств.</p>
+</details>
+
+<details>
+<summary>Работает ли эмуляция COM порта в Linux?</summary>
+<p>Да, в Linux устройства USB-COM обычно определяются автоматически как файлы устройств в директории <code>/dev/</code>, например, <code>/dev/ttyUSB0</code> или <code>/dev/ttyACM0</code>. Драйверы <code>usbserial</code> и <code>ftdi_sio</code> встроены в ядро Linux, поэтому ручная установка требуется редко.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/printery-i-periferiya/n/ne/ne-rabotayut-neskolko-klavish-na-klaviature-kompyutera.html" class="pb-related-card">
+                <span class="pb-related-title">Не работают клавиши на клавиатуре: причины и ремонт</span>
+                <span class="pb-related-desc">Почему не работают клавиши на клавиатуре? Полный гайд по диагностике, чистке, переназначению кнопок </span>
+            </a><a href="/printery-i-periferiya/z/za/zaedaet-pravaya-knopka-myshi-chto-delat.html" class="pb-related-card">
+                <span class="pb-related-title">Заедает правая кнопка мыши: что делать — полный гайд</span>
+                <span class="pb-related-desc">Заедает правая кнопка мыши? Узнайте как починить клик: чистка, смазка, настройка драйверов или замен</span>
+            </a><a href="/printery-i-periferiya/k/ka/kak-pereproshit-printer-hp.html" class="pb-related-card">
+                <span class="pb-related-title">Как перепрошить принтер HP: полная инструкция и методы</span>
+                <span class="pb-related-desc">Подробное руководство, как перепрошить принтер HP для сброса ошибок, смены региона картриджа или вос</span>
+            </a><a href="/printery-i-periferiya/p/po/podklyuchenie-printera-k-routeru-cherez-usb.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить принтер к роутеру через USB: пошаговая инструкция</span>
+                <span class="pb-related-desc">Подробный гайд по настройке сетевого принтера. Узнайте, как подключить устройство к роутеру, настрои</span>
+            </a><a href="/printery-i-periferiya/k/ka/kak-ustanovit-na-rabochij-stol-yarlyk-printera-i-skanera.html" class="pb-related-card">
+                <span class="pb-related-title">Как создать ярлык принтера и сканера на рабочем столе Windows</span>
+                <span class="pb-related-desc">Подробная инструкция: как вывести иконки принтера и МФУ на рабочий стол в Windows 10 и 11. Настройка</span>
+            </a><a href="/printery-i-periferiya/o/oc/ochistka-pechatnoj-golovki-epson.html" class="pb-related-card">
+                <span class="pb-related-title">Очистка печатной головки Epson: Эффективные методы восстановления струйных принтеров</span>
+                <span class="pb-related-desc">Полное руководство по очистке головки Epson. Программные методы, режим техобслуживания и чистка шпри</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

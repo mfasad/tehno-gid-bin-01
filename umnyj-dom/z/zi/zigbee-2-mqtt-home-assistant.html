@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Zigbee2MQTT и Home Assistant: Полная настройка своими руками — Техно Гид</title>
+    <meta name="description" content="Пошаговая инструкция по установке Zigbee2MQTT в Home Assistant. Выбор адаптеров, настройка MQTT брокера и спаривание устройств без облака.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/z/zi/zigbee-2-mqtt-home-assistant.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Zigbee2MQTT и Home Assistant: Полная настройка своими руками">
+    <meta property="og:description" content="Пошаговая инструкция по установке Zigbee2MQTT в Home Assistant. Выбор адаптеров, настройка MQTT брокера и спаривание устройств без облака.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Zigbee2MQTT и Home Assistant: Полная настройка своими руками</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-аппаратной-основы-адаптеры-и-координаторы">Выбор аппаратной основы: Адаптеры и Координаторы</a></li><li><a href="#подготовка-среды-установка-mqtt-брокера">Подготовка среды: Установка MQTT Брокера</a></li><li><a href="#инсталляция-zigbee2mqtt-в-home-assistant">Инсталляция Zigbee2MQTT в Home Assistant</a></li><li><a href="#сопряжение-устройств-и-управление-сетью">Сопряжение устройств и управление сетью</a></li><li><a href="#оптимизация-mesh-сети-и-роуминг">Оптимизация Mesh-сети и Роуминг</a></li><li><a href="#автоматизации-и-интеграция-с-home-assistant">Автоматизации и Интеграция с Home Assistant</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/k/ko/komplekt-umnyj-dom-s-alisoj-kupit.html">Комплект умный дом с Алисой купить: выбор и настройка</a></li><li><a href="/umnyj-dom/r/re/rele-dlya-dvukhklavishnogo-vyklyuchatelya.html">Реле для двухклавишного выключателя: как подключить умный свет</a></li><li><a href="/umnyj-dom/u/up/upravlenie-otkatnymi-vorotami-s-telefona.html">Управление откатными воротами с телефона: виды, настройка и ошибки</a></li><li><a href="/umnyj-dom/k/ka/kak-snyat-detskij-rezhim-so-stiralnoj-mashiny-lg.html">Как снять детский режим со стиральной машины LG: 5 способов</a></li><li><a href="/umnyj-dom/x/xi/xiaomi-mi-robot-vacuum-mop-essential-belyj.html">Xiaomi Mi Robot Vacuum Mop Essential белый: обзор, настройка и эксплуатация</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Zigbee2MQTT и Home Assistant: Полный гид по независимому умному дому</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-аппаратной-основы-адаптеры-и-координаторы">Выбор аппаратной основы: Адаптеры и Координаторы</a></li><li><a href="#подготовка-среды-установка-mqtt-брокера">Подготовка среды: Установка MQTT Брокера</a></li><li><a href="#инсталляция-zigbee2mqtt-в-home-assistant">Инсталляция Zigbee2MQTT в Home Assistant</a></li><li><a href="#сопряжение-устройств-и-управление-сетью">Сопряжение устройств и управление сетью</a></li><li><a href="#оптимизация-mesh-сети-и-роуминг">Оптимизация Mesh-сети и Роуминг</a></li><li><a href="#автоматизации-и-интеграция-с-home-assistant">Автоматизации и Интеграция с Home Assistant</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Интеграция беспроводных датчиков и умных устройств в единую экосистему часто становится камнем преткновения для энтузиастов автоматизации. Проприетарные шлюзы от производителей вроде Xiaomi или Aqara создают изолированные островки, требующие облачных сервисов и подверженные задержкам. Решением этой проблемы становится связка <strong>Zigbee2MQTT</strong> и <em>Home Assistant</em>, которая позволяет превратить разрозненные гаджеты в единую, локальную и невероятно отзывчивую сеть.</p>
+
+<p>Использование этого программного обеспечения дает вам полный контроль над топологией вашей сети. Вы больше не зависите от серверов производителя, если тот решит закрыть проект или изменить политику конфиденциальности. Более того, поддержка сообщества обеспечивает совместимость с тысячами устройств, которые официально могут не работать с вашим основным хабом.</p>
+
+<p>В этой статье мы детально разберем процесс развертывания системы с нуля. Мы обсудим выбор правильного радиоадаптера, настройку брокера сообщений и тонкости конфигурации, которые обеспечат стабильную работу вашего умного дома на долгие годы.</p>
+
+<h2 id="выбор-аппаратной-основы-адаптеры-и-координаторы">Выбор аппаратной основы: Адаптеры и Координаторы</h2>
+
+<p>Фундаментом любой сети Zigbee является координатор. В отличие от обычных роутеров, здесь критически важна стабильность чипа и качество антенны. На рынке доминируют решения на базе чипов Texas Instruments и Silicon Labs. Самым популярным и проверенным временем вариантом остается серия <em>CC2652</em>, которая обеспечивает отличную дальность связи и поддержку большого количества подключенных устройств.</p>
+
+<p>При выборе адаптера стоит обратить внимание на форм-фактор. USB-донглы удобны для подключения напрямую к серверу, но могут создавать помехи портам USB 3.0. Для сложных инсталляций рекомендуется использовать адаптеры с выносной антенной или модели, подключаемые через UART (GPIO) напрямую к плате одноплатного компьютера, например, <em>Raspberry Pi</em>. Это исключает проблемы с экранированием и перегревом.</p>
+
+<blockquote>⚠️ <strong>Внимание:</strong> Избегайте самых дешевых китайских клонов без маркировки чипа. Часто они используют перемаркированные старые версии прошивок, которые не поддерживают современные функции Zigbee2MQTT и могут вызывать нестабильность всей сети.</blockquote>
+
+<p>Также важным параметром является поддержка функции OTA (Over-The-Air) обновлений. Некоторые адаптеры позволяют обновлять прошивки подключенных устройств прямо из интерфейса Home Assistant. Это избавляет от необходимости вручную искать файлы прошивок для каждого датчика или лампы.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если вы планируете размещать сервер в металлическом щите или шкафу, обязательно используйте адаптер с выносной антенной на кабеле, чтобы вывести её наружу для лучшего приема сигнала.</p></aside>
+
+<h2 id="подготовка-среды-установка-mqtt-брокера">Подготовка среды: Установка MQTT Брокера</h2>
+
+<p>Протокол MQTT выступает в роли нервной системы вашей автоматизации. Он отвечает за передачу сообщений между устройствами и контроллером. Прежде чем запускать сам Zigbee2MQTT, необходимо развернуть брокер сообщений. В экосистеме Home Assistant самым простым и надежным решением является аддон <em>Mosquitto broker</em>.</p>
+
+<p>Установка производится через интерфейс дополнений. Вам потребуется задать логин и пароль для подключения, а также настроить persistence (сохранение сообщений), чтобы статусы устройств не терялись при перезагрузке системы. Без правильно настроенного брокера координатор просто не сможет передавать данные в интерфейс управления.</p>
+
+<p>После установки брокера критически важно настроить права доступа. Создайте отдельного пользователя для Zigbee2MQTT с ограниченными правами, если это возможно, хотя в локальной сети часто используют одного администратора для простоты. Убедитесь, что порт <code>1883</code> открыт только для локальных подключений и не проброшен во внешнюю сеть без защиты.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Значение по умолчанию</th>
+<th>Рекомендация</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port</td>
+<td>1883</td>
+<td>Оставить без изменений</td>
+</tr>
+<tr>
+<td>Protocol</td>
+<td>mqtt://</td>
+<td>Использовать tcp для локальной сети</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>Disabled</td>
+<td>Обязательно включить (Login/Pass)</td>
+</tr>
+<tr>
+<td>Persistence</td>
+<td>False</td>
+<td>Включить для сохранения состояний</td>
+</tr>
+</tbody>
+</table></div>
+
+<h2 id="инсталляция-zigbee2mqtt-в-home-assistant">Инсталляция Zigbee2MQTT в Home Assistant</h2>
+
+<p>Процесс установки самого аддона Zigbee2MQTT в современных версиях Home Assistant стал максимально простым благодаря Store дополнений. Вам не нужно компилировать код вручную или работать с командной строкой Linux, если вы используете HA OS. Достаточно найти дополнение в магазине и нажать кнопку установки.</p>
+
+<p>Ключевым этапом является конфигурация файла <code>configuration.yaml</code> внутри настроек аддона. Здесь необходимо указать путь к вашему адаптеру. Если вы используете USB-донгл, путь обычно выглядит как <code>/dev/ttyACM0</code> или <code>/dev/ttyUSB0</code>. Для пользователей, подключающих адаптер по сети (например, через ESP32 с прошивкой ESP-Zigbee), необходимо указать IP-адрес и порт.</p>
+
+<pre><code>serial:
+<p>port: /dev/ttyACM0</p>
+<p>adapter: zstack</p>
+<p>advanced:</p>
+<p>pan_id: 0x1234</p>
+<p>channel: 15</code></pre></p>
+
+<p>Обратите внимание на параметр <code>channel</code>. По умолчанию Zigbee2MQTT может выбрать канал, который пересекается с вашим Wi-Fi. Поскольку Wi-Fi работает на частоте 2.4 ГГц, он может глушить сигнал Zigbee. Рекомендуется вручную выбрать канал 15, 20 или 25, так как они находятся между основными несущими частотами Wi-Fi.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед запуском</h4><label class="check-item"><input type="checkbox"><span>Адаптер подключен физически</span></label><label class="check-item"><input type="checkbox"><span>Путь к порту указан верно</span></label><label class="check-item"><input type="checkbox"><span>MQTT брокер запущен</span></label><label class="check-item"><input type="checkbox"><span>Пользователь и пароль введены</span></label><label class="check-item"><input type="checkbox"><span>Wi-Fi каналы разнесены</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="сопряжение-устройств-и-управление-сетью">Сопряжение устройств и управление сетью</h2>
+
+<p>После успешного запуска аддона в интерфейсе Home Assistant появится новая панель Zigbee2MQTT. Здесь вы увидите карту вашей сети и список подключенных устройств. Для добавления нового гаджета необходимо перевести его в режим сопряжения (обычно многократным нажатием кнопки или включением/выключением питания) и нажать кнопку "Permit join" в интерфейсе.</p>
+
+<p>Одной из главных особенностей системы является автоматическое распознавание устройств. База данных Zigbee2MQTT содержит тысячи профилей. Когда вы подключаете, например, умную розетку <em>Tuya</em> или датчик температуры <em>Aqara</em>, система сама определяет модель и создает необходимые сущности в Home Assistant: выключатели, сенсоры, уровни яркости.</p>
+
+<ul>
+<li>🔋 <strong>Интервью устройства:</strong> При первом подключении система считывает все доступные кластеры и атрибуты устройства, создавая его полный цифровой двойник.</li>
+<li>📡 <strong>Качество связи (LQI):</strong> Для каждого устройства отображается качество линка. Это помогает понять, нужно ли добавлять промежуточные роутеры (питательные устройства) для улучшения покрытия.</li>
+<li>🛠 <strong>Группы и сцены:</strong> Вы можете создавать группы устройств напрямую в Zigbee2MQTT, что позволяет управлять ими даже при отключении сервера Home Assistant, так как команды выполняются на уровне протокола.</li>
+</ul>
+
+<p>Если устройство не определяется корректно или работает некорректно, можно вручную привязать внешний конвертер. Это файлы с расширением <code>.js</code>, которые описывают логику работы специфических моделей. Сообщество постоянно обновляет репозиторий конвертеров, добавляя поддержку новинок.</p>
+
+<details class="pb-accordion"><summary>Что делать, если устройство не спаривается?</summary><div class="pb-accordion-body"><p>Попробуйте поднести устройство максимально близко к координатору (буквально на 10-20 см). Некоторые устройства, особенно старые версии датчиков Xiaomi, очень капризны к уровню сигнала в момент первого сопряжения. Также убедитесь, что режим Permit join активен не более 255 секунд, после чего его нужно активировать заново.</p></div></details>
+
+<h2 id="оптимизация-mesh-сети-и-роуминг">Оптимизация Mesh-сети и Роуминг</h2>
+
+<p>Сеть Zigbee строится по принципу Mesh (ячеистая топология). Это означает, что устройства с постоянным питанием (лампы, розетки, реле) выступают в роли роутеров, ретранслируя сигнал от батарейных датчиков к координатору. Правильное распределение таких устройств по квартире критически важно для стабильности.</p>
+
+<p>Не стоит полагаться только на мощный координатор. Если у вас большая квартира или частный дом, сигнал будет теряться через стены. Размещайте умные розетки или лампы в коридорах и на границах комнат, чтобы они служили мостами для удаленных датчиков. Избегайте ситуации, когда все устройства цепляются напрямую к координатору, создавая bottleneck.</p>
+
+<blockquote>⚠️ <strong>Внимание:</strong> Устройства бренда IKEA и некоторые модели Tuya могут вести себя агрессивно в сети, пытаясь стать координаторами или создавая лишние соединения. В настройках Zigbee2MQTT можно ограничить количество детей для роутеров, чтобы предотвратить перегрузку сети.</blockquote>
+
+<p>Для анализа топологии используйте встроенную карту сети. Она визуализирует связи между устройствами. Зеленые линии означают стабильное соединение, красные — потерю пакетов. Если вы видите, что важный датчик соединен с координатором через слабую связь, переместите ближайшую умную розетку ближе к этому датчику.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Сеть Zigbee самовосстанавливается, но только если в ней достаточно устройств-роутеров. Минимальное правило: одно питающее устройство на каждые 5-7 метров площади или на каждую комнату.</p></aside>
+
+<h2 id="автоматизации-и-интеграция-с-home-assistant">Автоматизации и Интеграция с Home Assistant</h2>
+
+<p>После того как устройства появились в системе, начинается магия автоматизации. Home Assistant позволяет создавать сложные сценарии, используя состояния датчиков Zigbee как триггеры. Благодаря локальной работе, задержка между нажатием кнопки и включением света составляет миллисекунды, что недостижимо для облачных решений.</p>
+
+<p>Вы можете использовать возможности движка автоматизации HA или более продвинутые инструменты вроде Node-RED. Например, можно настроить сценарий, где при срабатывании датчика движения включается свет, но только если уровень освещенности ниже определенного порога и время суток — вечер.</p>
+
+<p>Важно помнить о разнице между событиями и состояниями. Кнопки (выключатели без нуля) часто отправляют события (<code>click</code>, <code>hold</code>, <code>double_click</code>), а не меняют состояние. Для их обработки нужно использовать триггеры событий в автоматизациях, а не состояния сенсоров.</p>
+
+<div class="pb-poll" id="poll-66fde4f1"><div class="pb-poll-question">📊 Какой тип устройств вы планируете подключить в первую очередь?</div><div class="pb-poll-option" data-poll="66fde4f1" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Датчики движения и протечки</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="66fde4f1" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Умные лампы и выключатели</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="66fde4f1" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Розетки и реле</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="66fde4f1" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Климатическая техника</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли использовать один адаптер для Zigbee и Z-Wave?</summary>
+<p>Нет, это разные протоколы с различными физическими уровнями радиосигнала. Адаптер Zigbee не сможет работать с устройствами Z-Wave. Вам потребуются два отдельных USB-донгла, если вы хотите поддерживать обе технологии в одном хабе.</p>
+</details>
+
+<details>
+<summary>Безопасно ли обновлять прошивку адаптера?</summary>
+<p>В большинстве случаев да, процесс автоматизирован. Однако, перед обновлением прошивки координатора рекомендуется сделать резервную копию конфигурации Home Assistant. В редких случаях при сбое питания во время записи устройство может потребовать перепрошивки через специальные утилиты на ПК.</p>
+</details>
+
+<details>
+<summary>Почему датчики Xiaomi быстро разряжаются в Zigbee2MQTT?</summary>
+<p>Часто это связано с тем, что устройство постоянно ищет лучший маршрут или часто отправляет отчеты. Попробуйте увеличить интервал отчетов в настройках устройства или убедитесь, что оно подключено к стабильному родителю (роутеру), а не напрямую к координатору через две стены.</p>
+</details>
+
+<details>
+<summary>Нужен ли интернет для работы Zigbee2MQTT?</summary>
+<p>Абсолютно нет. Вся система работает локально в вашей сети. Интернет требуется только для первоначальной установки обновлений аддонов или загрузки OTA прошивок для устройств, но сама работа автоматизаций и управление устройствами полностью автономны.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/k/ko/komplekt-umnyj-dom-s-alisoj-kupit.html" class="pb-related-card">
+                <span class="pb-related-title">Комплект умный дом с Алисой купить: выбор и настройка</span>
+                <span class="pb-related-desc">Как выбрать и купить готовый комплект умного дома с Алисой. Обзор станций, датчиков и сценариев для </span>
+            </a><a href="/umnyj-dom/r/re/rele-dlya-dvukhklavishnogo-vyklyuchatelya.html" class="pb-related-card">
+                <span class="pb-related-title">Реле для двухклавишного выключателя: как подключить умный свет</span>
+                <span class="pb-related-desc">Полный гид по реле для двухклавишных выключателей. Схемы подключения Sonoff, Shelly и Aqara к двойно</span>
+            </a><a href="/umnyj-dom/u/up/upravlenie-otkatnymi-vorotami-s-telefona.html" class="pb-related-card">
+                <span class="pb-related-title">Управление откатными воротами с телефона: виды, настройка и ошибки</span>
+                <span class="pb-related-desc">Полный гид по управлению откатными воротами со смартфона. Сравнение GSM и Wi-Fi модулей, настройка п</span>
+            </a><a href="/umnyj-dom/k/ka/kak-snyat-detskij-rezhim-so-stiralnoj-mashiny-lg.html" class="pb-related-card">
+                <span class="pb-related-title">Как снять детский режим со стиральной машины LG: 5 способов</span>
+                <span class="pb-related-desc">Подробная инструкция, как отключить защиту от детей на стиральных машинах LG. Сброс блокировки кнопо</span>
+            </a><a href="/umnyj-dom/x/xi/xiaomi-mi-robot-vacuum-mop-essential-belyj.html" class="pb-related-card">
+                <span class="pb-related-title">Xiaomi Mi Robot Vacuum Mop Essential белый: обзор, настройка и эксплуатация</span>
+                <span class="pb-related-desc">Полный разбор робота-пылесоса Xiaomi Mi Robot Vacuum Mop Essential белого цвета. Инструкция по настр</span>
+            </a><a href="/umnyj-dom/m/mo/mozhet-li-alisa-otpravlyat-soobshcheniya-na-telefon.html" class="pb-related-card">
+                <span class="pb-related-title">Может ли Алиса отправлять сообщения на телефон: способы и настройки</span>
+                <span class="pb-related-desc">Узнайте, как настроить голосовую Алису для отправки SMS и звонков. Подробная инструкция по интеграци</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

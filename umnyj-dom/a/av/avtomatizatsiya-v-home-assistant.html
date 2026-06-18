@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Автоматизация в Home Assistant: с чего начать настройку — Техно Гид</title>
+    <meta name="description" content="Полный гайд по созданию сценариев и автоматизаций в Home Assistant. Разбор триггеров, условий и действий для управления умным домом.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/a/av/avtomatizatsiya-v-home-assistant.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Автоматизация в Home Assistant: с чего начать настройку">
+    <meta property="og:description" content="Полный гайд по созданию сценариев и автоматизаций в Home Assistant. Разбор триггеров, условий и действий для управления умным домом.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Автоматизация в Home Assistant: с чего начать настройку</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#архитектура-автоматизации-триггеры-и-условия">Архитектура автоматизации: Триггеры и Условия</a></li><li><a href="#настройка-действий-и-сценариев">Настройка действий и сценариев</a></li><li><a href="#работа-с-шаблонами-jinja2-и-данными">Работа с шаблонами Jinja2 и данными</a></li><li><a href="#оптимизация-и-режимы-выполнения">Оптимизация и режимы выполнения</a></li><li><a href="#отладка-и-анализ-логов">Отладка и анализ логов</a></li><li><a href="#безопасность-и-резервное-копирование-конфигурации">Безопасность и резервное копирование конфигурации</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/d/dl/dlya-chego-nuzhen-kondensator-v-sensornom-vyklyuchatele.html">Роль конденсатора в сенсорном выключателе: принцип работы и защита</a></li><li><a href="/umnyj-dom/g/gd/gde-mozhno-otklyuchit-domashnij-telefon.html">Как отключить домашний телефон: пошаговая инструкция по отказу от услуги</a></li><li><a href="/umnyj-dom/c/ch/chem-obkleit-stol-pismennyj.html">Чем обклеить письменный стол: обзор материалов и инструкции по обновлению</a></li><li><a href="/umnyj-dom/k/ka/kak-podklyuchit-umnuyu-rozetku-bez-alisy.html">Как подключить умную розетку без Алисы: полная инструкция</a></li><li><a href="/umnyj-dom/p/pr/prilozheniya-dlya-upravleniya-umnym-domom.html">Лучшие приложения для управления умным домом: обзор 2026</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Профессиональная настройка автоматизации в Home Assistant</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#архитектура-автоматизации-триггеры-и-условия">Архитектура автоматизации: Триггеры и Условия</a></li><li><a href="#настройка-действий-и-сценариев">Настройка действий и сценариев</a></li><li><a href="#работа-с-шаблонами-jinja2-и-данными">Работа с шаблонами Jinja2 и данными</a></li><li><a href="#оптимизация-и-режимы-выполнения">Оптимизация и режимы выполнения</a></li><li><a href="#отладка-и-анализ-логов">Отладка и анализ логов</a></li><li><a href="#безопасность-и-резервное-копирование-конфигурации">Безопасность и резервное копирование конфигурации</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Создание по-настоящему «умного» жилища невозможно без грамотной настройки логики взаимодействия между устройствами. <strong>Home Assistant</strong> выделяется среди конкурентов благодаря своей гибкости и возможности локального управления, что делает его идеальным выбором для энтузиастов. В отличие от проприетарных экосистем, здесь вы сами определяете правила поведения вашего дома, не завися от облачных серверов производителя.</p>
+
+<p>Процесс автоматизации в этой среде строится на трех фундаментальных китах: триггерах, условиях и действиях. Понимание взаимосвязи этих элементов позволяет создавать сложные сценарии, которые кажутся магией для непосвященных гостей. Например, система может сама определить, что вы вернулись домой, выключить сигнализацию и включить свет в коридоре, но только если на улице уже стемнело.</p>
+
+<p>В этой статье мы разберем не только базовые принципы, но и углубимся в тонкости отладки, работу с шаблонами и оптимизацию кода YAML. Вы узнаете, как избежать типичных ошибок новичков и построить отказоустойчивую структуру управления. Готовность к экспериментам здесь вознаграждается полным контролем над каждым ваттом энергии и каждым включенным прибором.</p>
+
+<h2 id="архитектура-автоматизации-триггеры-и-условия">Архитектура автоматизации: Триггеры и Условия</h2>
+
+<p>Любая цепочка событий начинается с <em>триггера</em> (Trigger). Это событие, которое будит спящую автоматизацию и заставляет её проверить, нужно ли выполнять какие-либо действия. Триггером может стать что угодно: нажатие физической кнопки, изменение температуры в комнате, заход солнца или даже получение сообщения в Telegram. Важно различать момент срабатывания триггера и момент фактического выполнения команды.</p>
+
+<p>Однако одного триггера часто недостаточно. Представьте ситуацию, когда датчик движения срабатывает ночью, и свет включается на полную яркость, ослепляя вас. Здесь на сцену выходят <strong>условия</strong> (Conditions). Они выступают в роли фильтра: если условие не выполнено, автоматизация прерывается, даже если триггер сработал. Это критически важный элемент для предотвращения ложных срабатываний.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Логические условия проверяются в момент срабатывания триггера. Если вы используете условие времени (например,"только после 20:00"), а триггер сработал в 19:59, автоматизация не выполнится, даже если вы ждали её срабатывания минуту спустя.</p>
+</blockquote>
+
+<p>Для создания надежной системы необходимо комбинировать разные типы триггеров. Часто новички полагаются только на датчики присутствия, забывая про временные интервалы или состояние других устройств. Грамотное сочетание событий позволяет создать контекстно-зависимую среду, которая реагирует на изменения комплексно, а не линейно.</p>
+
+<ul>
+<li>🔥 <strong>State Trigger</strong>: Реагирует на изменение состояния объекта (например, свет включился или дверь открылась).</li>
+<li>⏰ <strong>Time Trigger</strong>: Срабатывает по расписанию, в определенное время или интервал (восход/закат, каждый час).</li>
+<li>📡 <strong>Event Trigger</strong>: Отлавливает системные события, такие как запуск Home Assistant или нажатие кнопки на пульте Zigbee.</li>
+<li>🌡️ <strong>Numeric State Trigger</strong>: Активируется, когда значение датчика (температура, влажность) превышает или падает ниже заданного порога.</li>
+</ul>
+
+
+
+<h2 id="настройка-действий-и-сценариев">Настройка действий и сценариев</h2>
+
+<p>Когда триггер сработал и условия выполнены, наступает очередь <strong>действий</strong> (Actions). Именно здесь происходит физическое взаимодействие с устройствами умного дома. В интерфейсе Home Assistant это выглядит как последовательность шагов, но под капотом каждый шаг транслируется в вызов сервиса. Понимание структуры сервисов позволяет писать более чистый и эффективный код.</p>
+
+<p>Действия не ограничиваются простым включением света. Вы можете отправить уведомление на смартфон, изменить целевую температуру на термостате, запустить медиа-контент на телевизоре или даже вызвать другой сценарий. Последовательность выполнения действий имеет значение: если вы отправите команду включения света и сразу же команду выключения, устройство может не успеть среагировать на первую команду.</p>
+
+<pre><code>service: light.turn_on
+<p>target:</p>
+<p>entity_id: light.living_room</p>
+<p>data:</p>
+<p>brightness_pct: 50</p>
+<p>color_temp: 300</code></pre></p>
+
+<p>Использование сложных цепочек действий позволяет реализовать сценарии"одной кнопкой". Например, сценарий"Я ушел" может одновременно обесточить все розетки, кроме холодильника, поставить охрану на датчики открытия и понизить мощность отопления. Такая централизация управления избавляет от необходимости проверять каждое устройство вручную перед выходом.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Проверка перед созданием сценария</h4><label class="check-item"><input type="checkbox"><span>Определен ли конечный результат?:Проверены ли все возможные условия?:Есть ли резервный способ отмены?:Протестирован ли сценарий в безопасном режиме?</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 1</div></div>
+
+<p>Стоит отметить, что некоторые устройства требуют времени на выполнение команды. Если вы управляете моторизированными шторами, им может потребоваться 15 секунд для полного закрытия. Игнорирование этого фактора при построении цепочки действий может привести к рассинхронизации состояния в интерфейсе и реальностью.</p>
+
+<h2 id="работа-с-шаблонами-jinja2-и-данными">Работа с шаблонами Jinja2 и данными</h2>
+
+<p>Для продвинутой автоматизации в <em>Home Assistant</em> незаменим язык шаблонов <strong>Jinja2</strong>. Он позволяет динамически формировать данные, которые передаются в действия. Вместо жестко заданных значений вы можете использовать текущее состояние других датчиков, время суток или результаты математических вычислений прямо внутри конфигурации.</p>
+
+<p>Шаблоны особенно полезны при работе с текстовыми уведомлениями или сложной логикой выбора целевого устройства. Например, можно создать сообщение, которое будет меняться в зависимости от того, какой именно датчик сработал и какая там сейчас температура. Это делает уведомления информативными и персонализированными без создания десятков отдельных автоматизаций.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Ошибка в синтаксисе шаблона Jinja2 приведет к тому, что вся автоматизация перестанет выполняться. Всегда тестируйте шаблоны в инструменте"Шаблоны" (Templates) в меню разработчика перед внедрением в продакшн.</p>
+</blockquote>
+
+<p>С помощью шаблонов можно реализовывать логику, которую сложно описать стандартными условиями. Вы можете проверять наличие подстроки в названии устройства, выполнять арифметические операции над значениями сенсоров или форматировать даты. Это открывает безграничные возможности для кастомизации поведения системы под специфические нужды пользователя.</p>
+
+<pre><code>{{ states('sensor.living_room_temperature') | float > 25.0 }}</code></pre>
+
+<p>Частой ошибкой является попытка сравнить строковые значения как числа. В Home Assistant состояния сущностей по умолчанию являются строками. Для корректной работы математики необходимо явно приводить типы данных, используя фильтры <code>| float</code> или <code>| int</code>. Без этого сравнение"10" и"2" может дать неожиданный результат, так как строковое сравнение идет посимвольно.</p>
+
+<details class="pb-accordion"><summary>Пример сложного шаблона для уведомления</summary><div class="pb-accordion-body"><p>{{'Температура в' + state_attr('sensor.bedroom','friendly_name') +' упала до' + states('sensor.bedroom_temperature') +' градусов. Рекомендуется проверить отопление.' }}</p></div></details>
+
+<h2 id="оптимизация-и-режимы-выполнения">Оптимизация и режимы выполнения</h2>
+
+<p>По умолчанию Home Assistant использует режим выполнения <code>single</code>. Это означает, что если автоматизация уже запущена, а триггер срабатывает снова, второе выполнение игнорируется до завершения первого. Для простых задач это удобно, но для сценариев, которые должны реагировать на каждое событие (например, мигание света при тревоге), такой подход не подходит.</p>
+
+<p>Режим <strong>queued</strong> позволяет ставить новые запуски в очередь. Как только текущее выполнение завершится, система сразу же начнет обработку следующего запроса. Это гарантирует, что ни одно событие не будет потеряно, но может создать задержку, если автоматизация выполняется долго. Такой режим идеален для обработки последовательных нажатий кнопок.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Режим (Mode)</th>
+<th>Поведение при повторном триггере</th>
+<th>Лучшее применение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>single</code></td>
+<td>Игнорируется до завершения</td>
+<td>Сценарии"Ушел/Пришел", включение света</td>
+</tr>
+<tr>
+<td><code>restart</code></td>
+<td>Прерывает текущее и начинает заново</td>
+<td>Таймеры, циклические уведомления, мониторинг</td>
+</tr>
+<tr>
+<td><code>queued</code></td>
+<td>Добавляет в очередь выполнения</td>
+<td>Обработка серийных команд, логирование событий</td>
+</tr>
+<tr>
+<td><code>parallel</code></td>
+<td>Запускает новую копию параллельно</td>
+<td>Независимые процессы, фоновые задачи</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Режим <code>restart</code> является одним из самых мощных инструментов для создания таймеров и сброса состояний. Если вы настроили автоматизацию, которая должна сработать через 5 минут после последнего движения, использование этого режима позволит сбрасывать отсчет каждый раз, когда датчик фиксирует новую активность. Это создает эффект"скользящего окна" времени.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте режим restart для автоматизаций, управляющих временем ожидания. Это избавит от необходимости создавать сложные цепочки условий для сброса таймеров вручную.</p></aside>
+
+<h2 id="отладка-и-анализ-логов">Отладка и анализ логов</h2>
+
+<p>Даже у опытных пользователей автоматизации не всегда работают так, как задумано. Встроенные инструменты отладки Home Assistant позволяют заглянуть внутрь процесса выполнения и понять, где именно произошла ошибка. Журнал автоматизаций показывает время последнего срабатывания, причину пропуска (если условие не выполнено) и результаты выполнения действий.</p>
+
+<p>При анализе проблем первым делом следует проверить историю состояний сущностей, участвующих в сценарии. Часто бывает, что датчик отправил данные с задержкой, или устройство временно потеряло связь с сетью. Визуализация графиков в панели <em>History</em> или <em>Logbook</em> помогает восстановить хронологию событий и найти несоответствия.</p>
+
+<p>Для глубокой отладки можно включить режим трассировки (Trace). Эта функция, появившаяся в последних версиях, позволяет пошагово пройти весь путь выполнения автоматизации. Вы увидите значение каждой переменной на каждом этапе, что делает поиск логических ошибок невероятно простым по сравнению с анализом сырых логов.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Активное логирование отладочной информации может увеличить нагрузку на диск и процессор системы. После устранения проблемы рекомендуется вернуть уровень логирования к стандартному значению.</p>
+</blockquote>
+
+<p>Не стоит забывать про возможность временного отключения отдельных частей автоматизации. Вместо полного удаления кода можно закомментировать подозрительные блоки или использовать условия, которые всегда ложны, чтобы изолировать проблемный участок. Это позволяет тестировать гипотезы без риска сломать работающую систему.</p>
+
+<h2 id="безопасность-и-резервное-копирование-конфигурации">Безопасность и резервное копирование конфигурации</h2>
+
+<p>Автоматизация — это программный код, и как любой код, он требует обслуживания и защиты. Регулярное создание резервных копий конфигурации Home Assistant является обязательным правилом. Обновление системы, эксперименты с новыми интеграциями или случайное редактирование файлов могут привести к неработоспособности всей системы умного дома.</p>
+
+<p>Использование системы контроля версий, такой как <strong>Git</strong>, предоставляет профессиональный подход к управлению конфигурацией. Вы можете отслеживать изменения, возвращаться к предыдущим стабильным версиям и даже тестировать новые сценарии в отдельной ветке перед внедрением в основную систему. Это особенно актуально для сложных проектов с сотнями автоматизаций.</p>
+
+<p>При настройке автоматизаций, связанных с безопасностью (сигнализация, управление замками), критически важно предусмотреть сценарии отказа оборудования. Что произойдет, если контроллер Zigbee зависнет или пропадет интернет? Логика должна быть построена так, чтобы в аварийной ситуации двери оставались разблокированными или свет включался по резервному сценарию.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Резервная копия конфигурации перед внесением массовых изменений — это не рекомендация, а необходимое условие стабильной работы умного дома.</p></aside>
+
+<p>Также стоит ограничить права доступа к интерфейсу управления для разных пользователей. Дети или гости не должны иметь возможности изменять критические автоматизации или отключать системы безопасности. Home Assistant позволяет гибко настраивать роли и права доступа, создавая безопасную среду для всех обитателей дома.</p>
+
+<details>
+<summary>Как сбросить автоматизацию, которая зациклилась?</summary>
+<p>Если автоматизация вошла в бесконечный цикл (например, постоянно включает и выключает свет), quickest способ остановить её — перейти в раздел"Автоматизации", найти проблемный элемент и нажать кнопку"Отключить" (Disable). После этого можно спокойно анализировать логи и исправлять ошибку, не опасаясь дальнейшего хаоса.</p>
+</details>
+
+<details>
+<summary>Можно ли импортировать автоматизации из других систем?</summary>
+<p>Да, Home Assistant поддерживает импорт сценариев из многих популярных платформ, включая IFTTT и проприетарных систем, через специальные интеграции или конвертеры YAML. Однако часто проще переписать логику нативно, чтобы получить полный контроль и независимость от сторонних API.</p>
+</details>
+
+<details>
+<summary>Почему моя автоматизация не срабатывает сразу после перезагрузки?</summary>
+<p>Некоторые триггеры, особенно связанные с состоянием (state trigger), требуют изменения состояния для активации. После перезагрузки состояние устройства остается прежним, поэтому триггер не срабатывает. Для решения этой проблемы используйте триггер события запуска Home Assistant или установите начальное состояние вручную.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/d/dl/dlya-chego-nuzhen-kondensator-v-sensornom-vyklyuchatele.html" class="pb-related-card">
+                <span class="pb-related-title">Роль конденсатора в сенсорном выключателе: принцип работы и защита</span>
+                <span class="pb-related-desc">Узнайте, зачем нужен конденсатор в сенсорном выключателе. Разбор принципов фильтрации помех, стабиль</span>
+            </a><a href="/umnyj-dom/g/gd/gde-mozhno-otklyuchit-domashnij-telefon.html" class="pb-related-card">
+                <span class="pb-related-title">Как отключить домашний телефон: пошаговая инструкция по отказу от услуги</span>
+                <span class="pb-related-desc">Узнайте, где и как официально отключить городской номер. Пошаговые инструкции для Ростелекома, МТС и</span>
+            </a><a href="/umnyj-dom/c/ch/chem-obkleit-stol-pismennyj.html" class="pb-related-card">
+                <span class="pb-related-title">Чем обклеить письменный стол: обзор материалов и инструкции по обновлению</span>
+                <span class="pb-related-desc">Узнайте, чем обклеить старый стол, чтобы он стал как новый. Обоз, винил, пленка или ткань: выбор мат</span>
+            </a><a href="/umnyj-dom/k/ka/kak-podklyuchit-umnuyu-rozetku-bez-alisy.html" class="pb-related-card">
+                <span class="pb-related-title">Как подключить умную розетку без Алисы: полная инструкция</span>
+                <span class="pb-related-desc">Узнайте, как настроить умную розетку без Яндекс.Станции. Настройка через Wi-Fi, сторонние приложения</span>
+            </a><a href="/umnyj-dom/p/pr/prilozheniya-dlya-upravleniya-umnym-domom.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшие приложения для управления умным домом: обзор 2026</span>
+                <span class="pb-related-desc">Полный гид по приложениям для умного дома. Сравнение Google Home, Apple HomeKit, Mi Home и других. Н</span>
+            </a><a href="/umnyj-dom/r/ro/robot-pylesos-perestal-myt-poly-xiaomi-pochemu.html" class="pb-related-card">
+                <span class="pb-related-title">Робот-пылесос Xiaomi перестал мыть полы: причины и ремонт</span>
+                <span class="pb-related-desc">Робот-пылесос Xiaomi не моет пол? Разбираем причины: от засора помпы до сбоя ПО. Инструкция по диагн</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

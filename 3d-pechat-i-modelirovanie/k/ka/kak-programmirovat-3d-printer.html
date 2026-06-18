@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Программирование 3D-принтера: Слайсеры, G-код и прошивки — Техно Гид</title>
+    <meta name="description" content="Полное руководство по программированию 3D-принтера. Настройка слайсеров, редактирование G-кода, перепрошивка контроллера и калибровка для идеальной печати.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/3d-pechat-i-modelirovanie/k/ka/kak-programmirovat-3d-printer.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Программирование 3D-принтера: Слайсеры, G-код и прошивки">
+    <meta property="og:description" content="Полное руководство по программированию 3D-принтера. Настройка слайсеров, редактирование G-кода, перепрошивка контроллера и калибровка для идеальной печати.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/3d-pechat-i-modelirovanie/">3D Печать и Моделирование</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Программирование 3D-принтера: Слайсеры, G-код и прошивки</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-архитектуру-управления-3d-принтером">Введение в архитектуру управления 3D-принтером</a></li><li><a href="#слайсинг-как-основной-инструмент-настройки-печати">Слайсинг как основной инструмент настройки печати</a></li><li><a href="#ручное-редактирование-g-кода-и-понимание-синтаксиса">Ручное редактирование G-кода и понимание синтаксиса</a></li><li><a href="#работа-с-прошивкой-marlin-klipper-и-другие">Работа с прошивкой: Marlin, Klipper и другие</a></li><li><a href="#калибровка-и-вводные-команды-в-контроллере">Калибровка и вводные команды в контроллере</a></li><li><a href="#типичные-ошибки-при-программировании-и-их-устранение">Типичные ошибки при программировании и их устранение</a></li><li><a href="#заключение-и-перспективы-развития">Заключение и перспективы развития</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/3d-pechat-i-modelirovanie/o/os/oshibki-pri-pechati-na-3d-printere.html">Топ-10 ошибок при печати на 3D принтере: причины и решения</a></li><li><a href="/3d-pechat-i-modelirovanie/c/ch/chto-mozhno-na-3d-printere-delat.html">Что можно печатать на 3D принтере: идеи, бизнес и хобби</a></li><li><a href="/3d-pechat-i-modelirovanie/p/pr/programma-dlya-sozdaniya-detalej-dlya-3d-printera.html">Лучшие программы для создания 3D моделей и подготовки к печати</a></li><li><a href="/3d-pechat-i-modelirovanie/c/ch/chto-mozhno-sdelat-na-tri-d-printere.html">Что можно сделать на 3D принтере: от прототипов до мелкого бизнеса</a></li><li><a href="/3d-pechat-i-modelirovanie/p/po/podgotovka-3d-modeli-k-pechati.html">Подготовка 3D модели к печати: Полный гид по слайсингу и настройкам</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Полное руководство: Как программировать 3D-принтер</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-архитектуру-управления-3d-принтером">Введение в архитектуру управления 3D-принтером</a></li><li><a href="#слайсинг-как-основной-инструмент-настройки-печати">Слайсинг как основной инструмент настройки печати</a></li><li><a href="#ручное-редактирование-g-кода-и-понимание-синтаксиса">Ручное редактирование G-кода и понимание синтаксиса</a></li><li><a href="#работа-с-прошивкой-marlin-klipper-и-другие">Работа с прошивкой: Marlin, Klipper и другие</a></li><li><a href="#калибровка-и-вводные-команды-в-контроллере">Калибровка и вводные команды в контроллере</a></li><li><a href="#типичные-ошибки-при-программировании-и-их-устранение">Типичные ошибки при программировании и их устранение</a></li><li><a href="#заключение-и-перспективы-развития">Заключение и перспективы развития</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>3D-печать — это не просто установка модели в принтер и нажатие кнопки «Печать». За этим простым действием скрывается сложный процесс интерпретации цифровых данных, где программное обеспечение управляет физическими движениями extruder и нагревательных элементов. Если вы хотите получать стабильное качество, минимизировать брак и адаптировать устройство под конкретные материалы, необходимо понимать, как происходит <strong>программирование 3D-принтера</strong> на всех этапах: от слайсинга до работы с прошивкой.</p>
+
+<p>Многие новички полагают, что достаточно скачать готовый файл модели, но реальная настройка требует вмешательства в параметры <strong>слайсера</strong>, а в некоторых случаях — прямого редактирования кода или обновления микропрограммы контроллера. Без глубокого понимания этих процессов вы останетесь заложником заводских настроек, которые редко подходят для уникальных задач. Программирование в данном контексте означает управление траекторией, температурой, скоростью и логикой работы всего устройства.</p>
+
+<h2 id="введение-в-архитектуру-управления-3d-принтером">Введение в архитектуру управления 3D-принтером</h2>
+<p>В основе работы любого современного устройства лежит микроконтроллер, который исполняет команды, полученные от компьютера или SD-карты. Вы не пишете код с нуля, как в классической разработке, но вы управляете процессом трансляции 3D-модели в <strong>G-код</strong> — язык, понятный машине. Понимание этой цепочки критически важно: ошибка на этапе слайсинга приведет к физическому столкновению головок или браку печати, который невозможно исправить в процессе.</p>
+
+<p>Процесс начинается с CAD-файла, который затем конвертируется в сетку полигонов, а после — в инструкции движения. <strong>Прошивка</strong> принтера (например, Marlin или Klipper) выступает в роли операционной системы, определяющей, как контроллер реагирует на эти инструкции. Если вы планируете расширить функционал устройства, например, добавить автокалибровку стола или ускорить печать, вам придется перепрограммировать именно эту микропрограмму.</p>
+
+<p>Не стоит путать слайсинг с низкоуровневым программированием. В первом случае вы настраиваете параметры через удобный интерфейс, во втором — правите исходный код на языке C++ и компилируете его. Оба навыка полезны, но уровень требуемых знаний существенно различается. Выбор подхода зависит от вашей цели: быстрая печать готовых моделей или полная кастомизация оборудования под специфические задачи.</p>
+
+<p>Для эффективной работы с оборудованием необходимо освоить три ключевых направления:</p>
+<ul>
+<li>Настройка <strong>слайсера</strong> для генерации оптимального G-кода.</li>
+<li>Понимание структуры команд G-кода для ручной коррекции ошибок.</li>
+<li>Работа с прошивкой для расширения аппаратных возможностей.</li>
+</ul>
+
+<h2 id="слайсинг-как-основной-инструмент-настройки-печати">Слайсинг как основной инструмент настройки печати</h2>
+<p>Слайсер — это программа, которая «нарезает» 3D-модель на слои и генерирует траектории движения для сопла. Именно здесь происходит основная работа по программированию параметров печати. Вы задаете <strong>высоту слоя</strong>, плотность заполнения, скорость перемещения и температуры. Ошибки на этом этапе, такие как слишком высокая скорость или неправильная температура, могут привести к деформации деталей или засору сопла.</p>
+
+<p>В популярных слайсерах, таких как <em>Cura</em>, <em>PrusaSlicer</em> или <em>Lychee</em>, параметры делятся на базовые и расширенные. Базовые настройки подходят для большинства стандартных задач, но для профессиональной работы необходимо открывать расширенные параметры. Там вы найдете настройки ретракции, вазовой печати, поддержки и оптимизации движения печатающей головки. Каждое изменение здесь влияет на конечный результат.</p>
+
+<p>Особое внимание стоит уделить параметрам ретракции (втягивания филамента). Неправильная настройка может вызвать образование нитей-паутины на модели или забить сопло перегретым пластиком. Экспериментируйте с длиной ретракции и скоростью втягивания, чтобы найти идеальный баланс для вашего конкретного экструдера.</p>
+
+<blockquote>⚠️ Внимание: <strong>Прошивка Marlin</strong> имеет ограничение на длину команды G-кода. Если слайсер генерирует слишком длинные команды, контроллер может выдавать ошибку переполнения буфера, что приведет к зависанию принтера посередине печати.</blockquote>
+
+<p>Каждый материал требует индивидуального подхода. PLA печатается легко, но ABS или PETG требуют закрытой камеры и строгого контроля температуры. Программируя слайсер под новый материал, нужно учитывать его усадку и температуру плавления. Игнорирование этих нюансов часто приводит к войне с принтером, хотя проблема решается простым изменением настроек в софте.</p>
+
+<div class="pb-poll" id="poll-ef6a32b2"><div class="pb-poll-question">📊 Какой слайсер вы используете чаще всего?</div><div class="pb-poll-option" data-poll="ef6a32b2" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Ultimaker Cura</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="ef6a32b2" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">PrusaSlicer</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="ef6a32b2" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Cura</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="ef6a32b2" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Simplify3D</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="ef6a32b2" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другой (например, Lychee)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="ручное-редактирование-g-кода-и-понимание-синтаксиса">Ручное редактирование G-кода и понимание синтаксиса</h2>
+<p>G-код — это текстовый файл, содержащий последовательность инструкций для принтера. Иногда автоматические настройки слайсера дают сбой, и единственное решение — открыть файл в текстовом редакторе и исправить ошибки вручную. Например, если принтер начинает печатать за пределами стола, нужно найти соответствующие координаты в коде и скорректировать их. Это требует знания основных команд, таких как <code>G0</code> (быстрое перемещение) или <code>G1</code> (печатное перемещение).</p>
+
+<p>Программирование на уровне G-кода позволяет решать задачи, которые слайсер выполнить не может. Вы можете настроить парковку головки в начале каждого слоя, изменить температуру в середине печати или добавить паузу для смены цвета. Для этого используются команды M-кодов, например, <code>M104</code> для установки температуры или <code>M106</code> для включения вентилятора. Изучение синтаксиса открывает безграничные возможности для кастомизации.</p>
+
+<p>При редактировании файла будьте предельно осторожны. Одна лишняя цифра или пропущенный символ могут привести к тому, что принтер попытается пройти сквозь стол или нагретой соплом ударит по датчику. Всегда делайте резервную копию оригинального файла перед внесением изменений. Используйте текстовые редакторы с подсветкой синтаксиса, такие как Notepad++ или VS Code, чтобы избежать ошибок.</p>
+
+<p>Вот основные команды, которые часто требуют ручного вмешательства:</p>
+<ul>
+<li><code>G28</code> — гоминг (возврат осей в нулевую позицию).</li>
+<li><code>G92</code> — установка текущей позиции координат.</li>
+<li><code>M104 S200</code> — установка целевой температуры сопла (200 градусов).</li>
+<li><code>M140 S60</code> — установка температуры стола.</li>
+</ul>
+
+<details class="pb-accordion"><summary>Что такое макрокоманды в G-коде?</summary><div class="pb-accordion-body"><p>Макрокоманды — это последовательности G-кода, которые можно вызывать одной командой. Они часто используются в прошивках для автоматизации процессов калибровки или смены инструмента.</p></div></details>
+
+<h2 id="работа-с-прошивкой-marlin-klipper-и-другие">Работа с прошивкой: Marlin, Klipper и другие</h2>
+<p>Если настройки слайсера исчерпаны, следующим шагом становится перепрошивка контроллера. <strong>Marlin</strong> — самая популярная прошивка с открытым исходным кодом, которая позволяет включать или отключать функции, менять калибровку шагов двигателей и настраивать датчики. Для этого вам понадобится доступ к файлу конфигурации <code>Configuration.h</code> на компьютере и программатор или USB-кабель для загрузки кода в микроконтроллер.</p>
+
+<p>Современным трендом является переход на <em>Klipper</em>. Эта прошивка выносит логику вычислений на внешний одноплатный компьютер (например, Raspberry Pi), оставляя на самом принтере только управление моторами. Это позволяет достичь гораздо больших скоростей печати и более точного контроля, так как нагрузка на микроконтроллер снижена. Программирование Klipper требует настройки YAML-файлов, но дает беспрецедентную гибкость.</p>
+
+<p>При перепрошивке важно точно знать модель вашего контроллера (Arduino, STM32, AVR) и версию прошивки. Ошибки в компиляции могут привести к «окирпичиванию» платы, которую придется перепрошивать через специальный режим загрузки или программатор. Всегда сверяйте выводы с распиновкой вашей платы перед подачей питания.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к перепрошивке</h4><label class="check-item"><input type="checkbox"><span>Скачать актуальную версию Marlin</span></label><label class="check-item"><input type="checkbox"><span>Открыть файл Configuration.h</span></label><label class="check-item"><input type="checkbox"><span>Настроить параметры платы</span></label><label class="check-item"><input type="checkbox"><span>Скомпилировать и загрузить прошивку</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>Для наглядности сравним возможности двух основных прошивок:</p>
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Характеристика</th>
+<th>Marlin</th>
+<th>Klipper</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Архитектура</td>
+<td>Работает на микроконтроллере</td>
+<td>Работает на внешнем ПК + микроконтроллер</td>
+</tr>
+<tr>
+<td>Сложность настройки</td>
+<td>Средняя (изменение C++ кода)</td>
+<td>Высокая (конфигурация YAML)</td>
+</tr>
+<tr>
+<td>Скорость печати</td>
+<td>Ограничена мощностью контроллера</td>
+<td>Очень высокая (расчет в реальном времени)</td>
+</tr>
+<tr>
+<td>Интерфейс</td>
+<td>LCD экран или OctoPrint</td>
+<td>Web-интерфейс (Mainsail/Fluidd)</td>
+</tr>
+</tbody>
+</table></div>
+
+<blockquote>⚠️ Внимание: Обновление прошивки часто сбрасывает калибровку шагов двигателей. После перепрошивки обязательно проверьте и заново откалибруйте оси, иначе размеры деталей будут неверными.</blockquote>
+
+<h2 id="калибровка-и-вводные-команды-в-контроллере">Калибровка и вводные команды в контроллере</h2>
+<p>После настройки софта и прошивки необходимо провести точную калибровку. Это процесс, при котором вы сообщаете контроллеру реальные физические параметры устройства. Команды <code>Marlin</code> позволяют управлять этим процессом через терминал. Например, команда <code>M500</code> сохраняет текущие настройки в память, а <code>M502</code> сбрасывает их к заводским. Без сохранения изменений все ваши усилия по настройке пропадут после перезагрузки.</p>
+
+<p>Калибровка включает в себя настройку шагов на миллиметр (<code>M92</code>), смещение датчика концевика (<code>M851</code>) и проверку температуры. Вы можете использовать G-код для проверки работы нагревателя или вентилятора, чтобы убедиться, что все устройства подключены верно. Это критический этап, так как неверные значения могут привести к перегреву или механическим повреждениям при печати.</p>
+
+<p>В современных системах также используется автоматическая калибровка стола (Bed Leveling). Для настройки этой функции необходимо определить количество точек сетки и скорость движения. В файле конфигурации прошивки вы задаете эти параметры, а затем запускаете процесс печати тестового узора. Если стол неровный, прошивка будет поднимать и опускать сопло с разной высотой, компенсируя кривизну.</p>
+
+
+
+<h2 id="типичные-ошибки-при-программировании-и-их-устранение">Типичные ошибки при программировании и их устранение</h2>
+<p>Даже опытные пользователи сталкиваются с ошибками при программировании 3D-принтеров. Одной из самых частых проблем является рассинхронизация осей. Это происходит, когда принтер «теряет» шаг и начинает печатать со смещением. Причина часто кроется в слишком высоком ускорении или недостаточном токе драйверов. Решение лежит в плоскости изменения параметров <code>ACC</code> (ускорение) и <code>MAX</code> (максимальная скорость) в слайсере или прошивке.</p>
+
+<p>Другая проблема — «залипание» пластика в хотэнде, вызванное неправильной настройкой температуры или охлаждением. Если пластик перегревается, он становится жидким даже в холодной зоне, что приводит к засору. Здесь помогает корректировка температуры в G-коде или изменение настроек охлаждения в прошивке. Иногда требуется ручная перенастройка PID (пропорционально-интегрально-дифференциального регулятора) для стабилизации температуры.</p>
+
+<p>Нередко возникают проблемы с коммуникацией между компьютером и принтером. Если слайсер не может отправить файл или терминал не отвечает, проверьте скорость порта (обычно 115200 или 250000) и наличие конфликтов драйверов. Иногда помогает смена USB-кабеля на более качественный и короткий, чтобы избежать помех в передаче данных.</p>
+
+<p>Основные причины сбоев при печати:</p>
+<ul>
+<li>Неправильно настроенные <strong>шаги двигателя</strong> (слишком высокие или низкие).</li>
+<li>Ошибки в <strong>G-коде</strong> из-за багов в слайсере.</li>
+<li>Нестабильное напряжение питания, вызывающее перегрев драйверов.</li>
+<li>Конфликт версий прошивки и драйверов.</li>
+</ul>
+
+
+
+<h2 id="заключение-и-перспективы-развития">Заключение и перспективы развития</h2>
+<p>Программирование 3D-принтера — это непрерывный процесс обучения и настройки. От простого использования слайсера до глубокой работы с кодом прошивки — каждый уровень открывает новые возможности. Вы получаете полный контроль над процессом создания объектов, что позволяет достигать результатов, недоступных при использовании стандартных настроек.</p>
+
+<p>С развитием технологий появляются новые инструменты, такие как AI-мониторинг печати и предиктивная аналитика. Однако база остается прежней: понимание физики процесса, владение G-кодом и умение работать с прошивкой. Эти навыки сделают вас независимым от заводских ограничений и позволят создавать действительно уникальные устройства.</p>
+
+<p>Помните, что каждый принтер уникален. То, что работает на одной модели, может не подойти для другой. Экспериментируйте, читайте документацию и не бойтесь вносить изменения в конфигурацию. Именно так рождаются лучшие проекты в мире аддитивных технологий.</p>
+
+<details>
+<summary>Как часто нужно обновлять прошивку принтера?</summary>
+<p>Обновлять прошивку стоит только при необходимости исправления критических ошибок или добавления нужной функции. Если ваш принтер работает стабильно, «залезать» в код без острой нужды не рекомендуется, так как новое ПО может иметь скрытые баги.</p>
+</details>
+
+<details>
+<summary>Можно ли печатать без использования слайсера?</summary>
+<p>Технически можно, если у вас есть готовый G-код. Но на практике генерировать G-код вручную для сложной модели невозможно. Слайсер — необходимый инструмент для перевода 3D-модели в язык принтера.</p>
+</details>
+
+<details>
+<summary>Что лучше: Marlin или Klipper для новичка?</summary>
+<p>Для новичка проще начать с Marlin, так как он устанавливается стандартно и имеет много готовых конфигураций. Klipper требует настройки внешнего компьютера и более сложной конфигурации, но дает огромный прирост в скорости и качестве.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/3d-pechat-i-modelirovanie/o/os/oshibki-pri-pechati-na-3d-printere.html" class="pb-related-card">
+                <span class="pb-related-title">Топ-10 ошибок при печати на 3D принтере: причины и решения</span>
+                <span class="pb-related-desc">Узнайте, почему 3D-печать не удаётся. Разбор ошибок печати, слоёв, адгезии и деформации. Практически</span>
+            </a><a href="/3d-pechat-i-modelirovanie/c/ch/chto-mozhno-na-3d-printere-delat.html" class="pb-related-card">
+                <span class="pb-related-title">Что можно печатать на 3D принтере: идеи, бизнес и хобби</span>
+                <span class="pb-related-desc">Полный обзор возможностей 3D-печати: от создания прототипов и деталей до создания уникального декора</span>
+            </a><a href="/3d-pechat-i-modelirovanie/p/pr/programma-dlya-sozdaniya-detalej-dlya-3d-printera.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшие программы для создания 3D моделей и подготовки к печати</span>
+                <span class="pb-related-desc">Обзор профессионального и свободного ПО для 3D-моделирования и слайсинга. Как выбрать софт для FDM и</span>
+            </a><a href="/3d-pechat-i-modelirovanie/c/ch/chto-mozhno-sdelat-na-tri-d-printere.html" class="pb-related-card">
+                <span class="pb-related-title">Что можно сделать на 3D принтере: от прототипов до мелкого бизнеса</span>
+                <span class="pb-related-desc">Узнайте, что именно печатают на 3D принтерах: детали, игрушки, инструменты и даже еду. Обзор материа</span>
+            </a><a href="/3d-pechat-i-modelirovanie/p/po/podgotovka-3d-modeli-k-pechati.html" class="pb-related-card">
+                <span class="pb-related-title">Подготовка 3D модели к печати: Полный гид по слайсингу и настройкам</span>
+                <span class="pb-related-desc">Узнайте, как подготовить 3D модель к печати: проверка геометрии, ориентация, поддержка и параметры с</span>
+            </a><a href="/3d-pechat-i-modelirovanie/k/ka/kak-vyrezat-otverstie-v-3d-maks.html" class="pb-related-card">
+                <span class="pb-related-title">Как вырезать отверстие в 3ds Max: 5 способов для новичков</span>
+                <span class="pb-related-desc">Полная инструкция по созданию отверстий в 3D Max. Булевы операции, Editable Poly, ProBoolean и модиф</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

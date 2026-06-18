@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как подключить Алису к Home Assistant: Полное руководство — Техно Гид</title>
+    <meta name="description" content="Подробная инструкция по интеграции Яндекс Алисы с Home Assistant. Настройка через Yandex Smart Home и API для управления умным домом голосом.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/k/ka/kak-podklyuchit-alisu-k-home-assistant.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как подключить Алису к Home Assistant: Полное руководство">
+    <meta property="og:description" content="Подробная инструкция по интеграции Яндекс Алисы с Home Assistant. Настройка через Yandex Smart Home и API для управления умным домом голосом.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как подключить Алису к Home Assistant: Полное руководство</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-интеграцию-голосовых-помощников">Введение в интеграцию голосовых помощников</a></li><li><a href="#оценка-возможностей-облачной-интеграции-через-умный-дом">Оценка возможностей облачной интеграции через умный дом</a></li><li><a href="#настройка-официального-плагина-yandex-smart-home">Настройка официального плагина Yandex Smart Home</a></li><li><a href="#локальные-методы-управления-и-api-вызовы">Локальные методы управления и API вызовы</a></li><li><a href="#сравнение-методов-интеграции-и-их-характеристики">Сравнение методов интеграции и их характеристики</a></li><li><a href="#тонкая-настройка-сценариев-и-автоматизаций">Тонкая настройка сценариев и автоматизаций</a></li><li><a href="#решение-распространенных-проблем-и-ошибок">Решение распространенных проблем и ошибок</a></li><li><a href="#заключение-и-перспективы-развития">Заключение и перспективы развития</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/r/ro/robot-pylesos-shumit-pri-rabote.html">Почему робот-пылесос громко шумит: причины, диагностика и устранение</a></li><li><a href="/umnyj-dom/d/da/datchik-temperatury-wifi-bez-shlyuza.html">Датчик температуры WiFi без шлюза: Как выбрать и настроить</a></li><li><a href="/umnyj-dom/k/ko/kogda-nachinaetsya-rannee-utro.html">Когда начинается раннее утро: Биоритмы, время и влияние на организм</a></li><li><a href="/umnyj-dom/k/ka/kak-podklyuchit-vyklyuchatel-bez-nulya-s-kondensatorom.html">Схема подключения выключателя без нуля с конденсатором</a></li><li><a href="/umnyj-dom/n/na/nasos-xiaomi-mijia-1s.html">Насос Xiaomi Mijia 1S: обзор, характеристики и инструкция по настройке</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Полная интеграция голосового помощника Алиса в систему Home Assistant</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-интеграцию-голосовых-помощников">Введение в интеграцию голосовых помощников</a></li><li><a href="#оценка-возможностей-облачной-интеграции-через-умный-дом">Оценка возможностей облачной интеграции через умный дом</a></li><li><a href="#настройка-официального-плагина-yandex-smart-home">Настройка официального плагина Yandex Smart Home</a></li><li><a href="#локальные-методы-управления-и-api-вызовы">Локальные методы управления и API вызовы</a></li><li><a href="#сравнение-методов-интеграции-и-их-характеристики">Сравнение методов интеграции и их характеристики</a></li><li><a href="#тонкая-настройка-сценариев-и-автоматизаций">Тонкая настройка сценариев и автоматизаций</a></li><li><a href="#решение-распространенных-проблем-и-ошибок">Решение распространенных проблем и ошибок</a></li><li><a href="#заключение-и-перспективы-развития">Заключение и перспективы развития</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-интеграцию-голосовых-помощников">Введение в интеграцию голосовых помощников</h2>
+<p>Создание по-настоящему умного дома требует не только автоматизации процессов, но и удобного интерфейса управления для пользователя. <em>Home Assistant</em> является одним из самых мощных инструментов в этой сфере, позволяя объединить устройства сотен различных производителей в единую экосистему. Однако без голосового управления этот потенциал раскрывается не полностью, так как каждый раз искать кнопку на смартфоне неудобно.</p>
+<p>Возможность управлять светом, климатом и мультимедиа голосом превращает набор разрозненных гаджетов в слаженный механизм. <strong>Яндекс Алиса</strong> стала популярным выбором для русскоязычных пользователей благодаря отличному распознаванию речи и глубокой интеграции с местными сервисами. Обеспечить связь между этими двумя платформами — ключевая задача для продвинутых энтузиастов умного дома.</p>
+<p>Существует несколько путей реализации этой связи, от простых облачных интеграций до сложных локальных решений через API. Выбор конкретного метода зависит от ваших требований к скорости отклика, конфиденциальности данных и наличия необходимых навыков программирования. В этой статье мы разберем наиболее эффективные способы, чтобы вы могли выбрать оптимальный вариант для своей инфраструктуры.</p>
+
+<h2 id="оценка-возможностей-облачной-интеграции-через-умный-дом">Оценка возможностей облачной интеграции через умный дом</h2>
+<p>Самый доступный и быстрый способ связать платформы — использование официальной облачной интеграции <code>Yandex Smart Home</code>. Этот метод не требует установки дополнительного программного обеспечения на домашний сервер и работает через интернет. Основная идея заключается в том, что <em>Home Assistant</em> отправляет данные о состоянии своих устройств в облако Яндекса, откуда они становятся доступными для Алисы.</p>
+<p>Процесс настройки через облако подходит для большинства пользователей, которые хотят получить базовый функционал без глубокого погружения в технические детали. Вам потребуется создать аккаунт разработчика в консоли Яндекса и зарегистрировать там свою «умную сцену». После этого система запросит доступ к вашим устройствам из <em>Home Assistant</em> через специальный плагин.</p>
+<p>Однако важно понимать, что облачный метод имеет свои ограничения. Задержка при выполнении команд может составлять от 1 до 3 секунд, что заметно при быстрой сценарной работе. Кроме того, для отклика голосового помощника необходим доступ в интернет, что делает систему зависимой от провайдера и внешних серверов Яндекса.</p>
+<blockquote><strong>⚠️ Внимание:</strong> При использовании облачной интеграции все данные о состоянии ваших устройств передаются через серверы Яндекса. Если для вас критична полная приватность и локальная работа без выхода в сеть, рассмотрите альтернативные методы с использованием локальных API или сторонних шлюзов.</blockquote>
+
+<h2 id="настройка-официального-плагина-yandex-smart-home">Настройка официального плагина Yandex Smart Home</h2>
+<p>Для начала работы необходимо установить официальный компонент в конфигурацию вашего сервера. В современных версиях <em>Home Assistant</em> это делается через интерфейс HACS или встроенный магазин дополнений. Убедитесь, что ваш сервер подключен к интернету и имеет стабильный IP-адрес, так как интеграция требует внешних подключений.</p>
+<p>После установки плагина активируйте его в разделе <code>Настройки → Устройства и службы</code>. В открывшемся окне появится кнопка для добавления новой интеграции, где вам нужно будет выбрать <em>Yandex Smart Home</em>. Система предложит авторизоваться через ваш аккаунт Яндекс ID, который должен быть привязан к голосовому помощнику.</p>
+<p>На следующем этапе вам потребуется создать токен доступа. Это делается в личном кабинете разработчика Яндекса в разделе <code>Умный дом</code>. Скопируйте полученный токен и вставьте его в поле конфигурации плагина в <em>Home Assistant</em>. После успешной проверки токена система автоматически обнаружит все доступные устройства.</p>
+<p>Не забудьте настроить права доступа для каждого устройства в панели управления Яндекса. Вы можете переименовать устройства, изменить их тип (например, указать, что это именно лампочка, а не просто выключатель) и назначить их в конкретные комнаты. Правильная категоризация критически важна для корректного распознавания команд Алисой.</p>
+<ul>
+<li>🔑 Создайте отдельный аккаунт Яндекс ID для интеграции, чтобы не смешивать личный и технический трафик.</li>
+<li>🏠 Назначьте каждому устройству четкую комнату в интерфейсе <em>Умный дом</em> для более точного таргетинга команд.</li>
+<li>🔧 Проверьте, что все устройства имеют уникальные имена, так как Алиса может запутаться в дубликатах.</li>
+</ul>
+
+<div class="pb-poll" id="poll-a2d4a4de"><div class="pb-poll-question">📊 Какой способ интеграции вы планируете использовать?</div><div class="pb-poll-option" data-poll="a2d4a4de" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Облачная интеграция (официальная)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="a2d4a4de" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Локальный шлюз (Yandex Local API)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="a2d4a4de" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Сторонние решения (Scada, HomeKit)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="локальные-методы-управления-и-api-вызовы">Локальные методы управления и API вызовы</h2>
+<p>Для продвинутых пользователей, стремящихся к максимальной скорости отклика и независимости от облачных сервисов, существуют методы локального управления. <em>Yandex Local API</em> позволяет Алисе отправлять команды прямо на ваш сервер <em>Home Assistant</em> в пределах домашней сети. Это решает проблему задержек и сохраняет данные в изолированной среде.</p>
+<p>Реализация локального доступа требует наличия статического IP-адреса для сервера и настройки сертификатов безопасности. Вам необходимо сгенерировать самоподписанный сертификат или использовать LetsEncrypt, так как протокол взаимодействия требует защищенного соединения <code>HTTPS</code>. Без этого Алиса не сможет безопасно передавать команды.</p>
+<p>Процесс настройки включает в себя создание приложения в консоли Яндекса с включенным параметром локального исполнения. В файле конфигурации <em>Home Assistant</em> нужно прописать маршруты для приема команд. Это более сложный путь, но он дает возможность работать даже при отключенном интернете.</p>
+<p>Существуют готовые проекты сообщества, такие как <code>Yandex Smart Home Local</code>, которые упрощают этот процесс. Они выступают в роли посредника, переводя протоколы Яндекса на понятный для <em>Home Assistant</em> язык. Использование таких решений снижает порог входа, но требует осторожности при настройке сетевого доступа.</p>
+<blockquote><strong>⚠️ Внимание:</strong> При настройке локального API обязательно проверьте настройки фаервола на вашем сервере. Незащищенный доступ к портам управления может позволить злоумышленникам извне получать контроль над вашей системой умного дома.</blockquote>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к локальной интеграции</h4><label class="check-item"><input type="checkbox"><span>Получить статический IP адрес сервера</span></label><label class="check-item"><input type="checkbox"><span>Сгенерировать SSL-сертификат</span></label><label class="check-item"><input type="checkbox"><span>Настроить проброс портов на роутере</span></label><label class="check-item"><input type="checkbox"><span>Установить компонент локального API</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="сравнение-методов-интеграции-и-их-характеристики">Сравнение методов интеграции и их характеристики</h2>
+<p>Чтобы выбрать оптимальный вариант, необходимо сопоставить ключевые характеристики различных методов подключения. Таблица ниже демонстрирует различия между облачным и локальным подходами по основным параметрам производительности и удобства.</p>
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Облачная интеграция</th>
+<th>Локальный API</th>
+<th>Сторонние шлюзы</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Скорость отклика</td>
+<td>1-3 секунды</td>
+<td>0.2-0.5 секунды</td>
+<td>Зависит от реализации</td>
+</tr>
+<tr>
+<td>Работа без интернета</td>
+<td>Нет</td>
+<td>Да</td>
+<td>Частично</td>
+</tr>
+<tr>
+<td>Сложность настройки</td>
+<td>Низкая</td>
+<td>Высокая</td>
+<td>Средняя</td>
+</tr>
+<tr>
+<td>Конфиденциальность</td>
+<td>Средняя</td>
+<td>Высокая</td>
+<td>Зависит от провайдера</td>
+</tr>
+<tr>
+<td>Поддержка сценариев</td>
+<td>Ограниченная</td>
+<td>Полная</td>
+<td>Широкая</td>
+</tr>
+</tbody>
+</table></div>
+<p>Облачный метод идеально подходит для новичков и пользователей, которым не критична задержка в пару секунд. Он работает из коробки и не требует глубоких знаний сетевых протоколов. Однако для сценариев с высокой частотой переключений, например, мигание света или управление шторами в реальном времени, это может быть неудобно.</p>
+<p>Локальное решение требует времени на первоначальную настройку, но окупается мгновенной реакцией системы. Это особенно актуально для пользователей, живущих в регионах с нестабильным интернетом или тех, кто принципиально не доверяет свои данные облачным сервисам. </p>
+
+<details class="pb-accordion"><summary>Что делать, если Алиса не видит устройства?</summary><div class="pb-accordion-body"><p>Если после настройки устройства не отображаются в приложении Яндекса, попробуйте выйти из аккаунта и войти снова. Также проверьте, что устройства включены в группу «Доступные устройства» в настройках интеграции. Иногда помогает полное пересоздание токена доступа и повторное сканирование.»</p></div></details>
+
+<h2 id="тонкая-настройка-сценариев-и-автоматизаций">Тонкая настройка сценариев и автоматизаций</h2>
+<p>После базового подключения устройств важно настроить их поведение через голосовые команды. В <em>Home Assistant</em> вы можете создавать сложные <strong>автоматизации</strong>, которые будут запускаться по запросам Алисы. Например, фраза «Включи режим кино» может затемнять свет, закрывать шторы и включать телевизор. Для этого используются сценарии, которые вызываются через <code>service call</code>.</p>
+<p>В настройках интеграции Яндекса можно привязать конкретные сценарии к голосовым командам. Это делается в разделе <code>Сценарии</code> консоли разработчика. Вы можете задать уникальное имя для сценария, например, <code>goodnight</code>, и сопоставить его с фразой «Алиса, выключи свет и включи охрану».</p>
+<p>Некоторые продвинутые пользователи используют <em>Yandex Voice Kit</em> для создания собственных навыков. Это позволяет задавать Алисе вопросы о состоянии конкретных датчиков, например, «Какая температура в спальне?». Для этого необходимо настроить ответы в формате JSON, которые будут возвращать данные из <em>Home Assistant</em>.</p>
+<p>Использование <code>templates</code> в Home Assistant позволяет динамически формировать ответы для голосового помощника. Вы можете настроить так, чтобы Алиса сообщала не просто значение температуры, а целое предложение: «В спальне сейчас 23 градуса, это комфортно».</p>
+<ul>
+<li>🎙️ Тестируйте сценарии в режиме отладки перед публикацией, чтобы избежать случайных срабатываний.</li>
+<li>📊 Используйте <em>dashboards</em> для визуализации логов срабатывания голосовых команд и анализа частоты запросов.</li>
+<li>🔒 Ограничьте доступ к критическим командам (например, отключение охраны) через подтверждение или PIN-код.</li>
+</ul>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед масштабным внедрением сценариев создайте резервную копию конфигурации Home Assistant. Ошибка в настройке сценария может привести к некорректной работе всех устройств в доме.»</p></aside>
+
+<h2 id="решение-распространенных-проблем-и-ошибок">Решение распространенных проблем и ошибок</h2>
+<p>В процессе эксплуатации пользователи часто сталкиваются с тем, что <em>Алиса</em> перестает видеть изменения состояния устройств. Чаще всего это связано с рассинхронизацией облачных данных. Система может «думать», что свет выключен, хотя на самом деле он горит из-за физического переключателя. Решением является включение обработки событий состояния (state changes) в настройках интеграции.</p>
+<p>Другая частая проблема — невозможность отправки команд на устройства с нестандартными протоколами. Если ваш датчик или выключатель работает через специфический протокол, который не поддерживается нативно Яндексом, может потребоваться использование эмуляторов устройств. В <em>Home Assistant</em> это реализуется через интеграцию <code>Virtual Switch</code> или создание псевдо-устройств.</p>
+<p>Иногда возникают ошибки авторизации, выражающиеся в сообщении «Токен недействителен». Это происходит, когда срок действия ключа доступа истек или аккаунт Яндекса был заблокирован. В таком случае необходимо сгенерировать новый токен и обновить его в конфигурации плагина. Не забывайте, что токены имеют ограниченный срок жизни.</p>
+<p>Если голосовой помощник игнорирует команды, проверьте настройки микрофона на устройствах умного дома. Иногда проблема кроется не в программной части, а в аппаратной — Алиса просто не слышит команду из-за шума или расстояния. Убедитесь, что устройства расположены в зоне уверенного приема сигнала.</p>
+<blockquote><strong>⚠️ Внимание:</strong> При обновлении версии Home Assistant всегда проверяйте совместимость компонента интеграции с новой версией ядра. Изменения в API могут привести к потере функциональности без обновления настроек.</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Регулярная проверка логов и обновление токенов — залог стабильной работы голосового управления в вашей системе умного дома.»</p></aside>
+
+<details class="pb-accordion"><summary>Как проверить лог ошибок интеграции?</summary><div class="pb-accordion-body"><p>Для просмотра логов перейдите в <code>Настройки → Система → Журналы</code> и выберите файл лога интеграции Yandex Smart Home. Ищите строки с пометкой ERROR или WARNING, которые обычно содержат код ошибки и описание проблемы.»</p></div></details>
+
+<h2 id="заключение-и-перспективы-развития">Заключение и перспективы развития</h2>
+<p>Интеграция <em>Яндекс Алисы</em> с <em>Home Assistant</em> открывает широкие возможности для управления умным домом. Гибкость системы позволяет адаптировать её под любые сценарии жизни, от простого управления светом до сложных сценариев с взаимозависимыми приборами. Выбор между облачным и локальным методом зависит от ваших приоритетов: удобство настройки против скорости и приватности.</p>
+<p>Развитие стандартов умного дома, таких как Matter, в будущем может упростить процесс интеграции, сделав его более универсальным. Однако на данный момент использование специализированных интеграций остается наиболее надежным способом получения полного контроля над всеми устройствами. Экспериментируйте с настройками, создавайте свои сценарии и наслаждайтесь комфортом.</p>
+<p>Помните, что идеальная система умного дома строится постепенно. Начинайте с базовых функций, тестируйте их надежность, и только затем добавляйте сложные автоматизации. Такой подход позволит избежать хаоса в управлении и обеспечит стабильную работу всех компонентов системы.</p>
+
+<details>
+<summary>Как сбросить настройки интеграции Yandex Smart Home?</summary>
+<p>Для полного сброса интеграции удалите компонент из списка установленных в Home Assistant, затем зайдите в консоль разработчика Яндекса и удалите приложение. После этого очистите кэш браузера и создайте интегрицию заново с чистого листа.</p>
+</details>
+
+<details>
+<summary>Можно ли подключить Алису без интернета?</summary>
+<p>Да, это возможно при использовании локального API (Local API), но для этого необходимо, чтобы устройства, на которых запущен Home Assistant, и Яндекс-устройства (колонки) находились в одной локальной сети, а на колонках была настроена поддержка локального управления.</p>
+</details>
+
+<details>
+<summary>Почему Алиса не видит новые устройства после добавления?</summary>
+<p>Чаще всего это происходит из-за кэширования на стороне сервера Яндекса. Попробуйте удалить интеграцию и добавить её снова, либо подождать 5-10 минут для автоматической синхронизации списков устройств.</p>
+</details>
+
+<details>
+<summary>Нужен ли платный аккаунт Яндекс Плюс для интеграции?</summary>
+<p>Нет, базовая интеграция Home Assistant с голосовым помощником Алиса доступна бесплатно для всех пользователей с аккаунтом Яндекс ID. Платная подписка влияет только на качество музыки и дополнительные сервисы, но не на управление умным домом.</p>
+</details>
+
+<details>
+<summary>Как изменить название устройства в Алисе после синхронизации?</summary>
+<p>Переименование следует выполнять в приложении Яндекс Умный дом, а не в Home Assistant. Изменение имени в HA не всегда сразу отражается в облаке, поэтому правку лучше делать непосредственно в экосистеме Яндекса.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/r/ro/robot-pylesos-shumit-pri-rabote.html" class="pb-related-card">
+                <span class="pb-related-title">Почему робот-пылесос громко шумит: причины, диагностика и устранение</span>
+                <span class="pb-related-desc">Робот-пылесос начал сильно шуметь? Узнайте основные причины посторонних звуков, как провести самосто</span>
+            </a><a href="/umnyj-dom/d/da/datchik-temperatury-wifi-bez-shlyuza.html" class="pb-related-card">
+                <span class="pb-related-title">Датчик температуры WiFi без шлюза: Как выбрать и настроить</span>
+                <span class="pb-related-desc">Обзор автономных WiFi датчиков температуры. Сравнение моделей, настройка без шлюза, интеграция с умн</span>
+            </a><a href="/umnyj-dom/k/ko/kogda-nachinaetsya-rannee-utro.html" class="pb-related-card">
+                <span class="pb-related-title">Когда начинается раннее утро: Биоритмы, время и влияние на организм</span>
+                <span class="pb-related-desc">Точное определение времени начала раннего утра. Как ранний подъем влияет на продуктивность, сон и зд</span>
+            </a><a href="/umnyj-dom/k/ka/kak-podklyuchit-vyklyuchatel-bez-nulya-s-kondensatorom.html" class="pb-related-card">
+                <span class="pb-related-title">Схема подключения выключателя без нуля с конденсатором</span>
+                <span class="pb-related-desc">Как подключить умный выключатель без нулевого провода? Инструкция по монтажу с конденсатором, устран</span>
+            </a><a href="/umnyj-dom/n/na/nasos-xiaomi-mijia-1s.html" class="pb-related-card">
+                <span class="pb-related-title">Насос Xiaomi Mijia 1S: обзор, характеристики и инструкция по настройке</span>
+                <span class="pb-related-desc">Полный разбор умного насоса Xiaomi Mijia 1S. Технические параметры, подключение к Mi Home, сравнение</span>
+            </a><a href="/umnyj-dom/k/ka/kak-sbrosit-rozetku-yandeks.html" class="pb-related-card">
+                <span class="pb-related-title">Как сбросить розетку Яндекса: полная инструкция по перезагрузке</span>
+                <span class="pb-related-desc">Пошаговое руководство по сбросу умной розетки Яндекс. Как перезагрузить устройство, вернуть заводски</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

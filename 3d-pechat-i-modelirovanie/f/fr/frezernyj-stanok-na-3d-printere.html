@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Фрезерный станок из 3D принтера: Трансформация FDM в CNC — Техно Гид</title>
+    <meta name="description" content="Как превратить 3D принтер во фрезерный станок? Обзор кинематики, выбора моторов, материалов и нюансов переделки FDM в CNC для обработки пластика и мягких металлов.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/3d-pechat-i-modelirovanie/f/fr/frezernyj-stanok-na-3d-printere.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Фрезерный станок из 3D принтера: Трансформация FDM в CNC">
+    <meta property="og:description" content="Как превратить 3D принтер во фрезерный станок? Обзор кинематики, выбора моторов, материалов и нюансов переделки FDM в CNC для обработки пластика и мягких металлов.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/3d-pechat-i-modelirovanie/">3D Печать и Моделирование</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Фрезерный станок из 3D принтера: Трансформация FDM в CNC</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-мир-гибридных-станков">Введение в мир гибридных станков</a></li><li><a href="#почему-3d-принтеры-плохо-подходят-для-фрезеровки">Почему 3D принтеры плохо подходят для фрезеровки</a></li><li><a href="#ключевые-узлы-для-модернизации">Ключевые узлы для модернизации</a></li><li><a href="#материалы-и-возможности-обработки">Материалы и возможности обработки</a></li><li><a href="#программное-обеспечение-и-управление">Программное обеспечение и управление</a></li><li><a href="#безопасность-и-технические-риски">Безопасность и технические риски</a></li><li><a href="#сравнение-возможностей-принтер-vs-станок">Сравнение возможностей: Принтер vs Станок</a></li><li><a href="#итоговые-выводы-и-перспективы">Итоговые выводы и перспективы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/3d-pechat-i-modelirovanie/g/gd/gde-sozdavat-modeli-dlya-3d-printera.html">Где создавать модели для 3D принтера: ПО и онлайн-сервисы</a></li><li><a href="/3d-pechat-i-modelirovanie/s/sa/samodelnyj-3-d-printer.html">Самодельный 3D принтер: пошаговая сборка, выбор деталей и настройка</a></li><li><a href="/3d-pechat-i-modelirovanie/k/ko/koeffitsient-potoka-dlya-petg.html">Коэффициент потока для PETG: Полная настройка экструзии</a></li><li><a href="/3d-pechat-i-modelirovanie/c/cr/creality-k1-razmer-stola.html">Размер стола Creality K1: Точные габариты и настройки печати</a></li><li><a href="/3d-pechat-i-modelirovanie/m/me/mekhanizm-podachi-plastika-v-3d-printere.html">Механизм подачи пластика в 3D принтере: устройство и настройка</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Трансформация FDM в CNC: Создание фрезерного станка на базе 3D принтера</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-мир-гибридных-станков">Введение в мир гибридных станков</a></li><li><a href="#почему-3d-принтеры-плохо-подходят-для-фрезеровки">Почему 3D принтеры плохо подходят для фрезеровки</a></li><li><a href="#ключевые-узлы-для-модернизации">Ключевые узлы для модернизации</a></li><li><a href="#материалы-и-возможности-обработки">Материалы и возможности обработки</a></li><li><a href="#программное-обеспечение-и-управление">Программное обеспечение и управление</a></li><li><a href="#безопасность-и-технические-риски">Безопасность и технические риски</a></li><li><a href="#сравнение-возможностей-принтер-vs-станок">Сравнение возможностей: Принтер vs Станок</a></li><li><a href="#итоговые-выводы-и-перспективы">Итоговые выводы и перспективы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-мир-гибридных-станков">Введение в мир гибридных станков</h2>
+<p>Многие энтузиасты задаются вопросом, можно ли превратить обычный <strong>FDM 3D принтер</strong> в функциональный <strong>фрезерный станок</strong>, способный обрабатывать твердые материалы. Идея кажется заманчивой: у вас уже есть готовая <strong>кинематическая схема</strong>, шаговые двигатели и контроллер, остается лишь заменить экструдер на шпиндель. Однако реальность диктует свои суровые правила, связанные с физикой резания и жесткостью конструкции.</p>
+<p>В отличие от подачи пластика, где <strong>сила резания</strong> минимальна, фрезеровка создает значительные <strong>радиальные нагрузки</strong> на оси и подшипники. Простая замена головы без усиления рамы часто приводит к люфтам, вибрациям и порче деталей станка. <mark>Главным фактором успеха является не мощность мотора, а жесткость механических направляющих и отсутствие люфтов в передаче движения.</mark> В этой статье мы разберем, что действительно работает, а что приведет к поломке вашего оборудования.</p>
+
+<h2 id="почему-3d-принтеры-плохо-подходят-для-фрезеровки">Почему 3D принтеры плохо подходят для фрезеровки</h2>
+<p>Основная проблема кроется в конструкции. Большинство <strong>столярных 3D принтеров</strong> используют систему привода с ремнями или слабые шарикоподшипники, рассчитанные на легкие нагрузки экструзии. При фрезеровке <strong>алюминия</strong> или даже твердого <strong>акрила</strong> возникают ударные нагрузки, которые мгновенно превышают допустимые пределы для таких систем.</p>
+<p>Кроме того, <strong>шаговые двигатели</strong> в стандартных моделях часто имеют недостаточный крутящий момент для удержания оси под нагрузкой резца, особенно если используется <strong>винтовая передача</strong> низкого качества. Если вы попытаетесь фрезеровать металл на неусиленном принтере, вы столкнетесь с пропуском шагов, из-за чего геометрия детали будет нарушена.</p>
+<p>Необходимо также учитывать вибрации. При высоких скоростях вращения <strong>шпинделя</strong> даже малейший дисбаланс резца превращает конструкцию в вибратор. Это не только портит поверхность детали, но и может привести к разрушению подшипников самих осей принтера.</p>
+
+<h2 id="ключевые-узлы-для-модернизации">Ключевые узлы для модернизации</h2>
+<p>Если вы твердо решили идти этим путем, то первым делом нужно заменить <strong>экструдер</strong> на подходящий <strong>CNC шпиндель</strong>. Обычные 3D-принтеры часто используют дешевые микро-двигатели, которые не выдержат длительной работы под нагрузкой. Вам потребуется <strong>DC шпиндель</strong> или <strong>серводвигатель</strong> с частотой вращения от 10 000 до 24 000 об/мин.</p>
+<p>Второй критически важный элемент — это <strong>ЧПУ контроллер</strong>. Стандартная плата управления принтером (например, на базе Arduino с прошивкой Marlin) часто не поддерживает G-коды, необходимые для фрезеровки, такие как <code>G00</code>, <code>G01</code> или управление <strong>координатой Z</strong> с учетом компенсации радиуса инструмента. Вам нужно будет перепрошить контроллер на <strong>GRBL</strong> или использовать специализированные платы вроде <em>RAMPS</em> с поддержкой CNC.</p>
+<p>Особое внимание уделите <strong>направляющим</strong>. Если у вас был принтер с круглыми прутьями, их нужно либо заменить на линейные рельсы (например, MGN12), либо значительно усилить конструкцию. Обычные линейные втулки имеют существенный люфт, который делает точную <strong>CNC обработку</strong> невозможной.</p>
+<p>Также важно проработать систему охлаждения и смазки. В отличие от печати, где пластик плавится, при фрезеровке выделяется много тепла, которое нужно отводить. Используйте <strong>воздушное охлаждение</strong> или системы <strong>минимальной смазки</strong> для предотвращения заклинивания подшипников.</p>
+
+<div class="pb-poll" id="poll-3bb3053e"><div class="pb-poll-question">📊 Готовы ли вы усилить раму вашего 3D принтера под фрезеровку?</div><div class="pb-poll-option" data-poll="3bb3053e" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Полностью готов усилить</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="3bb3053e" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Только заменю экструдер</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="3bb3053e" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Хочу попробовать без изменений</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="3bb3053e" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Нет, куплю готовый CNC</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Чек-лист модернизации принтера в CNC</h4><label class="check-item"><input type="checkbox"><span>Замена экструдера на шпиндель</span></label><label class="check-item"><input type="checkbox"><span>Установка линейных рельсов вместо прутьев</span></label><label class="check-item"><input type="checkbox"><span>Прошивка контроллера на GRBL</span></label><label class="check-item"><input type="checkbox"><span>Доработка системы крепления резца</span></label><label class="check-item"><input type="checkbox"><span>Проверка жесткости опорных рам</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="материалы-и-возможности-обработки">Материалы и возможности обработки</h2>
+<p>Важно понимать ограничения такой гибридной машины. <strong>Фрезерный станок</strong> на базе 3D принтера идеально справляется с мягкими материалами. Вы можете уверенно работать с <strong>фанерой</strong>, <strong>ПВХ</strong>, <strong>акрилом</strong>, <strong>воском</strong> и мягкими пластиками вроде <strong>ABS</strong>. Для этих материалов усилий стандартного принтера (после минимального усиления) часто достаточно.</p>
+<p>Обработка <strong>алюминия</strong> возможна, но только на малых глубинах пропила (не более 0.5–1 мм за проход) и при использовании <strong>монолитных фрез</strong> малого диаметра. Попытка снять толстую стружку приведет к поломке резца или пропуску шагов двигателя. <strong>Сталь</strong> и другие твердые металлы на такой переделке обрабатывать категорически нельзя — это гарантирует разрушение механизма.</p>
+<p>Для работы с композитными материалами, такими как <strong>карбон</strong> или <strong>стеклопластик</strong>, потребуется не только жесткость, но и эффективная система защиты от пыли. Мелкая пыль этих материалов крайне агрессивна для электроники и подшипников, поэтому <strong>пылезащитный кожух</strong> станет обязательным элементом системы.</p>
+
+<details class="pb-accordion"><summary>Какие материалы нельзя обрабатывать?|Сталь, титан, закаленный алюминий и стеклотекстолит с толстым слоем эпоксидки. Эти материалы требуют промышленной жесткости, которой невозможно добиться на базе дешевого 3D принтера без полной переплавки конструкции в профессиональный станок с ЧПУ.-->
+
+<!--WIDGET</summary><div class="pb-accordion-body"><p>tip:При фрезеровке мягких металлов используйте фрезы с острым углом заточки и выполняйте проход с высокой скоростью подачи, чтобы избежать налипания стружки на лезвие, что портит поверхность детали.</p></div></details>
+
+<h2 id="программное-обеспечение-и-управление">Программное обеспечение и управление</h2>
+<p>Переход на <strong>CNC режим</strong> требует смены софта. Программа для слайсинга 3D-моделей (например, Cura) не подойдет. Вам понадобится <strong>CAM-система</strong> для генерации G-кода. Популярные решения включают <em>LightBurn</em> (отлично для гравера и фрезера), <em>Estlcam</em> или <em>Fusion 360</em> для сложных 3D-поверхностей.</p>
+<p>Для управления станком в реальном времени используются программы типа <em>Mach3</em>, <em>Universal Gcode Sender</em> или <em>Candle</em>. Они отправляют команды на контроллер, который двигает оси. Важно правильно настроить <strong>шаг на миллиметр</strong> (steps/mm) для каждой оси в прошивке <strong>GRBL</strong>, иначе размеры детали будут неверными.</p>
+<p>При настройке <strong>скорости подачи</strong> (feed rate) будьте осторожны. Если скорость слишком высока, резец сломается. Если слишком низка — материал начнет гореть или резец будет натирать, а не резать. Оптимальные значения зависят от конкретного материала и диаметра инструмента. <strong>Тестовый прогон</strong> на небольшом куске материала — обязательный этап перед полноценной обработкой.</p>
+
+<blockquote>⚠️ <strong>Внимание!</strong> Любые изменения в прошивке контроллера или установке нового шпинделя могут привести к полной потере гарантии на 3D принтер. Убедитесь, что вы понимаете схему подключения и функцию каждого провода перед внесением изменений.</blockquote>
+
+<h2 id="безопасность-и-технические-риски">Безопасность и технические риски</h2>
+<p>Фрезеровка — это процесс с высоким уровнем риска. В отличие от 3D-печати, где процесс идет медленно, при фрезеровке вращающийся <strong>резец</strong> может мгновенно вырвать заготовку или разрушиться, разлетаясь осколками. Используйте <strong>защитный экран</strong> и обязательно надевайте очки.</p>
+<p>Еще одна проблема — это <strong>электростатический разряд</strong> и пыль. Металлическая стружка и угольная пыль от пластика могут попасть в разъемы и вызвать короткое замыкание. Рекомендуется установить <strong>фильтр для воздуха</strong> и регулярно чистить электронику сжатым воздухом.</p>
+<p>Также стоит помнить о <strong>креплении заготовки</strong>. В 3D-печати деталь часто просто лежит на столе или приклеена. При фрезеровке <strong>зажим</strong> должен быть надежным. Используйте <strong>струбцины</strong>, вакуумный стол или специализированные <strong>CNC-зажимы</strong> (T-slots), чтобы предотвратить смещение детали во время работы.</p>
+
+
+
+<h2 id="сравнение-возможностей-принтер-vs-станок">Сравнение возможностей: Принтер vs Станок</h2>
+<p>Давайте подытожим различия между обычным 3D принтером и переделанной CNC машиной. В таблице ниже приведены основные параметры, которые нужно учитывать при планировании модернизации.</p>
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>3D Принтер (FDM)</th>
+<th>Фрезерный станок (CNC)</th>
+<th>Рекомендация к модернизации</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Нагрузка на оси</td>
+<td>Низкая (только экструдер)</td>
+<td>Высокая (радиальные силы резания)</td>
+<td>Замена направляющих на рельсы MGN</td>
+</tr>
+<tr>
+<td>Тип привода</td>
+<td>Ременная передача (часто)</td>
+<td>Винтовая передача или ремень GT2</td>
+<td>Устранение люфтов в передачах</td>
+</tr>
+<tr>
+<td>Шпиндель/Голова</td>
+<td>Экструдер (пластик)</td>
+<td>Шпиндель (вращение)</td>
+<td>Установка DC шпинделя 300W+</td>
+</tr>
+<tr>
+<td>Материалы</td>
+<td>PLA, PETG, ABS</td>
+<td>Дерево, Пластик, Мягкий металл</td>
+<td>Усиление рамы для снижения вибраций</td>
+</tr>
+<tr>
+<td>Точность позиционирования</td>
+<td>±0.1-0.2 мм</td>
+<td>±0.05-0.1 мм (при жесткости)</td>
+<td>Калибровка шагов (steps/mm)</td>
+</tr>
+</tbody>
+</table></div>
+
+<h2 id="итоговые-выводы-и-перспективы">Итоговые выводы и перспективы</h2>
+<p>Создание <strong>фрезерного станка</strong> на базе 3D принтера — это отличный проект для обучения и небольших задач. Вы получаете понимание принципов работы <strong>CNC</strong> и экономите на покупке готового оборудования, если ваши задачи ограничиваются фрезеровкой дерева, пластика или алюминия. Однако <strong>ограничения жесткости</strong> всегда будут присутствовать, и это нужно учитывать при проектировании.</p>
+<p>Если вы планируете серьезное производство или работу с твердыми металлами, лучше рассмотреть покупку специализированного <strong>CNC-станка</strong> с чугунной станиной или стальным профилем. Гибридные решения хороши как экспериментальные или хобби-проект, но они не заменят профессиональное оборудование в промышленных масштабах.</p>
+<p>Помните, что успешная переделка требует не только технических навыков, но и терпения. Тщательная настройка, устранение люфтов и правильный выбор <strong>режущего инструмента</strong> — вот залог того, что ваш станок будет работать стабильно и выдавать качественные детали.</p>
+
+<blockquote>⚠️ <strong>Внимание!</strong> Всегда проверяйте состояние хвостовика фрезы перед установкой. Даже микроскопическая трещина или потертость может привести к разрушению фрезы на высоких оборотах, что опасно для оператора.</blockquote>
+
+<blockquote>⚠️ <strong>Внимание!</strong> При работе с электроинструментом в условиях гаража или мастерской убедитесь, что у вас стоит <strong>УЗО (устройство защитного отключения)</strong>. Стружка и влага могут спровоцировать замыкание, и стандартный автомат может не сработать вовремя.</blockquote>
+
+<details>
+<summary>Нужна ли специальная прошивка для превращения 3D принтера в фрезер?</summary>
+<p>Да, стандартная прошивка Marlin для печати часто не поддерживает необходимые для фрезеровки G-коды. Рекомендуется перепрошить контроллер на <strong>GRBL</strong> (например, GRBL 1.1 или GRBL HAL), которая специально создана для управления станками с ЧПУ и обеспечивает лучшую точность движения при резании.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать стандартные ремни GT2 от 3D принтера в фрезере?</summary>
+<p>Использование ремней возможно, но только для легких материалов (дерево, пластик). Ремни подвержены растяжению и вибрациям, что снижает точность при обработке металла. Для серьезных задач лучше заменить привод на <strong>винтовую передачу</strong> или усиленные рельсовые системы.</p>
+</details>
+
+<details>
+<summary>Какой шпиндель лучше выбрать для переделки?</summary>
+<p>Для любительской переделки чаще всего выбирают <strong>DC шпиндели</strong> мощностью от 200 до 400 Ватт. Они работают от 12-24 Вольт, имеют простой интерфейс управления скоростью (PWM) и не требуют сложного частотного преобразователя, как асинхронные 220В моторы.</p>
+</details>
+
+<details>
+<summary>Можно ли обрабатывать алюминий на 3D принтере?</summary>
+<p>Технически возможно, но только на крайне малых глубинах (до 0.5 мм) и с использованием <strong>монолитных фрез</strong> малого диаметра (3-4 мм). При этом рама станка должна быть жесткой, а вибрации сведены к минимуму. Иначе вы рискуете сломать резец или датчики принтера.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/3d-pechat-i-modelirovanie/g/gd/gde-sozdavat-modeli-dlya-3d-printera.html" class="pb-related-card">
+                <span class="pb-related-title">Где создавать модели для 3D принтера: ПО и онлайн-сервисы</span>
+                <span class="pb-related-desc">Полный обзор программ и сервисов для создания 3D моделей. Сравнение CAD-систем, скульптинга и готовы</span>
+            </a><a href="/3d-pechat-i-modelirovanie/s/sa/samodelnyj-3-d-printer.html" class="pb-related-card">
+                <span class="pb-related-title">Самодельный 3D принтер: пошаговая сборка, выбор деталей и настройка</span>
+                <span class="pb-related-desc">Полное руководство по созданию 3D принтера своими руками. Выбор экструдера, рамы и электроники. Сове</span>
+            </a><a href="/3d-pechat-i-modelirovanie/k/ko/koeffitsient-potoka-dlya-petg.html" class="pb-related-card">
+                <span class="pb-related-title">Коэффициент потока для PETG: Полная настройка экструзии</span>
+                <span class="pb-related-desc">Руководство по настройке коэффициента потока для PETG. Расчет, тесты, устранение проблем недоэкструз</span>
+            </a><a href="/3d-pechat-i-modelirovanie/c/cr/creality-k1-razmer-stola.html" class="pb-related-card">
+                <span class="pb-related-title">Размер стола Creality K1: Точные габариты и настройки печати</span>
+                <span class="pb-related-desc">Полный обзор рабочей зоны 3D-принтера Creality K1. Размеры стола 220x220x220 мм, совместимость с пла</span>
+            </a><a href="/3d-pechat-i-modelirovanie/m/me/mekhanizm-podachi-plastika-v-3d-printere.html" class="pb-related-card">
+                <span class="pb-related-title">Механизм подачи пластика в 3D принтере: устройство и настройка</span>
+                <span class="pb-related-desc">Подробный разбор механизма подачи филамента в 3D принтере. Экструдеры, горячие концы и устранение пр</span>
+            </a><a href="/3d-pechat-i-modelirovanie/l/lu/luchshie-slajsery-dlya-3d-printera.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшие слайсеры для 3D печати в 2026: Рейтинг и выбор</span>
+                <span class="pb-related-desc">Обзор лучших программ-слайсеров для 3D принтеров: Cura, PrusaSlicer, Orca Slicer. Сравнение функций,</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

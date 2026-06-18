@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как найти UART на плате: поиск пинов, распиновка, мультиметр — Техно Гид</title>
+    <meta name="description" content="Подробное руководство по поиску UART интерфейса на печатной плате. Распиновка, поиск контактов мультиметром, проверка напряжения и подключение.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/remont-i-diagnostika/k/ka/kak-najti-uart-na-plate.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как найти UART на плате: поиск пинов, распиновка, мультиметр">
+    <meta property="og:description" content="Подробное руководство по поиску UART интерфейса на печатной плате. Распиновка, поиск контактов мультиметром, проверка напряжения и подключение.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/remont-i-diagnostika/">Ремонт и Диагностика</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как найти UART на плате: поиск пинов, распиновка, мультиметр</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#визуальный-поиск-контактных-площадок-и-разъемов">Визуальный поиск контактных площадок и разъемов</a></li><li><a href="#распиновка-и-назначение-сигнальных-линий">Распиновка и назначение сигнальных линий</a></li><li><a href="#поиск-контактов-с-помощью-мультиметра">Поиск контактов с помощью мультиметра</a></li><li><a href="#идентификация-сигналов-с-помощью-осциллографа">Идентификация сигналов с помощью осциллографа</a></li><li><a href="#определение-скорости-передачи-данных-baud-rate">Определение скорости передачи данных (Baud Rate)</a></li><li><a href="#подключение-и-работа-с-терминалом">Подключение и работа с терминалом</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/remont-i-diagnostika/k/ka/kak-soedinit-dva-prutka.html">Как соединить два прутка: арматура, трубы, пластик</a></li><li><a href="/remont-i-diagnostika/k/ka/kak-vyglyadit-predokhranitel-v-bloke-pitaniya.html">Как выглядит предохранитель в блоке питания: виды, маркировка и замена</a></li><li><a href="/remont-i-diagnostika/p/po/pochemu-pri-sbrose-nastroek-do-zavodskikh-vydaet-oshibku.html">Почему сброс до заводских настроек выдаёт ошибку: причины и решения</a></li><li><a href="/remont-i-diagnostika/s/sp/spinka-stula-ne-derzhitsya.html">Спинка стула не держится: как починить и укрепить своими руками</a></li><li><a href="/remont-i-diagnostika/k/ka/kak-razobrat-skleennyj-blok-pitaniya.html">Как разобрать склеенный блок питания: инструкция по вскрытию</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как найти UART на плате: полное руководство по поиску интерфейса</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#визуальный-поиск-контактных-площадок-и-разъемов">Визуальный поиск контактных площадок и разъемов</a></li><li><a href="#распиновка-и-назначение-сигнальных-линий">Распиновка и назначение сигнальных линий</a></li><li><a href="#поиск-контактов-с-помощью-мультиметра">Поиск контактов с помощью мультиметра</a></li><li><a href="#идентификация-сигналов-с-помощью-осциллографа">Идентификация сигналов с помощью осциллографа</a></li><li><a href="#определение-скорости-передачи-данных-baud-rate">Определение скорости передачи данных (Baud Rate)</a></li><li><a href="#подключение-и-работа-с-терминалом">Подключение и работа с терминалом</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body">
+
+<p>Поиск интерфейса <strong>UART</strong> (Universal Asynchronous Receiver-Transmitter) является одной из первых задач при диагностике, ремонте или модификации современной электроники. Независимо от того, пытаетесь ли вы получить доступ к консоли роутера, прошить микроконтроллер или спасти"окирпиченное" устройство, понимание принципов поиска этого последовательного порта критически важно.</p>
+
+<p>В отличие от USB или HDMI, разъемы <em>UART</em> часто не имеют стандартного корпуса и могут быть выведены непосредственно на контактные площадки (пады) или отсутствовать вовсе, требуя пайки проводов. В этой статье мы разберем физические признаки интерфейса, методы идентификации сигнальных линий с помощью мультиметра и осциллографа, а также типичные ошибки, которые могут привести к выходу оборудования из строя.</p>
+
+<p>Процесс поиска требует не только теоретических знаний о протоколе передачи данных, но и практических навыков работы с измерительными приборами. Мы рассмотрим как визуальные методы поиска, так и электрические измерения, которые помогут однозначно определить назначение каждого контакта в группе из четырех проводов.</p>
+
+<h2 id="визуальный-поиск-контактных-площадок-и-разъемов">Визуальный поиск контактных площадок и разъемов</h2>
+
+<p>Первым этапом всегда является детальный визуальный осмотр печатной платы. Инженеры часто оставляют подсказки для сервисных центров, размещая тестовые точки в доступных местах. Ищите группы из четырех контактных площадок, расположенных в ряд с шагом 2.54 мм (стандартный шаг выводов) или 2.0 мм. Они часто находятся возле процессора, модуля Wi-Fi или в углу платы.</p>
+
+<p>Обратите внимание на маркировку шелкографии рядом с контактами. Производители могут использовать различные обозначения, такие как <code>TX</code>, <code>RX</code>, <code>GND</code>, <code>VCC</code> или более специфичные <code>UART_TX</code>, <code>UART_RX</code>. Иногда можно встретить нумерацию выводов или названия сигналов, характерные для конкретного процессора, например, <em>GPIO</em> с функцией альтернативного использования.</p>
+
+<p>Если явной маркировки нет, ищите неподключенные отверстия в плате (via), которые образуют прямоугольник или линию. Часто рядом с такими группой контактов располагается пустое место под разъем типа <em>pin-header</em>, куда при необходимости можно впаять гребенку для подключения отладочного кабеля.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Никогда не подключайте отладочный адаптер, пока не убедитесь на 100% в назначении каждого контакта. Подача напряжения 3.3В или 5В на линию данных может мгновенно сжечь порт ввода-вывода процессора.</p>
+</blockquote>
+
+<p>Иногда контактные площадки покрыты защитным лаком или имеют окислы. В таких случаях может потребоваться аккуратная зачистка перед измерением. Используйте увеличительное стекло или цифровой микроскоп, чтобы рассмотреть качество пайки и наличие перемычек, которые могут соединять контакты с другими цепями.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте боковую подсветку при осмотре платы под углом — это поможет увидеть надписи шелкографии, скрытые под компонентами или бликами.</p></aside>
+
+<h2 id="распиновка-и-назначение-сигнальных-линий">Распиновка и назначение сигнальных линий</h2>
+
+<p>Интерфейс <strong>UART</strong> в своей базовой конфигурации для связи двух устройств требует минимум трех проводов, но чаще всего используется четыре. Понимание роли каждого сигнала является фундаментом для успешного подключения. Сигналы передаются асинхронно, что означает отсутствие тактирующегосигнала в явном виде.</p>
+
+<p>Линия <code>GND</code> (Ground) является общей землей для обоих устройств. Без подключения земли передача данных невозможна, так как уровни напряжения будут измеряться относительно разных потенциалов. Это первый контакт, который необходимо найти и подключить.</p>
+
+<p>Две основные линии данных — это <code>TX</code> (Transmit) и <code>RX</code> (Receive). Ключевое правило соединения заключается в перекрестном подключении: передающий вывод одного устройства должен быть соединен с приемным выводом другого. То есть <code>TX</code> адаптера подключается к <code>RX</code> платы, и наоборот.</p>
+
+<ul>
+<li>🔌 <strong>GND</strong>: Общий провод (земля), обязательный для замыкания цепи.</li>
+<li>📤 <strong>TX</strong>: Выход данных с устройства (Transmit), подключается к входу адаптера.</li>
+<li>📥 <strong>RX</strong>: Вход данных на устройство (Receive), подключается к выходу адаптера.</li>
+<li>⚡ <strong>VCC</strong>: Питание (опционально), обычно 3.3В или 5В, используется для запитки внешних модулей.</li>
+</ul>
+
+<p>Четвертый контакт, <code>VCC</code>, подает питание. Его наличие не всегда обязательно, если устройство имеет собственный источник питания. Более того, подключение внешнего питания через UART-адаптер при включенном основном блоке питания устройства может создать конфликт напряжений и вывести схему из строя.</p>
+
+<div class="pb-poll" id="poll-c00383bb"><div class="pb-poll-question">📊 С каким напряжением UART вы чаще всего сталкиваетесь?</div><div class="pb-poll-option" data-poll="c00383bb" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">1.8 В (Low Voltage)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c00383bb" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">3.3 В (Стандарт)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c00383bb" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">5.0 В (TTL/Arduino)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="c00383bb" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">12 В (Промышленное)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="поиск-контактов-с-помощью-мультиметра">Поиск контактов с помощью мультиметра</h2>
+
+<p>Когда визуальный осмотр не дает результатов, на помощь приходит цифровой мультиметр. Первым делом необходимо найти контакт земли (<code>GND</code>). Для этого переведите прибор в режим прозвонки или измерения сопротивления.</p>
+
+<p>Один щуп мультиметра прижмите к известному заземленному элементу платы. Это может быть металлический экран порта USB, корпус разъема питания, отрицательный вывод электролитического конденсатора или крепежное отверстие платы (если оно металлизировано и соединено с общим проводом). Вторым щупом последовательно касайтесь подозрительных контактных площадок.</p>
+
+<p>Если мультиметр издает звуковой сигнал или показывает сопротивление, близкое к нулю (менее 1-5 Ом), вы нашли землю. Запомните или пометьте этот контакт маркером. Это будет ваша опорная точка для всех дальнейших измерений напряжения.</p>
+
+<pre><code>Режим мультиметра: DC Voltage (Постоянный ток)
+<p>Диапазон: 20V</p>
+<p>Щуп черный: Найденный GND</p>
+<p>Щуп красный: Проверяемый контакт</code></pre></p>
+
+<p>После обнаружения земли переключите мультиметр в режим измерения постоянного напряжения (<code>DC Voltage</code>). Включите исследуемое устройство. Измерьте напряжение на остальных контактах группы относительно найденной земли. Контакт <code>VCC</code> покажет стабильное напряжение, обычно 3.3В или 5.0В.</p>
+
+<p>Линии <code>TX</code> и <code>RX</code> в состоянии покоя (когда данные не передаются) имеют специфическое поведение. Линия <code>TX</code> устройства обычно находится в состоянии логической единицы, что соответствует напряжению питания интерфейса (например, 3.3В). Линия <code>RX</code> может иметь плавающий потенциал или также быть подтянута к высокому уровню, но при передаче данных напряжение на них будет хаотично меняться.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Убедитесь, что ваш мультиметр исправен и щупы не закорочены. Кратковременное замыкание контактов на работающей плате может привести к нестабильной работе процессора или сбросу настроек.</p>
+</blockquote>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Алгоритм поиска мультиметром</h4><label class="check-item"><input type="checkbox"><span>Найти общий провод (GND) через прозвонку корпуса</span></label><label class="check-item"><input type="checkbox"><span>Измерить напряжение относительно GND на всех контактах</span></label><label class="check-item"><input type="checkbox"><span>Идентифицировать VCC по стабильному напряжению 3.3В/5В</span></label><label class="check-item"><input type="checkbox"><span>Определить TX по высокому уровню в простое</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="идентификация-сигналов-с-помощью-осциллографа">Идентификация сигналов с помощью осциллографа</h2>
+
+<p>Мультиметр дает лишь статическую картину, тогда как <strong>осциллограф</strong> позволяет увидеть динамику сигналов, что является самым надежным способом различить линии <code>TX</code> и <code>RX</code>. Подключите земляной крокодил осциллографа к найденному ранее контакту <code>GND</code> на плате.</p>
+
+<p>Коснитесь щупом осциллографа одного из сигнальных контактов. Если на экране вы видите прямую линию на уровне 3.3В (или 0В), это может быть линия <code>RX</code> в простое или отключенный пин. Если же вы видите серию прямоугольных импульсов, меняющих амплитуду от 0 до 3.3В, вы нашли активную линию передачи данных — скорее всего, это <code>TX</code>.</p>
+
+<p>Для стимуляции передачи данных можно попробовать перезагрузить устройство. В момент загрузки загрузчик (<em>bootloader</em>) часто выводит в консоль служебную информацию: версию ПО, объем памяти, инициализацию драйверов. Наблюдение за этим процессом на осциллографе однозначно укажет на активный передающий пин.</p>
+
+<p>Современные цифровые осциллографы часто имеют функцию декодирования последовательных протоколов. Если настроить декодер на скорость <code>115200</code> бод (стандартная скорость для многих устройств), прибор может сразу отображать передаваемые ASCII-символы на экране, подтверждая правильность выбора контакта.</p>
+
+<details class="pb-accordion"><summary>Почему на RX нет импульсов?</summary><div class="pb-accordion-body"><p>Линия RX принимает данные извне. Если вы не подключили адаптер и не отправляете команды с компьютера, процессор не получает данных, и на этой линии не будет активности. Активность на RX появится только после подключения TX адаптера и отправки команд.</p></div></details>
+
+<h2 id="определение-скорости-передачи-данных-baud-rate">Определение скорости передачи данных (Baud Rate)</h2>
+
+<p>После физического подключения проводов критически важно настроить правильную скорость обмена данными, известную как <strong>Baud Rate</strong> (скорость в бодах). Если скорости на устройстве и в терминальной программе не совпадут, вы увидите на экране"мусор" — набор непонятных символов вместо читаемого текста.</p>
+
+<p>Наиболее распространенные скорости для встраиваемых систем и сетевых устройств: <code>9600</code>, <code>19200</code>, <code>57600</code>, <code>115200</code>. Реже встречаются значения <code>230400</code> или <code>921600</code>. Стандарт де-факто для современной техники (роутеры, телевизоры на Android) — это <code>115200</code>.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Скорость (Бод)</th>
+<th>Типичное применение</th>
+<th>Вероятность использования</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>9600</td>
+<td>Старые микроконтроллеры, Arduino, датчики</td>
+<td>Высокая</td>
+</tr>
+<tr>
+<td>57600</td>
+<td>Промышленная автоматика, некоторые роутеры</td>
+<td>Средняя</td>
+</tr>
+<tr>
+<td>115200</td>
+<td>Современные роутеры, ТВ-приставки, ESP8266/32</td>
+<td>Очень высокая</td>
+</tr>
+<tr>
+<td>230400</td>
+<td>Высокоскоростная отладка, специфичные загрузчики</td>
+<td>Низкая</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Если вы не знаете точную скорость, начните перебор с самых популярных значений. В терминальной программе (например, <em>Putty</em>, <em>Screen</em> или <em>Arduino IDE</em>) меняйте скорость и наблюдайте за появлением читаемого текста. Часто при загрузке устройства текст начинает читаться правильно именно на стандартной скорости.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Правильная скорость передачи данных проявляется в виде читаемого текста логов загрузки. Если вы видите иероглифы, измените Baud Rate в терминале.</p></aside>
+
+<h2 id="подключение-и-работа-с-терминалом">Подключение и работа с терминалом</h2>
+
+<p>Для работы с UART вам понадобится USB-UART адаптер. Популярные модели базируются на чипах <em>FTDI</em> (FT232RL), <em>Silicon Labs</em> (CP2102) или <em>WCH</em> (CH340). Убедитесь, что адаптер поддерживает необходимое напряжение логики (обычно переключатель 3.3В/5В).</p>
+
+<p>Схема подключения выглядит следующим образом:
+<code>GND</code> адаптера ↔ <code>GND</code> платы
+<code>TX</code> адаптера ↔ <code>RX</code> платы
+<code>RX</code> адаптера ↔ <code>TX</code> платы
+<code>VCC</code> адаптера ↔ <em>не подключать</em> (если плата имеет свое питание)</p>
+
+<p>После физического соединения установите драйверы для вашего адаптера и определите номер COM-порта в диспетчере устройств (Windows) или выполните команду <code>ls /dev/ttyUSB*</code> (Linux). Запустите терминальную программу, выберите соответствующий порт, установите скорость <code>115200</code>, биты данных <code>8</code>, четность <code>None</code>, стоповые биты <code>1</code> и управление потоком <code>None</code>.</p>
+
+<p>Включите питание исследуемого устройства. В окне терминала должны побежать строки логов. Если экран молчит, попробуйте нажать <code>Enter</code> несколько раз — возможно, консоль уже активна и ждет ввода команд. Если логов нет, проверьте надежность пайки или контакта щупов.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Уровни логики должны совпадать. Не подключайте 5-вольтовый адаптер к 3.3-вольтовой плате без делителя напряжения — это может повредить входные цепи процессора.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте ферритовые кольца или скручивайте провода адаптера вместе, чтобы снизить уровень наводок и помех при передаче данных на больших расстояниях.</p></aside>
+
+<details>
+<summary>Что делать, если при подключении устройство не включается?</summary>
+<p>Проверьте, не закоротили ли вы случайно контакты пайки. Убедитесь, что адаптер не подает напряжение на линию VCC платы, если там уже есть свое питание. Попробуйте отключить адаптер и включить устройство отдельно — если оно работает, проблема в конфликте земель или напряжений при подключении UART.</p>
+</details>
+
+<details>
+<summary>Можно ли найти UART без схемы на устройство?</summary>
+<p>Да, это стандартная практика реверс-инжиниринга. Визуальный поиск групп пинов возле процессора, прозвонка на землю и измерение напряжений позволяют идентифицировать интерфейс в 90% случаев без наличия принципиальной схемы.</p>
+</details>
+
+<details>
+<summary>Какой программой лучше пользоваться для работы с UART?</summary>
+<p>Для Windows отличным выбором будет <em>Putty</em> или <em>Tera Term</em>. Для macOS и Linux идеально подходит встроенная утилита <code>screen</code> (команда вида <code>screen /dev/ttyUSB0 115200</code>) или графический <em>CoolTerm</em>. Для продвинутого анализа трафика используйте <em>Wireshark</em> с поддержкой последовательных портов.</p>
+</details>
+
+<details>
+<summary>Почему я вижу только кракозябры вместо текста?</summary>
+<p>Это классический признак несоответствия скорости передачи данных (Baud Rate). Попробуйте переключать стандартные значения (9600, 19200, 115200) до появления читаемого текста. Также причиной может быть неправильная настройка четности (Parity), которая должна быть установлена в None.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/remont-i-diagnostika/k/ka/kak-soedinit-dva-prutka.html" class="pb-related-card">
+                <span class="pb-related-title">Как соединить два прутка: арматура, трубы, пластик</span>
+                <span class="pb-related-desc">Полная инструкция: как соединить два прутка арматуры, пластиковые трубы или металл. Сварка, вязка, м</span>
+            </a><a href="/remont-i-diagnostika/k/ka/kak-vyglyadit-predokhranitel-v-bloke-pitaniya.html" class="pb-related-card">
+                <span class="pb-related-title">Как выглядит предохранитель в блоке питания: виды, маркировка и замена</span>
+                <span class="pb-related-desc">Узнайте, как найти и распознать предохранитель в блоке питания. Разбор типов, цоколевки, причины пер</span>
+            </a><a href="/remont-i-diagnostika/p/po/pochemu-pri-sbrose-nastroek-do-zavodskikh-vydaet-oshibku.html" class="pb-related-card">
+                <span class="pb-related-title">Почему сброс до заводских настроек выдаёт ошибку: причины и решения</span>
+                <span class="pb-related-desc">Узнайте, почему при сбросе настроек до заводских выдает ошибку. Разбор причин: от сбойного ПО до апп</span>
+            </a><a href="/remont-i-diagnostika/s/sp/spinka-stula-ne-derzhitsya.html" class="pb-related-card">
+                <span class="pb-related-title">Спинка стула не держится: как починить и укрепить своими руками</span>
+                <span class="pb-related-desc">Спинка стула шатается или падает? Узнайте, как устранить люфт в креплениях, заменить газлифт или вос</span>
+            </a><a href="/remont-i-diagnostika/k/ka/kak-razobrat-skleennyj-blok-pitaniya.html" class="pb-related-card">
+                <span class="pb-related-title">Как разобрать склеенный блок питания: инструкция по вскрытию</span>
+                <span class="pb-related-desc">Пошаговая инструкция: как безопасно вскрыть склеенный блок питания без повреждений. Обзор инструмент</span>
+            </a><a href="/remont-i-diagnostika/p/po/pochemu-noutbuk-postoyanno-perezagruzhaetsya.html" class="pb-related-card">
+                <span class="pb-related-title">Почему ноутбук постоянно перезагружается: 7 главных причин и решение</span>
+                <span class="pb-related-desc">Ноутбук постоянно перезагружается? Разбираем основные причины: от перегрева и драйверов до сбоев Win</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

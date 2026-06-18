@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>AC Freedom и Home Assistant: Интеграция кондиционера — Техно Гид</title>
+    <meta name="description" content="Полное руководство по подключению кондиционеров AC Freedom к Home Assistant через ESPHome. Настройка MQTT, локальное управление и автоматизации.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/a/ac/ac-freedom-home-assistant.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="AC Freedom и Home Assistant: Интеграция кондиционера">
+    <meta property="og:description" content="Полное руководство по подключению кондиционеров AC Freedom к Home Assistant через ESPHome. Настройка MQTT, локальное управление и автоматизации.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">AC Freedom и Home Assistant: Интеграция кондиционера</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#анализ-аппаратной-части-и-выбор-метода-подключения">Анализ аппаратной части и выбор метода подключения</a></li><li><a href="#настройка-esphome-для-прямого-управления">Настройка ESPHome для прямого управления</a></li><li><a href="#интеграция-через-ик-пульт-и-обучение-кодам">Интеграция через ИК-пульт и обучение кодам</a></li><li><a href="#настройка-автоматизаций-климат-контроля">Настройка автоматизаций климат-контроля</a></li><li><a href="#мониторинг-энергопотребления-и-диагностика">Мониторинг энергопотребления и диагностика</a></li><li><a href="#решение-типичных-проблем-и-ошибок-подключения">Решение типичных проблем и ошибок подключения</a></li><li><a href="#faq-часто-задаваемые-вопросы-по-интеграции">FAQ: Часто задаваемые вопросы по интеграции</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/s/sk/skhema-podklyucheniya-umnogo-doma.html">Правильная схема подключения умного дома: выбор протоколов и топология</a></li><li><a href="/umnyj-dom/c/ch/chto-mozhet-delat-umnyj-dom.html">Функции умного дома: полный обзор возможностей и сценариев автоматизации</a></li><li><a href="/umnyj-dom/r/ro/robot-pylesos-mejzu-s-vlazhnoj-uborkoj.html">Робот-пылесос Meizu с влажной уборкой: Обзор и Настройка</a></li><li><a href="/umnyj-dom/k/ka/kak-razobrat-dispenser-dlya-zhidkogo-myla-xiaomi.html">Как разобрать дозатор Xiaomi Mijia: полная инструкция</a></li><li><a href="/umnyj-dom/o/ob/obnovit-versiyu-yandeks-stantsii.html">Как обновить версию Яндекс Станции: полная инструкция 2026</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Интеграция кондиционеров AC Freedom с Home Assistant</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#анализ-аппаратной-части-и-выбор-метода-подключения">Анализ аппаратной части и выбор метода подключения</a></li><li><a href="#настройка-esphome-для-прямого-управления">Настройка ESPHome для прямого управления</a></li><li><a href="#интеграция-через-ик-пульт-и-обучение-кодам">Интеграция через ИК-пульт и обучение кодам</a></li><li><a href="#настройка-автоматизаций-климат-контроля">Настройка автоматизаций климат-контроля</a></li><li><a href="#мониторинг-энергопотребления-и-диагностика">Мониторинг энергопотребления и диагностика</a></li><li><a href="#решение-типичных-проблем-и-ошибок-подключения">Решение типичных проблем и ошибок подключения</a></li><li><a href="#faq-часто-задаваемые-вопросы-по-интеграции">FAQ: Часто задаваемые вопросы по интеграции</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Владельцы кондиционеров бренда <em>AC Freedom</em> часто сталкиваются с ограниченным функционалом штатных мобильных приложений. Облачные сервисы могут работать нестабильно, а интеграция с популярными системами умного дома изначально отсутствует. Решением этой проблемы становится перепрошивка модуля Wi-Fi или использование внешнего ИК-пульта для локального управления.</p>
+
+<p>Платформа <strong>Home Assistant</strong> предоставляет мощные инструменты для объединения разрозненных устройств в единую экосистему. Подключение сплит-системы к локальной сети позволяет управлять климатом без интернета, создавать сложные сценарии автоматизации и отслеживать энергопотребление в реальном времени. Это критически важно для тех, кто ценит приватность и скорость отклика системы.</p>
+
+<p>В этой статье мы рассмотрим два основных способа интеграции: прямой перехват протокола через кастомную прошивку <em>ESPHome</em> и использование универсального ИК-контроллера. Вы узнаете, как выявить чип управления, настроить обмен данными и добавить устройство в интерфейс вашего хаба.</p>
+
+<h2 id="анализ-аппаратной-части-и-выбор-метода-подключения">Анализ аппаратной части и выбор метода подключения</h2>
+
+<p>Первым шагом является определение модели Wi-Fi модуля внутри вашего кондиционера. Бренд <em>AC Freedom</em> часто использует стандартные OEM-решения от китайских производителей, такие как <strong>Tuya</strong> или собственные разработки на базе чипов <em>Espressif</em>. Вам потребуется снять переднюю крышку внутреннего блока и Locate плату управления.</p>
+
+<p>Если на плате распаян чип <code>ESP8266</code> или <code>ESP32</code> с доступными контактами для UART, самым надежным вариантом будет прямое подключение. Этот метод позволяет читать текущую температуру, статус работы компрессора и даже потребление энергии, если датчик тока предусмотрен схемой. Однако это требует навыков пайки и работы с электроникой.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Вскрытие корпуса кондиционера может привести к потере гарантии. Все действия с электрическими цепями выполняйте только после полного отключения устройства от сети 220В.</p>
+</blockquote>
+
+<p>Альтернативный путь — использование внешнего ИК-передатчика, совместимого с <strong>Home Assistant</strong>. Устройства на базе <em>ESPHome</em> с ИК-диодом или готовые хабы типа <em>Broadlink</em> эмулируют сигналы пульта ДУ. Этот способ не требует вмешательства во внутренности сплит-системы, но имеет недостаток: система не знает реального состояния кондиционера, если вы переключили режим кнопкой на стене.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед покупкой компонентов проверьте наличие свободного USB-порта на вашем сервере Home Assistant или используйте Wi-Fi модули для беспроводной передачи данных телеметрии.</p></aside>
+
+<h2 id="настройка-esphome-для-прямого-управления">Настройка ESPHome для прямого управления</h2>
+
+<p>Для реализации прямого управления необходимо создать конфигурационный файл для прошивки <em>ESPHome</em>. В сообществе энтузиастов уже существуют готовые шаблоны для многих OEM-плат, используемых в <em>AC Freedom</em>. Вам нужно будет определить пины TX и RX на плате кондиционера и подключить их к соответствующим контактам ESP-модуля.</p>
+
+<p>Конфигурация включает в себя определение платформы UART и настройку компонента климат-контроля. Важно правильно подобрать скорость передачи данных (baud rate), которая чаще всего составляет <code>9600</code> или <code>4800</code>. Ошибка в этом параметре приведет к тому, что вы сможете отправлять команды, но не получите обратную связь от устройства.</p>
+
+<pre><code>uart:
+<p>rx_pin: GPIO3</p>
+<p>tx_pin: GPIO1</p>
+<p>baud_rate: 9600</p>
+
+<p>climate:</p>
+<p>- platform: ac_freedom</p>
+<p>name: "Кондиционер Гостиная"</p>
+<p>id: ac_living_room</code></pre></p>
+
+<p>После загрузки прошивки устройство появится в списке доступных интеграций Home Assistant. Вы сможете управлять температурой, режимом (охлаждение, обогрев, вентиляция) и скоростью вентилятора прямо из интерфейса. Локальное управление обеспечивает мгновенную реакцию на команды, в отличие от облачных решений, где задержка может достигать нескольких секунд.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к перепрошивке</h4><label class="check-item"><input type="checkbox"><span>Определить модель чипа</span></label><label class="check-item"><input type="checkbox"><span>Найти распиновку TX/RX</span></label><label class="check-item"><input type="checkbox"><span>Подготовить USB-TTL адаптер</span></label><label class="check-item"><input type="checkbox"><span>Скомпилировать прошивку ESPHome</span></label><label class="check-item"><input type="checkbox"><span>Подключить и загрузить код</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="интеграция-через-ик-пульт-и-обучение-кодам">Интеграция через ИК-пульт и обучение кодам</h2>
+
+<p>Если прямой доступ к плате невозможен или слишком рискован, используйте метод ИК-эмуляции. Вам потребуется устройство с ИК-передатчиком, подключенное к Home Assistant. Процесс начинается с записи кодов вашего штатного пульта ДУ. Расположите пульт рядом с приемником хаба и последовательно нажмите все необходимые кнопки.</p>
+
+<p>Home Assistant сохранит полученные HEX-коды или сырые данные модуляции. Далее эти коды мапятся на сервисы климат-контроля. Вы создаете скрипты, которые отправляют последовательности сигналов для включения, изменения температуры на +1/-1 и смены режимов. Это требует более сложной настройки автоматизаций для поддержания синхронизации состояния.</p>
+
+<ul>
+  <li>📡 Запишите код включения и выключения устройства.</li>
+  <li>🌡️ Зафиксируйте коды установки температур от 16 до 30 градусов.</li>
+  <li>💨 Сохраните сигналы для всех режимов работы вентилятора.</li>
+  <li>❄️ Не забудьте про режимы "Cool", "Heat", "Dry" и "Fan".</li>
+</ul>
+
+<p>Главная сложность ИК-метода — отсутствие обратной связи. Если вы выключили кондиционер пультом, Home Assistant может продолжать отображать его как включенный. Для решения этой проблемы используют дополнительные датчики температуры и умные розетки с мониторингом мощности, анализируя потребление тока компрессором.</p>
+
+<div class="pb-poll" id="poll-ad97f0a4"><div class="pb-poll-question">📊 Какой метод интеграции вы планируете использовать?</div><div class="pb-poll-option" data-poll="ad97f0a4" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Прямое подключение (UART)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="ad97f0a4" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">ИК-эмуляция (Broadlink/ESP)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="ad97f0a4" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Готовый шлюз Tuya</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="ad97f0a4" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Пока не решил</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="настройка-автоматизаций-климат-контроля">Настройка автоматизаций климат-контроля</h2>
+
+<p>После успешного добавления кондиционера в систему открывается мир возможностей для автоматизации. Вы можете связать работу сплит-системы с датчиками температуры и влажности, окнами и присутствием людей. Логика работы становится гибкой и адаптивной под ваши потребности.</p>
+
+<p>Например, можно создать сценарий, который автоматически переключает кондиционер в режим вентиляции, когда окно открыто, чтобы не тратить энергию впустую. Или повышать целевую температуру на 2 градуса, когда в помещении никого нет более 30 минут. Такие настройки экономят электричество и продлевают ресурс оборудования.</p>
+
+<div class="pb-table-wrap"><table>
+  <thead>
+    <tr>
+      <th>Триггер</th>
+      <th>Условие</th>
+      <th>Действие</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Открытие окна</td>
+      <td>Кондиционер работает</td>
+      <td>Выключить кондиционер</td>
+    </tr>
+    <tr>
+      <td>Температура > 26°C</td>
+      <td>Режим "Дома"</td>
+      <td>Включить охлаждение на 23°C</td>
+    </tr>
+    <tr>
+      <td>23:00 (Время)</td>
+      <td>Ночь</td>
+      <td>Включить тихий режим и 25°C</td>
+    </tr>
+    <tr>
+      <td>Влажность > 70%</td>
+      <td>Лето</td>
+      <td>Включить режим осушения (Dry)</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p>Для реализации таких сценариев используется редактор автоматизаций в интерфейсе Home Assistant или YAML-конфигурация. Важно тестировать каждый сценарий отдельно, чтобы избежать конфликтов, когда две автоматизации пытаются одновременно изменить состояние устройства на противоположное.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Избегайте частого циклического включения и выключения компрессора (короткие циклы). Это может вывести двигатель из строя. Добавляйте задержки (delay) в ваши скрипты не менее 3-5 минут между перезапусками.</p>
+</blockquote>
+
+<h2 id="мониторинг-энергопотребления-и-диагностика">Мониторинг энергопотребления и диагностика</h2>
+
+<p>Одним из преимуществ глубокой интеграции является возможность мониторинга параметров работы. Если ваш модуль поддерживает чтение данных с датчика тока, вы будете видеть реальное потребление в ваттах. Это позволяет точно рассчитывать стоимость эксплуатации и выявлять аномалии в работе системы.</p>
+
+<p>Резкий скачок потребления может указывать на загрязнение фильтров, неисправность вентилятора или проблемы с компрессором. Home Assistant может отправлять уведомления в Telegram или Push-уведомлениями на телефон при превышении пороговых значений мощности. Это превращает обычный кондиционер в умное устройство с функцией самодиагностики.</p>
+
+<details class="pb-accordion"><summary>Что делать, если данные о потреблении не приходят?</summary><div class="pb-accordion-body"><p>Проверьте, установлен ли датчик тока на плате управления. В некоторых бюджетных моделях AC Freedom этот компонент отсутствует физически, и программно добавить его невозможно без внешней умной розетки.</p></div></details>
+
+<p>Также полезно отслеживать время работы фильтров. Создайте счетчик, который суммирует часы работы вентилятора. Когда значение достигнет 200-300 часов, система напомнит вам о необходимости чистки сеток. Чистые фильтры обеспечивают лучшую эффективность охлаждения и здоровый микроклимат.</p>
+
+<h2 id="решение-типичных-проблем-и-ошибок-подключения">Решение типичных проблем и ошибок подключения</h2>
+
+<p>В процессе настройки вы можете столкнуться с рядом технических трудностей. Наиболее частая проблема — рассинхронизация состояния. Например, в интерфейсе устройство показано как выключенное, а фактически оно работает. Это решается настройкой периодического опроса статуса (polling) или использованием датчиков состояния.</p>
+
+<p>Другая распространенная ошибка — потеря связи с Wi-Fi модулем после перезагрузки роутера. Убедитесь, что вашему ESP-устройству назначен статический IP-адрес в настройках DHCP сервера. Это гарантирует, что Home Assistant всегда будет знать, куда отправлять команды управления.</p>
+
+<p>Если команды выполняются с большой задержкой, проверьте нагрузку на сеть Zigbee или Wi-Fi. Иногда помогает перенос сервера Home Assistant ближе к управляемому устройству или установка дополнительного репитера сигнала. Стабильность сети — залог комфортного управления умным домом.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Стабильная работа интеграции на 90% зависит от качества сигнала Wi-Fi и правильности настройки статического IP-адреса для модуля управления.</p></aside>
+
+<h2 id="faq-часто-задаваемые-вопросы-по-интеграции">FAQ: Часто задаваемые вопросы по интеграции</h2>
+
+<details>
+  <summary>Безопасно ли перепрошивать штатный модуль кондиционера?</summary>
+  <p>Процесс несет определенные риски. При неправильной пайке можно повредить плату управления, что приведет к дорогостоящему ремонту. Если вы не уверены в своих навыках, лучше используйте внешний ИК-контроллер, который не требует вскрытия устройства.</p>
+</details>
+
+<details>
+  <summary>Можно ли управлять кондиционером AC Freedom через голос?</summary>
+  <p>Да, после интеграции в Home Assistant вы можете связать систему с голосовыми ассистентами, такими как Алиса (через навык Home Assistant), Google Assistant или Siri (через HomeKit). Это позволит управлять климатом голосовыми командами.</p>
+</details>
+
+<details>
+  <summary>Работает ли интеграция без доступа в Интернет?</summary>
+  <p>Да, это главное преимущество локального решения. Управление через ESPHome или локальный ИК-хаб работает внутри вашей домашней сети. Интернет нужен только для первоначальной настройки или удаленного доступа через VPN.</p>
+</details>
+
+<details>
+  <summary>Какой протокол использует AC Freedom?</summary>
+  <p>Большинство моделей используют проприетарные протоколы поверх UART. Однако сообщество уже расшифровало многие из них. Если вашей модели нет в списке поддерживаемых, потребуется сниффинг трафика для анализа пакетов данных.</p>
+</details>
+
+<details>
+  <summary>Нужен ли отдельный сервер для Home Assistant?</summary>
+  <p>Для стабильной работы рекомендуется выделенное устройство, например, Raspberry Pi 4, мини-ПК или виртуальная машина. Запуск на обычном ноутбуке возможен для тестов, но не рекомендуется для постоянной эксплуатации из-за рисков отключения питания.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/s/sk/skhema-podklyucheniya-umnogo-doma.html" class="pb-related-card">
+                <span class="pb-related-title">Правильная схема подключения умного дома: выбор протоколов и топология</span>
+                <span class="pb-related-desc">Подробная схема подключения умного дома. Разбор протоколов Zigbee, Wi-Fi, Z-Wave, выбор хаба и подси</span>
+            </a><a href="/umnyj-dom/c/ch/chto-mozhet-delat-umnyj-dom.html" class="pb-related-card">
+                <span class="pb-related-title">Функции умного дома: полный обзор возможностей и сценариев автоматизации</span>
+                <span class="pb-related-desc">Узнайте, что именно может делать умный дом. Обзор задач по безопасности, комфорту, энергоэффективнос</span>
+            </a><a href="/umnyj-dom/r/ro/robot-pylesos-mejzu-s-vlazhnoj-uborkoj.html" class="pb-related-card">
+                <span class="pb-related-title">Робот-пылесос Meizu с влажной уборкой: Обзор и Настройка</span>
+                <span class="pb-related-desc">Полный гид по роботам Meizu с функцией влажной уборки. Выбор моделей, настройка карты, обслуживание </span>
+            </a><a href="/umnyj-dom/k/ka/kak-razobrat-dispenser-dlya-zhidkogo-myla-xiaomi.html" class="pb-related-card">
+                <span class="pb-related-title">Как разобрать дозатор Xiaomi Mijia: полная инструкция</span>
+                <span class="pb-related-desc">Подробный гайд по разборке автоматического диспенсера Xiaomi. Замена насоса, чистка трубки, устранен</span>
+            </a><a href="/umnyj-dom/o/ob/obnovit-versiyu-yandeks-stantsii.html" class="pb-related-card">
+                <span class="pb-related-title">Как обновить версию Яндекс Станции: полная инструкция 2026</span>
+                <span class="pb-related-desc">Пошаговое руководство по обновлению ПО Яндекс Станции. Узнайте, как проверить версию, установить про</span>
+            </a><a href="/umnyj-dom/s/sk/skrytye-funktsii-alisy-yandeks-stantsii.html" class="pb-related-card">
+                <span class="pb-related-title">Скрытые функции Алисы и Яндекс Станции: список секретов</span>
+                <span class="pb-related-desc">Узнайте скрытые возможности Яндекс Станции. Секреты Алисы, пасхалки, команды для разработчиков и нас</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

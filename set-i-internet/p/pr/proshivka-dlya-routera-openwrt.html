@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>OpenWrt: Полное руководство по прошивке и настройке роутера — Техно Гид</title>
+    <meta name="description" content="Пошаговая инструкция установки прошивки OpenWrt на роутер. Преимущества кастомного ПО, сравнение с заводским, выбор версии и решение частых проблем.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/set-i-internet/p/pr/proshivka-dlya-routera-openwrt.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="OpenWrt: Полное руководство по прошивке и настройке роутера">
+    <meta property="og:description" content="Пошаговая инструкция установки прошивки OpenWrt на роутер. Преимущества кастомного ПО, сравнение с заводским, выбор версии и решение частых проблем.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-nav-active">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/set-i-internet/">Сеть и Интернет</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">OpenWrt: Полное руководство по прошивке и настройке роутера</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-мир-альтернативных-прошивок">Введение в мир альтернативных прошивок</a></li><li><a href="#почему-стоит-выбрать-openwrt-вместо-стокового-по">Почему стоит выбрать OpenWrt вместо стокового ПО</a></li><li><a href="#подготовка-оборудования-и-проверка-совместимости">Подготовка оборудования и проверка совместимости</a></li><li><a href="#процесс-установки-прошивки-на-роутер">Процесс установки прошивки на роутер</a></li><li><a href="#первичная-настройка-и-установка-пакетов">Первичная настройка и установка пакетов</a></li><li><a href="#оптимизация-производительности-и-безопасности">Оптимизация производительности и безопасности</a></li><li><a href="#решение-частых-проблем-и-откат">Решение частых проблем и откат</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/set-i-internet/m/mo/mobilnyj-internet-dostup-v-blokirovke.html">Доступ к мобильному интернету в условиях блокировок: решения и настройка</a></li><li><a href="/set-i-internet/c/ch/chto-delat-esli-pri-podklyuchenii-k-wifi-pishet-bez-dostupa-k-internetu.html">Без доступа к интернету по Wi-Fi: 7 проверенных способов исправить</a></li><li><a href="/set-i-internet/k/ka/kak-smenit-provajdera-sotovoj-svyazi.html">Как сменить оператора сотовой связи: сохранение номера и новые тарифы</a></li><li><a href="/set-i-internet/r/ro/router-s-usb-portom-dlya-printera.html">Роутер с USB для принтера: выбор, настройка и решение проблем</a></li><li><a href="/set-i-internet/c/ch/chto-znachit-rezhim-modema-v-mts.html">Режим модема в МТС: что это, как подключить и тарифы</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Мастер-класс по установке и настройке OpenWrt для вашего роутера</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-мир-альтернативных-прошивок">Введение в мир альтернативных прошивок</a></li><li><a href="#почему-стоит-выбрать-openwrt-вместо-стокового-по">Почему стоит выбрать OpenWrt вместо стокового ПО</a></li><li><a href="#подготовка-оборудования-и-проверка-совместимости">Подготовка оборудования и проверка совместимости</a></li><li><a href="#процесс-установки-прошивки-на-роутер">Процесс установки прошивки на роутер</a></li><li><a href="#первичная-настройка-и-установка-пакетов">Первичная настройка и установка пакетов</a></li><li><a href="#оптимизация-производительности-и-безопасности">Оптимизация производительности и безопасности</a></li><li><a href="#решение-частых-проблем-и-откат">Решение частых проблем и откат</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-мир-альтернативных-прошивок">Введение в мир альтернативных прошивок</h2>
+<p>Стандартное программное обеспечение, идущее в комплекте с маршрутизаторами от <code>TP-Link</code>, <code>Tenda</code> или <code>Xiaomi</code>, часто ограничивает функционал устройства. Вы сталкиваетесь с невозможностью тонкой настройки QoS, отсутствием поддержки современных протоколов шифрования или ограниченными возможностями родительского контроля. Именно здесь на сцену выходит <strong>OpenWrt</strong> — мощный, гибкий и открытый Linux-дистрибутив, превращающий обычный роутер в полноценную сетевую станцию.</p>
+<p>Переход на <em>OpenWrt</em> открывает доступ к тысячам дополнительных пакетов, позволяя превратить домашний шлюз в медиа-сервер, точку доступа с продвинутым фаерволом или даже в узел для создания VPN-канала. Это решение для тех, кто устал от «коробочных» ограничений и готов потратить немного времени на изучение технических нюансов ради получения полного контроля над своей сетевой инфраструктурой.</p>
+<p>Однако процесс перепрошивки требует внимательности и понимания рисков. В отличие от простого обновления заводской прошивки, установка Linux-дистрибутива часто требует полной очистки памяти устройства и изменения структуры разделов. <mark>Неправильная подготовка образа может привести к необратимой поломке оборудования, известной как «окирпичивание».</mark></p>
+
+<h2 id="почему-стоит-выбрать-openwrt-вместо-стокового-по">Почему стоит выбрать OpenWrt вместо стокового ПО</h2>
+<p>Основное преимущество альтернативной прошивки — это <strong>полная открытость исходного кода</strong> и отсутствие «зашитых» намерений вендора. Вы получаете чистую систему без лишней воды, скрытых телеметрии и нежелательных сервисов, которые могут замедлять работу роутера даже в простое. Для энтузиастов это возможность настроить систему под конкретные задачи, удаляя ненужные модули и экономя оперативную память.</p>
+<p>Поддержка аппаратного ускорения в <em>OpenWrt</em> реализована значительно эффективнее во многих случаях, особенно на бюджетных устройствах. Вы можете активировать аппаратное перенаправление пакетов (Hardware Flow Offloading), что позволяет маршрутизатору обрабатывать гигабитные потоки данных без критической загрузки процессора. Это критически важно для пользователей, у которых тарифы провайдера превышают возможности стандартного софта.</p>
+<p>Кроме того, сообщество разработчиков регулярно выпускает обновления безопасности, закрывая уязвимости быстрее, чем производители массового сегмента. Если вы используете устройство в публичном месте или в крупной корпоративной сети, <strong>встроенный фаервол</strong> и расширенные возможности фильтрации трафика станут незаменимыми инструментами защиты периметра.</p>
+
+<blockquote>⚠️ Внимание: Установка альтернативного ПО полностью аннулирует официальную гарантию производителя. Перед началом работ убедитесь, что вы готовы к самостоятельному устранению возможных проблем с аппаратной частью.</blockquote>
+
+<div class="pb-poll" id="poll-41a33def"><div class="pb-poll-question">📊 Готовы ли вы рискнуть гарантия ради функционала?</div><div class="pb-poll-option" data-poll="41a33def" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Да, функционал важнее</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="41a33def" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Нет, только родное ПО</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="41a33def" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Сомневаюсь, нужен совет</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="41a33def" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Уже перешел на OpenWrt</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="подготовка-оборудования-и-проверка-совместимости">Подготовка оборудования и проверка совместимости</h2>
+<p>Перед тем как начать, необходимо убедиться, что ваше устройство поддерживается проектом. Посетите официальный каталог <code>https://openwrt.org/toh/start</code> и введите точную модель вашего роутера. Важно различать ревизии железа: версия <code>v1</code> и версия <code>v2</strong> одного и того же маршрутизатора могут иметь разные процессоры и объем памяти, что делает их прошивки несовместимыми.</p>
+<p>Вам понадобится стабильное подключение к роутеру. Рекомендуется использовать <strong>кабель Ethernet</strong>, а не Wi-Fi, так как процесс прошивки может прерваться при потере связи, что приведет к brick-состоянию. Также подготовьте USB-кабель, если потребуется работа через консольный порт (UART), и найдите инструкцию для конкретной модели на вики проекта.</p>
+<p>Скачайте образ прошивки с официального сайта. Вам нужно выбрать между образом для <code>sysupgrade</code> (если вы уже используете OpenWrt) или образом для первоначальной установки (обычно это файл с пометкой <code>factory</code>). Файлы <em>factory</em> предназначены для установки с родной прошивки и содержат специальный загрузчик для корректной записи разделов.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Подготовка к прошивке</h4><label class="check-item"><input type="checkbox"><span>Проверить ревизию устройства</span></label><label class="check-item"><input type="checkbox"><span>Скачать образ factory</span></label><label class="check-item"><input type="checkbox"><span>Подключить по кабелю</span></label><label class="check-item"><input type="checkbox"><span>Сделать бэкап настроек</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="процесс-установки-прошивки-на-роутер">Процесс установки прошивки на роутер</h2>
+<p>Процесс установки зависит от того, позволяет ли заводская прошивка загрузиться в режим восстановления. В некоторых моделях, например, у <code>Xiaomi</code> или <code>ASUS</code>, есть скрытые режимы загрузчика, которые активируются специальной комбинацией кнопок при включении. В других случаях потребуется установка «промежуточной» прошивки, которая откроет доступ к меню обновления.</p>
+<p>Если ваш роутер поддерживает прямую прошивку, зайдите в веб-интерфейс заводского ПО, перейдите в раздел <code>Система → Обновление ПО</code> и загрузите файл <code>.img</code> или <code>.bin</code>. Не прерывайте процесс, даже если индикаторы мигают хаотично. После перезагрузки устройство может загрузиться в первый раз несколько дольше обычного — это нормально, так как система идет процесс первичной инициализации файловой системы.</p>
+<p>Успешная загрузка подтверждается появлением веб-интерфейса по адресу <code>192.168.1.1</code> (стандартный IP OpenWrt) и отсутствием пароля по умолчанию. Сразу же установите пароль администратора, так как система не имеет защиты при первом входе. Если вы видите только консоль или не можете подключиться, попробуйте сбросить настройки кнопкой Reset на 10 секунд.</p>
+
+<blockquote>⚠️ Внимание: Если после перезагрузки роутер не светит индикатором питания или Wi-Fi, возможно, вы выбрали неверный образ. В этом случае потребуется программатор и подключение к UART-порту для восстановления загрузчика.</blockquote>
+
+<details class="pb-accordion"><summary>Что делать, если роутер не включается?</summary><div class="pb-accordion-body"><p>Попробуйте подключить его к ПК напрямую кабелем и проверить, есть ли ответ на пинг с адресом 192.168.1.1. Если есть — попробуйте перепрошить через TFTP-клиент, используя утилиту Tftpd64 и файл с именем, требуемым загрузчиком конкретной модели.</p></div></details>
+
+<h2 id="первичная-настройка-и-установка-пакетов">Первичная настройка и установка пакетов</h2>
+<p>После успешной загрузки вам нужно настроить базовые параметры сети. Зайдите в веб-интерфейс <code>Luci</code> и перейдите в <code>Network → Interfaces</code>. Здесь необходимо настроить WAN-интерфейс (получение IP от провайдера) и LAN-интерфейс (назначение статического IP для вашей локальной сети). Не забудьте изменить пароль администратора в разделе <code>System → Administration</code>.</p>
+<p>Для расширения функционала вам потребуется установить дополнительные пакеты. Перейдите в <code>System → Software</code> и обновите списки пакетов, нажав кнопку <code>Update lists</code>. Теперь вы можете искать и устанавливать любые модули: от <strong>продвинутого фаервола</strong> до <code>adblock</code> для блокировки рекламы на уровне DNS.</p>
+<p>Особенно полезным является установка пакета <code>luci-app-argon-config</code> для более приятного и современного внешнего вида интерфейса, а также <code>luci-app-usb-printer</code>, если вы хотите использовать принтер в сети. Для работы с файлами можно установить <code>luci-app-filetransfer</code> или SSH-клиент <code>openssh-server</code> для удаленного управления через терминал.</p>
+
+<div class="pb-table-wrap"><table>
+ <thead>
+  <tr>
+   <th>Название пакета</th>
+   <th>Назначение</th>
+   <th>Сложность настройки</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>luci-app-vlmcsd</td>
+   <td>Активация Windows (KMS сервер)</td>
+   <td>Средняя</td>
+  </tr>
+  <tr>
+   <td>luci-app-wireguard</td>
+   <td>Создание быстрого VPN-туннеля</td>
+   <td>Высокая</td>
+  </tr>
+  <tr>
+   <td>luci-app-ssr-plus</td>
+   <td>Прокси для обхода блокировок</td>
+   <td>Высокая</td>
+  </tr>
+  <tr>
+   <td>luci-app-diskman</td>
+   <td>Управление внешними дисками</td>
+   <td>Низкая</td>
+  </tr>
+  <tr>
+   <td>luci-app-aria2</td>
+   <td>Менеджер загрузок для скачивания файлов</td>
+   <td>Низкая</td>
+  </tr>
+ </tbody>
+</table></div>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед установкой любых пакетов проверьте, достаточно ли у вашего роутера свободной памяти (Flash). Если места мало, удалите ненужные драйверы Wi-Fi для диапазонов, которые вы не используете.</p></aside>
+
+<h2 id="оптимизация-производительности-и-безопасности">Оптимизация производительности и безопасности</h2>
+<p>Для максимального быстродействия следует настроить <strong>аппаратное ускорение</strong> (Hardware Flow Offloading). В разделе <code>Network → Firewall</code> найдите опцию <code>Software flow offloading</code> и <code>Hardware flow offloading</code> и включите их, если драйверы вашего процессора поддерживают эту функцию. Это существенно снизит задержки при работе с торрентами и стримингом.</p>
+<p>Безопасность Wi-Fi требует настройки отдельного профиля. Используйте стандарт <code>WPA2-PSK</code> или <code>WPA3</code> (если устройства поддерживают), и обязательно смените стандартный SSID. Не используйте WEP или WPA-TKIP, так как они устарели и легко взламываются. Для гостевой сети лучше создать отдельный VLAN, чтобы изолировать её от основной локальной сети.</p>
+<p>Регулярное обновление системы также является частью безопасности. В разделе <code>System → System</code> можно настроить автоматическую проверку обновлений, но лучше делать это вручную после чтения списка изменений. <strong>Резервное копирование конфигурации</strong> перед любыми глобальными изменениями — это золотое правило администратора, которое сэкономит часы работы в случае ошибки.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Аппаратное ускорение частоты пакетов — это ключ к стабильной работе роутера на высоких скоростях интернета, особенно при использовании нескольких подключений одновременно.</p></aside>
+
+<blockquote>⚠️ Внимание: Включение аппаратного ускорения может конфликтовать с некоторыми модулями фильтрации трафика (например, глубокая инспекция пакетов). Если после включения ускорения интернет стал работать нестабильно, отключите его и протестируйте систему снова.</blockquote>
+
+<h2 id="решение-частых-проблем-и-откат">Решение частых проблем и откат</h2>
+<p>Самая частая проблема — потеря доступа к роутеру после обновления. Обычно это происходит из-за конфликта настроек конфигурационных файлов. В таких случаях помогает полный сброс (Factory Reset). Нажмите кнопку Reset на корпусе устройства и удерживайте её более 10 секунд, пока индикаторы не начнут мигать в особом режиме.</p>
+<p>Если сброс не помог, возможно, вы загрузили несовместимую версию ядра. В этом случае вам придется использовать режим <code>failsafe</code>. Перезагрузите роутер и сразу же начинайте быстро нажимать кнопку Reset, пока индикатор не начнет мигать. Подключитесь к IP-адресу <code>192.168.1.1</code> без пароля и выполните команду <code>firstboot -y</code> в консоли.</p>
+<p>В редких случаях (например, если вы случайно перезаписали загрузчик) потребуется программатор CH341A и подключение к контактам UART. Это сложный процесс, требующий пайки, но он позволяет восстановить даже «мертвое» устройство, если есть физический доступ к памяти.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Действия при сбое</h4><label class="check-item"><input type="checkbox"><span>Попробовать сброс кнопкой</span></label><label class="check-item"><input type="checkbox"><span>Подключиться в режиме Failsafe</span></label><label class="check-item"><input type="checkbox"><span>Проверить совместимость образа</span></label><label class="check-item"><input type="checkbox"><span>Обратиться в поддержку форума</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<details>
+ <summary>Часто задаваемые вопросы</summary>
+ <p><strong>Нужно ли удалять заводскую прошивку полностью?</strong><br>В большинстве случаев установка образа <code>factory</code> автоматически очищает память и создает новую структуру разделов, поэтому ручное удаление не требуется.</p>
+ <p><strong>Будет ли работать Wi-Fi 6 после прошивки?</strong><br>Зависит от поддержки драйверов. Для чипов <em>MediaTek Filogic</em> поддержка отличная, но для старых чипов <em>Broadcom</em> функционал Wi-Fi 6 может быть ограничен или отсутствовать.</p>
+ <p><strong>Можно ли вернуть родную прошивку обратно?</strong><br>Да, если у вас сохранился оригинальный файл прошивки (или он доступен на сайте производителя), вы можете загрузить его через интерфейс OpenWrt или режим восстановления.</p>
+ <p><strong>Теряется ли гарантия при установке OpenWrt?</strong><br>Официально — да. Однако, если вы сможете вернуть устройство в исходное состояние, производитель может этого не заметить, но гарантийный случай, связанный с программным обеспечением, будет отклонен.</p>
+ <p><strong>Какой роутер лучше всего выбрать для OpenWrt?</strong><br>Лучше всего подходят модели с чипами <em>MediaTek</em> и <em>Qualcomm</em> (например, <code>Xiaomi Router AX9000</code> или <code>GL.iNet</code>). Они имеют хорошую документацию и стабильные драйверы.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/set-i-internet/m/mo/mobilnyj-internet-dostup-v-blokirovke.html" class="pb-related-card">
+                <span class="pb-related-title">Доступ к мобильному интернету в условиях блокировок: решения и настройка</span>
+                <span class="pb-related-desc">Как получить стабильный доступ к мобильному интернету при блокировках? Обзор методов обхода, настрой</span>
+            </a><a href="/set-i-internet/c/ch/chto-delat-esli-pri-podklyuchenii-k-wifi-pishet-bez-dostupa-k-internetu.html" class="pb-related-card">
+                <span class="pb-related-title">Без доступа к интернету по Wi-Fi: 7 проверенных способов исправить</span>
+                <span class="pb-related-desc">Почему телефон или ноутбук пишет «без доступа к интернету» при подключении к Wi-Fi? Пошаговая инстру</span>
+            </a><a href="/set-i-internet/k/ka/kak-smenit-provajdera-sotovoj-svyazi.html" class="pb-related-card">
+                <span class="pb-related-title">Как сменить оператора сотовой связи: сохранение номера и новые тарифы</span>
+                <span class="pb-related-desc">Пошаговая инструкция по смене мобильного оператора с сохранением номера (MNP). Сравнение условий, пр</span>
+            </a><a href="/set-i-internet/r/ro/router-s-usb-portom-dlya-printera.html" class="pb-related-card">
+                <span class="pb-related-title">Роутер с USB для принтера: выбор, настройка и решение проблем</span>
+                <span class="pb-related-desc">Как выбрать роутер с USB-портом для печати по сети. Настройка принтера, установка драйверов, решение</span>
+            </a><a href="/set-i-internet/c/ch/chto-znachit-rezhim-modema-v-mts.html" class="pb-related-card">
+                <span class="pb-related-title">Режим модема в МТС: что это, как подключить и тарифы</span>
+                <span class="pb-related-desc">Подробный разбор режима модема в МТС. Узнайте, как раздавать интернет, отличия от точки доступа, тар</span>
+            </a><a href="/set-i-internet/a/an/antenna-dlya-usileniya-signala-interneta-na-dache.html" class="pb-related-card">
+                <span class="pb-related-title">Антенна для усиления сигнала 4G интернета на даче: выбор и установка</span>
+                <span class="pb-related-desc">Как выбрать антенну для усиления интернета на даче? Обзор типов, расчет коэффициента усиления и инст</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

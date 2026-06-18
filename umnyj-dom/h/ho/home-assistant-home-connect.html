@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Home Assistant и Home Connect: полная настройка умной техники — Техно Гид</title>
+    <meta name="description" content="Интеграция Home Connect в Home Assistant. Настройка Bosch, Siemens и Neff через API. Управление стиральными машинами и духовками локально.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/umnyj-dom/h/ho/home-assistant-home-connect.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Home Assistant и Home Connect: полная настройка умной техники">
+    <meta property="og:description" content="Интеграция Home Connect в Home Assistant. Настройка Bosch, Siemens и Neff через API. Управление стиральными машинами и духовками локально.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/umnyj-dom/">Умный Дом</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Home Assistant и Home Connect: полная настройка умной техники</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#подготовка-аккаунта-и-получение-ключей-api">Подготовка аккаунта и получение ключей API</a></li><li><a href="#установка-и-настройка-интеграции-в-home-assistant">Установка и настройка интеграции в Home Assistant</a></li><li><a href="#анализ-доступных-сенсоров-и-сущностей">Анализ доступных сенсоров и сущностей</a></li><li><a href="#создание-автоматизаций-и-сценариев">Создание автоматизаций и сценариев</a></li><li><a href="#проблемы-подключения-и-способы-их-решения">Проблемы подключения и способы их решения</a></li><li><a href="#локальное-управление-и-перспективы-развития">Локальное управление и перспективы развития</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/umnyj-dom/x/xi/xiaomi-mijia-auto-wash-pro-set.html">Обзор Xiaomi Mijia Auto Wash Pro Set: полная мойка авто</a></li><li><a href="/umnyj-dom/o/ot/otpugivatel-ot-myshej-v-dome.html">Отпугиватель от мышей в доме: виды, выбор и эффективность устройств</a></li><li><a href="/umnyj-dom/u/um/umnyj-dom-s-alisoj-vozmozhnosti.html">Умный дом с Алисой: возможности и настройка</a></li><li><a href="/umnyj-dom/k/ka/kak-snyat-sensornyj-vyklyuchatel-sveta.html">Как снять сенсорный выключатель света: инструкция по демонтажу</a></li><li><a href="/umnyj-dom/k/ka/kakoj-kinetik-vybrat-dlya-kvartiry.html">Кинетик для квартиры: как выбрать идеальную модель в 2026 году</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Интеграция Home Connect в Home Assistant: руководство по настройке</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#подготовка-аккаунта-и-получение-ключей-api">Подготовка аккаунта и получение ключей API</a></li><li><a href="#установка-и-настройка-интеграции-в-home-assistant">Установка и настройка интеграции в Home Assistant</a></li><li><a href="#анализ-доступных-сенсоров-и-сущностей">Анализ доступных сенсоров и сущностей</a></li><li><a href="#создание-автоматизаций-и-сценариев">Создание автоматизаций и сценариев</a></li><li><a href="#проблемы-подключения-и-способы-их-решения">Проблемы подключения и способы их решения</a></li><li><a href="#локальное-управление-и-перспективы-развития">Локальное управление и перспективы развития</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Современная бытовая техника от таких гигантов, как <em>Bosch</em>, <em>Siemens</em> и <em>Neff</em>, все чаще оснащается модулями удаленного управления через платформу <strong>Home Connect</strong>. Однако родное приложение часто ограничивает функционал и не позволяет создавать сложные сценарии автоматизации. Именно здесь на помощь приходит <strong>Home Assistant</strong> — открытая система умного дома, способная превратить разрозненные устройства в единую экосистему.</p>
+
+<p>Интеграция Home Connect позволяет не только отслеживать статус стирки или мытья посуды, но и получать уведомления об окончании цикла, запускать программы по расписанию и даже считывать расход воды в реальном времени. В этой статье мы подробно разберем процесс подключения, типичные ошибки и способы оптимизации работы интеграции для максимальной отзывчивости системы.</p>
+
+<p>Для начала работы вам потребуется действующий аккаунт в сервисе Home Connect и установленный сервер Home Assistant с доступом к интернету. Важно понимать, что связь с устройствами происходит через облако производителя, хотя в последние годы появляются методы локального управления через сторонние шлюзы.</p>
+
+<h2 id="подготовка-аккаунта-и-получение-ключей-api">Подготовка аккаунта и получение ключей API</h2>
+
+<p>Первым шагом является регистрация разработчика на портале Home Connect Developer. Это необходимо для получения уникальных идентификаторов, без которых Home Assistant не сможет авторизоваться в вашем аккаунте пользователя. Процесс может показаться запутанным, но он является обязательным требованием безопасности со стороны BSH Hausgeräte GmbH.</p>
+
+<p>После входа в личный кабинет разработчика необходимо создать новое приложение. В поле <code>OAuth Flow</code> строго выбирайте тип <strong>Authorization Code Grant</strong>. Это стандартный протокол, обеспечивающий безопасную передачу токенов доступа без необходимости хранить ваш пароль в конфигурационных файлах.</p>
+
+<p>Критически важным параметром является URL перенаправления (Redirect URI). Ошибка здесь приведет к тому, что авторизация просто не завершится. Для стандартной установки Home Assistant адрес должен выглядеть следующим образом:</p>
+
+<pre><code>https://YOUR_HOME_ASSISTANT_URL/auth/external/callback</code></pre>
+
+<p>Если вы используете локальный доступ без HTTPS (что не рекомендуется для внешних подключений), адрес может отличаться, но в большинстве случаев требуется наличие действительного SSL-сертификата. После сохранения приложения вы получите <strong>Client ID</strong> и <strong>Client Secret</strong>. Эти данные нужно будет скопировать и сохранить в надежном месте.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Никогда не публикуйте свой Client Secret в открытых источниках или на форумах. Эти ключи дают полный доступ к управлению вашей бытовой техникой от имени вашего аккаунта.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Сохраните Client ID и Secret в менеджере паролей сразу после создания. Восстановление секретного ключа на портале разработчика невозможно, придется генерировать новую пару и перенастраивать интеграцию.</p></aside>
+
+<h2 id="установка-и-настройка-интеграции-в-home-assistant">Установка и настройка интеграции в Home Assistant</h2>
+
+<p>В современных версиях Home Assistant интеграция Home Connect часто предустановлена. Если вы не видите её в списке доступных, убедитесь, что ваша система обновлена до последней стабильной версии. Установка через HACS (Home Assistant Community Store) требуется только в редких случаях использования экспериментальных форков.</p>
+
+<p>Для добавления устройства перейдите в раздел <code>Настройки → Устройства и службы</code> и нажмите кнопку «Добавить интеграцию». В поиске введите <em>Home Connect</em>. Система запросит ввод ранее полученных Client ID и Client Secret. После ввода данных вас перенаправит на страницу авторизации Bosch/Siemens.</p>
+
+<p>На странице авторизации необходимо войти под тем же аккаунтом, который используется в мобильном приложении на телефоне. После подтверждения прав доступа вы будете возвращены обратно в интерфейс Home Assistant. Все найденные совместимые приборы появятся в списке устройств автоматически.</p>
+
+<ul>
+    <li>🔑 Убедитесь, что ваша техника отображается в официальном приложении Home Connect перед началом настройки.</li>
+    <li>🌐 Сервер Home Assistant должен иметь стабильный исходящий доступ в интернет для обмена данными с облаком.</li>
+    <li>🔄 Токены доступа обновляются автоматически, но при смене пароля потребуется повторная авторизация.</li>
+</ul>
+
+<div class="pb-poll" id="poll-1fd8b7b3"><div class="pb-poll-question">📊 Какая техника у вас подключена через Home Connect?</div><div class="pb-poll-option" data-poll="1fd8b7b3" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Стиральная машина</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="1fd8b7b3" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Посудомоечная машина</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="1fd8b7b3" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Духовой шкаф</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="1fd8b7b3" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Холодильник</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="1fd8b7b3" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Несколько устройств</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<p>Иногда процесс обнаружения устройств может занять несколько минут. Если приборы не появились сразу, попробуйте перезагрузить интеграцию через меню «Три точки» рядом с карточкой интеграции. Не спешите удалять и создавать её заново, так как это сбросит все созданные автоматизации.</p>
+
+<h2 id="анализ-доступных-сенсоров-и-сущностей">Анализ доступных сенсоров и сущностей</h2>
+
+<p>После успешного подключения каждая единица техники раскрывается в виде набора сущностей (entities). Количество доступных датчиков напрямую зависит от модели вашего устройства и его функциональных возможностей. Старые модели могут передавать только базовый статус, в то время как новые предоставляют детальную телеметрию.</p>
+
+<p>Основными сущностями являются переключатели для запуска программ и сенсоры состояния. Особый интерес представляют датники расхода воды и электроэнергии, которые позволяют вести точный учет ресурсов без установки дополнительных физических счетчиков.</p>
+
+<p>Ниже приведена таблица с описанием наиболее часто встречающихся типов сущностей в интеграции:</p>
+
+<div class="pb-table-wrap"><table>
+    <thead>
+        <tr>
+            <th>Тип сущности</th>
+            <th>Описание</th>
+            <th>Пример использования</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>sensor.program</code></td>
+            <td>Текущая выбранная программа</td>
+            <td>Отображение режима "Хлопок 40°C" на дашборде</td>
+        </tr>
+        <tr>
+            <td><code>sensor.remaining_program_time</code></td>
+            <td>Оставшееся время выполнения</td>
+            <td>Уведомление за 15 минут до конца стирки</td>
+        </tr>
+        <tr>
+            <td><code>sensor.water_consumption</code></td>
+            <td>Расход воды за цикл (литры)</td>
+            <td>Подсчет месячного потребления воды техникой</td>
+        </tr>
+        <tr>
+            <td><code>switch.remote_start</code></td>
+            <td>Разрешение удаленного запуска</td>
+            <td>Автоматическое включение функции перед запуском</td>
+        </tr>
+        <tr>
+            <td><code>sensor.door_state</code></td>
+            <td>Статус двери (открыта/закрыта)</td>
+            <td>Сигнал тревоги, если дверь посудомойки открыта</td>
+        </tr>
+    </tbody>
+</table></div>
+
+<p>Важно отметить, что некоторые параметры доступны только для чтения. Например, вы не сможете изменить температуру воды в уже запущенном цикле стирки через API, так как это ограничение заложено в логике работы самих приборов.</p>
+
+<details class="pb-accordion"><summary>Почему некоторые датчики не обновляются в реальном времени?</summary><div class="pb-accordion-body"><p>Облачный API Home Connect имеет ограничения на частоту опроса. Данные могут обновляться с задержкой от 1 до 5 минут. Это сделано для снижения нагрузки на серверы производителя и экономии энергии самими устройствами, находящимися в режиме ожидания.</p></div></details>
+
+<h2 id="создание-автоматизаций-и-сценариев">Создание автоматизаций и сценариев</h2>
+
+<p>Главная сила связки Home Assistant и Home Connect заключается в возможности создания сложных сценариев. Вы можете запускать технику в часы минимальных тарифов на электроэнергию или включать вытяжку автоматически при запуске духового шкафа.</p>
+
+<p>Рассмотрим пример автоматизации уведомления. Часто бывает так, что стирка заканчивается ночью, и вы не слышите звуковой сигнал. С помощью Home Assistant можно настроить отправку сообщения в Telegram или включение умной лампочки в спальне.</p>
+
+<p>Для создания такой логики используйте редактор автоматизаций. Триггером будет служить изменение состояния сенсора <code>sensor.washing_machine_status</code> в значение <em>Finished</em>. Действием может быть любая услуга уведомления.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Чек-лист для создания автоматизации уведомления</h4><label class="check-item"><input type="checkbox"><span>Определить триггер (статус "Готово")</span></label><label class="check-item"><input type="checkbox"><span>Выбрать целевое устройство (лампа или телефон)</span></label><label class="check-item"><input type="checkbox"><span>Настроить условие (только если ночью)</span></label><label class="check-item"><input type="checkbox"><span>Добавить действие (включить свет)</span></label><label class="check-item"><input type="checkbox"><span>Протестировать сценарий вручную</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<p>Более продвинутые пользователи могут реализовать функцию "Remote Start". Многие приборы требуют, чтобы функция удаленного запуска была активирована физически на панели управления перед командой из приложения. Эту проблему можно обойти, создав автоматизацию, которая программно переключает соответствующий свитч перед запуском программы.</p>
+
+<pre><code>alias: "Запуск стирки с удаленным доступом"
+<p>trigger:</p>
+<p>- platform: time</p>
+<p>at: "02:00:00"</p>
+<p>action:</p>
+<p>- service: switch.turn_on</p>
+<p>target:</p>
+<p>entity_id: switch.washing_machine_remote_start</p>
+<p>- delay:</p>
+<p>seconds: 5</p>
+<p>- service: select.select_option</p>
+<p>target:</p>
+<p>entity_id: select.washing_machine_program</p>
+<p>data:</p>
+<p>option: "Eco 40-60"</p>
+<p>- service: switch.turn_on</p>
+<p>target:</p>
+<p>entity_id: switch.washing_machine_start</code></pre></p>
+
+<p>Такой подход позволяет полностью автоматизировать рутинные процессы. Однако стоит помнить, что безопасность всегда на первом месте. Не стоит настраивать автоматический запуск нагрева или механических процессов без вашего непосредственного контроля, если в барабане или камере могут находиться посторонние предметы.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Функция удаленного запуска (<em>Remote Start</em>) на многих моделях автоматически отключается через 15-30 минут после активации, если программа не была запущена. Учитывайте это время при настройке задержек в автоматизациях.</p>
+</blockquote>
+
+<h2 id="проблемы-подключения-и-способы-их-решения">Проблемы подключения и способы их решения</h2>
+
+<p>Несмотря на зрелость интеграции, пользователи могут сталкиваться с рядом проблем. Наиболее частая из них — потеря связи с устройствами или ошибка авторизации. Часто это связано с истечением срока действия токенов или изменениями в API со стороны производителя.</p>
+
+<p>Если устройства стали недоступны, первым делом проверьте логи Home Assistant. Ошибки вида <code>401 Unauthorized</code> указывают на проблему с токенами. В этом случае помогает удаление интеграции и добавление её заново с теми же ключами API. Данные автоматизаций при этом сохранятся, если вы не удаляли сами сущности вручную.</p>
+
+<p>Другая распространенная проблема — рассинхронизация статуса. Home Assistant может показывать, что машина работает, хотя она уже закончила цикл. Это лечится перезагрузкой интеграции или увеличением интервалов опроса в настройках, если такая опция доступна в вашей версии.</p>
+
+<ul>
+    <li>📡 Проверьте стабильность Wi-Fi соединения у самого прибора. Слабый сигнал — главная причина разрывов.</li>
+    <li>🔌 Перезагрузка роутера часто решает проблемы с зависшими соединениями IoT-устройств.</li>
+    <li>🛠 Убедитесь, что прошивка самого прибора обновлена до последней версии через приложение Home Connect.</li>
+</ul>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Большинство проблем с интеграцией решаются простой перепривязкой аккаунта. Не бойтесь удалять и добавлять интеграцию заново — это штатная процедура отладки.</p></aside>
+
+<p>Также стоит учитывать человеческий фактор. Иногда пользователи забывают, что для работы удаленных функций на самом устройстве должен быть активен режим "Удаленное управление". Если эта кнопка не нажата на панели прибора, никакие команды из Home Assistant не пройдут.</p>
+
+<h2 id="локальное-управление-и-перспективы-развития">Локальное управление и перспективы развития</h2>
+
+<p>Зависимость от облака является главным недостатком текущей реализации Home Connect. Если серверы Bosch отключатся или пропадет интернет, управление техникой станет невозможным. Сообщество энтузиастов активно работает над решениями для локального управления, используя перехват трафика или эмуляцию протоколов.</p>
+
+<p>Одним из перспективных направлений является использование проекта <em>Home Connect API Local</em>, который пытается эмулировать облачный шлюз внутри локальной сети. Однако такие решения требуют глубоких знаний в области сетевых протоколов и часто не поддерживаются официально.</p>
+
+<p>Тем не менее, даже в текущем виде интеграция предоставляет огромный функционал для умного дома. Возможность собирать статистику, анализировать эффективность моющих средств и оптимизировать энергопотребление делает её незаменимым инструментом для современного пользователя.</p>
+
+<blockquote>
+<p>⚠️ <strong>Внимание:</strong> Интерфейсы API и функциональные возможности интеграции могут изменяться производителем без предупреждения. То, что работало вчера, может потребовать корректировки настроек завтра. Всегда следите за обновлениями в официальном репозитории Home Assistant.</p>
+</blockquote>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Для продвинутых пользователей: используйте компонент "Statistics Graph" в Lovelace для визуализации потребления воды и энергии. Это поможет наглядно увидеть разницу между экономичными и обычными режимами стирки.</p></aside>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+    <summary>Можно ли управлять техникой Home Connect без интернета?</summary>
+    <p>Официально — нет. Интеграция Home Assistant использует облачный API, поэтому доступ к интернету обязателен. Локальные решения существуют, но они находятся в стадии экспериментальной разработки и требуют сложной настройки.</p>
+</details>
+
+<details>
+    <summary>Почему не отображается оставшееся время стирки?</summary>
+    <p>Не все модели стиральных и посудомоечных машин передают этот параметр в реальном времени. Некоторые устройства отправляют данные о времени только в начале и в конце цикла. Это ограничение самой прошивки прибора, а не интеграции.</p>
+</details>
+
+<details>
+    <summary>Безопасно ли давать Home Assistant доступ к моей технике?</summary>
+    <p>Да, если вы храните сервер в безопасности. Интеграция использует стандартный протокол OAuth 2.0, что означает, что ваш пароль от аккаунта Bosch/Siemens не сохраняется в конфигурационных файлах Home Assistant, передаются только токены доступа.</p>
+</details>
+
+<details>
+    <summary>Как добавить новый прибор, купленный после настройки?</summary>
+    <p>Обычно новые устройства обнаруживаются автоматически при следующей синхронизации. Если этого не произошло, зайдите в настройки интеграции и нажмите кнопку "Перезагрузить" или "Обновить список устройств".</p>
+</details>
+
+<details>
+    <summary>Работает ли интеграция с техникой других брендов группы BSH?</summary>
+    <p>Да, система Home Connect объединяет бренды Bosch, Siemens, Neff, Gaggenau и Constructa. Принцип настройки и доступные сущности будут идентичными для всех этих марок при наличии модуля связи.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/umnyj-dom/x/xi/xiaomi-mijia-auto-wash-pro-set.html" class="pb-related-card">
+                <span class="pb-related-title">Обзор Xiaomi Mijia Auto Wash Pro Set: полная мойка авто</span>
+                <span class="pb-related-desc">Подробный обзор Xiaomi Mijia Auto Wash Pro Set. Характеристики, установка, настройка и советы по экс</span>
+            </a><a href="/umnyj-dom/o/ot/otpugivatel-ot-myshej-v-dome.html" class="pb-related-card">
+                <span class="pb-related-title">Отпугиватель от мышей в доме: виды, выбор и эффективность устройств</span>
+                <span class="pb-related-desc">Как выбрать ультразвуковой отпугиватель от мышей для дома? Обзор типов, моделей, правила установки и</span>
+            </a><a href="/umnyj-dom/u/um/umnyj-dom-s-alisoj-vozmozhnosti.html" class="pb-related-card">
+                <span class="pb-related-title">Умный дом с Алисой: возможности и настройка</span>
+                <span class="pb-related-desc">Полный обзор возможностей умного дома с Яндекс Алисой. Сценарии, совместимые устройства и настройка </span>
+            </a><a href="/umnyj-dom/k/ka/kak-snyat-sensornyj-vyklyuchatel-sveta.html" class="pb-related-card">
+                <span class="pb-related-title">Как снять сенсорный выключатель света: инструкция по демонтажу</span>
+                <span class="pb-related-desc">Пошаговая инструкция: как снять сенсорный выключатель света без повреждений. Отключение питания, тип</span>
+            </a><a href="/umnyj-dom/k/ka/kakoj-kinetik-vybrat-dlya-kvartiry.html" class="pb-related-card">
+                <span class="pb-related-title">Кинетик для квартиры: как выбрать идеальную модель в 2026 году</span>
+                <span class="pb-related-desc">Полный гид по выбору кинетической машины для дома. Сравнение производителей, цены, нюансы монтажа и </span>
+            </a><a href="/umnyj-dom/m/mo/mozhno-li-proshit-kolonku-alisa.html" class="pb-related-card">
+                <span class="pb-related-title">Можно ли прошить Яндекс Станцию с Алисой: риски и способы</span>
+                <span class="pb-related-desc">Разбираем, реально ли перепрошить колонку Алиса. Узнайте о рисках потери гарантии, методах установки</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

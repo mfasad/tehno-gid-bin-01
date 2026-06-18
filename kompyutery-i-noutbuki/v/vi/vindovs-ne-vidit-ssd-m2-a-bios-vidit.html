@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Windows не видит SSD M.2: решение, если BIOS видит диск — Техно Гид</title>
+    <meta name="description" content="Почему Windows не видит M.2 SSD, хотя BIOS его обнаруживает? Полный гайд по драйверам NVMe, настройке Intel RST и разделам диска.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/kompyutery-i-noutbuki/v/vi/vindovs-ne-vidit-ssd-m2-a-bios-vidit.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Windows не видит SSD M.2: решение, если BIOS видит диск">
+    <meta property="og:description" content="Почему Windows не видит M.2 SSD, хотя BIOS его обнаруживает? Полный гайд по драйверам NVMe, настройке Intel RST и разделам диска.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/" class="pb-nav-active">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/kompyutery-i-noutbuki/">Компьютеры и Ноутбуки</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Windows не видит SSD M.2: решение, если BIOS видит диск</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#проверка-физического-подключения-и-слотов-m2">Проверка физического подключения и слотов M.2</a></li><li><a href="#настройка-режима-работы-контроллера-в-biosuefi">Настройка режима работы контроллера в BIOS/UEFI</a></li><li><a href="#инициализация-нового-диска-через-управление-дисками">Инициализация нового диска через Управление дисками</a></li><li><a href="#установка-драйверов-nvme-и-чипсета">Установка драйверов NVMe и чипсета</a></li><li><a href="#работа-с-командной-строкой-и-diskpart">Работа с командной строкой и Diskpart</a></li><li><a href="#проблемы-совместимости-и-устаревшее-по">Проблемы совместимости и устаревшее ПО</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/kompyutery-i-noutbuki/c/ch/chto-delat-esli-ne-rabotaet-tachpad-na-noutbuke-lenovo.html">Не работает тачпад на ноутбуке Lenovo: причины и решения</a></li><li><a href="/kompyutery-i-noutbuki/z/za/zamena-hdd-na-ssd-v-noutbuke-hp.html">Замена HDD на SSD в ноутбуке HP: Полная инструкция</a></li><li><a href="/kompyutery-i-noutbuki/n/no/noutbuk-vklyuchaetsya-so-vtorogo-raza.html">Ноутбук включается со второго раза: причины и ремонт</a></li><li><a href="/kompyutery-i-noutbuki/l/lu/luchshij-noutbuk-do-120000-rublej.html">Лучший ноутбук до 120000 рублей: Топ-7 моделей 2026-2026</a></li><li><a href="/kompyutery-i-noutbuki/v/vi/virtualnyj-kom-port-dlya-vindovs-10.html">Виртуальный COM-порт для Windows 10: настройка и драйверы</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Windows не видит SSD M.2, но BIOS видит: полное руководство по решению</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#проверка-физического-подключения-и-слотов-m2">Проверка физического подключения и слотов M.2</a></li><li><a href="#настройка-режима-работы-контроллера-в-biosuefi">Настройка режима работы контроллера в BIOS/UEFI</a></li><li><a href="#инициализация-нового-диска-через-управление-дисками">Инициализация нового диска через Управление дисками</a></li><li><a href="#установка-драйверов-nvme-и-чипсета">Установка драйверов NVMe и чипсета</a></li><li><a href="#работа-с-командной-строкой-и-diskpart">Работа с командной строкой и Diskpart</a></li><li><a href="#проблемы-совместимости-и-устаревшее-по">Проблемы совместимости и устаревшее ПО</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Если BIOS успешно определяет накопитель M.2, но установщик Windows или «Мой компьютер» его игнорируют, проблема чаще всего кроется в отсутствии драйвера контроллера хранилища или неверном режиме работы SATA в UEFI, а не в физической неисправности диска.</p>
+
+<p>Чаще всего проблема кроется в отсутствии драйверов контроллера хранилища, особенно актуально для процессоров Intel 11-го поколения и новее, где технология <em>Intel Rapid Storage Technology (RST)</em> включена по умолчанию. Также причиной может стать неинициализированный диск, конфликт режимов работы SATA/NVMe или устаревшая версия прошивки самого накопителя. В этом руководстве мы разберем пошаговый алгоритм действий, который поможет вернуть доступ к вашему хранилищу без потери данных.</p>
+
+<h2 id="проверка-физического-подключения-и-слотов-m2">Проверка физического подключения и слотов M.2</h2>
+
+<p>Прежде чем углубляться в настройки программного обеспечения, необходимо исключить банальные ошибки монтажа. Слоты <code>M.2</code> на материнских платах имеют разную распиновку и поддержку протоколов. Некоторые разъемы работают только с накопителями <em>SATA</em>, другие — исключительно с <em>NVMe (PCIe)</em>, а третьи являются универсальными. Если вы вставили NVMe диск в слот, поддерживающий только SATA, система его просто не увидит на уровне контроллера.</p>
+
+<p>Также стоит проверить плотность прилегания контакта. Часто пользователи забывают зафиксировать диск винтом или используют слишком длинную стойку, из-за чего контакт отходит. Попробуйте переустановить накопитель в другой слот, если ваша плата оснащена несколькими разъемами <code>M.2</code>. Иногда первичный слот может быть занят или иметь приоритет, который конфликтует с другими портами SATA на плате.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Перед любыми манипуляциями внутри корпуса обязательно обесточьте компьютер и нажмите кнопку питания для снятия остаточного заряда с конденсаторов. Статическое электричество может вывести контроллер SSD из строя мгновенно.</p>
+</blockquote>
+
+<p>Обратите внимание на ключи разъема. Визуально осмотрите контактную площадку вашего SSD. Если вырез находится справа (ключ M), это обычно NVMe накопитель. Если вырезов два (ключи B и M), это может быть SATA или NVMe устройство. Сверьтесь с инструкцией к вашей <strong>материнской плате</strong>, чтобы убедиться, что выбранный слот поддерживает именно ваш тип ключа.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Используйте сжатый воздух для продувки слота M.2 перед установкой диска — пыль и мусор могут препятствовать плотному контакту золотых площадок.</p></aside>
+
+<h2 id="настройка-режима-работы-контроллера-в-biosuefi">Настройка режима работы контроллера в BIOS/UEFI</h2>
+
+<p>Самая распространенная причина невидимости диска в установщике Windows — неправильный режим работы контроллера SATA/NVMe в BIOS. Современные системы часто используют режим <em>RAID</em> или <em>Intel RST Premium</em> по умолчанию, в то время как стандартные установочные образы Windows не содержат драйверов для этого специфического режима. Переключение на режим <code>AHCI</code> часто решает проблему мгновенно.</p>
+
+<p>Для входа в настройки перезагрузите ПК и нажимайте <code>Del</code> или <code>F2</code>. Найдите раздел, отвечающий за конфигурацию хранилища. Он может называться <code>SATA Configuration</code>, <code>Storage Options</code> или <code>VMD Setup Menu</code>. Если вы видите опцию <em>VMD Controller</em> (Volume Management Device), попробуйте отключить её. Это действие переведет контроллер в стандартный режим, понятный операционной системе без дополнительных драйверов.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Режим контроллера</th>
+<th>Описание</th>
+<th>Совместимость с Windows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AHCI</strong></td>
+<td>Стандартный режим для одиночных дисков</td>
+<td>Высокая (драйверы встроены)</td>
+</tr>
+<tr>
+<td><strong>RAID / Intel RST</strong></td>
+<td>Режим для массивов и оптимизации Intel</td>
+<td>Низкая (требует драйвер F6)</td>
+</tr>
+<tr>
+<td><strong>IDE</strong></td>
+<td>Устаревший режим эмуляции</td>
+<td>Средняя (не рекомендуется для SSD)</td>
+</tr>
+<tr>
+<td><strong>VMD Enabled</strong></td>
+<td>Управление томами Intel для серверов и ПК</td>
+<td>Требует загрузки драйвера при установке</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Если переключение на <code>AHCI</code> невозможно из-за уже установленной системы (это вызовет ошибку загрузки <code>INACCESSIBLE_BOOT_DEVICE</code>), вам придется загружать драйверы непосредственно во время установки Windows. Скачайте пакет <em>Intel Rapid Storage Technology Driver</em> с официального сайта производителя ноутбука или материнской платы, распакуйте его на флешку и укажите путь к нему в окне выбора диска через кнопку <code>Загрузить драйвер</code>.</p>
+
+<details class="pb-accordion"><summary>Что такое VMD контроллер?</summary><div class="pb-accordion-body"><p>VMD (Volume Management Device) — это технология Intel, которая позволяет управлять PCIe-накопителями напрямую через процессор. Она полезна для серверов и сложных RAID-массивов, но для обычного домашнего ПК часто создает лишние сложности с распознаванием дисков в Windows без специальных драйверов.</p></div></details>
+
+<h2 id="инициализация-нового-диска-через-управление-дисками">Инициализация нового диска через Управление дисками</h2>
+
+<p>Если BIOS видит диск, а в режиме AHCI система загружается, но накопителя нет в «Моем компьютере», скорее всего, диск просто не инициализирован. Новый SSD приходит с завода без файловой системы и таблицы разделов, поэтому проводник Windows его игнорирует. Для исправления ситуации воспользуемся встроенной утилитой управления.</p>
+
+<p>Нажмите комбинацию клавиш <code>Win + X</code> и выберите пункт <code>Управление дисками</code> (Disk Management). В открывшемся окне вы увидите список всех подключенных накопителей. Новый диск будет помечен черным цветом и иметь статус «Не проинициализирован». Система автоматически предложит запустить мастер инициализации при первом обращении к такому устройству.</p>
+
+<ul>
+<li>🛠️ Выберите таблицу разделов <strong>GPT</strong> (GUID Partition Table) для современных систем с UEFI, так как она поддерживает диски объемом более 2 ТБ.</li>
+<li>💾 Создайте новый простой том, нажав правой кнопкой мыши на нераспределенную область черного цвета.</li>
+<li>🔤 Назначьте букву диска (например, <code>D:</code> или <code>E:</code>) и выберите файловую систему <em>NTFS</em>.</li>
+<li>✅ Завершите мастер, после чего диск появится в проводнике и будет готов к записи данных.</li>
+</ul>
+
+<p>Будьте осторожны при выборе диска в утилите, чтобы не отформатировать системный раздел по ошибке. Ориентируйтесь на объем накопителя: системный диск обычно имеет занятую область, а новый SSD отображается как полностью свободное пространство. Если диск отображается как «Не в сети», нажмите правой кнопкой на его название слева и выберите пункт <code>В сети</code>.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Инициализация диска</h4><label class="check-item"><input type="checkbox"><span>Открыть Управление дисками</span></label><label class="check-item"><input type="checkbox"><span>Выбрать диск с пометкой «Неизвестный»</span></label><label class="check-item"><input type="checkbox"><span>Нажать «Инициализировать диск»</span></label><label class="check-item"><input type="checkbox"><span>Выбрать стиль GPT</span></label><label class="check-item"><input type="checkbox"><span>Создать простой том</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="установка-драйверов-nvme-и-чипсета">Установка драйверов NVMe и чипсета</h2>
+
+<p>Даже если диск определился, он может работать нестабильно или отображаться как «Стандартный контроллер NVM Express», что ограничивает его производительность и функции управления питанием. Для полноценной работы необходимо установить специфические драйверы от производителя вашего SSD, будь то <em>Samsung</em>, <em>Western Digital</em> или <em>Kingston</em>.</p>
+
+<p>Зайдите в <code>Диспетчер устройств</code> через панель управления или поиск. Раскройте ветку <strong>Контроллеры запоминающих устройств</strong>. Если вы видите устройство с желтым восклицательным знаком или названием <em>Standard NVM Express Controller</em>, это сигнал к обновлению ПО. Скачайте драйвер с официального сайта производителя накопителя, а не с сайта производителя ноутбука, так как версии на сайтах OEM-сборщиков часто устаревают.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Драйверы чипсета материнской платы также влияют на работу портов M.2. Убедитесь, что установлены последние версии драйверов Chipset и Serial IO с сайта производителя вашей материнской платы.</p>
+</blockquote>
+
+<p>После установки драйверов перезагрузите компьютер. В диспетчере устройств название контроллера должно измениться на фирменное, например, <em>Samsung NVMe Controller</em>. Это подтверждает, что операционная система корректно взаимодействует с контроллером накопителя, используя все его аппаратные возможности.</p>
+
+<div class="pb-poll" id="poll-374929b3"><div class="pb-poll-question">📊 Какой бренд вашего SSD M.2?</div><div class="pb-poll-option" data-poll="374929b3" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Samsung</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="374929b3" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Kingston</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="374929b3" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">WD (Western Digital)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="374929b3" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Crucial</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="374929b3" data-idx="4" onclick="pbPollVote(this)"><span class="pb-poll-label">Другой</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<h2 id="работа-с-командной-строкой-и-diskpart">Работа с командной строкой и Diskpart</h2>
+
+<p>В случаях, когда графический интерфейс управления дисками не видит накопитель или выдает ошибки доступа, на помощь приходит мощная утилита <code>diskpart</code>. Она позволяет работать с дисками на низком уровне, очищать атрибуты только для чтения и принудительно создавать разделы. Запускать её необходимо от имени администратора.</p>
+
+<p>Откройте командную строку (<code>CMD</code>) или PowerShell через меню Пуск, нажав правой кнопкой мыши и выбрав «Запуск от имени администратора». Введите команду <code>diskpart</code> и нажмите Enter. Далее введите <code>list disk</code>, чтобы отобразить список всех физических дисков, подключенных к системе. Найдите ваш SSD по объему памяти.</p>
+
+<pre><code>list disk
+<p>select disk 1</p>
+<p>clean</p>
+<p>convert gpt</p>
+<p>create partition primary</p>
+<p>format fs=ntfs quick</p>
+<p>assign letter=Z</p>
+<p>exit</code></pre></p>
+
+<p>Команда <code>clean</code> полностью удаляет всю информацию о разделах на выбранном диске, поэтому убедитесь, что вы выбрали правильный номер (<code>select disk X</code>). Если диск имеет атрибут «Только для чтения» (Read-only), который иногда возникает из-за сбоев контроллера, его можно снять командой <code>attributes disk clear readonly</code> перед очисткой.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Утилита Diskpart является мощным инструментом, но любая ошибка в выборе номера диска (select disk) приведет к безвозвратной потере данных на выбранном накопителе.</p></aside>
+
+<h2 id="проблемы-совместимости-и-устаревшее-по">Проблемы совместимости и устаревшее ПО</h2>
+
+<p>Иногда проблема носит более глубокий характер и связана с версией BIOS материнской платы. Производители регулярно выпускают обновления микрокода, которые улучшают совместимость с новыми стандартами NVMe и исправляют ошибки инициализации PCIe-линий. Если ваш BIOS выпущен несколько лет назад, он может просто «не понимать» структуру нового поколения SSD.</p>
+
+<p>Проверьте версию BIOS в системе или при загрузке и сравните её с последней доступной версией на сайте производителя. Обновление BIOS — процедура рискованная, поэтому строго следуйте инструкциям. Также стоит проверить, не включена ли в BIOS опция <em>CSM (Compatibility Support Module)</em>. Для современных NVMe дисков режим CSM должен быть отключен, а загрузка должна происходить в чистом режиме <strong>UEFI</strong>.</p>
+
+<p>В редких случаях сам накопитель может иметь устаревшую прошивку. Производители SSD выпускают утилиты для управления дисками (например, <em>Samsung Magician</em> или <em>WD Dashboard</em>), которые позволяют обновить внутреннее ПО накопителя. Это может исправить ошибки контроллера, из-за которых диск определяется в BIOS, но не проходит инициализацию в ОС.</p>
+
+<details>
+<summary>Почему диск виден в BIOS, но не в установщике Windows?</summary>
+<p>Установщик Windows содержит ограниченный набор драйверов. Если ваш контроллер работает в режиме Intel RST/VMD, а в образе Windows нет этого драйвера, диск будет невидим. Решение: переключить BIOS в AHCI или подгрузить драйвер F6 с флешки.</p>
+</details>
+
+<details>
+<summary>Может ли слот M.2 быть неисправен?</summary>
+<p>Да, механические повреждения контактов или выгорание контроллера на материнской плате возможны. Если диск не определяется в BIOS ни в одном слоте, попробуйте проверить его на другом компьютере для исключения поломки самого SSD.</p>
+</details>
+
+<details>
+<summary>Влияет ли длина SSD (2280, 2260) на видимость?</summary>
+<p>Физический размер не влияет на логическую видимость, если диск правильно установлен и закреплен. Однако некоторые старые платы могут иметь ограничения по длине поддерживаемых модулей, хотя это встречается крайне редко.</p>
+</details>
+
+<details>
+<summary>Что делать, если диск определяется как "Неизвестное устройство"?</summary>
+<p>Это признак критического сбоя драйвера или повреждения электроники диска. Попробуйте сбросить настройки BIOS в дефолт (Load Optimized Defaults) и обновить драйверы чипсета. Если не поможет — возможно, накопитель неисправен.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/kompyutery-i-noutbuki/c/ch/chto-delat-esli-ne-rabotaet-tachpad-na-noutbuke-lenovo.html" class="pb-related-card">
+                <span class="pb-related-title">Не работает тачпад на ноутбуке Lenovo: причины и решения</span>
+                <span class="pb-related-desc">Если не работает тачпад на ноутбуке Lenovo: подробная инструкция по устранению проблем с драйверами,</span>
+            </a><a href="/kompyutery-i-noutbuki/z/za/zamena-hdd-na-ssd-v-noutbuke-hp.html" class="pb-related-card">
+                <span class="pb-related-title">Замена HDD на SSD в ноутбуке HP: Полная инструкция</span>
+                <span class="pb-related-desc">Как заменить жесткий диск на твердотельный накопитель в ноутбуке HP. Пошаговая инструкция, выбор SSD</span>
+            </a><a href="/kompyutery-i-noutbuki/n/no/noutbuk-vklyuchaetsya-so-vtorogo-raza.html" class="pb-related-card">
+                <span class="pb-related-title">Ноутбук включается со второго раза: причины и ремонт</span>
+                <span class="pb-related-desc">Почему ноутбук не включается с первого раза? Разбор частых причин: от севшего аккумулятора до дефект</span>
+            </a><a href="/kompyutery-i-noutbuki/l/lu/luchshij-noutbuk-do-120000-rublej.html" class="pb-related-card">
+                <span class="pb-related-title">Лучший ноутбук до 120000 рублей: Топ-7 моделей 2026-2026</span>
+                <span class="pb-related-desc">Выбираете мощный лэптоп с оптимальным соотношением цены и качества? Обзор лучших игровых и рабочих н</span>
+            </a><a href="/kompyutery-i-noutbuki/v/vi/virtualnyj-kom-port-dlya-vindovs-10.html" class="pb-related-card">
+                <span class="pb-related-title">Виртуальный COM-порт для Windows 10: настройка и драйверы</span>
+                <span class="pb-related-desc">Как создать виртуальный COM-порт в Windows 10. Настройка драйверов, эмуляция RS-232, устранение конф</span>
+            </a><a href="/kompyutery-i-noutbuki/s/sh/shteker-dlya-bloka-pitaniya-kompyutera.html" class="pb-related-card">
+                <span class="pb-related-title">Штекер блока питания ПК: виды, распиновка и ремонт</span>
+                <span class="pb-related-desc">Полный гид по штекерам БП компьютера: ATX 24-pin, 4/8-pin CPU, PCIe. Как заменить разъем, распиновка</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

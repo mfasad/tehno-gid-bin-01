@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как посмотреть логи на Android: ADB, Root и встроенные средства — Техно Гид</title>
+    <meta name="description" content="Полное руководство по доступу к системным журналам Android. Узнайте, как считать логи через ADB, получить Root-права и анализировать ошибки приложений.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/smartfony-i-planshety/k/ka/kak-posmotret-logi-na-androide.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как посмотреть логи на Android: ADB, Root и встроенные средства">
+    <meta property="og:description" content="Полное руководство по доступу к системным журналам Android. Узнайте, как считать логи через ADB, получить Root-права и анализировать ошибки приложений.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-nav-active">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/smartfony-i-planshety/">Смартфоны и Планшеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как посмотреть логи на Android: ADB, Root и встроенные средства</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#введение-в-диагностику-android-устройств">Введение в диагностику Android-устройств</a></li><li><a href="#использование-утилиты-adb-для-считывания-логов">Использование утилиты ADB для считывания логов</a></li><li><a href="#методы-доступа-без-компьютера-и-root-прав">Методы доступа без компьютера и Root-прав</a></li><li><a href="#получение-root-прав-для-глубокого-анализа">Получение Root-прав для глубокого анализа</a></li><li><a href="#фильтрация-и-поиск-критических-ошибок">Фильтрация и поиск критических ошибок</a></li><li><a href="#анализ-логов-ядра-и-системных-сбоев">Анализ логов ядра и системных сбоев</a></li><li><a href="#инструменты-для-автоматизации-и-экспорта">Инструменты для автоматизации и экспорта</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/smartfony-i-planshety/k/ka/kak-uznat-chto-est-batareyu-na-android.html">Как узнать, что ест батарею на Андроид: Полная инструкция</a></li><li><a href="/smartfony-i-planshety/p/pr/proverka-nomera-na-proslushku.html">Проверка номера на прослушку: признаки, методы, защита</a></li><li><a href="/smartfony-i-planshety/c/ch/chto-takoe-data-kabel.html">Что такое дата-кабель: виды, назначение и выбор правильного шнура</a></li><li><a href="/smartfony-i-planshety/g/ga/galaxy-note-10-4pda.html">Galaxy Note 10 на 4PDA: Прошивки, Ремонт и Обсуждение</a></li><li><a href="/smartfony-i-planshety/s/sm/smartfon-vivo-x100-pro.html">Vivo X100 Pro: Обзор флагмана с Zeiss и чипом Dimensity 9300</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как посмотреть логи на Android: Полное руководство по диагностике</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#введение-в-диагностику-android-устройств">Введение в диагностику Android-устройств</a></li><li><a href="#использование-утилиты-adb-для-считывания-логов">Использование утилиты ADB для считывания логов</a></li><li><a href="#методы-доступа-без-компьютера-и-root-прав">Методы доступа без компьютера и Root-прав</a></li><li><a href="#получение-root-прав-для-глубокого-анализа">Получение Root-прав для глубокого анализа</a></li><li><a href="#фильтрация-и-поиск-критических-ошибок">Фильтрация и поиск критических ошибок</a></li><li><a href="#анализ-логов-ядра-и-системных-сбоев">Анализ логов ядра и системных сбоев</a></li><li><a href="#инструменты-для-автоматизации-и-экспорта">Инструменты для автоматизации и экспорта</a></li><li><a href="#часто-задаваемые-вопросы">Часто задаваемые вопросы</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><h2 id="введение-в-диагностику-android-устройств">Введение в диагностику Android-устройств</h2>
+
+<p>Система Android генерирует огромный массив данных о своей работе в режиме реального времени, и понимание того, <strong>как посмотреть логи</strong>, является ключевым навыком для решения сложных технических проблем. Эти файлы, называемые логами, содержат подробную запись событий, начиная от загрузки ядра и заканчивая ошибками конкретных приложений, что позволяет точно определить причину сбоя.</p>
+
+<p>Для обычного пользователя доступ к этим данным может показаться закрытым, однако современные инструменты разработки и настройки делают эту информацию доступной без необходимости глубоких знаний программирования. Главное, что нужно понимать: <em>системные логи</em> — это не просто набор символов, а точная карта поведения вашей <em>смартфонной системы</em> в тот или иной момент времени.</p>
+
+<p>В зависимости от вашей цели — будь то поиск причины внезапных перезагрузок, краха приложения или проверка безопасности — методы доступа будут различаться. Мы рассмотрим как стандартные способы, доступные каждому владельцу устройства, так и продвинутые методы для опытных энтузиастов.</p>
+
+<h2 id="использование-утилиты-adb-для-считывания-логов">Использование утилиты ADB для считывания логов</h2>
+
+<p>Самый универсальный и мощный способ получить доступ к <strong>буферу логов</strong> — это использование инструментов отладки по USB (ADB). Этот метод не требует получения прав суперпользователя и работает на подавляющем большинстве устройств, включая <em>Samsung Galaxy</em>, <em>Xiaomi</em> и <em>Google Pixel</em>.</p>
+
+<p>Для начала работы необходимо включить <strong>Отладку по USB</strong> в параметрах разработчика. После подключения телефона к компьютеру через кабель, вы сможете использовать консольные команды для извлечения информации. Самая важная команда для просмотра текущего состояния системы — <code>adb logcat</code>, которая выводит поток событий в реальном времени.</p>
+
+<p>Если вам нужно сохранить историю событий до того момента, как вы подключили кабель, используйте команду с ключом <code>-d</code> (dump). Это позволит получить <em>снимок</em> буфера, который можно открыть в любом текстовом редакторе на ПК для детального анализа.</p>
+<pre><code>adb logcat -d &gt; system_logs.txt</code></pre>
+
+<p>Важно отметить, что вывод может быть очень объемным, поэтому полезно добавлять фильтры, чтобы отсечь лишнюю информацию. Вы можете отфильтровать сообщения по тегу приложения или уровню важности, например, отображая только критические ошибки (<strong>ERROR</strong>) и предупреждения (<strong>WARN</strong>).</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Перед запуском команды logcat убедитесь, что драйверы вашего устройства установлены корректно, иначе компьютер не увидит телефон в режиме отладки.</p></aside>
+
+<h2 id="методы-доступа-без-компьютера-и-root-прав">Методы доступа без компьютера и Root-прав</h2>
+
+<p>Не у всех пользователей есть под рукой стационарный компьютер, поэтому существуют способы просмотра <strong>логов Android</strong> непосредственно на самом устройстве. Самый простой вариант — использование встроенного приложения "Сообщения об ошибках" или "Сбор отчетов", которое часто предустановлено производителями для обратной связи.</p>
+
+<p>Однако, для более гибкого анализа лучше установить специализированные приложения из Google Play Store. Программы вроде <em>MatLog</em> или <em>Logcat Reader</em> предоставляют удобный интерфейс для просмотра, фильтрации и экспорта логов без необходимости подключения к ПК.</p>
+
+<p>Эти утилиты позволяют настроить цветовую схему для разных уровней логирования, что значительно ускоряет поиск проблем. Вы сможете быстро найти <strong>Stack Trace</strong> — стек вызовов, который показывает, в какой именно строке кода приложение перестало работать.</p>
+
+<h3>Основные способы доступа к логам:</h3>
+<ul>
+    <li>📱 Использование приложения <em>MatLog</em> для визуального анализа на экране телефона.</li>
+    <li>💻 Подключение к ПК через <code>adb logcat</code> для сохранения полного потока данных.</li>
+    <li>⚙️ Включение режима инженера на устройствах <em>Samsung</em> или <em>Xiaomi</em> через секретные коды.</li>
+    <li>📄 Экспорт отчетов через стандартное меню "Настройки → О телефоне → Сообщения об ошибках".</li>
+</ul>
+
+<div class="pb-poll" id="poll-0925626e"><div class="pb-poll-question">📊 Какой метод просмотра логов вы предпочитаете?</div><div class="pb-poll-option" data-poll="0925626e" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">Через ADB на ПК</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0925626e" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">Приложения на телефоне</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0925626e" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">Встроенные средства системы</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="0925626e" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Не знаю, как это делать</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<blockquote>Внимание: При использовании сторонних приложений для чтения логов всегда проверяйте разрешения, которые они запрашивают. Доступ к системным журналам может включать чувствительную информацию о вашей активности.</blockquote>
+
+<details class="pb-accordion"><summary>Что такое буфер логов?
+<p>Буфер логов — это временное хранилище в оперативной памяти, куда система записывает сообщения о событиях. При перезагрузке устройства содержимое этого буфера обычно очищается, если не настроена постоянная запись на накопитель.--></p>
+
+<h2 id="получение-root-прав-для-глубокого-анализа">Получение Root-прав для глубокого анализа</h2>
+
+<p>Для профессиональной диагностики, особенно при анализе проблем ядра или системных процессов, стандартных прав доступа может быть недостаточно. В этом случае возникает необходимость получить <strong>права суперпользователя (Root)</strong>. Это открывает доступ к файлам, которые скрыты от обычного пользователя и приложений.</p>
+
+<p>С Root-правами вы можете использовать консольные команды с повышенными привилегиями, например, <code>su -c logcat</code>, чтобы увидеть логи системных демонов и процессов, работающих от имени системы. Это критически важно при отладке кастомных прошивок или модификаций ядра.</p>
+
+<p>Однако, получение Root-прав сопряжено с рисками. Неправильные действия могут привести к полной неработоспособности устройства (брик). Кроме того, многие банковские приложения и игры перестают работать на устройствах с полученными правами доступа из-за нарушений безопасности.</p>
+
+<p>Если вы все же решитесь на этот шаг, обязательно создайте полную резервную копию данных. Используйте проверенные инструменты, такие как <em>Magisk</em>, который позволяет управлять привилегиями и скрывать факт наличия Root для определенных приложений.</p>
+
+<!--WIDGET</summary><div class="pb-accordion-body"><p>keypoint:Root-права дают неограниченный доступ к логам ядра, но могут лишить вас гарантии на устройство и отключить банковские приложения.</p></div></details>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Метод доступа</th>
+<th>Необходимые права</th>
+<th>Сложность</th>
+<th>Полнота данных</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ADB (Отладка по USB)</td>
+<td>Отладка включена</td>
+<td>Средняя</td>
+<td>Высокая (буфер)</td>
+</tr>
+<tr>
+<td>Приложения (MatLog)</td>
+<td>Обычные</td>
+<td>Низкая</td>
+<td>Средняя</td>
+</tr>
+<tr>
+<td>Root (Superuser)</td>
+<td>Root-права</td>
+<td>Высокая</td>
+<td>Максимальная</td>
+</tr>
+<tr>
+<td>Режим разработчика (Встроенный)</td>
+<td>Обычные</td>
+<td>Низкая</td>
+<td>Ограниченная (отчеты)</td>
+</tr>
+</tbody>
+</table></div>
+
+<h2 id="фильтрация-и-поиск-критических-ошибок">Фильтрация и поиск критических ошибок</h2>
+
+<p>Получив огромный массив текста, вы столкнетесь с проблемой: где искать именно ту ошибку, которая вызвала сбой? Логирование Android генерирует тысячи строк в секунду, поэтому умение правильно <strong>фильтровать данные</strong> — ключ к успеху.</p>
+
+<p>Самый эффективный способ — искать по тегам (<strong>TAG</strong>). Каждое приложение или системный компонент имеет свой уникальный тег. Если приложение <em>Instagram</em> вылетело, в логе будут строки с тегом <code>ActivityManager</code> или именем самого пакета.</p>
+
+<p>Также стоит обращать внимание на уровни приоритета сообщений: <strong>DEBUG</strong>, <strong>INFO</strong>, <strong>WARN</strong>, <strong>ERROR</strong> и <strong>FATAL</strong>. Ошибки типа FATAL обычно указывают на критическое краш-состояние, при котором процесс был принудительно остановлен системой.</p>
+
+<p>Используйте команду <code>grep</code> в терминале компьютерной версии ADB для быстрого поиска. Например, <code>adb logcat | grep "RuntimeException"</code> покажет только те события, где произошла ошибка выполнения. Это сэкономит вам часы ручного перебора текста.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Алгоритм поиска ошибки</h4><label class="check-item"><input type="checkbox"><span>Воспроизвести сбой</span></label><label class="check-item"><input type="checkbox"><span>Запустить сбор логов</span></label><label class="check-item"><input type="checkbox"><span>Просмотреть файл после сбоя</span></label><label class="check-item"><input type="checkbox"><span>Найти строки с ERROR или FATAL</span></label><label class="check-item"><input type="checkbox"><span>Проверить стек вызовов (Stack Trace)</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<h2 id="анализ-логов-ядра-и-системных-сбоев">Анализ логов ядра и системных сбоев</h2>
+
+<p>Если устройство перезагружается само по себе или зависает при загрузке, обычные логи приложений могут не содержать нужной информации. В таких случаях необходимо анализировать <strong>логи ядра (Kernel Log)</strong>. Они записываются в специальный буфер, доступ к которому часто требует Root-прав или использования специфических утилит.</p>
+
+<p>Команда <code>dmesg</code> является стандартом для просмотра сообщений ядра Linux, на базе которого работает Android. Она показывает инициализацию драйверов, работу памяти и работу оборудования. Ошибки драйверов дисплея, Wi-Fi модуля или процессора будут отражены здесь.</p>
+
+<p>При анализе <em>Kernel Panic</em> (критической ошибки ядра) обратите внимание на последние строки перед перезагрузкой. Там часто указывается имя модуля, который вызвал конфликт. Это может быть стороннее приложение, внедрившее низкий уровень драйвера, или поврежденный файл в системном разделе.</p>
+
+<blockquote>Внимание: Изменение системных файлов на основе анализа логов ядра без глубоких знаний может привести к невозможности загрузки устройства. Действуйте только если вы уверены в причине сбоя.</blockquote>
+
+<details class="pb-accordion"><summary>Где хранятся логи ядра?
+<p>Обычно логи ядра находятся в файле /proc/last_kmsg или /sys/fs/pstore/console-ramoops, но доступ к ним возможен только при наличии прав Root или специфических настроек ядра.--></p>
+
+<h2 id="инструменты-для-автоматизации-и-экспорта">Инструменты для автоматизации и экспорта</h2>
+
+<p>Ручной анализ логов утомителен, поэтому профессионалы используют инструменты автоматизации. <strong>Android Bug Report API</strong> позволяет генерировать полные отчеты, включающие логи, снимки экрана, настройки и список установленных приложений.</p>
+
+<p>Для команд разработчиков существуют инструменты вроде <em>Android Studio Logcat</em>, которые позволяют подключаться к устройству, фильтровать данные цветом и даже отправлять отчеты прямо в систему отслеживания ошибок (например, Firebase Crashlytics).</p>
+
+<p>Экспорт логов в формате JSON или XML удобен для последующей обработки скриптами. Вы можете написать простой скрипт на Python, который будет автоматически искать определенные коды ошибок и отправлять уведомление на почту.</p>
+
+<p>Помните, что регулярный мониторинг логов помогает выявить скрытые проблемы до того, как они приведут к потере данных. Настройка автоматического сбора логов в фоновом режиме (с осторожностью, чтобы не разрядить батарею) может быть полезна для диагностики редких и непредсказуемых сбоев.</p>
+
+<blockquote>Внимание</summary><div class="pb-accordion-body"><p> В зависимости от версии Android и прошивки производителя, доступ к определенным системным логам может быть ограничен разработчиком устройства. Всегда сверяйтесь с официальной документацией вашего бренда.</blockquote>
+
+
+
+<h2 id="часто-задаваемые-вопросы">Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Могут ли логи содержать мою личную информацию?</summary>
+<p><p>Да, логи могут содержать имена файлов, пути к документам, имена Wi-Fi сетей и даже фрагменты текста, введенного в некоторые приложения. Будьте осторожны при отправке логов на публичные форумы или в поддержку сторонних сервисов.</p></p>
+</details>
+
+<details>
+<summary>Зачем нужны логи, если я не программист?</summary>
+<p><p>Логика работы Android сложна, и часто причина сбоя (например, почему телефон не включается) видна только в логах. Простое знание того, как их посмотреть, позволяет точно сформулировать запрос в службу поддержки, что ускорит ремонт.</p></p>
+</details>
+
+<details>
+<summary>Можно ли удалить логи для освобождения места?</summary>
+<p><p>Логи хранятся в оперативной памяти и очищаются автоматически при перезагрузке. Файлы на диске занимают крайне мало места, поэтому их удаление не даст заметного прироста свободного пространства, но может затруднить диагностику будущих проблем.</p></p>
+</details>
+
+<details>
+<summary>Что делать, если команда adb logcat не работает?</summary>
+<p><p>Убедитесь, что включена отладка по USB, драйверы установлены, и телефон выбран в консоли. Попробуйте перезапустить сервер ADB командой <code>adb kill-server</code> и <code>adb start-server</code>.</p></p>
+</details>
+
+<details>
+<summary>Влияет ли включение отладки по USB на безопасность?</summary>
+<p><p>Включение отладки теоретически позволяет вредоносному ПО на подключенном ПК получить доступ к данным на телефоне. Всегда отключайте этот режим, когда он не используется, и разрешайте отладку только доверенным компьютерам.</p></p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/smartfony-i-planshety/k/ka/kak-uznat-chto-est-batareyu-na-android.html" class="pb-related-card">
+                <span class="pb-related-title">Как узнать, что ест батарею на Андроид: Полная инструкция</span>
+                <span class="pb-related-desc">Подробный гид: как найти приложение-пожирателя аккумулятора на Android. Настройка статистики, скрыты</span>
+            </a><a href="/smartfony-i-planshety/p/pr/proverka-nomera-na-proslushku.html" class="pb-related-card">
+                <span class="pb-related-title">Проверка номера на прослушку: признаки, методы, защита</span>
+                <span class="pb-related-desc">Как проверить телефон на прослушку? Узнайте о реальных признаках шпионажа, методах диагностики и спо</span>
+            </a><a href="/smartfony-i-planshety/c/ch/chto-takoe-data-kabel.html" class="pb-related-card">
+                <span class="pb-related-title">Что такое дата-кабель: виды, назначение и выбор правильного шнура</span>
+                <span class="pb-related-desc">Разбираем, что такое дата-кабель, чем он отличается от зарядного и как выбрать надежный провод для п</span>
+            </a><a href="/smartfony-i-planshety/g/ga/galaxy-note-10-4pda.html" class="pb-related-card">
+                <span class="pb-related-title">Galaxy Note 10 на 4PDA: Прошивки, Ремонт и Обсуждение</span>
+                <span class="pb-related-desc">Полный гид по Samsung Galaxy Note 10 на форуме 4PDA. Прошивки, ремонт, моды, камеры и советы владель</span>
+            </a><a href="/smartfony-i-planshety/s/sm/smartfon-vivo-x100-pro.html" class="pb-related-card">
+                <span class="pb-related-title">Vivo X100 Pro: Обзор флагмана с Zeiss и чипом Dimensity 9300</span>
+                <span class="pb-related-desc">Полный анализ Vivo X100 Pro. Тест камеры с кооперацией Zeiss, производительность процессора Dimensit</span>
+            </a><a href="/smartfony-i-planshety/p/pr/propal-znachok-sms-na-telefone-kak-vernut.html" class="pb-related-card">
+                <span class="pb-related-title">Пропал значок СМС: как вернуть иконку сообщений на телефон</span>
+                <span class="pb-related-desc">Почему исчезла иконка сообщений? Полная инструкция по возврату значка СМС на Android и iPhone. Прове</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

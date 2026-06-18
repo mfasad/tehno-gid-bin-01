@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>💻</text></svg>">
+    <title>Как подключить Arduino Nano к компьютеру: пошаговая инструкция — Техно Гид</title>
+    <meta name="description" content="Полный гайд: драйверы CH340/FTDI, выбор порта в IDE, USB-кабель и устранение ошибок при подключении микроконтроллера.">
+    <link rel="canonical" href="https://tehno-gid.vercel.app/elektronika-i-gadzhety/k/ka/kak-podklyuchit-arduino-nano-k-kompyuteru.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Как подключить Arduino Nano к компьютеру: пошаговая инструкция">
+    <meta property="og:description" content="Полный гайд: драйверы CH340/FTDI, выбор порта в IDE, USB-кабель и устранение ошибок при подключении микроконтроллера.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1781752307">
+    
+</head>
+<body class="pb-body">
+    
+    <div class="pb-topbar"></div>
+    <header class="pb-header">
+        <div class="pb-container pb-header-inner">
+            <a href="/" class="pb-logo">
+                <span class="pb-logo-icon">💻</span>
+                <span class="pb-logo-text">Техно Гид</span>
+            </a>
+            <button class="pb-menu-btn" aria-label="Меню" id="pbMenuBtn">☰</button>
+            <nav class="pb-nav" id="pbMainNav">
+                <a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a>
+<div class="pb-nav-dropdown">
+            <button class="pb-dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="pb-dropdown-menu"><a href="/category/kompyutery-i-noutbuki/" class="pb-dropdown-item">🖥️ Компьютеры и Ноутбуки</a>
+<a href="/category/smartfony-i-planshety/" class="pb-dropdown-item">📱 Смартфоны и Планшеты</a>
+<a href="/category/set-i-internet/" class="pb-dropdown-item">📶 Сеть и Интернет</a>
+<a href="/category/printery-i-periferiya/" class="pb-dropdown-item">🖨️ Принтеры и Периферия</a>
+<a href="/category/televizory-i-tv-pristavki/" class="pb-dropdown-item">📺 Телевизоры и ТВ-приставки</a>
+<a href="/category/audio-i-video/" class="pb-dropdown-item">🎧 Аудио и Видео</a>
+<a href="/category/3d-pechat-i-modelirovanie/" class="pb-dropdown-item">🖨️ 3D Печать и Моделирование</a>
+<a href="/category/soft-i-prilozheniya/" class="pb-dropdown-item">💿 Софт и Приложения</a>
+<a href="/category/remont-i-diagnostika/" class="pb-dropdown-item">🔧 Ремонт и Диагностика</a>
+<a href="/category/elektronika-i-gadzhety/" class="pb-dropdown-item">⌚ Электроника и Гаджеты</a>
+<a href="/category/bezopasnost-i-akkaunty/" class="pb-dropdown-item">🔒 Безопасность и Аккаунты</a>
+<a href="/category/igry-i-razvlecheniya/" class="pb-dropdown-item">🎮 Игры и Развлечения</a>
+<a href="/category/avtomobilnaya-elektronika/" class="pb-dropdown-item">🚗 Автомобильная электроника</a>
+<a href="/category/umnyj-dom/" class="pb-dropdown-item">🏠 Умный Дом</a>
+<a href="/category/drugoe/" class="pb-dropdown-item">📁 Другое</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="pb-breadcrumbs" aria-label="Навигация">
+        <div class="pb-container"><a href="/">Главная</a><span class="pb-bc-sep">/</span><a href="/category/elektronika-i-gadzhety/">Электроника и Гаджеты</a><span class="pb-bc-sep">/</span><span class="pb-bc-current">Как подключить Arduino Nano к компьютеру: пошаговая инструкция</span></div>
+    </nav>
+
+    <main class="pb-main">
+        <div class="pb-container">
+            <div class="pb-article-layout">
+                <aside class="pb-sidebar">
+                    
+                    <nav class="pb-sidebar-search"><div class="pb-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav>
+                    <nav class="pb-sidebar-toc"><h3>📋 Содержание</h3><ul><li><a href="#выбор-кабеля-и-физическое-подключение">Выбор кабеля и физическое подключение</a></li><li><a href="#установка-драйверов-для-разных-версий-платы">Установка драйверов для разных версий платы</a></li><li><a href="#настройка-среды-arduino-ide">Настройка среды Arduino IDE</a></li><li><a href="#загрузка-первого-скетча-blink">Загрузка первого скетча (Blink)</a></li><li><a href="#диагностика-типовых-ошибок-подключения">Диагностика типовых ошибок подключения</a></li><li><a href="#особенности-работы-с-клонами-и-совместимость">Особенности работы с клонами и совместимость</a></li></ul></nav>
+                    
+                    <nav class="pb-sidebar-related"><h3>📰 Похожие статьи</h3><ul><li><a href="/elektronika-i-gadzhety/o/os/oshibka-chteniya-karty-pri-beskontaktnoj-oplate.html">Ошибка чтения карты при бесконтактной оплате: как исправить</a></li><li><a href="/elektronika-i-gadzhety/p/pr/prilozhenie-dlya-kopii-apple-watch.html">Лучшее приложение для копии Apple Watch: выбор, настройка и обзор</a></li><li><a href="/elektronika-i-gadzhety/k/ka/kamera-chtoby-snimat-pod-vodoj.html">Камера для подводной съемки: выбор и настройка 2026</a></li><li><a href="/elektronika-i-gadzhety/t/tr/treker-apple-airtag-chto-eto.html">Apple AirTag: что это за трекер, как работает и кому нужен</a></li><li><a href="/elektronika-i-gadzhety/k/ka/kak-pripayat-naushniki-k-shtekeru-4-provoda.html">Как припаять наушники к штекеру 3.5 мм: 4 провода</a></li></ul></nav>
+                    
+                </aside>
+                <article class="pb-article">
+                    <h1>Как подключить Arduino Nano к компьютеру</h1>
+                    <nav class="pb-mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#выбор-кабеля-и-физическое-подключение">Выбор кабеля и физическое подключение</a></li><li><a href="#установка-драйверов-для-разных-версий-платы">Установка драйверов для разных версий платы</a></li><li><a href="#настройка-среды-arduino-ide">Настройка среды Arduino IDE</a></li><li><a href="#загрузка-первого-скетча-blink">Загрузка первого скетча (Blink)</a></li><li><a href="#диагностика-типовых-ошибок-подключения">Диагностика типовых ошибок подключения</a></li><li><a href="#особенности-работы-с-клонами-и-совместимость">Особенности работы с клонами и совместимость</a></li></ul></details></nav>
+                    
+                    <div class="pb-article-body"><p>Начало работы с микроконтроллерами часто упирается в самый первый и, казалось бы, простой этап — физическое соединение платы с ПК. Однако именно на стадии, когда нужно <strong>подключить Arduino Nano к компьютеру</strong>, начинающие инженеры сталкиваются с массой проблем: от неопределенных драйверов до неработающих портов. Без успешной установки связи невозможно загрузить скетч, отладить код или даже зажечь первый светодиод.</p>
+
+<p>Успех подключения зависит от трех ключевых факторов: исправности USB-кабеля, корректно установленных драйверов и правильных настроек в среде разработки. <em>Arduino Nano</em> — компактная и популярная плата, которая использует разные конвертеры в зависимости от года выпуска и производителя. Понимание различий между чипами <em>FTDI</em> и <em>CH340</em> сэкономит вам часы нервов и поиска решений в интернете.</p>
+
+<p>В этой статье мы разберем весь процесс от распаковки до первой успешной компиляции. Вы узнаете, как диагностировать проблемы с портами, где скачать нужные драйверы и почему иногда компьютер просто не видит устройство, даже если оно исправно. Инструкция актуальна для операционных систем Windows, macOS и Linux.</p>
+
+<h2 id="выбор-кабеля-и-физическое-подключение">Выбор кабеля и физическое подключение</h2>
+
+<p>Первое, с чего стоит начать, — это проверка аппаратной части. Многие пользователи совершают ошибку, используя первый попавшийся под руку кабель, не задумываясь о его назначении. Для передачи данных и прошивки контроллера необходим кабель с распаянными линиями передачи данных (D+ и D-), а не просто кабель для зарядки. Дешевые кабели типа <strong>Charge Only</strong> подают питание, но не передают информацию, из-за чего компьютер не обнаруживает новое устройство.</p>
+
+<p>Осмотрите разъем <em>Mini-USB</em> на самой плате <em>Arduino Nano</em>. Он должен быть надежно впаян и не иметь видимых повреждений. При подключении к порту компьютера разъем должен входить плотно, без люфтов. Если вы используете USB-хаб, попробуйте подключить плату напрямую к материнской плате ПК, так как хабы иногда не выдают достаточного тока или некорректно определяют новые устройства.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Некоторые старые кабели от мобильных телефонов (особенно от устройств до 2010 года) могут иметь нестандартную распиновку. Использование таких кабелей теоретически может привести к короткому замыканию линий питания и данных. Используйте только сертифицированные кабели с маркировкой Data Sync.</p>
+</blockquote>
+
+<p>После соединения платы с компьютером обратите внимание на индикатор питания <code>ON</code> (или <code>PWR</code>). Он должен загореться сразу же, сигнализируя о поступлении напряжения 5В. Если светодиод не горит, проверьте порт USB на другом устройстве или замените кабель. Отсутствие индикации питания делает все дальнейшие программные настройки бессмысленными.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>Если индикатор питания мигает или горит тускло, возможно, сработала защита от перегрузки на материнской плате или в USB-хабе. Попробуйте подключить плату к другому порту, предпочтительно USB 2.0 черного цвета, а не синего USB 3.0.</p></aside>
+
+<p>Физическое подключение — это фундамент. Без стабильного контакта ни одна программа не сможет увидеть плату. Убедитесь, что вы используете качественный провод и исправный порт, прежде чем переходить к установке программного обеспечения.</p>
+
+<h2 id="установка-драйверов-для-разных-версий-платы">Установка драйверов для разных версий платы</h2>
+
+<p>Самая распространенная проблема при работе с <em>Arduino Nano</em> — отсутствие драйверов для USB-конвертера. В зависимости от ревизии платы, внутри могут стоять разные чипы. Оригинальные платы и некоторые качественные клоны используют конвертер от компании <strong>FTDI</strong> (модели FT232RL). Более дешевые и массовые версии, часто встречающиеся на маркетплейсах, оснащены чипом <strong>CH340</strong> или <strong>CH341</strong>.</p>
+
+<p>Если у вас плата с чипом FTDI, то в современных операционных системах Windows 10 и 11 драйверы часто устанавливаются автоматически через Центр обновлений. Однако для стабильной работы лучше скачать последнюю версию с официального сайта производителя. Для чипов <em>CH340</em> автоматическая установка происходит реже, поэтому ручная инсталляция драйвера является обязательным шагом. Без этого диспетчер устройств будет отображать плату как "Неизвестное устройство" с желтым восклицательным знаком.</p>
+
+<ul>
+<li>🔌 Скачайте драйвер CH340 с официального сайта производителя (WCH) или надежного репозитория.</li>
+<li>💻 Запустите установщик от имени администратора и нажмите кнопку <code>INSTALL</code>.</li>
+<li>✅ Дождитесь сообщения "Driver install success" и перезагрузите компьютер.</li>
+<li>🔍 Проверьте диспетчер устройств: в разделе "Порты (COM и LPT)" должен появиться <code>USB-SERIAL CH340</code>.</li>
+</ul>
+
+<details class="pb-accordion"><summary>Как отличить чипы визуально?</summary><div class="pb-accordion-body"><p>Чип FTDI обычно имеет маркировку FT232R или FT232RL и расположен ближе к USB-разъему. Чип CH340G или CH341A часто имеет маркировку "WCH" и может быть черного или серого цвета. Также FTDI чаще встречается на платах с пометкой "Original", а CH340 — на бюджетных клонах.</p></div></details>
+
+<p>Для пользователей macOS ситуация немного иная. Система может блокировать подключение устройств с несертифицированными драйверами, особенно чипов <em>CH340</em>. В этом случае необходимо зайти в <code>Системные настройки → Защита и безопасность</code> и разрешить подключение системного ПО от разработчика WCH. После этого может потребоваться перезагрузка.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Интерфейсы настроек безопасности в macOS и Windows регулярно обновляются. Если вы не находите пункт разрешения драйвера в привычном месте, сверьте актуальный путь в официальной документации вашей операционной системы, так как расположение меню может измениться.</p>
+</blockquote>
+
+<h2 id="настройка-среды-arduino-ide">Настройка среды Arduino IDE</h2>
+
+<p>После того как драйверы установлены и компьютер видит плату, необходимо настроить среду разработки. Скачайте и установите последнюю версию <strong>Arduino IDE</strong> с официального сайта. При первом запуске программа автоматически просканирует доступные порты, но иногда требуется ручная настройка для корректной работы с конкретной версией <em>Nano</em>.</p>
+
+<p>Зайдите в меню <code>Инструменты</code> (Tools). Здесь критически важно выбрать правильную плату и порт. В списке плат найдите пункт <code>Arduino Nano</code>. Если вы используете новую версию IDE (2.x или поздние 1.8.x), там может появиться дополнительный параметр "Processor". Для старых плат с загрузчиком ATmega328P (старый) выбирайте соответствующий пункт, а для новых — <code>ATmega328P</code> (без пометки "Old Bootloader").</p>
+
+<pre><code>Инструменты -> Плата: "Arduino Nano"
+<p>Инструменты -> Процессор: "ATmega328P"</p>
+<p>Инструменты -> Порт: "COM3" (или /dev/ttyUSB0)</code></pre></p>
+
+<p>Выбор порта — самый важный этап. В списке портов будет отображаться номер COM-порта, который присвоила система драйверу. Если вы не уверены, какой порт правильный, отключите плату от USB, запомните список доступных портов, подключите плату снова и посмотрите, какой новый порт появился. Именно его и нужно выбрать.</p>
+
+<div class="pb-poll" id="poll-37b94863"><div class="pb-poll-question">📊 Какой конвертер установлен на вашей плате?</div><div class="pb-poll-option" data-poll="37b94863" data-idx="0" onclick="pbPollVote(this)"><span class="pb-poll-label">FTDI (оригинал)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="37b94863" data-idx="1" onclick="pbPollVote(this)"><span class="pb-poll-label">CH340 (клон)</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="37b94863" data-idx="2" onclick="pbPollVote(this)"><span class="pb-poll-label">CP2102</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div><div class="pb-poll-option" data-poll="37b94863" data-idx="3" onclick="pbPollVote(this)"><span class="pb-poll-label">Не знаю / Не проверял</span><span class="pb-poll-bar"></span><span class="pb-poll-pct"></span></div></div>
+
+<p>Если в меню "Порт" список пуст или нужный порт неактивен (затенен серым), это означает, что драйвер не установлен корректно или плата не определяется системой. Вернитесь к предыдущему разделу и перепроверьте установку драйверов. Также убедитесь, что плата не используется другой программой, например, терминалом или другой копией IDE.</p>
+
+<h2 id="загрузка-первого-скетча-blink">Загрузка первого скетча (Blink)</h2>
+
+<p>Тестирование подключения лучше всего проводить на стандартном примере <strong>Blink</strong>, который идет в комплекте с IDE. Этот скетч заставляет мигать встроенный светодиод на пине 13, что является универсальным индикатором работоспособности системы. Откройте пример через меню <code>Файл → Примеры → 01.Basics → Blink</code>.</p>
+
+<p>Перед загрузкой нажмите кнопку "Проверить" (галочка в левом верхнем углу). Среда скомпилирует код и покажет объем занимаемой памяти. Если компиляция прошла успешно без ошибок, можно переходить к загрузке. Нажмите кнопку "Загрузить" (стрелка вправо). В нижней части окна появится статус "Компиляция...", а затем "Загрузка...".</p>
+
+<blockquote>
+<p>⚠️ Внимание: Во время загрузки скетча светодиоды <code>TX</code> и <code>RX</code> на плате должны активно мигать. Если они не мигают, а IDE выдает ошибку соединения, проверьте, не перепутан ли порт, и убедитесь, что в этот момент к пинам 0 и 1 не подключены другие устройства, мешающие передаче данных.</p>
+</blockquote>
+
+<p>В процессе прошивки загрузчик <em>Arduino Nano</em> сбрасывает плату. Если вы используете плату с чипом <em>CH340</em>, этот процесс иногда происходит некорректно из-за особенностей схемы сброса. В таком случае, когда IDE пишет "Загрузка...", может потребоваться кратковременно нажать и отпустить кнопку <code>Reset</code> на самой плате вручную, чтобы синхронизировать момент входа в режим программирования.</p>
+
+<div class="pb-steps"><h4 class="pb-steps-title">☑️ Чек-лист успешной прошивки</h4><label class="check-item"><input type="checkbox"><span>Правильная плата выбрана в меню</span></label><label class="check-item"><input type="checkbox"><span>Порт COM определен верно</span></label><label class="check-item"><input type="checkbox"><span>Драйвер установлен без ошибок</span></label><label class="check-item"><input type="checkbox"><span>Скетч Blink компилируется без предупреждений</span></label><label class="check-item"><input type="checkbox"><span>Светодиод L мигает после загрузки</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 5</div></div>
+
+<p>Успешная загрузка подтверждается сообщением "Загрузка завершена" в статус-баре. Если светодиод на плате (обычно подписан как <code>L</code>) начал ритмично мигать с интервалом в одну секунду, значит, связь с компьютером установлена идеально и микроконтроллер работает.</p>
+
+<h2 id="диагностика-типовых-ошибок-подключения">Диагностика типовых ошибок подключения</h2>
+
+<p>Даже при соблюдении всех инструкций могут возникать специфические ошибки. Одна из самых частых — сообщение <code>avrdude: stk500_recv(): programmer is not responding</code>. Эта ошибка означает, что компьютер отправляет данные, но плата не отвечает. Чаще всего причина кроется в неправильном выборе процессора в меню инструментов или проблеме с кабелем.</p>
+
+<p>Другая распространенная проблема — <code>Port busy</code> (Порт занят). Это случается, если к плате подключена какая-то программа, блокирующая COM-порт. Это может быть другая открытая копия Arduino IDE, программа для чтения данных с датчиков (например, Processing или Python-скрипт) или даже фоновый сервис. Закройте все лишние приложения и попробуйте снова.</p>
+
+<div class="pb-table-wrap"><table>
+<thead>
+<tr>
+<th>Код ошибки / Сообщение</th>
+<th>Вероятная причина</th>
+<th>Способ решения</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>No device found on tty...</code></td>
+<td>Не установлены драйверы или плохой кабель</td>
+<td>Переустановить драйвер CH340/FTDI, заменить USB-кабель</td>
+</tr>
+<tr>
+<td><code>avrdude: ser_open(): can't open device</code></td>
+<td>Нет доступа к порту или порт занят</td>
+<td>Запустить IDE от имени администратора, закрыть другие программы</td>
+</tr>
+<tr>
+<td><code>Wrong microcontroller found</code></td>
+<td>Неверно выбран тип процессора</td>
+<td>В меню Инструменты выбрать ATmega328P (Old Bootloader)</td>
+</tr>
+<tr>
+<td><code>USB device not recognized</code></td>
+<td>Короткое замыкание или сбой контроллера USB</td>
+<td>Проверить плату на замыкания, подключить к другому ПК</td>
+</tr>
+</tbody>
+</table></div>
+
+<p>Иногда проблема кроется в самом порту компьютера. Попробуйте переключить кабель в разъем USB 2.0, если вы использовали USB 3.0. Некоторые старые реализации чипов <em>CH340</em> плохо дружат с контроллерами USB 3.0 на материнских платах. Также стоит проверить, не отключен ли порт в BIOS системы.</p>
+
+<aside class="pb-callout pb-callout-note"><span class="pb-callout-icon">💡</span><p>90% ошибок подключения решаются заменой USB-кабеля на заведомо исправный (для передачи данных) и переустановкой драйверов с полной очисткой старых версий в диспетчере устройств.</p></aside>
+
+<h2 id="особенности-работы-с-клонами-и-совместимость">Особенности работы с клонами и совместимость</h2>
+
+<p>Рынок наполнен платами <em>Arduino Nano</em>, которые являются копиями оригинальных устройств. Они стоят в разы дешевле, но могут иметь отличия в схемотехнике. Главное отличие, влияющее на подключение — отсутствие автоматического сброса при загрузке прошивки у некоторых версий с чипом <em>CH340</em>. Это требует ручного нажатия кнопки Reset, как упоминалось ранее.</p>
+
+<p>Также стоит учитывать напряжение питания. Оригинальные платы работают от 5В, подаваемых через USB. Некоторые клоны могут быть чувствительны к качеству питания. Если вы подключаете дополнительные модули (датчики, дисплеи) непосредственно к пинам 5В и GND на плате Nano во время работы от USB, суммарный ток может превысить возможности порта компьютера или самого конвертера.</p>
+
+<ul>
+<li>🛡️ Используйте внешнее питание (7-12В на пин Vin), если подключаете мощные нагрузки.</li>
+<li>⚡ Не замыкайте пин 5В на GND — это мгновенно выведет плату из строя.</li>
+<li>🔌 Избегайте использования длинных USB-удлинителей при прошивке, они вносят помехи.</li>
+</ul>
+
+<p>Совместимость с операционными системами также варьируется. Если на Windows 10 плата работает идеально, на Linux может потребоваться добавление пользователя в группу <code>dialout</code> для получения прав доступа к последовательному порту без запуска IDE от root. Команда для этого выглядит как <code>sudo usermod -a -G dialout $USER</code>, после чего требуется выход из системы.</p>
+
+<details>
+<summary>Почему компьютер видит плату, но не может загрузить скетч?</summary>
+<p>Чаще всего проблема в конфликте загрузчиков. Платы с процессором ATmega328P могут иметь "старый" или "новый" загрузчик. В меню Arduino IDE нужно попробовать переключить параметр "Процессор" с <code>ATmega328P</code> на <code>ATmega328P (Old Bootloader)</code> или наоборот. Это меняет тайминги связи и часто решает проблему.</p>
+</details>
+
+<details>
+<summary>Можно ли использовать Arduino Nano без драйверов?</summary>
+<p>Нет, операционная система не сможет создать виртуальный COM-порт, необходимый для обмена данными. Драйвер выступает переводчиком между USB-сигналами и последовательным портом, понятным среде IDE. Без него плата будет только получать питание, но не данные.</p>
+</details>
+
+<details>
+<summary>Как проверить, работает ли порт после установки драйвера?</summary>
+<p>Откройте "Диспетчер устройств" в Windows. Раскройте вкладку "Порты (COM и LPT)". Подключите и отключите плату. Если в списке появляется и исчезает устройство с названием вроде "USB-SERIAL CH340 (COM3)", значит драйвер работает корректно. Если устройство остается с желтым значком — драйвер не подошел.</p>
+</details>
+
+<details>
+<summary>Что делать, если порт COM постоянно меняется?</summary>
+<p>Это может происходить при подключении в разные физические USB-порты. Система присваивает новый номер каждому новому физическому соединению. Старайтесь всегда подключать плату в один и тот же разъем. Если это невозможно, просто выбирайте актуальный порт в меню Arduino IDE перед каждой загрузкой.</p>
+</details>
+
+<details>
+<summary>Безопасно ли подключать Nano к порту USB 3.0?</summary>
+<p>В большинстве случаев да, но существуют известные проблемы совместимости чипов CH340 с некоторыми контроллерами USB 3.0. Если вы сталкиваетесь с нестабильной связью или ошибками загрузки, переключитесь на порт USB 2.0. Это часто устраняет проблемы с синхронизацией.</p>
+</details></div>
+                    
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <section class="pb-related-bottom">
+        <div class="pb-container">
+            <h2 class="pb-related-heading">📖 Читайте также</h2>
+            <div class="pb-related-list"><a href="/elektronika-i-gadzhety/o/os/oshibka-chteniya-karty-pri-beskontaktnoj-oplate.html" class="pb-related-card">
+                <span class="pb-related-title">Ошибка чтения карты при бесконтактной оплате: как исправить</span>
+                <span class="pb-related-desc">Причины сбоя при оплате картой. Что делать, если терминал не считывает карту. Инструкция по устранен</span>
+            </a><a href="/elektronika-i-gadzhety/p/pr/prilozhenie-dlya-kopii-apple-watch.html" class="pb-related-card">
+                <span class="pb-related-title">Лучшее приложение для копии Apple Watch: выбор, настройка и обзор</span>
+                <span class="pb-related-desc">Ищете приложение для копии Apple Watch? Полный разбор функционала, совместимости с Android/iOS и инс</span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kamera-chtoby-snimat-pod-vodoj.html" class="pb-related-card">
+                <span class="pb-related-title">Камера для подводной съемки: выбор и настройка 2026</span>
+                <span class="pb-related-desc">Как выбрать камеру для съемки под водой. Рейтинг экшн-камер, дайв-кейсов и советы по настройке балан</span>
+            </a><a href="/elektronika-i-gadzhety/t/tr/treker-apple-airtag-chto-eto.html" class="pb-related-card">
+                <span class="pb-related-title">Apple AirTag: что это за трекер, как работает и кому нужен</span>
+                <span class="pb-related-desc">Полный гид по Apple AirTag: принцип работы, стоимость, совместимость с Android и советы по безопасно</span>
+            </a><a href="/elektronika-i-gadzhety/k/ka/kak-pripayat-naushniki-k-shtekeru-4-provoda.html" class="pb-related-card">
+                <span class="pb-related-title">Как припаять наушники к штекеру 3.5 мм: 4 провода</span>
+                <span class="pb-related-desc">Подробная инструкция по ремонту наушников. Распиновка 4 проводов, выбор припоя, пайка штекера и устр</span>
+            </a><a href="/elektronika-i-gadzhety/9/9-/9-chasov-eto-skolko-vechera-po-elektronnym-chasam.html" class="pb-related-card">
+                <span class="pb-related-title">9 часов вечера по электронным часам: сколько это и как настроить</span>
+                <span class="pb-related-desc">Узнайте, сколько времени соответствует 9 часам вечера на электронных часах. Как переключить формат 1</span>
+            </a></div>
+        </div>
+    </section>
+
+    <footer class="pb-footer">
+        <div class="pb-container">
+            <div class="pb-footer-top">
+                <div class="pb-footer-brand">💻 Техно Гид</div>
+                <p class="pb-footer-desc"></p>
+            </div>
+            <div class="pb-footer-links">
+                <div class="pb-footer-cats"><a href="/category/kompyutery-i-noutbuki/">🖥️ Компьютеры и Ноутбуки</a> · <a href="/category/smartfony-i-planshety/">📱 Смартфоны и Планшеты</a> · <a href="/category/set-i-internet/">📶 Сеть и Интернет</a> · <a href="/category/printery-i-periferiya/">🖨️ Принтеры и Периферия</a> · <a href="/category/televizory-i-tv-pristavki/">📺 Телевизоры и ТВ-приставки</a> · <a href="/category/audio-i-video/">🎧 Аудио и Видео</a></div>
+                <div class="pb-footer-info">
+                    <a href="/">Главная</a> · 
+                    <a href="/about.html">О проекте</a> · 
+                    <a href="/contact.html">Контакты</a> · 
+                    <a href="/privacy.html">Конфиденциальность</a>
+                </div>
+            </div>
+            <div class="pb-footer-bottom">
+                <p>© Техно Гид. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="pb-cookie">
+        <div class="pb-cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="pb-cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    document.getElementById('pbMenuBtn')?.addEventListener('click', () => {
+        document.getElementById('pbMainNav')?.classList.toggle('pb-nav-open');
+    });
+    // Dropdown menu toggle (click for touch devices)
+    document.querySelectorAll('.pb-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.closest('.pb-nav-dropdown').classList.toggle('pb-dd-open');
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.pb-nav-dropdown.pb-dd-open').forEach(d => d.classList.remove('pb-dd-open'));
+    });
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            setTimeout(() => popup.classList.add('pb-cookie-visible'), 1500);
+            btn.onclick = () => { localStorage.setItem('cookie-accepted','true'); popup.classList.remove('pb-cookie-visible'); };
+        }
+    })();
+    </script>
+    <script>
+    function pbPollVote(el) {
+        var poll = el.closest('.pb-poll');
+        if (poll.classList.contains('voted')) return;
+        poll.classList.add('voted');
+        el.classList.add('selected');
+        var opts = poll.querySelectorAll('.pb-poll-option');
+        var n = opts.length;
+        var raw = [];
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+            var v = Math.random() * 50 + 5;
+            if (opts[i] === el) v += 30;
+            raw.push(v);
+            sum += v;
+        }
+        var pcts = raw.map(function(v) { return Math.round(v / sum * 100); });
+        var diff = 100 - pcts.reduce(function(a,b){ return a+b; }, 0);
+        pcts[Array.from(opts).indexOf(el)] += diff;
+        setTimeout(function() {
+            opts.forEach(function(opt, i) {
+                opt.querySelector('.pb-poll-bar').style.width = pcts[i] + '%';
+                opt.querySelector('.pb-poll-pct').textContent = pcts[i] + '%';
+            });
+        }, 50);
+    }
+    </script>
+    
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>
