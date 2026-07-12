@@ -10,9 +10,9 @@ ym(110391320,'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webv
 // Tehno Info sitewide brand hotfix
 (function() {
     var replacements = [
-        [/Техно Гид/g, 'Техно Инфо'],
-        [/ТехноГид/g, 'ТехноИнфо'],
-        [/Техно-Гид/g, 'Техно-Инфо']
+        [/Техно Инфо/g, 'Техно Инфо'],
+        [/ТехноИнфо/g, 'ТехноИнфо'],
+        [/Техно-Инфо/g, 'Техно-Инфо']
     ];
     function fixText(value) {
         if (!value) return value;
@@ -25,7 +25,7 @@ ym(110391320,'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webv
         if (!root || !document.createTreeWalker) return;
         var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
             acceptNode: function(node) {
-                return /Техно[\s-]?Гид|ТехноГид/.test(node.nodeValue || '') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+                return /Техно[\s-]?Гид|ТехноИнфо/.test(node.nodeValue || '') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
             }
         });
         var nodes = [];
